@@ -8,7 +8,7 @@ public class StringCalculator {
         if (number.isEmpty())
             return 0;
 
-        String[] split = number.split(",");
+        String[] split = number.split("[,\n]");
         return Arrays.stream(split)
                 .mapToInt(Integer::parseInt)
                 .sum();

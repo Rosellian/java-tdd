@@ -36,4 +36,10 @@ class StringCalculatorTest {
         int result = stringCalculator.add("1,2,3,4");
         assertEquals(10, result);
     }
+
+    @Test
+    void newlinesAreHandledAsDelimiters() {
+        int result = stringCalculator.add("1\n2,3");
+        assertEquals(6, result);
+    }
 }
