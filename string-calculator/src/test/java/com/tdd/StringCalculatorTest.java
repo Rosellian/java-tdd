@@ -30,4 +30,10 @@ class StringCalculatorTest {
         int result = stringCalculator.add("1,2");
         assertEquals(3, result);
     }
+
+    @Test
+    void multipleNumbersAreSummed() {
+        int result = stringCalculator.add("1,2,3,4");
+        assertEquals(10, result);
+    }
 }
