@@ -24,4 +24,10 @@ class StringCalculatorTest {
         int result = stringCalculator.add("5");
         assertEquals(5, result);
     }
+
+    @Test
+    void twoNumbersSeparatedByCommaAreSummed() {
+        int result = stringCalculator.add("1,2");
+        assertEquals(3, result);
+    }
 }
