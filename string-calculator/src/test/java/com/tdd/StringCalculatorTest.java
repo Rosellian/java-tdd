@@ -18,4 +18,10 @@ class StringCalculatorTest {
         int result = stringCalculator.add("");
         assertEquals(0, result);
     }
+
+    @Test
+    void singleNumberReturnsItsValue() {
+        int result = stringCalculator.add("5");
+        assertEquals(5, result);
+    }
 }
