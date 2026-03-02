@@ -11,6 +11,7 @@
 
     <modules>
         <module>string-calculator</module>
+        <module>bowling-game</module>
     </modules>
 
     <properties>
