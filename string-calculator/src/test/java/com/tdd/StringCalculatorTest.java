@@ -58,4 +58,10 @@ class StringCalculatorTest {
 
         assertEquals("Negatives not allowed: -2,-5", ex.getMessage());
     }
+
+    @Test
+    void numbersGreaterThan1000AreIgnored() {
+        int result = stringCalculator.add("2,1001,3");
+        assertEquals(5, result);
+    }
 }

@@ -35,7 +35,9 @@ public class StringCalculator {
 
         checkNegatives(integers);
 
-        return integers.stream().mapToInt(Integer::intValue).sum();
+        return integers.stream().mapToInt(Integer::intValue)
+                .filter(i -> i < 1001)
+                .sum();
     }
 
     private void checkNegatives(List<Integer> integers) {
