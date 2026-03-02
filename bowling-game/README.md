@@ -28,7 +28,9 @@ Bonus rules:
    - Store all throws in an array/list
    - calculate the sum in score()
 3. **Spares → bonus**
-
+   - Identify spare: two throws in same frame which together adds to 10.
+   - Add bonus: next throw after spare.
+   - Continue counting frames correctly.
 4. **Strikes → bonus**
 
 5. **Perfect game → 30**

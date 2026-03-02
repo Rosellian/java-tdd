@@ -20,6 +20,18 @@ class BowlingGameTest {
         assertEquals(20, game.score());
     }
 
+    @Test
+    void oneSpareAddsNextRollAsBonus() {
+        game.roll(5);
+        game.roll(5);   // spare
+
+        game.roll(3);   // bonus shall be counted here
+
+        rollMany(game, 17, 0);
+
+        assertEquals(16, game.score()); // 10 + 3 + 3
+    }
+
     private void rollMany(Game game, int rolls, int pins) {
         for (int i = 0; i < rolls; i++) {
             game.roll(pins);

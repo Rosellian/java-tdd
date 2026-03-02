@@ -13,7 +13,28 @@ public class Game {
     }
 
     public int score() {
-        return rolls.stream().mapToInt(Integer::intValue)
-                .sum();
+        int score = 0, frameScore = 0;
+        boolean spare = false;
+        for (int i = 0 ; i < rolls.size(); i++) {
+            int rollScore = rolls.get(i);
+
+            if(spare) {
+                score += rollScore * 2;
+                spare = false;
+            }
+            else {
+                score += rollScore;
+            }
+            frameScore += rollScore;
+
+            if((i+1) % 2 == 0) {
+                if(frameScore >= 10) {
+                    spare = true;
+                }
+                frameScore = 0;
+            }
+        }
+
+        return score;
     }
 }
