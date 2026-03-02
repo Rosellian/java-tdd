@@ -1,3 +1,5 @@
+package com.tdd.bowling;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,15 +71,5 @@ public class Frame {
 
     public boolean isDone() {
         return done;
-    }
-
-    @Override
-    public String toString() {
-        return "Frame{" +
-                "rolls=" + rolls +
-                ", strike=" + strike +
-                ", spare=" + spare +
-                ", done=" + done +
-                '}';
     }
 }

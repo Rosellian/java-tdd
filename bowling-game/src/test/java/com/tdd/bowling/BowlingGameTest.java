@@ -1,12 +1,14 @@
+package com.tdd.bowling;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class BowlingGameTest {
-    private Game game;
+public class BowlingGameTest {
+    protected Game game;
 
     @BeforeEach
-    void setUp() {game =  new Game();}
+    protected void setUp() {game =  new GameImpl();}
 
     @Test
     void gutterGameScoresZero() {

@@ -1,11 +1,13 @@
+package com.tdd.bowling;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
+public class GameImpl implements Game {
     private List<Frame> frames;
     private Frame currentFrame;
 
-    public Game() {
+    public GameImpl() {
         frames = new ArrayList<>();
     }
 
@@ -25,7 +27,6 @@ public class Game {
     public int score() {
         Frame lastFrame = frames.getFirst(), lastLastFrame = null;
         int score = lastFrame.getScore();
-        System.out.println("0: " + score);
 
         for(int i = 1; i < frames.size(); i++) {
             Frame frame = frames.get(i);
@@ -38,7 +39,6 @@ public class Game {
             else {
                 score += frame.getScore();
             }
-            System.out.println(i + ": " + score);
 
             lastLastFrame = lastFrame;
             lastFrame = frame;
