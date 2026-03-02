@@ -23,9 +23,10 @@ Bonus rules:
 ### Iterations
 1. **All misses → 0**  
    First step is to create:
-   A Game class with methods `roll(int pins)` and `score()`
+   A Game class with methods `roll(int pins)` and `score()`.
 2. **All simple hits → sum**
-
+   - Store all throws in an array/list
+   - calculate the sum in score()
 3. **Spares → bonus**
 
 4. **Strikes → bonus**
