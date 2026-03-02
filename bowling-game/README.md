@@ -25,8 +25,8 @@ Bonus rules:
    First step is to create:
    A Game class with methods `roll(int pins)` and `score()`.
 2. **All simple hits → sum**
-   - Store all throws in an array/list
-   - calculate the sum in score()
+   - Store all throws in an array/list.
+   - calculate the sum in score().
 3. **Spares → bonus**
    - Identify spare: two throws in same frame which together adds to 10.
    - Add bonus: next throw after spare.
@@ -36,4 +36,8 @@ Bonus rules:
    - Skip the second throw of the frame.
    - Add bonus: the next two throws.
    - Continue counting frames correctly.
-5. **Perfect game → 30**
+5. **Perfect game → 300**
+   - Strike in every frame.
+   - Bonus for two next throws.
+   - Extra throw in 10th frame.
+   - Frames are counted correctly even when all are strikes.

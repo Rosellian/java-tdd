@@ -23,13 +23,24 @@ public class Game {
     }
 
     public int score() {
-        Frame lastFrame = frames.getFirst();
-        int score = lastFrame.getScore(false, false);
+        Frame lastFrame = frames.getFirst(), lastLastFrame = null;
+        int score = lastFrame.getScore();
+        System.out.println("0: " + score);
 
         for(int i = 1; i < frames.size(); i++) {
             Frame frame = frames.get(i);
-            System.out.println(lastFrame);
-            score += frame.getScore(lastFrame.isStrike(), lastFrame.isSpare());
+            if(i < 10){
+                score += frame.getScore(lastFrame,  lastLastFrame);
+            }
+            else if(i == 10){
+                score += frame.getScore(lastFrame, null);
+            }
+            else {
+                score += frame.getScore();
+            }
+            System.out.println(i + ": " + score);
+
+            lastLastFrame = lastFrame;
             lastFrame = frame;
         }
 

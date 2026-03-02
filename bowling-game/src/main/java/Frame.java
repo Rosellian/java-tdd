@@ -24,20 +24,34 @@ public class Frame {
             this.done = true;
         }
 
-        if (!isStrike() && getScore(1) >= 10) {
+        if (!isStrike() && getScore(1) == 10) {
             spare = true;
         }
     }
 
-    public int getScore(boolean prevStrike, boolean prevSpare) {
-        if (prevStrike) {
-            return getScore(2);
-        }
-        else if (prevSpare) {
-            return rolls.getFirst() * 2 + (rolls.size() == 1 ? 0 : rolls.get(1));
+    public int getScore(Frame... prevFrame) {
+        if(prevFrame.length == 0){
+            return getScore(1);
         }
 
-        return getScore(1);
+        return rolls.getFirst() * getFirstMultiplier(prevFrame) +
+                (rolls.size() == 1 ? 0 : rolls.get(1) * getSecondMultiplier(prevFrame));
+    }
+
+    private int getSecondMultiplier(Frame[] prevFrames) {
+        int multiplier = 1;
+        multiplier += prevFrames[0].strike || prevFrames[0].spare ? 1 : 0;
+        multiplier += prevFrames[1] != null && prevFrames[1].strike  ? 1 : 0;
+
+        return multiplier;
+    }
+
+    private int getFirstMultiplier(Frame[] prevFrames) {
+        int multiplier = 1;
+        multiplier += prevFrames[0].spare || prevFrames[0].strike ? 1 : 0;
+        multiplier += prevFrames[1] != null && prevFrames[1].strike  ? 1 : 0;
+
+        return multiplier;
     }
 
     private int getScore(int multiplier) {
