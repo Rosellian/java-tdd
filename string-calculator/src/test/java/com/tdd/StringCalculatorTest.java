@@ -64,4 +64,10 @@ class StringCalculatorTest {
         int result = stringCalculator.add("2,1001,3");
         assertEquals(5, result);
     }
+
+    @Test
+    void delimiterOfAnyLengthIsSupported() {
+        int result = stringCalculator.add("//[***]\n1***2***3");
+        assertEquals(6, result);
+    }
 }

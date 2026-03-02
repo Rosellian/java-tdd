@@ -5,7 +5,7 @@ import java.util.List;
 
 public class StringCalculator {
 
-    public static final String DEFAULT_DELIMITER = "[,\n]";
+    public static final String DEFAULT_DELIMITER = "[,\n]+";
 
     int add(String number) {
         if (number.isEmpty())
@@ -13,24 +13,27 @@ public class StringCalculator {
 
         String delimiter = chooseDelimiter(number);
 
-        return calculateSum(delimiter.equals(DEFAULT_DELIMITER) ? number : number.substring(4),
-                delimiter);
+        return calculateSum(delimiter.equals(DEFAULT_DELIMITER)
+                ? number: number.split("\\R")[1], delimiter);
     }
 
     private String chooseDelimiter(String number) {
         if (number.startsWith("//")) {
-            return number.substring(2)
-                    .split("\n")[0];
+            String delimiter = number.substring(2)
+                    .split("\\R")[0]
+                    .replace("[", "")
+                    .replace("]", "");
+
+            return "[" + delimiter + "]";
         }
         else
             return DEFAULT_DELIMITER;
     }
 
-    private int calculateSum(String number,  String delimiter) {
+    private int calculateSum(String number, String delimiter) {
         String[] split = number.split(delimiter);
-
-        List<Integer> integers = Arrays.stream(number.split(delimiter))
-                .mapToInt(Integer::parseInt).boxed()
+        List<Integer> integers = Arrays.stream(split)
+                .mapToInt(this::getInt).boxed()
                 .toList();
 
         checkNegatives(integers);
@@ -38,6 +41,12 @@ public class StringCalculator {
         return integers.stream().mapToInt(Integer::intValue)
                 .filter(i -> i < 1001)
                 .sum();
+    }
+
+    private int getInt(String num) {
+        try {
+            return Integer.parseInt(num);
+        } catch (NumberFormatException e) {return 0;}
     }
 
     private void checkNegatives(List<Integer> integers) {
