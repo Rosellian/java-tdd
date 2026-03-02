@@ -2,37 +2,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private List<Integer> rolls;
+    private List<Frame> frames;
+    private Frame currentFrame;
 
     public Game() {
-        rolls = new ArrayList<>();
+        frames = new ArrayList<>();
     }
 
     public void roll(int pins) {
-        rolls.add(pins);
+        if (currentFrame == null) {
+            currentFrame = new Frame();
+        }
+
+        currentFrame.addRoll(pins);
+
+        if (currentFrame.isDone()) {
+            frames.add(currentFrame);
+            currentFrame = null;
+        }
     }
 
     public int score() {
-        int score = 0, frameScore = 0;
-        boolean spare = false;
-        for (int i = 0 ; i < rolls.size(); i++) {
-            int rollScore = rolls.get(i);
+        Frame lastFrame = frames.getFirst();
+        int score = lastFrame.getScore(false, false);
 
-            if(spare) {
-                score += rollScore * 2;
-                spare = false;
-            }
-            else {
-                score += rollScore;
-            }
-            frameScore += rollScore;
-
-            if((i+1) % 2 == 0) {
-                if(frameScore >= 10) {
-                    spare = true;
-                }
-                frameScore = 0;
-            }
+        for(int i = 1; i < frames.size(); i++) {
+            Frame frame = frames.get(i);
+            System.out.println(lastFrame);
+            score += frame.getScore(lastFrame.isStrike(), lastFrame.isSpare());
+            lastFrame = frame;
         }
 
         return score;

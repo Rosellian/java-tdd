@@ -32,5 +32,8 @@ Bonus rules:
    - Add bonus: next throw after spare.
    - Continue counting frames correctly.
 4. **Strikes → bonus**
-
+   - Identify strike: one throw of 10 at the start of a frame.
+   - Skip the second throw of the frame.
+   - Add bonus: the next two throws.
+   - Continue counting frames correctly.
 5. **Perfect game → 30**
