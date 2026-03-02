@@ -1,6 +1,7 @@
 package com.tdd;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class StringCalculator {
 
@@ -28,8 +29,32 @@ public class StringCalculator {
     private int calculateSum(String number,  String delimiter) {
         String[] split = number.split(delimiter);
 
-        return Arrays.stream(split)
-                .mapToInt(Integer::parseInt)
-                .sum();
+        List<Integer> integers = Arrays.stream(number.split(delimiter))
+                .mapToInt(Integer::parseInt).boxed()
+                .toList();
+
+        checkNegatives(integers);
+
+        return integers.stream().mapToInt(Integer::intValue).sum();
+    }
+
+    private void checkNegatives(List<Integer> integers) {
+        List<Integer> negative = integers.stream().filter(i -> i < 0).toList();
+
+        if(!negative.isEmpty()) {
+            StringBuilder builder = createException(negative);
+            throw new IllegalArgumentException(builder.toString());
+        }
+    }
+
+    private StringBuilder createException(List<Integer> negative) {
+        StringBuilder builder = new StringBuilder("Negatives not allowed: ");
+        for(int i = 0; i< negative.size(); i++) {
+            builder.append(negative.get(i));
+            if(i+1 != negative.size()) {
+               builder.append(",") ;
+            }
+        }
+        return builder;
     }
 }
