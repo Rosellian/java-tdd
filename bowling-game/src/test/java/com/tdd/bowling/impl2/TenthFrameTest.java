@@ -1,19 +1,18 @@
 package com.tdd.bowling.impl2;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TenthFrameTest {
+    private TenthFrame frame;
+
+    @BeforeEach
+    public void setUp() {frame = new TenthFrame();}
 
     @Test
     void tenthFrameAllowsTwoRollsWhenNoStrikeOrSpare() {
-        TenthFrame frame = new TenthFrame();
-
         frame.roll(3);
         frame.roll(5);
 
@@ -26,8 +25,6 @@ public class TenthFrameTest {
 
     @Test
     void tenthFrameAllowsThirdRollAfterSpare() {
-        TenthFrame frame = new TenthFrame();
-
         frame.roll(7);
         frame.roll(3);   // spare
 
@@ -42,8 +39,6 @@ public class TenthFrameTest {
 
     @Test
     void tenthFrameAllowsTwoBonusRollsAfterStrike() {
-        TenthFrame frame = new TenthFrame();
-
         frame.roll(10);   // strike
 
         assertFalse(frame.isComplete()); // two throws left
@@ -58,8 +53,6 @@ public class TenthFrameTest {
 
     @Test
     void tenthFrameDoesNotAllowInvalidBonusRollsAfterStrike() {
-        TenthFrame frame = new TenthFrame();
-
         frame.roll(10);   // strike → two bonus throws
 
         frame.roll(6);    // first bonus throw, not strike
@@ -69,8 +62,6 @@ public class TenthFrameTest {
 
     @Test
     void tenthFrameAllowsTwoStrikesInBonusRolls() {
-        TenthFrame frame = new TenthFrame();
-
         frame.roll(10);   // strike in first throw
 
         frame.roll(10);   // first bonus throw – strike
@@ -83,8 +74,6 @@ public class TenthFrameTest {
 
     @Test
     void tenthFrameAllowsStrikeThenStrikeThenOpenBonusRoll() {
-        TenthFrame frame = new TenthFrame();
-
         frame.roll(10);   // strike in first throw
         frame.roll(10);   // strike in first bonus throw
         frame.roll(7);    // second bonus throw, open
@@ -96,8 +85,6 @@ public class TenthFrameTest {
 
     @Test
     void tenthFrameAllowsStrikeThenOpenThenOpenBonusRolls() {
-        TenthFrame frame = new TenthFrame();
-
         frame.roll(10);   // strike in first throw
 
         frame.roll(4);    // first bonus throw, open
@@ -110,8 +97,6 @@ public class TenthFrameTest {
 
     @Test
     void tenthFrameAllowsStrikeThenOpenThenSpareInBonusRolls() {
-        TenthFrame frame = new TenthFrame();
-
         frame.roll(10);   // strike in first throw
 
         frame.roll(4);    // first bonus throw, open
@@ -124,8 +109,6 @@ public class TenthFrameTest {
 
     @Test
     void tenthFrameNeverAllowsMoreThanThreeRolls() {
-        TenthFrame frame = new TenthFrame();
-
         frame.roll(10);   // strike → two bonus throws
         frame.roll(10);   // bonus 1
         frame.roll(10);   // bonus 2
@@ -137,8 +120,6 @@ public class TenthFrameTest {
 
     @Test
     void tenthFrameDoesNotAllowPinCountAboveTenInFirstTwoRollsUnlessStrike() {
-        TenthFrame frame = new TenthFrame();
-
         frame.roll(7);
 
         assertThrows(IllegalArgumentException.class, () -> frame.roll(5));
@@ -146,8 +127,6 @@ public class TenthFrameTest {
 
     @Test
     void tenthFrameAllowsSpareInFirstTwoRollsAndOneBonusRoll() {
-        TenthFrame frame = new TenthFrame();
-
         frame.roll(6);
         frame.roll(4);   // spare
 
@@ -162,8 +141,6 @@ public class TenthFrameTest {
 
     @Test
     void tenthFrameDoesNotAllowMoreThanOneBonusRollAfterSpare() {
-        TenthFrame frame = new TenthFrame();
-
         frame.roll(6);
         frame.roll(4);   // spare → one bonus throw allowed
 
@@ -176,8 +153,6 @@ public class TenthFrameTest {
 
     @Test
     void tenthFrameDoesNotAllowBonusRollAboveTenAfterSpare() {
-        TenthFrame frame = new TenthFrame();
-
         frame.roll(6);
         frame.roll(4);   // spare → one bonus throw allowed
 

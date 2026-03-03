@@ -2,6 +2,7 @@ package com.tdd.bowling.impl2;
 
 public class NormalFrame implements Frame{
     private int first = -1, second = -1;
+    private int bonusScore = 0, bonusRollsNeeded = 0;
 
     @Override
     public void roll(int pins) {
@@ -18,6 +19,13 @@ public class NormalFrame implements Frame{
         else if(second == -1){
             second = pins;
         }
+
+        if(isStrike()){
+            bonusRollsNeeded = 2;
+        }
+        else if(isSpare()){
+            bonusRollsNeeded = 1;
+        }
     }
 
     @Override
@@ -30,22 +38,27 @@ public class NormalFrame implements Frame{
         if(isStrike()){
             return first;
         }
-        return first + second;
+        return Math.max(first, 0) + Math.max(second, 0);
     }
 
     @Override
     public int bonusRollsNeeded() {
-        if(isStrike()) {
-            return 2;
-        }
-        else if(isSpare()){
-            return 1;
-        }
-        return 0;
+        return bonusRollsNeeded;
     }
 
     public boolean isSpare() {
         return !isStrike() && baseScore() == 10;
+    }
+
+    @Override
+    public int bonusScore() {
+        return bonusScore;
+    }
+
+    @Override
+    public void addBonus(int bonus) {
+        bonusScore += bonus;
+        bonusRollsNeeded--;
     }
 
     public boolean isStrike() {

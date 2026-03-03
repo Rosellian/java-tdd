@@ -5,4 +5,8 @@ public interface Frame {
     boolean isComplete();
     int baseScore();
     int bonusRollsNeeded();
+    boolean isStrike();
+    boolean isSpare();
+    int bonusScore();
+    void addBonus(int bonus);
 }

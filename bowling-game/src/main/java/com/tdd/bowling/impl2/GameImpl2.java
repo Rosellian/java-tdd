@@ -1,55 +1,61 @@
 package com.tdd.bowling.impl2;
 
-import com.tdd.bowling.Game;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameImpl2 implements Game {
-    private final int[] rolls = new int[21];
-    private int currentRoll = 0;
+    private final FrameFactory frameFactory;
+    private final List<Frame> frames;
+    private Frame currentFrame;
+    private int currentFrameIndex;
+
+    GameImpl2(FrameFactory frameFactory) {
+        this.frameFactory = frameFactory;
+        frames = new ArrayList<>();
+
+        currentFrameIndex = 1;
+        currentFrame = frameFactory.createFrame(currentFrameIndex);
+        frames.add(currentFrame);
+    }
+
+    public Frame currentFrame() {
+        return currentFrame;
+    }
+
+    @Override
+    public int currentFrameIndex() {
+        return currentFrameIndex;
+    }
+
+    @Override
+    public boolean isComplete() {
+        return currentFrameIndex == 10 && currentFrame.isComplete();
+    }
 
     @Override
     public void roll(int pins) {
-        rolls[currentRoll++] = pins;
+        if(isComplete()){
+            throw new IllegalStateException();
+        }
+
+        if (currentFrame.isComplete() && currentFrameIndex < 10) {
+            currentFrameIndex++;
+            currentFrame = frameFactory.createFrame(currentFrameIndex);
+            frames.add(currentFrame);
+        }
+
+        for(Frame frame : frames){
+            if(frame.bonusRollsNeeded() > 0){
+                frame.addBonus(pins);
+            }
+        }
+
+        currentFrame.roll(pins);
     }
 
     @Override
     public int score() {
-        int score = 0, rollIndex = 0;
-
-        for(int frame = 0; frame < 10; frame++) {
-            if(isStrike(rollIndex)) {
-                score += 10 + strikeBonus(rollIndex);
-                rollIndex++;
-            }
-            else if (isSpare(rollIndex)) {
-                score += 10 + spareBonus(rollIndex);
-                rollIndex += 2;
-            }
-            else {
-                score += frameScore(rollIndex);
-                rollIndex += 2;
-            }
-        }
-
-        return score;
-    }
-
-    private int frameScore(int rollIndex) {
-        return rolls[rollIndex] + rolls[rollIndex+1];
-    }
-
-    private int spareBonus(int rollIndex) {
-        return rolls[rollIndex+2];
-    }
-
-    private int strikeBonus(int rollIndex) {
-        return rolls[rollIndex+1] + rolls[rollIndex+2];
-    }
-
-    private boolean isSpare(int rollIndex) {
-        return rolls[rollIndex] + rolls[rollIndex + 1] == 10;
-    }
-
-    private boolean isStrike(int rollIndex) {
-        return rolls[rollIndex] == 10;
+        return frames.stream().map(f -> f.baseScore() + f.bonusScore())
+                .reduce(0, Integer::sum);
     }
 }

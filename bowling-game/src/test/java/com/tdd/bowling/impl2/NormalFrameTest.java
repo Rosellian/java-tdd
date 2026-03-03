@@ -1,19 +1,18 @@
 package com.tdd.bowling.impl2;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NormalFrameTest {
+    private NormalFrame frame;
+
+    @BeforeEach
+    public void setUp() {frame = new NormalFrame();}
 
     @Test
     void normalFrameStoresTwoRollsAndCalculatesBaseScore() {
-        NormalFrame frame = new NormalFrame();
-
         frame.roll(3);
         frame.roll(4);
 
@@ -23,8 +22,6 @@ public class NormalFrameTest {
 
     @Test
     void normalFrameIdentifiesSpareAndRequiresOneBonusRoll() {
-        NormalFrame frame = new NormalFrame();
-
         frame.roll(7);
         frame.roll(3); // spare
 
@@ -35,19 +32,15 @@ public class NormalFrameTest {
 
     @Test
     void normalFrameIdentifiesStrikeAndRequiresTwoBonusRolls() {
-        NormalFrame frame = new NormalFrame();
-
         frame.roll(10); // strike
 
         assertTrue(frame.isStrike());
         assertEquals(2, frame.bonusRollsNeeded());
-        assertTrue(frame.isComplete()); // strike avslutar framen direkt
+        assertTrue(frame.isComplete()); // strike end the frame directly
     }
 
     @Test
     void normalFrameDoesNotAllowRollAfterCompletion() {
-        NormalFrame frame = new NormalFrame();
-
         frame.roll(4);
         frame.roll(6); // spare → frame complete
 
@@ -58,8 +51,6 @@ public class NormalFrameTest {
 
     @Test
     void normalFrameDoesNotAllowPinCountAboveTenAcrossTwoRolls() {
-        NormalFrame frame = new NormalFrame();
-
         frame.roll(7);
 
         assertThrows(IllegalArgumentException.class, () -> frame.roll(4));

@@ -42,8 +42,7 @@ public class TenthFrame implements Frame{
 
     @Override
     public int baseScore() {
-        return first + second
-                + (third != -1 ? third : 0);
+        return Math.max(first, 0) + Math.max(second, 0) + Math.max(third, 0);
     }
 
     @Override
@@ -53,6 +52,16 @@ public class TenthFrame implements Frame{
 
     public boolean isSpare() {
         return !isStrike() && first + second == 10;
+    }
+
+    @Override
+    public int bonusScore() {
+        return 0;
+    }
+
+    @Override
+    public void addBonus(int bonus) {
+
     }
 
     public boolean isStrike() {
