@@ -3,6 +3,8 @@ package com.tdd.bowling.impl2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
@@ -327,5 +329,20 @@ public class GameTest {
 
         assertTrue(game.isComplete());
         assertEquals(142, game.score());
+    }
+
+    @Test
+    void returnsCurrentRolls() {
+        game.roll(1);
+        game.roll(2);
+
+        assertEquals(List.of(1,2), game.getRolls());
+
+        game.roll(3);
+        game.roll(4);
+        assertEquals(List.of(1,2,3,4), game.getRolls());
+
+        game.roll(5);
+        assertEquals(List.of(1,2,3,4,5), game.getRolls());
     }
 }

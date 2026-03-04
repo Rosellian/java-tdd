@@ -1,5 +1,7 @@
 package com.tdd.bowling.impl2;
 
+import java.util.List;
+
 public class BowlingGame implements BowlingGameApi {
 
     private final Game game;
@@ -22,5 +24,9 @@ public class BowlingGame implements BowlingGameApi {
 
     public int currentFrameIndex() {
         return game.currentFrameIndex();
+    }
+
+    public List<Integer> getRolls() {
+        return game.getRolls();
     }
 }

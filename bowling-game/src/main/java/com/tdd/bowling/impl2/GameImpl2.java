@@ -3,6 +3,8 @@ package com.tdd.bowling.impl2;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 public class GameImpl2 implements Game {
     private final FrameFactory frameFactory;
     private final List<Frame> frames;
@@ -57,5 +59,10 @@ public class GameImpl2 implements Game {
     public int score() {
         return frames.stream().map(f -> f.baseScore() + f.bonusScore())
                 .reduce(0, Integer::sum);
+    }
+
+    @Override
+    public List<Integer> getRolls() {
+        return frames.stream().flatMapToInt(Frame::getRolls).boxed().collect(toList());
     }
 }

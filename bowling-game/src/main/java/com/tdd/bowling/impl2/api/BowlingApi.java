@@ -25,10 +25,4 @@ public class BowlingApi {
     public GameState state() {
         return new GameState(game);
     }
-
-    record GameState(int score, int frame, boolean complete) {
-        GameState(BowlingGame g) {
-            this(g.score(), g.currentFrameIndex(), g.isComplete());
-        }
-    }
 }

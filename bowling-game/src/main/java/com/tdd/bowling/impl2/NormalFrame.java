@@ -1,5 +1,7 @@
 package com.tdd.bowling.impl2;
 
+import java.util.stream.IntStream;
+
 public class NormalFrame implements Frame{
     private int first = -1, second = -1;
     private int bonusScore = 0, bonusRollsNeeded = 0;
@@ -46,10 +48,6 @@ public class NormalFrame implements Frame{
         return bonusRollsNeeded;
     }
 
-    public boolean isSpare() {
-        return !isStrike() && baseScore() == 10;
-    }
-
     @Override
     public int bonusScore() {
         return bonusScore;
@@ -59,6 +57,15 @@ public class NormalFrame implements Frame{
     public void addBonus(int bonus) {
         bonusScore += bonus;
         bonusRollsNeeded--;
+    }
+
+    @Override
+    public IntStream getRolls() {
+        return IntStream.of(first, second).filter(i -> i > -1);
+    }
+
+    public boolean isSpare() {
+        return !isStrike() && baseScore() == 10;
     }
 
     public boolean isStrike() {

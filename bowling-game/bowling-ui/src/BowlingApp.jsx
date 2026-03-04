@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Scoreboard from "./Scoreboard";
 
 export default function BowlingApp() {
     const [state, setState] = useState(null);
@@ -25,11 +26,18 @@ export default function BowlingApp() {
         setState(json);
     };
 
+    useEffect(() => {
+        console.log("STATE UPDATED:", state);
+    }, [state]);
+
+
     if (!state) return <p>Laddar...</p>;
 
     return (
         <div style={{ padding: 20 }}>
             <h1>Bowling Game</h1>
+
+            <Scoreboard rolls={state.rolls ?? []} />
 
             <p>Frame: {state.frame}</p>
             <p>Score: {state.score}</p>
