@@ -26,11 +26,6 @@ export default function BowlingApp() {
         setState(json);
     };
 
-    useEffect(() => {
-        console.log("STATE UPDATED:", state);
-    }, [state]);
-
-
     if (!state) return <p>Laddar...</p>;
 
     return (

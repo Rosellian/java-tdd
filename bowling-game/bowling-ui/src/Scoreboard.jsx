@@ -1,25 +1,26 @@
 import {buildFrames} from "./buildFrames";
+import "./Scoreboard.css";
+import { detectActiveFrame, detectActiveRoll } from "./detectActive";
 
 export default function Scoreboard({ rolls }) {
     const frames = buildFrames(rolls);
 
+    //const activeFrame = Math.min(9, detectActiveFrame(rolls));
+    const activeFrame = detectActiveFrame(rolls);
+    const activeRoll = detectActiveRoll(rolls);
+
     return (
-        <div style={{ display: "flex", gap: 8 }}>
+        <div className={"scoreboard"}>
             {frames.map((f, i) => (
-                <div key={i} style={{
-                    border: "1px solid black",
-                    padding: 8,
-                    width: 60,
-                    textAlign: "center"
-                }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <span>{f.r1}</span>
-                        <span>{f.r2}</span>
-                        {i === 9 && <span>{f.r3}</span>}
+                <div key={i} className={`frame ${i === activeFrame ? "active" : ""}`}>
+                    <div className="rolls">
+                        <span className={i === activeFrame && activeRoll === 1 ? "roll-active" : ""}>{f.r1}</span>
+                        <span className={i === activeFrame && activeRoll === 2 ? "roll-active" : ""}>{f.r2}</span>
+                        {i === 9 && (
+                            <span className={i === activeFrame && activeRoll === 3 ? "roll-active" : ""}>{f.r3}</span>
+                        )}
                     </div>
-                    <div style={{ marginTop: 4, fontWeight: "bold" }}>
-                        {f.total}
-                    </div>
+                    <div className="total">{f.total}</div>
                 </div>
             ))}
         </div>

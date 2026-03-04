@@ -1,0 +1,47 @@
+.scoreboard {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    font-family: "Courier New", monospace;
+}
+
+.frame {
+    width: 70px;
+    background: #111;
+    border: 2px solid #444;
+    border-radius: 4px;
+    padding: 6px;
+    color: #0f0;
+    box-shadow: 0 0 8px #0f0 inset;
+}
+
+.frame.active {
+    border-color: #0ff;
+    box-shadow: 0 0 12px #0ff inset;
+}
+
+.rolls {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+.rolls span {
+    width: 20px;
+    text-align: center;
+}
+
+.roll-active {
+    background: #0ff;
+    color: #000;
+    border-radius: 3px;
+    padding: 0 2px;
+}
+
+.total {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #0ff;
+}

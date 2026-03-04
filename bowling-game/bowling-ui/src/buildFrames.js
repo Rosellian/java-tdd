@@ -2,6 +2,7 @@
 
 export function buildFrames(rolls) {
     if (!Array.isArray(rolls)) rolls = [];
+
     const safe = (x) => (typeof x === "number" ? x : 0);
 
     const frames = [];
@@ -57,13 +58,15 @@ export function buildFrames(rolls) {
 
             // Empty frame
             else {
+                if (r1 !== undefined) f.r1 = r1 === 0 ? "-" : r1;
+                if (r2 !== undefined) f.r2 = r2 === 0 ? "-" : r2;
                 i += 2;
             }
         }
 
             // ---------------------------
             // Frame 10
-        // ---------------------------
+            // ---------------------------
         else {
             // Throw 1
             if (r1 !== undefined) {
