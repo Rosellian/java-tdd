@@ -1,12 +1,14 @@
 export function detectActiveFrame(rolls) {
     let i = 0;
     for (let frame = 0; frame < 9; frame++) {
+        if (rolls[i] === undefined) return frame;
         // Strike -> frame complete
         if (rolls[i] === 10) {
             i += 1;
         }
         else {
-            // Otherwise two rolls
+            // Second roll missing -> frame active
+            if (rolls[i+1] === undefined) return frame;
             i += 2;
         }
         // Not enough rolls to fill frame
@@ -18,16 +20,18 @@ export function detectActiveFrame(rolls) {
 export function detectActiveRoll(rolls) {
     let i = 0;
     for (let frame = 0; frame < 9; frame++) {
+        // First roll missing
+        if (rolls[i] === undefined) return 1;
         // Strike -> next frame
         if (rolls[i] === 10) {
             if (rolls.length === i+1) return 1;// First roll in next frame
             i+=1;
+            continue;
         }
-        else {
-            if (rolls.length === i) return 1;// First roll
-            if (rolls.length === i+1) return 2;// Second roll
-            i+=2;
-        }
+        // Second roll missing
+        if (rolls[i+1] === undefined) return 2;
+        // Frame complete -> next frame
+        i+=2;
     }
 
     // Frame 10
