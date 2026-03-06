@@ -1,5 +1,5 @@
 # Gilded Rose
-You start with a class GildedRose that updates the quality of different items in a warehouse.
+You start with a class com.tdd.GildedRose that updates the quality of different items in a warehouse.
 The code is bad: big `if`-blocks, duplicated logic and edge cases everywhere.
 The assignment is:
 - Write tests first
@@ -27,8 +27,8 @@ It is an exercise in *safe refactoring* and *design under constraints*.
 
 ## Common architectures to aim for:
 ### Alternative 1: Polymorphism
-One `ItemUpdater` per item type:
-- `DefaultItemUpdater`
+One `Impl.ItemUpdater` per item type:
+- `Impl.DefaultItemUpdater`
 - `AgedBrieUpdater`
 - `BackstagePassUpdater`
 - `SulfurasUpdater`
@@ -37,4 +37,4 @@ A factory mapping name -> updater.
 ### Alternative 2: Strategy + table
 A table mapping name to strategy-object. Good if you want to avoid inheritance.
 ### Alternative 3: Functional style
-Every item type have a function that takes an `Item` and returns a new.
+Every item type have a function that takes an `com.tdd.Item` and returns a new.

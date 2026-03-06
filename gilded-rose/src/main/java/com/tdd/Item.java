@@ -1,3 +1,5 @@
+package com.tdd;
+
 public class Item {
     public String name;
     public int sellIn;
