@@ -1,5 +1,7 @@
-class GildedRose {
-    Item[] items;
+package com.tdd;
+
+public class GildedRose {
+    protected Item[] items;
 
     public GildedRose(Item[] items) {
         this.items = items;
