@@ -2,17 +2,19 @@ package com.tdd.Impl;
 
 import com.tdd.Item;
 
-public class DefaultItemUpdater implements ItemUpdater {
+public class DefaultItemUpdater extends AbstractItemUpdater {
+    public static final DefaultItemUpdater INSTANCE = new DefaultItemUpdater();
+
+    private DefaultItemUpdater() {}
+
 
     @Override
-    public void update(Item item) {
-        int sellIn = item.sellIn;
-        int quality = item.quality;
+    protected void updateQualityBeforeSellDate(Item item) {
+        decrease(item, 1);
+    }
 
-        item.sellIn--;
-
-        if (quality > 0) {
-            item.quality = quality - (sellIn < 0 ? 2 : 1);
-        }
+    @Override
+    protected void updateQualityAfterSellDate(Item item) {
+        decrease(item, 1);
     }
 }

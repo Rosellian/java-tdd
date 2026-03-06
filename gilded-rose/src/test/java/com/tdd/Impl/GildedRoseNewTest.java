@@ -13,4 +13,36 @@ public class GildedRoseNewTest extends GildedRoseTest {
     protected GildedRose createGildedRose(Item[] items) {
         return new GildedRoseNew(items);
     }
+
+    @Test
+    void conjuredItems_degradeTwiceAsFast() {
+        Item[] items = { new Item("Conjured Mana Cake", 5, 10) };
+        GildedRose app = createGildedRose(items);
+
+        app.updateQuality();
+
+        assertEquals(4, items[0].sellIn);
+        assertEquals(8, items[0].quality);
+    }
+
+    @Test
+    void conjuredItems_degradeFourAfterSellDate() {
+        Item[] items = { new Item("Conjured Mana Cake", 0, 10) };
+        GildedRose app = createGildedRose(items);
+
+        app.updateQuality();
+
+        assertEquals(-1, items[0].sellIn);
+        assertEquals(6, items[0].quality);
+    }
+
+    @Test
+    void conjuredItems_neverGoBelowZero() {
+        Item[] items = { new Item("Conjured Mana Cake", 5, 1) };
+        GildedRose app = createGildedRose(items);
+
+        app.updateQuality();
+
+        assertEquals(0, items[0].quality);
+    }
 }
