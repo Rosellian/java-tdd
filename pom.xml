@@ -13,6 +13,7 @@
         <module>string-calculator</module>
         <module>bowling-game</module>
         <module>gilded-rose</module>
+        <module>checkout-pricing</module>
     </modules>
 
     <properties>
