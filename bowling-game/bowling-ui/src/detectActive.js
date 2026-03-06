@@ -30,8 +30,9 @@ export function detectActiveRoll(rolls) {
         }
         // Second roll missing
         if (rolls[i+1] === undefined) return 2;
-        // Frame complete -> next frame
+        // Frame complete -> next frame, roll 1
         i+=2;
+        if (i > rolls.length - 1) return 1;
     }
 
     // Frame 10

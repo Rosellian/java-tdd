@@ -59,6 +59,7 @@ export function buildFrames(rolls) {
             // Empty frame
             else {
                 if (r1 !== undefined) f.r1 = r1 === 0 ? "-" : r1;
+                else f.r1 = "N";
                 if (r2 !== undefined) f.r2 = r2 === 0 ? "-" : r2;
                 i += 2;
             }

@@ -1,12 +1,12 @@
 import {buildFrames} from "./buildFrames";
 import "./Scoreboard.css";
-import { detectActiveFrame, detectActiveRoll } from "./detectActive";
+import {detectActiveFrame, detectActiveRoll} from "./detectActive";
 
 export default function Scoreboard({ rolls }) {
     const frames = buildFrames(rolls);
 
-    //const activeFrame = Math.min(9, detectActiveFrame(rolls));
     const activeFrame = detectActiveFrame(rolls);
+    const nextFrame = activeFrame + 1;
     const activeRoll = detectActiveRoll(rolls);
 
     return (
@@ -14,7 +14,15 @@ export default function Scoreboard({ rolls }) {
             {frames.map((f, i) => (
                 <div key={i} className={`frame ${i === activeFrame ? "active" : ""}`}>
                     <div className="rolls">
-                        <span className={i === activeFrame && activeRoll === 1 ? "roll-active" : ""}>{f.r1}</span>
+                        {i === 0 && (
+                            <span className={i === activeFrame && activeRoll === 1 ? "roll-active" : ""}>{f.r1}</span>
+                        )}
+                        {i > 0 && i < 9 && (
+                            <span className={i === nextFrame && activeRoll === 1 ? "roll-active" : ""}>{f.r1}</span>
+                        )}
+                        {i === 9 && (
+                            <span className={i === activeFrame && activeRoll === 1 ? "roll-active" : ""}>{f.r1}</span>
+                        )}
                         <span className={i === activeFrame && activeRoll === 2 ? "roll-active" : ""}>{f.r2}</span>
                         {i === 9 && (
                             <span className={i === activeFrame && activeRoll === 3 ? "roll-active" : ""}>{f.r3}</span>
