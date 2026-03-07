@@ -261,4 +261,68 @@ public class CheckoutTest {
         for (int i = 0; i < 6; i++) checkout.scan("A");
         assertEquals(200, checkout.total());
     }
+
+    @Test
+    void buyOneGetOneFreeIsStackableForA() {
+        PricingRules rules = new PricingRules();
+        rules.addUnitPrice("A", 50);
+
+        // A is stackable
+        rules.addBuyXGetYFree("A", 1, 1, true);
+
+        Checkout checkout = new Checkout(rules);
+
+        // 4 A → two packets → 100 kr
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+
+        assertEquals(100, checkout.total());
+    }
+
+    @Test
+    void buyOneGetOneFreeIsNotStackableForB() {
+        PricingRules rules = new PricingRules();
+        rules.addUnitPrice("B", 40);
+
+        // B is non-stackable
+        rules.addBuyXGetYFree("B", 1, 1, false);
+
+        Checkout checkout = new Checkout(rules);
+
+        // 4 B → 1 packets (2 for 40) + 2×40 = 120
+        checkout.scan("B");
+        checkout.scan("B");
+        checkout.scan("B");
+        checkout.scan("B");
+
+        assertEquals(120, checkout.total());
+    }
+
+    @Test
+    void stackabilityIsPerSku() {
+        PricingRules rules = new PricingRules();
+        rules.addUnitPrice("A", 50);
+        rules.addUnitPrice("B", 40);
+
+        rules.addBuyXGetYFree("A", 1, 1, true);   // A stackable
+        rules.addBuyXGetYFree("B", 1, 1, false);  // B non-stackable
+
+        Checkout checkout = new Checkout(rules);
+
+        // 4 A → stackable → 100
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+
+        // 4 B → non-stackable → 120
+        checkout.scan("B");
+        checkout.scan("B");
+        checkout.scan("B");
+        checkout.scan("B");
+
+        assertEquals(220, checkout.total());
+    }
 }

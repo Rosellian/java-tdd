@@ -16,7 +16,7 @@ You will build a checkout system where every product has a price, but some have 
 - get the total price based on the rules
 - Add new rules without changing the code
 ---
-## Procedure
+## Architecture and steps
 ### Code:
 **Main parts with minimal sample code:**
 - `PricingRules`
@@ -107,7 +107,9 @@ Example rules to use:
 - BuyXGetYFree is stackable for product A, but not others.
 
 ---
-### Test cases:
+## Testing
+### Test cases
+#### Base tests:
 **Test 1:** one product, no special price
 ```java
 @Test
@@ -290,6 +292,8 @@ void choosesBestCombinationWhenSpecialPricesConflict() {
     assertEquals(160, checkout.total());
 }
 ```
+---
+#### Adding new rule type - Buy x get Y free
 **Test 10:** Buy X get Y free
 ```java
 @Test
@@ -346,6 +350,18 @@ void choosesBestPriceAcrossDifferentRuleTypes() {
     assertEquals(100, checkout.total());
 }
 ```
+---
+#### Design decision:
+1. Complex rule policies, introduce:
+   - Priority order
+   - Stackable vs non-stackable
+   - Stackability on SKU-level
+2. Keep to best (lowest) price available
+
+#### Path chosen:
+**1. Introducing more complexity**
+
+---
 **Test 13a:** Verify that buy-x-get-y-free and special prices are combined optimally.  
 This expects you to use:
 - Priority between pricing rules
@@ -392,16 +408,90 @@ void choosesOptimalCombinationBetweenBuyXGetYFreeAndSpecialPrices() {
     assertEquals(200, checkout.total());
 }
 ```
+---
+#### Alternative path - start here instead
 **Test 13b:** Modify the test above if sticking to the best price (lowest possible) version. 
 Other tests may also need modification for this to work after implementing.
 ```java
 
 ```
-**Test 14:** 
+---
+#### Design path 1 continues:
+**Test 14:** Buy‑1‑get‑1‑free is stackable for SKU A.
+```java
+@Test
+void buyOneGetOneFreeIsStackableForA() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+
+    // A is stackable
+    rules.addBuyXGetYFree("A", 1, 1, true);
+
+    Checkout checkout = new Checkout(rules);
+
+    // 4 A → två packets → 100 kr
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+
+    assertEquals(100, checkout.total());
+}
+```
+**Test 15:** Buy‑1‑get‑1‑free is not stackable for SKU B
+```java
+@Test
+void buyOneGetOneFreeIsNotStackableForB() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("B", 40);
+
+    // B is non-stackable
+    rules.addBuyXGetYFree("B", 1, 1, false);
+
+    Checkout checkout = new Checkout(rules);
+
+    // 4 B → 1 packets (2 for 40) + 2×40 = 120
+    checkout.scan("B");
+    checkout.scan("B");
+    checkout.scan("B");
+    checkout.scan("B");
+
+    assertEquals(120, checkout.total());
+}
+```
+**Test 16:** A stackable, B non‑stackable in same checkout.
+```java
+@Test
+void stackabilityIsPerSku() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+    rules.addUnitPrice("B", 40);
+
+    rules.addBuyXGetYFree("A", 1, 1, true);   // A stackable
+    rules.addBuyXGetYFree("B", 1, 1, false);  // B non-stackable
+
+    Checkout checkout = new Checkout(rules);
+
+    // 4 A → stackable → 100
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+
+    // 4 B → non-stackable → 120
+    checkout.scan("B");
+    checkout.scan("B");
+    checkout.scan("B");
+    checkout.scan("B");
+
+    assertEquals(220, checkout.total());
+}
+```
+**Test 17:** 
 ```java
 
 ```
-**Test 15:** 
+**Test 18:** 
 ```java
 
 ```
