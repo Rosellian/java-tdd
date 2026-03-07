@@ -27,9 +27,9 @@ public class PricingRules {
         return specialPrices.getOrDefault(sku, new ArrayList<>());
     }
 
-    public void addBuyXGetYFree(String sku, int buy, int free) {
+    public void addBuyXGetYFree(String sku, int buy, int free, boolean stackable) {
         buyXGetYFree.computeIfAbsent(sku, key -> new ArrayList<>())
-                .add(new BuyXGetYFree(buy, free));
+                .add(new BuyXGetYFree(buy, free,  stackable));
     }
 
     public List<BuyXGetYFree> getBuyXGetYFree(String sku) {

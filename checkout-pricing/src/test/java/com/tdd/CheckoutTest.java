@@ -174,7 +174,7 @@ public class CheckoutTest {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("A", 50);
 
-        rules.addBuyXGetYFree("A", 1, 1);
+        rules.addBuyXGetYFree("A", 1, 1, true);
 
         Checkout checkout = new Checkout(rules);
 
@@ -189,7 +189,7 @@ public class CheckoutTest {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("A", 50);
 
-        rules.addBuyXGetYFree("A", 1, 1);
+        rules.addBuyXGetYFree("A", 1, 1, true);
 
         Checkout checkout = new Checkout(rules);
 
@@ -207,7 +207,7 @@ public class CheckoutTest {
         rules.addUnitPrice("A", 50);
 
         rules.addSpecialPrice("A", 3, 130);
-        rules.addBuyXGetYFree("A", 1, 1);
+        rules.addBuyXGetYFree("A", 1, 1, true);
 
         Checkout checkout = new Checkout(rules);
 
@@ -220,13 +220,14 @@ public class CheckoutTest {
     }
 
     // This version uses priority between pricing rules and stackability rules
+    //!Important! Here BuyXGetYFree is set as not stackable for product A
     @Test
     void choosesOptimalCombinationBetweenBuyXGetYFreeAndSpecialPrices() {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("A", 50);
 
         // Two conflicting rules
-        rules.addBuyXGetYFree("A", 1, 1); // 2 for 50
+        rules.addBuyXGetYFree("A", 1, 1, false); // 2 for 50 In this case set as non-stackable
         rules.addSpecialPrice("A", 3, 100); // 3 for 100
 
         Checkout checkout;

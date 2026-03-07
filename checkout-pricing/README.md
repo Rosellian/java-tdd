@@ -75,7 +75,7 @@ public record SpecialPrice(int quantity, int price) {}
 public record BuyXGetYFree(int buy, int free) {}
 ```
 Pricing Option:  
-Can replace PricingRule.
+Can replace PricingRule interface.
 - `PricingOption`
 ```java
 public interface PricingOption {
@@ -92,7 +92,7 @@ public record SpecialPrice(int quantity, int price) implements PricingOption {}
 public record BuyXGetYFreeOption(int quantity, int price) implements PricingOption {}
 ```
 Priority and stackability rules:
-- `PricingOption`
+- `PricingOption`, new version
 ```java
 public interface PricingOption {
     int price();         // what does this package cost?
@@ -101,9 +101,10 @@ public interface PricingOption {
     boolean stackable();
 }
 ```
-Example rules used in tests:
+Example rules to use:
 - SpecialPrice is higher and stackable
 - BuyXGetYFree is lower and not stackable
+- BuyXGetYFree is stackable for product A, but not others.
 
 ---
 ### Test cases:
@@ -356,7 +357,7 @@ void choosesOptimalCombinationBetweenBuyXGetYFreeAndSpecialPrices() {
     rules.addUnitPrice("A", 50);
 
     // Two conflicting rules
-    rules.addBuyXGetYFree("A", 1, 1); // 2 for 50
+    rules.addBuyXGetYFree("A", 1, 1, false); // 2 for 50 In this case set as non-stackable
     rules.addSpecialPrice("A", 3, 100); // 3 for 100
 
     Checkout checkout;

@@ -20,7 +20,8 @@ public class Checkout {
 
         for(BuyXGetYFree rule : rules.getBuyXGetYFree(sku)) {
             int quantity = rule.buy() + rule.free();
-            options.add(new BuyXGetYFreeOption(quantity, rule.buy() * rules.getUnitPrice(sku)));
+            options.add(new BuyXGetYFreeOption(quantity,
+                    rule.buy() * rules.getUnitPrice(sku), rule.stackable()));
         }
 
         options.sort(Comparator.comparingInt(PricingOption::priority));

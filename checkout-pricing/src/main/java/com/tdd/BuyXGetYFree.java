@@ -1,3 +1,3 @@
 package com.tdd;
 
-public record BuyXGetYFree(int buy, int free) {}
+public record BuyXGetYFree(int buy, int free, boolean stackable) {}
