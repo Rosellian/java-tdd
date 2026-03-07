@@ -16,4 +16,51 @@ public class CheckoutTest {
 
         assertEquals(50, checkout.total());
     }
+
+    @Test
+    void appliesThreeFor130SpecialPrice() {
+        PricingRules rules = new PricingRules();
+        rules.addUnitPrice("A", 50);
+        rules.addSpecialPrice("A", 3, 130);
+
+        Checkout checkout = new Checkout(rules);
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+
+        assertEquals(130, checkout.total());
+    }
+
+    @Test
+    void appliesTwoFor45SpecialPrice() {
+        PricingRules rules = new PricingRules();
+        rules.addUnitPrice("B", 30);
+        rules.addSpecialPrice("B", 2, 45);
+
+        Checkout checkout = new Checkout(rules);
+        checkout.scan("B");
+        checkout.scan("B");
+
+        assertEquals(45, checkout.total());
+    }
+
+    @Test
+    void calculatesTotalForMixedProductsWithSpecialPrices() {
+        PricingRules rules = new PricingRules();
+        rules.addUnitPrice("A", 50);
+        rules.addSpecialPrice("A", 3, 130);
+
+        rules.addUnitPrice("B", 30);
+        rules.addSpecialPrice("B", 2, 45);
+
+        Checkout checkout = new Checkout(rules);
+
+        checkout.scan("A");
+        checkout.scan("B");
+        checkout.scan("A");
+        checkout.scan("B");
+        checkout.scan("A");
+
+        assertEquals(175, checkout.total());
+    }
 }
