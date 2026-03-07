@@ -15,16 +15,24 @@ public class Checkout {
         items.add(unit);
     }
 
+    private List<PricingOption> getOptionsFor(String sku) {
+        List<PricingOption> options = new ArrayList<>(rules.getSpecialPrices(sku));
+
+        for(BuyXGetYFree rule : rules.getBuyXGetYFree(sku)) {
+            int quantity = rule.buy() + rule.free();
+            options.add(new BuyXGetYFreeOption(quantity, rule.buy() * rules.getUnitPrice(sku)));
+        }
+
+        return options;
+    }
+
     public int total() {
         Map<String, Long> counts = items.stream()
                 .collect(Collectors.groupingBy(sku -> sku, Collectors.counting()));
         int total = 0;
 
-        for(var  entry : counts.entrySet()) {
-            String sku = entry.getKey();
-            long count = entry.getValue();
-
-            total += bestPriceFor(sku, count);
+        for(var entry : counts.entrySet()) {
+            total += bestPriceFor(entry.getKey(), entry.getValue());
         }
 
         return total;
@@ -32,23 +40,23 @@ public class Checkout {
 
     private int bestPriceFor(String sku, long count) {
         int unitPrice = rules.getUnitPrice(sku);
-        List<SpecialPrice> specialPrices = rules.getSpecialPrices(sku);
+        List<PricingOption> options = getOptionsFor(sku);
         Map<Long, Integer> countBestMapping = new HashMap<>();
 
-        return getBestPriceFor(count, unitPrice, specialPrices, countBestMapping);
+        return bestPriceFor(count, unitPrice, options, countBestMapping);
     }
 
-    private int getBestPriceFor(long count, int unitPrice, List<SpecialPrice> specialPrices,
+    private int bestPriceFor(long count, int unitPrice, List<PricingOption> options,
                                 Map<Long, Integer> countBestMapping) {
         if(count == 0) return 0;
         if(countBestMapping.containsKey(count)) return countBestMapping.get(count);
 
         int best = (int) (count * unitPrice);
 
-        for(SpecialPrice specialPrice : specialPrices) {
-            if(count >= specialPrice.quantity()) {
-                int candidate = specialPrice.price() + getBestPriceFor(count - specialPrice.quantity(),
-                        unitPrice, specialPrices, countBestMapping);
+        for(PricingOption opt : options) {
+            if(count >= opt.quantity()) {
+                int candidate = opt.price() + bestPriceFor(count - opt.quantity(),
+                        unitPrice, options, countBestMapping);
                 best = Math.min(best, candidate);
             }
         }

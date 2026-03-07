@@ -169,5 +169,94 @@ public class CheckoutTest {
         assertEquals(160, checkout.total());
     }
 
+    @Test
+    void appliesBuyOneGetOneFree() {
+        PricingRules rules = new PricingRules();
+        rules.addUnitPrice("A", 50);
 
+        rules.addBuyXGetYFree("A", 1, 1);
+
+        Checkout checkout = new Checkout(rules);
+
+        checkout.scan("A");
+        checkout.scan("A");
+
+        assertEquals(50, checkout.total());
+    }
+
+    @Test
+    void appliesBuyOneGetOneFreeForMultiplePairs() {
+        PricingRules rules = new PricingRules();
+        rules.addUnitPrice("A", 50);
+
+        rules.addBuyXGetYFree("A", 1, 1);
+
+        Checkout checkout = new Checkout(rules);
+
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+
+        assertEquals(100, checkout.total());
+    }
+
+    @Test
+    void choosesBestPriceAcrossDifferentRuleTypes() {
+        PricingRules rules = new PricingRules();
+        rules.addUnitPrice("A", 50);
+
+        rules.addSpecialPrice("A", 3, 130);
+        rules.addBuyXGetYFree("A", 1, 1);
+
+        Checkout checkout = new Checkout(rules);
+
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+
+        assertEquals(100, checkout.total());
+    }
+
+    @Test
+    void choosesOptimalCombinationBetweenBuyXGetYFreeAndSpecialPrices() {
+        PricingRules rules = new PricingRules();
+        rules.addUnitPrice("A", 50);
+
+        // Two conflicting rules
+        rules.addBuyXGetYFree("A", 1, 1); // 2 for 50
+        rules.addSpecialPrice("A", 3, 100); // 3 for 100
+
+        Checkout checkout;
+
+        // Case 1: 3 items → best is 3-for-100
+        checkout = new Checkout(rules);
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+        assertEquals(100, checkout.total());
+
+        // Case 2: 4 items → best is 3-for-100 + 1×50 = 150
+        checkout = new Checkout(rules);
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+        assertEquals(150, checkout.total());
+
+        // Case 3: 5 items → best is 3-for-100 + buy-1-get-1-free = 150
+        checkout = new Checkout(rules);
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+        assertEquals(150, checkout.total());
+
+        // Case 4: 6 items → best is 3-for-100 + 3-for-100 = 200
+        checkout = new Checkout(rules);
+        for (int i = 0; i < 6; i++) checkout.scan("A");
+        assertEquals(200, checkout.total());
+    }
 }

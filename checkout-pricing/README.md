@@ -20,7 +20,6 @@ You will build a checkout system where every product has a price, but some have 
 ### Code:
 **Main parts with minimal sample code:**
 - `PricingRules`
-
 ```java
 import java.util.Map;
 import java.util.HashMap;
@@ -38,7 +37,6 @@ public class PricingRules {
 }
 ```
 - `Checkout`
-
 ```java
 import java.util.List;
 import java.util.ArrayList;
@@ -60,8 +58,8 @@ public class Checkout {
     }
 }
 ```
-**Additions:**
-
+#### Additions:
+Pricing Rules:
 - `PricingRule`
 ```java
 public interface PricingRule {
@@ -71,6 +69,26 @@ public interface PricingRule {
 - `SpecialPrice`
 ```java
 public record SpecialPrice(int quantity, int price) {}
+```
+- `BuyXGetYFree`
+```java
+public record BuyXGetYFree(int buy, int free) {}
+```
+Pricing Option:
+- `PricingOption`
+```java
+public interface PricingOption {
+    int price();      // what does this package cost?
+    int quantity();   // how many items are consumed?
+}
+```
+`SpecialPrice`
+```java
+public record SpecialPrice(int quantity, int price) implements PricingOption {}
+```
+`BuyXGetYFreeOption`
+```java
+public record BuyXGetYFreeOption(int quantity, int price) implements PricingOption {}
 ```
 ---
 ### Test cases:
@@ -162,7 +180,7 @@ void scanningOrderDoesNotAffectTotal() {
     assertEquals(175, checkout.total());
 }
 ```
-**Test 6:** Mixed products with and without special prices
+**Test 6:** Mixed products with and without special prices.
 ```java
 @Test
 void calculatesTotalForMixedProductsWithAndWithoutSpecialPrices() {
@@ -190,7 +208,7 @@ void calculatesTotalForMixedProductsWithAndWithoutSpecialPrices() {
 }
 ```
 
-**Test 7:** Multiple special prices for the same SKU
+**Test 7:** Multiple special prices for the same SKU.
 ```java
 @Test
 void appliesBestSpecialPriceWhenMultipleSpecialPricesExist() {
@@ -256,12 +274,110 @@ void choosesBestCombinationWhenSpecialPricesConflict() {
     assertEquals(160, checkout.total());
 }
 ```
-**Test 10:**
+**Test 10:** Buy X get Y free
+```java
+@Test
+void appliesBuyOneGetOneFree() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+
+    rules.addBuyXGetYFree("A", 1, 1);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("A");
+
+    assertEquals(50, checkout.total());
+}
+```
+**Test 11:** Buy 1 get 1 free with more than two products.
+```java
+@Test
+void appliesBuyOneGetOneFreeForMultiplePairs() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+
+    rules.addBuyXGetYFree("A", 1, 1);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+
+    assertEquals(100, checkout.total());
+}
+```
+**Test 12:** Buy X Get Y Free and special prices at the same time.
+```java
+@Test
+void choosesBestPriceAcrossDifferentRuleTypes() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+
+    rules.addSpecialPrice("A", 3, 130);
+    rules.addBuyXGetYFree("A", 1, 1);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+
+    assertEquals(100, checkout.total());
+}
+```
+**Test 13:** Verify that buy-x-get-y-free and special prices are combined optimally.
+```java
+@Test
+void choosesOptimalCombinationBetweenBuyXGetYFreeAndSpecialPrices() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+
+    // Two conflicting rules
+    rules.addBuyXGetYFree("A", 1, 1); // 2 for 50
+    rules.addSpecialPrice("A", 3, 100); // 3 for 100
+
+    Checkout checkout;
+
+    // Case 1: 3 items → best is 3-for-100
+    checkout = new Checkout(rules);
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    assertEquals(100, checkout.total());
+
+    // Case 2: 4 items → best is 3-for-100 + 1×50 = 150
+    checkout = new Checkout(rules);
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    assertEquals(150, checkout.total());
+
+    // Case 3: 5 items → best is 3-for-100 + buy-1-get-1-free = 150
+    checkout = new Checkout(rules);
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    assertEquals(150, checkout.total());
+
+    // Case 4: 6 items → best is 3-for-100 + 3-for-100 = 200
+    checkout = new Checkout(rules);
+    for (int i = 0; i < 6; i++) checkout.scan("A");
+    assertEquals(200, checkout.total());
+}
+```
+**Test 14:**
 ```java
 
 ```
-
-**Test 11:**
+**Test 15:**
 ```java
 
 ```
