@@ -219,6 +219,7 @@ public class CheckoutTest {
         assertEquals(100, checkout.total());
     }
 
+    // This version uses priority between pricing rules and stackability rules
     @Test
     void choosesOptimalCombinationBetweenBuyXGetYFreeAndSpecialPrices() {
         PricingRules rules = new PricingRules();

@@ -23,6 +23,8 @@ public class Checkout {
             options.add(new BuyXGetYFreeOption(quantity, rule.buy() * rules.getUnitPrice(sku)));
         }
 
+        options.sort(Comparator.comparingInt(PricingOption::priority));
+
         return options;
     }
 
@@ -55,9 +57,15 @@ public class Checkout {
 
         for(PricingOption opt : options) {
             if(count >= opt.quantity()) {
-                int candidate = opt.price() + bestPriceFor(count - opt.quantity(),
-                        unitPrice, options, countBestMapping);
-                best = Math.min(best, candidate);
+                if(opt.stackable()) {
+                    int candidate = opt.price() + bestPriceFor(count - opt.quantity(),
+                            unitPrice, options, countBestMapping);
+                    best = Math.min(best, candidate);
+                }
+                else {
+                    int candidate = (int) (opt.price() + (count - opt.quantity()) * unitPrice);
+                    best = Math.min(best, candidate);
+                }
             }
         }
 

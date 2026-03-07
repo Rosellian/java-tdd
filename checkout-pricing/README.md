@@ -74,7 +74,8 @@ public record SpecialPrice(int quantity, int price) {}
 ```java
 public record BuyXGetYFree(int buy, int free) {}
 ```
-Pricing Option:
+Pricing Option:  
+Can replace PricingRule.
 - `PricingOption`
 ```java
 public interface PricingOption {
@@ -90,6 +91,20 @@ public record SpecialPrice(int quantity, int price) implements PricingOption {}
 ```java
 public record BuyXGetYFreeOption(int quantity, int price) implements PricingOption {}
 ```
+Priority and stackability rules:
+- `PricingOption`
+```java
+public interface PricingOption {
+    int price();         // what does this package cost?
+    int quantity();      // how many items are consumed?
+    int priority();      // lower = higher priority
+    boolean stackable();
+}
+```
+Example rules used in tests:
+- SpecialPrice is higher and stackable
+- BuyXGetYFree is lower and not stackable
+
 ---
 ### Test cases:
 **Test 1:** one product, no special price
@@ -291,7 +306,7 @@ void appliesBuyOneGetOneFree() {
     assertEquals(50, checkout.total());
 }
 ```
-**Test 11:** Buy 1 get 1 free with more than two products.
+**Test 11:** Buy 1, get 1 free with more than two products.
 ```java
 @Test
 void appliesBuyOneGetOneFreeForMultiplePairs() {
@@ -330,7 +345,10 @@ void choosesBestPriceAcrossDifferentRuleTypes() {
     assertEquals(100, checkout.total());
 }
 ```
-**Test 13:** Verify that buy-x-get-y-free and special prices are combined optimally.
+**Test 13a:** Verify that buy-x-get-y-free and special prices are combined optimally.  
+This expects you to use:
+- Priority between pricing rules
+- stackability rules
 ```java
 @Test
 void choosesOptimalCombinationBetweenBuyXGetYFreeAndSpecialPrices() {
@@ -373,11 +391,16 @@ void choosesOptimalCombinationBetweenBuyXGetYFreeAndSpecialPrices() {
     assertEquals(200, checkout.total());
 }
 ```
-**Test 14:**
+**Test 13b:** Modify the test above if sticking to the best price (lowest possible) version. 
+Other tests may also need modification for this to work after implementing.
 ```java
 
 ```
-**Test 15:**
+**Test 14:** 
+```java
+
+```
+**Test 15:** 
 ```java
 
 ```
