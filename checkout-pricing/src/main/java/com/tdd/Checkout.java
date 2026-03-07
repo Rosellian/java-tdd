@@ -1,9 +1,6 @@
 package com.tdd;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Checkout {
@@ -27,23 +24,36 @@ public class Checkout {
             String sku = entry.getKey();
             long count = entry.getValue();
 
-            List<SpecialPrice> sps = rules.getSpecialPrices(sku);
-
-            if(!sps.isEmpty()) {
-                sps = sps.stream().sorted(Comparator.comparingInt(SpecialPrice::quantity).reversed())
-                        .toList();
-                for(SpecialPrice sp : sps) {
-                    long used = count / sp.quantity();
-                    total += (int) (used * sp.price());
-                    count -= used * sp.quantity();
-                }
-                total += (int) (count * rules.getUnitPrice(sku));
-            }
-            else {
-                total += (int) (count * rules.getUnitPrice(sku));
-            }
+            total += bestPriceFor(sku, count);
         }
 
         return total;
+    }
+
+    private int bestPriceFor(String sku, long count) {
+        int unitPrice = rules.getUnitPrice(sku);
+        List<SpecialPrice> specialPrices = rules.getSpecialPrices(sku);
+        Map<Long, Integer> countBestMapping = new HashMap<>();
+
+        return getBestPriceFor(count, unitPrice, specialPrices, countBestMapping);
+    }
+
+    private int getBestPriceFor(long count, int unitPrice, List<SpecialPrice> specialPrices,
+                                Map<Long, Integer> countBestMapping) {
+        if(count == 0) return 0;
+        if(countBestMapping.containsKey(count)) return countBestMapping.get(count);
+
+        int best = (int) (count * unitPrice);
+
+        for(SpecialPrice specialPrice : specialPrices) {
+            if(count >= specialPrice.quantity()) {
+                int candidate = specialPrice.price() + getBestPriceFor(count - specialPrice.quantity(),
+                        unitPrice, specialPrices, countBestMapping);
+                best = Math.min(best, candidate);
+            }
+        }
+
+        countBestMapping.put(count, best);
+        return best;
     }
 }
