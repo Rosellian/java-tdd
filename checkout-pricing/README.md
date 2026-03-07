@@ -140,7 +140,128 @@ void calculatesTotalForMixedProductsWithSpecialPrices() {
     assertEquals(175, checkout.total());
 }
 ```
-**Test 5:**
+**Test 5:** Order independence
+```java
+@Test
+void scanningOrderDoesNotAffectTotal() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+    rules.addSpecialPrice("A", 3, 130);
+
+    rules.addUnitPrice("B", 30);
+    rules.addSpecialPrice("B", 2, 45);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("B");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("B");
+    checkout.scan("A");
+
+    assertEquals(175, checkout.total());
+}
+```
+**Test 6:** Mixed products with and without special prices
+```java
+@Test
+void calculatesTotalForMixedProductsWithAndWithoutSpecialPrices() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+    rules.addSpecialPrice("A", 3, 130);
+
+    rules.addUnitPrice("B", 30);
+    rules.addSpecialPrice("B", 2, 45);
+
+    rules.addUnitPrice("C", 20);
+    rules.addUnitPrice("D", 15);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("B");
+    checkout.scan("C");
+    checkout.scan("A");
+    checkout.scan("D");
+    checkout.scan("B");
+    checkout.scan("A");
+
+    assertEquals(210, checkout.total());
+}
+```
+
+**Test 7:** Multiple special prices for the same SKU
+```java
+@Test
+void appliesBestSpecialPriceWhenMultipleSpecialPricesExist() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+
+    rules.addSpecialPrice("A", 3, 130);
+    rules.addSpecialPrice("A", 5, 200);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+
+    assertEquals(200, checkout.total());
+}
+```
+**Test 8:** Combined special prices
+```java
+@Test
+void combinesMultipleSpecialPricesToGetBestTotal() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+
+    rules.addSpecialPrice("A", 3, 130);
+    rules.addSpecialPrice("A", 5, 200);
+
+    Checkout checkout = new Checkout(rules);
+
+    // 8 items
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+
+    assertEquals(330, checkout.total());
+}
+```
+**Test 9:** Priority between special prices
+```java
+@Test
+void choosesBestCombinationWhenSpecialPricesConflict() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+
+    rules.addSpecialPrice("A", 3, 120);
+    rules.addSpecialPrice("A", 2, 80);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+
+    assertEquals(160, checkout.total());
+}
+```
+**Test 10:**
+```java
+
+```
+
+**Test 11:**
 ```java
 
 ```

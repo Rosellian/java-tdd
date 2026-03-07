@@ -1,6 +1,7 @@
 package com.tdd;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,12 +27,17 @@ public class Checkout {
             String sku = entry.getKey();
             long count = entry.getValue();
 
-            SpecialPrice sp = rules.getSpecialPrice(sku);
-            if(sp != null) {
-                long specials = count / sp.quantity();
-                long remainder = count % sp.quantity();
-                total += (int) (specials * sp.price());
-                total += (int) (remainder * rules.getUnitPrice(sku));
+            List<SpecialPrice> sps = rules.getSpecialPrices(sku);
+
+            if(!sps.isEmpty()) {
+                sps = sps.stream().sorted(Comparator.comparingInt(SpecialPrice::quantity).reversed())
+                        .toList();
+                for(SpecialPrice sp : sps) {
+                    long used = count / sp.quantity();
+                    total += (int) (used * sp.price());
+                    count -= used * sp.quantity();
+                }
+                total += (int) (count * rules.getUnitPrice(sku));
             }
             else {
                 total += (int) (count * rules.getUnitPrice(sku));
