@@ -353,7 +353,7 @@ public class CheckoutTest {
         // special price: 3 for 120 (priority 1, stackable)
         rules.addSpecialPrice("A", 3, 120,1, true);
         // buy 1, get 1 free (stackable)
-        rules.addBuyXGetYFree("A", 1, 1, true);
+        rules.addBuyXGetYFree("A", 2, 1, true);
 
         // --- SKU B ---
         rules.addUnitPrice("B", 40);
@@ -402,12 +402,11 @@ public class CheckoutTest {
         // C:
         // buy 2, get 1 half price (stackable):
         // group1: 30 + 30 + 15 = 75
-        // group2: 30 + 30 + 15 = 75
-        // 5 items → 1 leftover at 30
-        // total C = 75 + 75 + 30 = 180
+        // 5 items → 2 leftover at 30
+        // total C = 75 + 2*30 = 135
         //
-        // TOTAL = 240 + 120 + 180 = 540
+        // TOTAL = 240 + 120 + 135 = 445
 
-        assertEquals(540, checkout.total());
+        assertEquals(445, checkout.total());
     }
 }

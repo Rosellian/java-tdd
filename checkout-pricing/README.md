@@ -92,6 +92,7 @@ public record SpecialPrice(int quantity, int price) implements PricingOption {}
 public record BuyXGetYFreeOption(int quantity, int price) implements PricingOption {}
 ```
 #### Priority and stackability rules:
+Note memoization need rethinking here.
 - `PricingOption`, new version
 ```java
 public interface PricingOption {
