@@ -21,7 +21,7 @@ public class CheckoutTest {
     void appliesThreeFor130SpecialPrice() {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("A", 50);
-        rules.addSpecialPrice("A", 3, 130);
+        rules.addSpecialPrice("A", 3, 130, 1, true);
 
         Checkout checkout = new Checkout(rules);
         checkout.scan("A");
@@ -35,7 +35,7 @@ public class CheckoutTest {
     void appliesTwoFor45SpecialPrice() {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("B", 30);
-        rules.addSpecialPrice("B", 2, 45);
+        rules.addSpecialPrice("B", 2, 45,1, true);
 
         Checkout checkout = new Checkout(rules);
         checkout.scan("B");
@@ -48,10 +48,10 @@ public class CheckoutTest {
     void calculatesTotalForMixedProductsWithSpecialPrices() {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("A", 50);
-        rules.addSpecialPrice("A", 3, 130);
+        rules.addSpecialPrice("A", 3, 130,1, true);
 
         rules.addUnitPrice("B", 30);
-        rules.addSpecialPrice("B", 2, 45);
+        rules.addSpecialPrice("B", 2, 45,1, true);
 
         Checkout checkout = new Checkout(rules);
 
@@ -68,10 +68,10 @@ public class CheckoutTest {
     void scanningOrderDoesNotAffectTotal() {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("A", 50);
-        rules.addSpecialPrice("A", 3, 130);
+        rules.addSpecialPrice("A", 3, 130,1, true);
 
         rules.addUnitPrice("B", 30);
-        rules.addSpecialPrice("B", 2, 45);
+        rules.addSpecialPrice("B", 2, 45,1, true);
 
         Checkout checkout = new Checkout(rules);
 
@@ -88,10 +88,10 @@ public class CheckoutTest {
     void calculatesTotalForMixedProductsWithAndWithoutSpecialPrices() {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("A", 50);
-        rules.addSpecialPrice("A", 3, 130);
+        rules.addSpecialPrice("A", 3, 130,1, true);
 
         rules.addUnitPrice("B", 30);
-        rules.addSpecialPrice("B", 2, 45);
+        rules.addSpecialPrice("B", 2, 45,1, true);
 
         rules.addUnitPrice("C", 20);
         rules.addUnitPrice("D", 15);
@@ -114,8 +114,8 @@ public class CheckoutTest {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("A", 50);
 
-        rules.addSpecialPrice("A", 3, 130);
-        rules.addSpecialPrice("A", 5, 200);
+        rules.addSpecialPrice("A", 3, 130,1, true);
+        rules.addSpecialPrice("A", 5, 200,1, true);
 
         Checkout checkout = new Checkout(rules);
 
@@ -133,8 +133,8 @@ public class CheckoutTest {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("A", 50);
 
-        rules.addSpecialPrice("A", 3, 130);
-        rules.addSpecialPrice("A", 5, 200);
+        rules.addSpecialPrice("A", 3, 130,1, true);
+        rules.addSpecialPrice("A", 5, 200,1, true);
 
         Checkout checkout = new Checkout(rules);
 
@@ -156,8 +156,8 @@ public class CheckoutTest {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("A", 50);
 
-        rules.addSpecialPrice("A", 3, 120);
-        rules.addSpecialPrice("A", 2, 80);
+        rules.addSpecialPrice("A", 3, 120,1, true);
+        rules.addSpecialPrice("A", 2, 80,1, true);
 
         Checkout checkout = new Checkout(rules);
 
@@ -206,7 +206,7 @@ public class CheckoutTest {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("A", 50);
 
-        rules.addSpecialPrice("A", 3, 130);
+        rules.addSpecialPrice("A", 3, 130,1, true);
         rules.addBuyXGetYFree("A", 1, 1, true);
 
         Checkout checkout = new Checkout(rules);
@@ -228,7 +228,7 @@ public class CheckoutTest {
 
         // Two conflicting rules
         rules.addBuyXGetYFree("A", 1, 1, false); // 2 for 50 In this case set as non-stackable
-        rules.addSpecialPrice("A", 3, 100); // 3 for 100
+        rules.addSpecialPrice("A", 3, 100,1, true); // 3 for 100
 
         Checkout checkout;
 
@@ -341,5 +341,73 @@ public class CheckoutTest {
         checkout.scan("A");
 
         assertEquals(125, checkout.total());
+    }
+
+    @Test
+    void combinesAllRuleTypesWithPriorityAndStackability() {
+        PricingRules rules = new PricingRules();
+
+        // --- SKU A ---
+        // unit price
+        rules.addUnitPrice("A", 50);
+        // special price: 3 for 120 (priority 1, stackable)
+        rules.addSpecialPrice("A", 3, 120,1, true);
+        // buy 1, get 1 free (stackable)
+        rules.addBuyXGetYFree("A", 1, 1, true);
+
+        // --- SKU B ---
+        rules.addUnitPrice("B", 40);
+        // special price: 2 for 70 (priority 1)
+        rules.addSpecialPrice("B", 2, 70,1, true);
+        // buy 1, get 1 free (non-stackable)
+        rules.addBuyXGetYFree("B", 1, 1, false);
+
+        // --- SKU C ---
+        rules.addUnitPrice("C", 30);
+        // buy 2, get 1 at 50% discount (stackable)
+        rules.addBuyXGetYDiscount("C", 2, 1, 0.5);
+
+        Checkout checkout = new Checkout(rules);
+
+        // --- Basket ---
+        // A: 6 items
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+
+        // B: 4 items
+        checkout.scan("B");
+        checkout.scan("B");
+        checkout.scan("B");
+        checkout.scan("B");
+
+        // C: 5 items
+        checkout.scan("C");
+        checkout.scan("C");
+        checkout.scan("C");
+        checkout.scan("C");
+        checkout.scan("C");
+
+        // --- Expected ---
+        // A:
+        // best is 3-for-120 + 3-for-120 = 240
+        //
+        // B:
+        // non-stackable buy-1-get-1-free:
+        // 1 package (2 for 40) + 2×40 = 120
+        //
+        // C:
+        // buy 2, get 1 half price (stackable):
+        // group1: 30 + 30 + 15 = 75
+        // group2: 30 + 30 + 15 = 75
+        // 5 items → 1 leftover at 30
+        // total C = 75 + 75 + 30 = 180
+        //
+        // TOTAL = 240 + 120 + 180 = 540
+
+        assertEquals(540, checkout.total());
     }
 }

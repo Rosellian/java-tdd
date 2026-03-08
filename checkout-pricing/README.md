@@ -496,6 +496,7 @@ void stackabilityIsPerSku() {
     assertEquals(220, checkout.total());
 }
 ```
+---
 #### Adding new rule type - Buy X, get y at discount
 **Test 17:** Buy 2, get 1 half price
 ```java
@@ -516,11 +517,84 @@ void appliesBuyTwoGetOneHalfPrice() {
     assertEquals(125, checkout.total());
 }
 ```
-**Test 18:** 
+**Test 18:** Full Combination Stress Test
+- A: has special price + stackable buy‑X‑get‑Y‑free
+- B: has special price + non‑stackable buy‑X‑get‑Y‑free
+- C: has buy‑X‑get‑Y‑discount (stackable)
+```java
+@Test
+void combinesAllRuleTypesWithPriorityAndStackability() {
+    PricingRules rules = new PricingRules();
+
+    // --- SKU A ---
+    // unit price
+    rules.addUnitPrice("A", 50);
+    // special price: 3 for 120 (priority 1, stackable)
+    rules.addSpecialPrice("A", 3, 120);
+    // buy 1, get 1 free (stackable)
+    rules.addBuyXGetYFree("A", 1, 1, true);
+
+    // --- SKU B ---
+    rules.addUnitPrice("B", 40);
+    // special price: 2 for 70 (priority 1)
+    rules.addSpecialPrice("B", 2, 70);
+    // buy 1, get 1 free (non-stackable)
+    rules.addBuyXGetYFree("B", 1, 1, false);
+
+    // --- SKU C ---
+    rules.addUnitPrice("C", 30);
+    // buy 2, get 1 at 50% discount (stackable)
+    rules.addBuyXGetYDiscount("C", 2, 1, 0.5);
+
+    Checkout checkout = new Checkout(rules);
+
+    // --- Basket ---
+    // A: 6 items
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+
+    // B: 4 items
+    checkout.scan("B");
+    checkout.scan("B");
+    checkout.scan("B");
+    checkout.scan("B");
+
+    // C: 5 items
+    checkout.scan("C");
+    checkout.scan("C");
+    checkout.scan("C");
+    checkout.scan("C");
+    checkout.scan("C");
+
+    // --- Expected ---
+    // A:
+    // best is 3-for-120 + 3-for-120 = 240
+    //
+    // B:
+    // non-stackable buy-1-get-1-free:
+    // 1 package (2 for 40) + 2×40 = 120
+    //
+    // C:
+    // buy 2, get 1 half price (stackable):
+    // group1: 30 + 30 + 15 = 75
+    // group2: 30 + 30 + 15 = 75
+    // 5 items → 1 leftover at 30
+    // total C = 75 + 75 + 30 = 180
+    //
+    // TOTAL = 240 + 120 + 180 = 540
+
+    assertEquals(540, checkout.total());
+}
+```
+**Test 19:**
 ```java
 
 ```
-**Test 19:**
+**Test 20:**
 ```java
 
 ```

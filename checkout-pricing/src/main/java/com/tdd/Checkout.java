@@ -18,21 +18,28 @@ public class Checkout {
     private List<PricingOption> getOptionsFor(String sku) {
         List<PricingOption> options = new ArrayList<>(rules.getSpecialPrices(sku));
 
-        for (BuyXGetYDiscount rule : rules.getBuyXGetYDiscount(sku)) {
-            int unitPrice = rules.getUnitPrice(sku);
-            int price = (int)(rule.buy() * unitPrice + rule.get() * unitPrice * (1-rule.discount()));
-            options.add(new BuyXGetYDiscountOption(rule.buy() + rule.get(), price, rule.stackable()));
-        }
+        addBuyXGetYDiscount(sku, options);
 
-        for(BuyXGetYFree rule : rules.getBuyXGetYFree(sku)) {
-            int quantity = rule.buy() + rule.free();
-            options.add(new BuyXGetYFreeOption(quantity,
-                    rule.buy() * rules.getUnitPrice(sku), rule.stackable()));
-        }
+        addBuyXGetYFree(sku, options);
 
         options.sort(Comparator.comparingInt(PricingOption::priority));
 
         return options;
+    }
+
+    private void addBuyXGetYFree(String sku, List<PricingOption> options) {
+        for(BuyXGetYFree rule : rules.getBuyXGetYFree(sku)) {
+            options.add(new BuyXGetYFreeOption(rule.buy() + rule.free(),
+                    rule.buy() * rules.getUnitPrice(sku), 2, rule.stackable()));
+        }
+    }
+
+    private void addBuyXGetYDiscount(String sku, List<PricingOption> options) {
+        for (BuyXGetYDiscount rule : rules.getBuyXGetYDiscount(sku)) {
+            int unitPrice = rules.getUnitPrice(sku);
+            int price = (int)(rule.buy() * unitPrice + rule.get() * unitPrice * (1-rule.discount()));
+            options.add(new BuyXGetYDiscountOption(rule.buy() + rule.get(), price, 1, rule.stackable()));
+        }
     }
 
     public int total() {
@@ -64,15 +71,14 @@ public class Checkout {
 
         for(PricingOption opt : options) {
             if(count >= opt.quantity()) {
-                if(opt.stackable()) {
-                    int candidate = opt.price() + bestPriceFor(count - opt.quantity(),
-                            unitPrice, options, countBestMapping);
-                    best = Math.min(best, candidate);
-                }
-                else {
+                if(!opt.stackable()) {
                     int candidate = (int) (opt.price() + (count - opt.quantity()) * unitPrice);
                     best = Math.min(best, candidate);
+                    continue;
                 }
+                int candidate = opt.price() + bestPriceFor(count - opt.quantity(),
+                        unitPrice, options, countBestMapping);
+                best = Math.min(best, candidate);
             }
         }
 
