@@ -106,7 +106,7 @@ Example rules to use:
 - SpecialPrice is higher and stackable
 - BuyXGetYFree is lower and not stackable
 - BuyXGetYFree is stackable for product A, but not others.
-#### Buy 2, get 1 at discount
+#### Buy X, get Y at discount
 - `BuyXGetYDiscount`, new rule
 ```java
 public record BuyXGetYDiscount(int buy, int get, double discount, boolean stackable) {}
@@ -116,8 +116,9 @@ public record BuyXGetYDiscount(int buy, int get, double discount, boolean stacka
 public record BuyXGetYDiscountOption(int quantity, int price, int priority, boolean stackable)
         implements PricingOption {}
 ```
-#### Buy X of A, get Y of B free (Cross-SKU campaigns)
-This creates the need for basket-level or pre-stage rule processing.
+#### Cross-SKU campaigns
+- **Buy X of A, get Y of B free**  
+This creates the need for basket-level or pre-stage rule processing, handling cross-SKU rules.
 ```java
 public record CrossSkuBuyXGetYFree(
     String buySku,
@@ -128,10 +129,22 @@ public record CrossSkuBuyXGetYFree(
     int priority
 ) {}
 ```
+- **Buy X of A, get Y of B at discount**
+```java
+public record CrossSkuBuyXGetYDiscount(
+    String buySku,
+    int buyQty,
+    String discountSku,
+    int discountQty,
+    double discount,   // e.g. 0.5 for 50%
+    boolean stackable,
+    int priority
+) {}
+```
 ---
 ## Testing
 ### Test cases
-#### Base tests:
+#### Base tests
 **Test 1:** one product, no special price
 ```java
 @Test
@@ -716,12 +729,44 @@ void crossSkuBeatsSpecialPriceWhenHigherPriority() {
 ```
 ---
 #### Adding another cross-SKU rule
-**Test 23:**  Buy X of A, get Y of B at discount
+**Test 23:**  Buy X of A, get Y of B at discount.
+Specific: Buy 2 of A → get 1 of B at 50% discount
 ```java
+@Test
+void crossSkuBuyXGetYAtDiscount() {
+    PricingRules rules = new PricingRules();
 
+    // --- SKU A ---
+    rules.addUnitPrice("A", 50);
+
+    // --- SKU B ---
+    rules.addUnitPrice("B", 40);
+
+    // --- Cross-SKU ---
+    // Buy 2 A → get 1 B at 50% discount
+    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, true, 0);
+
+    Checkout checkout = new Checkout(rules);
+
+    // Basket: A A B
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("B");
+
+    // Expected:
+    // A: 50 + 50 = 100
+    // B: 40 * 0.5 = 20
+    // Total = 120
+
+    assertEquals(120, checkout.total());
+}
 ```
 
 **Test 24:**
+```java
+
+```
+**Test 25:**
 ```java
 
 ```

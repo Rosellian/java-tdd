@@ -504,4 +504,33 @@ public class CheckoutTest {
 
         assertEquals(160, checkout.total());
     }
+
+    @Test
+    void crossSkuBuyXGetYAtDiscount() {
+        PricingRules rules = new PricingRules();
+
+        // --- SKU A ---
+        rules.addUnitPrice("A", 50);
+
+        // --- SKU B ---
+        rules.addUnitPrice("B", 40);
+
+        // --- Cross-SKU ---
+        // Buy 2 A → get 1 B at 50% discount
+        rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, 0, true);
+
+        Checkout checkout = new Checkout(rules);
+
+        // Basket: A A B
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("B");
+
+        // Expected:
+        // A: 50 + 50 = 100
+        // B: 40 * 0.5 = 20
+        // Total = 120
+
+        assertEquals(120, checkout.total());
+    }
 }
