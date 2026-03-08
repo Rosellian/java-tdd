@@ -325,4 +325,21 @@ public class CheckoutTest {
 
         assertEquals(220, checkout.total());
     }
+
+    @Test
+    void appliesBuyTwoGetOneHalfPrice() {
+        PricingRules rules = new PricingRules();
+        rules.addUnitPrice("A", 50);
+
+        // buy 2, get 1 at 50% discount
+        rules.addBuyXGetYDiscount("A", 2, 1, 0.5);
+
+        Checkout checkout = new Checkout(rules);
+
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("A");
+
+        assertEquals(125, checkout.total());
+    }
 }

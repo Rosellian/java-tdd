@@ -17,7 +17,7 @@ You will build a checkout system where every product has a price, but some have 
 - Add new rules without changing the code
 ---
 ## Architecture and steps
-### Code:
+### Starting point:
 **Main parts with minimal sample code:**
 - `PricingRules`
 ```java
@@ -58,8 +58,8 @@ public class Checkout {
     }
 }
 ```
-#### Additions:
-Pricing Rules:
+### Additions:
+#### Pricing Rules:
 - `PricingRule`
 ```java
 public interface PricingRule {
@@ -74,7 +74,7 @@ public record SpecialPrice(int quantity, int price) {}
 ```java
 public record BuyXGetYFree(int buy, int free) {}
 ```
-Pricing Option:  
+#### Pricing Option:  
 Can replace PricingRule interface.
 - `PricingOption`
 ```java
@@ -91,7 +91,7 @@ public record SpecialPrice(int quantity, int price) implements PricingOption {}
 ```java
 public record BuyXGetYFreeOption(int quantity, int price) implements PricingOption {}
 ```
-Priority and stackability rules:
+#### Priority and stackability rules:
 - `PricingOption`, new version
 ```java
 public interface PricingOption {
@@ -105,6 +105,16 @@ Example rules to use:
 - SpecialPrice is higher and stackable
 - BuyXGetYFree is lower and not stackable
 - BuyXGetYFree is stackable for product A, but not others.
+#### Buy 2, get 1 at discount
+- `BuyXGetYDiscount`, new rule
+```java
+public record BuyXGetYDiscount(int buy, int get, double discount, boolean stackable) {}
+```
+- `BuyXGetYDiscountOption`, new PricingOption
+```java
+public record BuyXGetYDiscountOption(int quantity, int price, int priority, boolean stackable)
+        implements PricingOption {}
+```
 
 ---
 ## Testing
@@ -225,7 +235,6 @@ void calculatesTotalForMixedProductsWithAndWithoutSpecialPrices() {
     assertEquals(210, checkout.total());
 }
 ```
-
 **Test 7:** Multiple special prices for the same SKU.
 ```java
 @Test
@@ -487,11 +496,31 @@ void stackabilityIsPerSku() {
     assertEquals(220, checkout.total());
 }
 ```
-**Test 17:** 
+#### Adding new rule type - Buy X, get y at discount
+**Test 17:** Buy 2, get 1 half price
+```java
+@Test
+void appliesBuyTwoGetOneHalfPrice() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+
+    // buy 2, get 1 at 50% discount
+    rules.addBuyXGetYDiscount("A", 2, 1, 0.5);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+
+    assertEquals(125, checkout.total());
+}
+```
+**Test 18:** 
 ```java
 
 ```
-**Test 18:** 
+**Test 19:**
 ```java
 
 ```

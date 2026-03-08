@@ -18,6 +18,12 @@ public class Checkout {
     private List<PricingOption> getOptionsFor(String sku) {
         List<PricingOption> options = new ArrayList<>(rules.getSpecialPrices(sku));
 
+        for (BuyXGetYDiscount rule : rules.getBuyXGetYDiscount(sku)) {
+            int unitPrice = rules.getUnitPrice(sku);
+            int price = (int)(rule.buy() * unitPrice + rule.get() * unitPrice * (1-rule.discount()));
+            options.add(new BuyXGetYDiscountOption(rule.buy() + rule.get(), price, rule.stackable()));
+        }
+
         for(BuyXGetYFree rule : rules.getBuyXGetYFree(sku)) {
             int quantity = rule.buy() + rule.free();
             options.add(new BuyXGetYFreeOption(quantity,
