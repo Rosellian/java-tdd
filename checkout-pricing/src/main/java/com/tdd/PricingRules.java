@@ -10,8 +10,7 @@ public class PricingRules {
     private final Map<String, List<SpecialPrice>> specialPrices = new HashMap<>();
     private final Map<String, List<BuyXGetYFree>> buyXGetYFree = new HashMap<>();
     private final Map<String, List<BuyXGetYDiscount>> buyXGetYDiscount = new HashMap<>();
-    private final List<CrossSkuBuyXGetYFree> crossSkuBuyXGetYFrees = new ArrayList<>();
-    private final List<CrossSkuBuyXGetYDiscount> crossSkuBuyGetYDiscount = new ArrayList<>();
+    private final List<CrossSkuRule> crossSku = new ArrayList<>();
 
     public void addUnitPrice(String sku, int price) {
         unitPrices.put(sku, price);
@@ -22,7 +21,7 @@ public class PricingRules {
     }
 
     public void addSpecialPrice(String sku, int quantity, int price, int priority, boolean stackable) {
-        specialPrices.computeIfAbsent(sku, key -> new ArrayList<>())
+        specialPrices.computeIfAbsent(sku, _ -> new ArrayList<>())
                 .add(new SpecialPrice(quantity, price, priority, stackable));
     }
 
@@ -31,7 +30,7 @@ public class PricingRules {
     }
 
     public void addBuyXGetYFree(String sku, int buy, int free, boolean stackable) {
-        buyXGetYFree.computeIfAbsent(sku, key -> new ArrayList<>())
+        buyXGetYFree.computeIfAbsent(sku, _ -> new ArrayList<>())
                 .add(new BuyXGetYFree(buy, free, stackable));
     }
 
@@ -40,7 +39,7 @@ public class PricingRules {
     }
 
     public void addBuyXGetYDiscount(String sku, int buy, int get, double discount) {
-        buyXGetYDiscount.computeIfAbsent(sku, key -> new ArrayList<>())
+        buyXGetYDiscount.computeIfAbsent(sku, _ -> new ArrayList<>())
                 .add(new BuyXGetYDiscount(buy, get, discount, true));
     }
 
@@ -50,16 +49,16 @@ public class PricingRules {
 
     public void addCrossSkuBuyXGetYFree(String buySku, int buyQuantity,
                                         String freeSku, int freeQuantity, int priority, boolean stackable) {
-        crossSkuBuyXGetYFrees.add(new CrossSkuBuyXGetYFree(buySku, buyQuantity, freeSku, freeQuantity,
+        crossSku.add(new CrossSkuBuyXGetYFree(buySku, buyQuantity, freeSku, freeQuantity,
                 priority, stackable));
     }
-
-    public List<CrossSkuBuyXGetYFree> getCrossSkuBuyXGetYFree() {return crossSkuBuyXGetYFrees;}
 
     public void addCrossSkuBuyXGetYDiscount(String buySku, int buyQty,
                                             String discountSku, int discountQty, double discount,
                                             int priority, boolean stackable) {
-        crossSkuBuyGetYDiscount.add(new CrossSkuBuyXGetYDiscount(buySku, buyQty, discountSku, discountQty, discount,
+        crossSku.add(new CrossSkuBuyXGetYDiscount(buySku, buyQty, discountSku, discountQty, discount,
                 priority, stackable));
     }
+
+    public List<CrossSkuRule> getCrossSkuRules() {return  crossSku;}
 }

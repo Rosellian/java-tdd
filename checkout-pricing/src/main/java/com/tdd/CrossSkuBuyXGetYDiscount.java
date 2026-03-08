@@ -8,4 +8,4 @@ public record CrossSkuBuyXGetYDiscount(
     double discount,
     int priority,
     boolean stackable
-) {}
+) implements CrossSkuRule {}

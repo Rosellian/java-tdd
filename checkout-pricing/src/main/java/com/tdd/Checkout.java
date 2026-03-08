@@ -47,7 +47,9 @@ public class Checkout {
                 .collect(Collectors.groupingBy(sku -> sku, Collectors.counting()));
 
         Map<String, Integer> freeItems = new HashMap<>();
-        applyCrossSkuRules(counts, freeItems);
+        Map<String, Integer> discountedItems = new HashMap<>();
+        Map<String, Double> discountRates = new HashMap<>();
+        applyCrossSkuRules(counts, freeItems, discountedItems, discountRates);
 
         //process per SKU
         int total = 0;
@@ -55,37 +57,81 @@ public class Checkout {
         for(var entry : counts.entrySet()) {
             String sku = entry.getKey();
             long quantity = entry.getValue();
-            long payableQuantity = quantity - freeItems.getOrDefault(sku, 0);
-            total += bestPriceFor(sku, payableQuantity < 0 ? 0 : payableQuantity);
+
+            //free
+            int free = freeItems.getOrDefault(sku, 0);
+            long remaining = quantity - free;
+            if(remaining < 0) remaining = 0;
+
+            //discount
+            int discounted = discountedItems.getOrDefault(sku, 0);
+            double rate = discountRates.getOrDefault(sku, 1.0);
+            int discountedPrice = (int) (discounted * rules.getUnitPrice(sku) * rate);
+
+            remaining = remaining - discounted;
+            if(remaining < 0) remaining = 0;
+
+            total += discountedPrice + bestPriceFor(sku, remaining);
         }
 
         return total;
     }
 
-    private void applyCrossSkuRules(Map<String, Long> counts, Map<String, Integer> freeItems) {
-        List<CrossSkuBuyXGetYFree> crossSkuRules = rules.getCrossSkuBuyXGetYFree();
-        crossSkuRules.sort(Comparator.comparingInt(CrossSkuBuyXGetYFree::priority));
+    private void applyCrossSkuRules(Map<String, Long> counts, Map<String, Integer> freeItems,
+                                    Map<String, Integer> discountedItems,  Map<String, Double> discountRates) {
+        List<CrossSkuRule> crossSkuRules = rules.getCrossSkuRules();
+        crossSkuRules.sort(Comparator.comparingInt(CrossSkuRule::priority));
         for (var rule : crossSkuRules) {
             String buySku = rule.buySku();
             int buyQty = rule.buyQty();
             long originalBuyCount = counts.get(buySku);
 
-            String freeSku = rule.freeSku();
-            int freeQty = rule.freeQty();
-            long originalFreeCount = counts.get(freeSku);
-
-            while(counts.get(buySku) >= buyQty && counts.get(freeSku) > 0) {
-                counts.put(buySku, counts.get(buySku) - buyQty);
-
-                counts.put(freeSku, counts.get(freeSku) - freeQty);
-                freeItems.merge(freeSku, freeQty, Integer::sum);
-
-                if(!rule.stackable()) break;
-            }
-
-            counts.put(buySku, originalBuyCount);
-            counts.put(freeSku, originalFreeCount);
+            if(rule instanceof CrossSkuBuyXGetYFree)
+                applyCrossSkuRule(counts, freeItems, (CrossSkuBuyXGetYFree) rule, buySku, buyQty, originalBuyCount);
+            else
+                applyCrossSkuRule(counts, discountedItems, discountRates, (CrossSkuBuyXGetYDiscount) rule,
+                        buySku, buyQty, originalBuyCount);
         }
+    }
+
+    private void applyCrossSkuRule(Map<String, Long> counts, Map<String, Integer> freeItems,
+                                          CrossSkuBuyXGetYFree rule, String buySku, int buyQty, long originalBuyCount) {
+        String freeSku = rule.freeSku();
+        int freeQty = rule.freeQty();
+        long originalFreeCount = counts.get(freeSku);
+
+        while(counts.get(buySku) >= buyQty && counts.get(freeSku) > 0) {
+            counts.put(buySku, counts.get(buySku) - buyQty);
+
+            counts.put(freeSku, counts.get(freeSku) - freeQty);
+            freeItems.merge(freeSku, freeQty, Integer::sum);
+
+            if(!rule.stackable()) break;
+        }
+
+        counts.put(buySku, originalBuyCount);
+        counts.put(freeSku, originalFreeCount);
+    }
+
+    private void applyCrossSkuRule(Map<String, Long> counts, Map<String, Integer> discountedItems,
+                                   Map<String, Double> discountRates, CrossSkuBuyXGetYDiscount rule,
+                                   String buySku, int buyQty, long originalBuyCount) {
+        String discountSku = rule.discountSku();
+        int discountQty = rule.discountQty();
+        long originalDiscountCount = counts.get(discountSku);
+
+        while(counts.get(buySku) >= buyQty && counts.get(discountSku) > 0) {
+            counts.put(buySku, counts.get(buySku) - buyQty);
+
+            counts.put(discountSku, counts.get(discountSku) - discountQty);
+            discountedItems.merge(discountSku, discountQty, Integer::sum);
+            discountRates.put(discountSku, rule.discount());
+
+            if(!rule.stackable()) break;
+        }
+
+        counts.put(buySku, originalBuyCount);
+        counts.put(discountSku, originalDiscountCount);
     }
 
     private int bestPriceFor(String sku, long count) {

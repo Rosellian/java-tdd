@@ -7,4 +7,4 @@ public record CrossSkuBuyXGetYFree(
     int freeQty,
     int priority,
     boolean stackable
-) {}
+) implements CrossSkuRule {}
