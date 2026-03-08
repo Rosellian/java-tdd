@@ -81,26 +81,31 @@ public class Checkout {
                                     Map<String, Integer> discountedItems,  Map<String, Double> discountRates) {
         List<CrossSkuRule> crossSkuRules = rules.getCrossSkuRules();
         crossSkuRules.sort(Comparator.comparingInt(CrossSkuRule::priority));
+
         for (var rule : crossSkuRules) {
             String buySku = rule.buySku();
             int buyQty = rule.buyQty();
             long originalBuyCount = counts.get(buySku);
 
+            boolean applied = false;
             if(rule instanceof CrossSkuBuyXGetYFree)
-                applyCrossSkuRule(counts, freeItems, (CrossSkuBuyXGetYFree) rule, buySku, buyQty, originalBuyCount);
+                applied = applyCrossSkuRule(counts, freeItems, (CrossSkuBuyXGetYFree) rule, buySku, buyQty, originalBuyCount);
             else
-                applyCrossSkuRule(counts, discountedItems, discountRates, (CrossSkuBuyXGetYDiscount) rule,
+                applied = applyCrossSkuRule(counts, discountedItems, discountRates, (CrossSkuBuyXGetYDiscount) rule,
                         buySku, buyQty, originalBuyCount);
+            if(applied) break;
         }
     }
 
-    private void applyCrossSkuRule(Map<String, Long> counts, Map<String, Integer> freeItems,
+    private boolean applyCrossSkuRule(Map<String, Long> counts, Map<String, Integer> freeItems,
                                           CrossSkuBuyXGetYFree rule, String buySku, int buyQty, long originalBuyCount) {
         String freeSku = rule.freeSku();
         int freeQty = rule.freeQty();
         long originalFreeCount = counts.get(freeSku);
 
+        boolean applied = false;
         while(counts.get(buySku) >= buyQty && counts.get(freeSku) > 0) {
+            applied = true;
             counts.put(buySku, counts.get(buySku) - buyQty);
 
             counts.put(freeSku, counts.get(freeSku) - freeQty);
@@ -111,17 +116,20 @@ public class Checkout {
 
         counts.put(buySku, originalBuyCount);
         counts.put(freeSku, originalFreeCount);
+        return applied;
     }
 
-    private void applyCrossSkuRule(Map<String, Long> counts, Map<String, Integer> discountedItems,
+    private boolean applyCrossSkuRule(Map<String, Long> counts, Map<String, Integer> discountedItems,
                                    Map<String, Double> discountRates, CrossSkuBuyXGetYDiscount rule,
                                    String buySku, int buyQty, long originalBuyCount) {
         String discountSku = rule.discountSku();
         int discountQty = rule.discountQty();
         long originalDiscountCount = counts.get(discountSku);
 
+        boolean applied = false;
         while(counts.get(buySku) >= buyQty && counts.get(discountSku) > 0) {
             counts.put(buySku, counts.get(buySku) - buyQty);
+            applied = true;
 
             counts.put(discountSku, counts.get(discountSku) - discountQty);
             discountedItems.merge(discountSku, discountQty, Integer::sum);
@@ -132,6 +140,7 @@ public class Checkout {
 
         counts.put(buySku, originalBuyCount);
         counts.put(discountSku, originalDiscountCount);
+        return applied;
     }
 
     private int bestPriceFor(String sku, long count) {

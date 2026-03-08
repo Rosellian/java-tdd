@@ -567,4 +567,46 @@ public class CheckoutTest {
 
         assertEquals(160, checkout.total());
     }
+
+    @Test
+    void crossSkuFreeBeatsDiscountWhenHigherPriority() {
+        PricingRules rules = new PricingRules();
+
+        rules.addUnitPrice("A", 50);
+        rules.addUnitPrice("B", 40);
+
+        // FREE has higher priority
+        rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 0, false);
+        rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5,
+                1, false);
+
+        Checkout checkout = new Checkout(rules);
+
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("B");
+
+        assertEquals(100, checkout.total());
+    }
+
+    @Test
+    void crossSkuDiscountBeatsFreeWhenHigherPriority() {
+        PricingRules rules = new PricingRules();
+
+        rules.addUnitPrice("A", 50);
+        rules.addUnitPrice("B", 40);
+
+        // DISCOUNT has higher priority
+        rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5,
+                0, false);
+        rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 1, false);
+
+        Checkout checkout = new Checkout(rules);
+
+        checkout.scan("A");
+        checkout.scan("A");
+        checkout.scan("B");
+
+        assertEquals(120, checkout.total());
+    }
 }

@@ -797,11 +797,56 @@ void crossSkuDiscountBeatsSpecialPriceWhenHigherPriority() {
     assertEquals(160, checkout.total());
 }
 ```
-**Test 25:**
+**Cross‑SKU free + Cross‑SKU discount (priority decides):**  
+**Test 25:** Free rule wins over discount rule
+```java
+@Test
+void crossSkuFreeBeatsDiscountWhenHigherPriority() {
+    PricingRules rules = new PricingRules();
+
+    rules.addUnitPrice("A", 50);
+    rules.addUnitPrice("B", 40);
+
+    // FREE has higher priority
+    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, false, 0);
+    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, false, 1);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("B");
+
+    assertEquals(100, checkout.total());
+}
+```
+**Test 26:** Discount wins over free
+```java
+@Test
+void crossSkuDiscountBeatsFreeWhenHigherPriority() {
+    PricingRules rules = new PricingRules();
+
+    rules.addUnitPrice("A", 50);
+    rules.addUnitPrice("B", 40);
+
+    // DISCOUNT has higher priority
+    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, false, 0);
+    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, false, 1);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("B");
+
+    assertEquals(120, checkout.total());
+}
+```
+**Test 27:**
 ```java
 
 ```
-**Test 26:**
+**Test 28:**
 ```java
 
 ```
