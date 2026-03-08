@@ -10,6 +10,7 @@ public class PricingRules {
     private final Map<String, List<SpecialPrice>> specialPrices = new HashMap<>();
     private final Map<String, List<BuyXGetYFree>> buyXGetYFree = new HashMap<>();
     private final Map<String, List<BuyXGetYDiscount>> buyXGetYDiscount = new HashMap<>();
+    private final List<CrossSkuBuyXGetYFree> crossSkuRules = new ArrayList<>();
 
     public void addUnitPrice(String sku, int price) {
         unitPrices.put(sku, price);
@@ -45,4 +46,11 @@ public class PricingRules {
     public List<BuyXGetYDiscount> getBuyXGetYDiscount(String sku) {
         return buyXGetYDiscount.getOrDefault(sku, new ArrayList<>());
     }
+
+    public void addCrossSkuBuyXGetYFree(String buySku, int buyQuantity,
+                                        String freeSku, int freeQuantity, int priority, boolean stackable) {
+        crossSkuRules.add(new CrossSkuBuyXGetYFree(buySku, buyQuantity, freeSku, freeQuantity, priority, stackable));
+    }
+
+    public List<CrossSkuBuyXGetYFree> getCrossSkuBuyXGetYFree() {return crossSkuRules;}
 }

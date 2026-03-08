@@ -92,7 +92,7 @@ public record SpecialPrice(int quantity, int price) implements PricingOption {}
 public record BuyXGetYFreeOption(int quantity, int price) implements PricingOption {}
 ```
 #### Priority and stackability rules:
-Note memoization need rethinking here.
+Note memoization might need rethinking here.
 - `PricingOption`, new version
 ```java
 public interface PricingOption {
@@ -116,7 +116,18 @@ public record BuyXGetYDiscount(int buy, int get, double discount, boolean stacka
 public record BuyXGetYDiscountOption(int quantity, int price, int priority, boolean stackable)
         implements PricingOption {}
 ```
-
+#### Buy X of A, get Y of B free (Cross-SKU campaigns)
+This creates the need for basket-level or pre-stage rule processing.
+```java
+public record CrossSkuBuyXGetYFree(
+    String buySku,
+    int buyQty,
+    String freeSku,
+    int freeQty,
+    boolean stackable,
+    int priority
+) {}
+```
 ---
 ## Testing
 ### Test cases
@@ -591,11 +602,126 @@ void combinesAllRuleTypesWithPriorityAndStackability() {
     assertEquals(540, checkout.total());
 }
 ```
-**Test 19:**
+---
+#### Adding Cross-SKU pricing rule
+**Test 19:** Cross‑SKU: Buy X of A, get Y of B free. 
+Specific: Buy 2 of A, get 1 of B free
+```java
+@Test
+void buyTwoAGetOneBFree() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+    rules.addUnitPrice("B", 40);
+
+    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, true);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("B");
+
+    assertEquals(100, checkout.total());
+}
+```
+**Test 20:** Cross‑SKU + stackability.
+Buy 2 A → get 1 B free stackable
+```java
+@Test
+void crossSkuStackable() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+    rules.addUnitPrice("B", 40);
+
+    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, true);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("B");
+    checkout.scan("B");
+
+    // 4 A = 200
+    // 2 B = free
+    assertEquals(200, checkout.total());
+}
+```
+**Test 21:** Cross‑SKU non‑stackable.
+Buy 2 A → get 1 B free non-stackable
+```java
+@Test
+void crossSkuNonStackable() {
+    PricingRules rules = new PricingRules();
+    rules.addUnitPrice("A", 50);
+    rules.addUnitPrice("B", 40);
+
+    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, false);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("B");
+    checkout.scan("B");
+
+    // 4 A = 200
+    // 1 B free, 1 B paid = 40
+    assertEquals(240, checkout.total());
+}
+```
+**Test 22:** Cross‑SKU + SpecialPrice (which rule wins?).
+Rules:
+- Cross‑SKU: Buy 2 A → get 1 B free (priority 0, non‑stackable)
+- Special A: 3‑for‑120
+- Special B: 2‑for‑70
+```java
+@Test
+void crossSkuBeatsSpecialPriceWhenHigherPriority() {
+    PricingRules rules = new PricingRules();
+
+    // --- SKU A ---
+    rules.addUnitPrice("A", 50);
+    rules.addSpecialPrice("A", 3, 120, 1, true);
+
+    // --- SKU B ---
+    rules.addUnitPrice("B", 40);
+    rules.addSpecialPrice("B", 2, 70, 1, true);
+
+    // --- Cross-SKU ---
+    // priority 0 = higher than special prices
+    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, false, 0);
+
+    Checkout checkout = new Checkout(rules);
+
+    // Basket: A A A B B
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("B");
+    checkout.scan("B");
+
+    // Expected:
+    // Cross-SKU: 1 B free
+    // A: 3 → 120
+    // B: 1 → 40
+    // Total = 160
+
+    assertEquals(160, checkout.total());
+}
+```
+---
+#### Adding another cross-SKU rule
+**Test 23:**  Buy X of A, get Y of B at discount
 ```java
 
 ```
-**Test 20:**
+
+**Test 24:**
 ```java
 
 ```

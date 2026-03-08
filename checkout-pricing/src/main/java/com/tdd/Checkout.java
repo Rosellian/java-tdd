@@ -45,13 +45,47 @@ public class Checkout {
     public int total() {
         Map<String, Long> counts = items.stream()
                 .collect(Collectors.groupingBy(sku -> sku, Collectors.counting()));
+
+        Map<String, Integer> freeItems = new HashMap<>();
+        applyCrossSkuRules(counts, freeItems);
+
+        //process per SKU
         int total = 0;
 
         for(var entry : counts.entrySet()) {
-            total += bestPriceFor(entry.getKey(), entry.getValue());
+            String sku = entry.getKey();
+            long quantity = entry.getValue();
+            long payableQuantity = quantity - freeItems.getOrDefault(sku, 0);
+            total += bestPriceFor(sku, payableQuantity < 0 ? 0 : payableQuantity);
         }
 
         return total;
+    }
+
+    private void applyCrossSkuRules(Map<String, Long> counts, Map<String, Integer> freeItems) {
+        List<CrossSkuBuyXGetYFree> crossSkuRules = rules.getCrossSkuBuyXGetYFree();
+        crossSkuRules.sort(Comparator.comparingInt(CrossSkuBuyXGetYFree::priority));
+        for (var rule : crossSkuRules) {
+            String buySku = rule.buySku();
+            int buyQty = rule.buyQty();
+            long originalBuyCount = counts.get(buySku);
+
+            String freeSku = rule.freeSku();
+            int freeQty = rule.freeQty();
+            long originalFreeCount = counts.get(freeSku);
+
+            while(counts.get(buySku) >= buyQty && counts.get(freeSku) > 0) {
+                counts.put(buySku, counts.get(buySku) - buyQty);
+
+                counts.put(freeSku, counts.get(freeSku) - freeQty);
+                freeItems.merge(freeSku, freeQty, Integer::sum);
+
+                if(!rule.stackable()) break;
+            }
+
+            counts.put(buySku, originalBuyCount);
+            counts.put(freeSku, originalFreeCount);
+        }
     }
 
     private int bestPriceFor(String sku, long count) {
