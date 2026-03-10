@@ -8,6 +8,7 @@ import java.util.Map;
 public class PricingRules {
     private final Map<String, Integer> unitPrices = new HashMap<>();
     private final Map<String, List<SpecialPrice>> specialPrices = new HashMap<>();
+    private final List<SkuDiscount> discountPrices = new ArrayList<>();
     private final Map<String, List<BuyXGetYFree>> buyXGetYFree = new HashMap<>();
     private final Map<String, List<BuyXGetYDiscount>> buyXGetYDiscount = new HashMap<>();
     private final List<CrossSkuRule> crossSku = new ArrayList<>();
@@ -28,6 +29,12 @@ public class PricingRules {
     public List<SpecialPrice> getSpecialPrices(String sku) {
         return specialPrices.getOrDefault(sku, new ArrayList<>());
     }
+
+    public void addSkuDiscount(String sku, double discount, int priority) {
+        discountPrices.add(new SkuDiscount(sku, discount, priority));
+    }
+
+    public List<SkuDiscount> getSkuDiscounts() {return discountPrices;}
 
     public void addBuyXGetYFree(String sku, int buy, int free, boolean stackable) {
         buyXGetYFree.computeIfAbsent(sku, _ -> new ArrayList<>())

@@ -42,43 +42,43 @@ public class Checkout {
         }
     }
 
+    record SkuMod(int free, int discounted, double rate){}
+
     public int total() {
         Map<String, Long> counts = items.stream()
                 .collect(Collectors.groupingBy(sku -> sku, Collectors.counting()));
 
-        Map<String, Integer> freeItems = new HashMap<>();
-        Map<String, Integer> discountedItems = new HashMap<>();
-        Map<String, Double> discountRates = new HashMap<>();
-        applyCrossSkuRules(counts, freeItems, discountedItems, discountRates);
+        Map<String, SkuMod> mods = new HashMap<>();
 
-        //process per SKU
+        applyCrossSkuRules(counts, mods);
+
+        for(SkuDiscount rule : rules.getSkuDiscounts()){
+            SkuMod skuMod = mods.get(rule.sku());
+            if(skuMod != null && (skuMod.free > 0 || skuMod.discounted > 0)) {
+                continue;
+            }
+            mods.put(rule.sku(), new SkuMod(0, 1, 1-rule.discount()));
+        }
+
         int total = 0;
 
         for(var entry : counts.entrySet()) {
             String sku = entry.getKey();
-            long quantity = entry.getValue();
 
-            //free
-            int free = freeItems.getOrDefault(sku, 0);
-            long remaining = quantity - free;
+            SkuMod mod = mods.getOrDefault(sku, new SkuMod(0, 0, 1.0));
+            long discounted = mod.discounted;
+
+            long remaining = entry.getValue() - mod.free - discounted;
             if(remaining < 0) remaining = 0;
 
-            //discount
-            int discounted = discountedItems.getOrDefault(sku, 0);
-            double rate = discountRates.getOrDefault(sku, 1.0);
-            int discountedPrice = (int) (discounted * rules.getUnitPrice(sku) * rate);
-
-            remaining = remaining - discounted;
-            if(remaining < 0) remaining = 0;
-
+            int discountedPrice = (int)(discounted * rules.getUnitPrice(sku) * mod.rate);
             total += discountedPrice + bestPriceFor(sku, remaining);
         }
 
         return total;
     }
 
-    private void applyCrossSkuRules(Map<String, Long> counts, Map<String, Integer> freeItems,
-                                    Map<String, Integer> discountedItems,  Map<String, Double> discountRates) {
+    private void applyCrossSkuRules(Map<String, Long> counts, Map<String, SkuMod> mods) {
         List<CrossSkuRule> crossSkuRules = rules.getCrossSkuRules();
         crossSkuRules.sort(Comparator.comparingInt(CrossSkuRule::priority));
 
@@ -89,27 +89,35 @@ public class Checkout {
 
             boolean applied = false;
             if(rule instanceof CrossSkuBuyXGetYFree)
-                applied = applyCrossSkuRule(counts, freeItems, (CrossSkuBuyXGetYFree) rule, buySku, buyQty, originalBuyCount);
-            else
-                applied = applyCrossSkuRule(counts, discountedItems, discountRates, (CrossSkuBuyXGetYDiscount) rule,
-                        buySku, buyQty, originalBuyCount);
-            if(applied) break;
+                applied = applyCrossSkuRule(counts, mods, (CrossSkuBuyXGetYFree) rule, buySku, buyQty, originalBuyCount);
+            else {
+                CrossSkuBuyXGetYDiscount discountRule = (CrossSkuBuyXGetYDiscount) rule;
+                if(!skuDiscountHasHigherPriorityFor(discountRule.discountSku(), rule.priority()))
+                    applied = applyCrossSkuRule(counts, mods, discountRule, buySku, buyQty, originalBuyCount);
+            }
+            if(applied) return;
         }
     }
 
-    private boolean applyCrossSkuRule(Map<String, Long> counts, Map<String, Integer> freeItems,
+    private boolean skuDiscountHasHigherPriorityFor(String sku, int crossSkuPriority) {
+        return rules.getSkuDiscounts().stream()
+                .anyMatch(r -> r.sku().equals(sku) && r.priority() < crossSkuPriority);
+    }
+
+    private boolean applyCrossSkuRule(Map<String, Long> counts, Map<String, SkuMod> mods,
                                           CrossSkuBuyXGetYFree rule, String buySku, int buyQty, long originalBuyCount) {
         String freeSku = rule.freeSku();
         int freeQty = rule.freeQty();
         long originalFreeCount = counts.get(freeSku);
 
         boolean applied = false;
-        while(counts.get(buySku) >= buyQty && counts.get(freeSku) > 0) {
+        while(counts.get(buySku) >= buyQty && counts.get(freeSku) >= freeQty) {
             applied = true;
             counts.put(buySku, counts.get(buySku) - buyQty);
 
             counts.put(freeSku, counts.get(freeSku) - freeQty);
-            freeItems.merge(freeSku, freeQty, Integer::sum);
+            mods.merge(freeSku, new SkuMod(freeQty, 0, 1.0), (oldMod, newMod)
+                    -> new SkuMod(oldMod.free + newMod.free, oldMod.discounted, 1.0));
 
             if(!rule.stackable()) break;
         }
@@ -119,21 +127,23 @@ public class Checkout {
         return applied;
     }
 
-    private boolean applyCrossSkuRule(Map<String, Long> counts, Map<String, Integer> discountedItems,
-                                   Map<String, Double> discountRates, CrossSkuBuyXGetYDiscount rule,
+    private boolean applyCrossSkuRule(Map<String, Long> counts, Map<String, SkuMod> mods, CrossSkuBuyXGetYDiscount rule,
                                    String buySku, int buyQty, long originalBuyCount) {
         String discountSku = rule.discountSku();
         int discountQty = rule.discountQty();
         long originalDiscountCount = counts.get(discountSku);
 
         boolean applied = false;
-        while(counts.get(buySku) >= buyQty && counts.get(discountSku) > 0) {
+        while(counts.get(buySku) >= buyQty && counts.get(discountSku) >= discountQty) {
             counts.put(buySku, counts.get(buySku) - buyQty);
             applied = true;
 
             counts.put(discountSku, counts.get(discountSku) - discountQty);
-            discountedItems.merge(discountSku, discountQty, Integer::sum);
-            discountRates.put(discountSku, rule.discount());
+            mods.merge(discountSku, new SkuMod(0, discountQty, rule.discount()),
+                    (oldMod, newMod) -> new SkuMod(
+                            oldMod.free,
+                            oldMod.discounted + newMod.discounted,
+                            Math.min(oldMod.rate, newMod.rate)));
 
             if(!rule.stackable()) break;
         }

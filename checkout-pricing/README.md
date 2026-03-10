@@ -142,6 +142,11 @@ public record CrossSkuBuyXGetYDiscount(
 ) {}
 ```
 ---
+#### Adding SKU-specific discount rule
+```java
+record SkuDiscount(String sku, double rate, int priority) {}
+```
+---
 ## Testing
 ### Test cases
 #### Base tests
@@ -707,7 +712,7 @@ void crossSkuBeatsSpecialPriceWhenHigherPriority() {
 
     // --- Cross-SKU ---
     // priority 0 = higher than special prices
-    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, false, 0);
+    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 0, false);
 
     Checkout checkout = new Checkout(rules);
 
@@ -744,7 +749,7 @@ void crossSkuBuyXGetYAtDiscount() {
 
     // --- Cross-SKU ---
     // Buy 2 A → get 1 B at 50% discount
-    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, true, 0);
+    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, 0, true);
 
     Checkout checkout = new Checkout(rules);
 
@@ -778,7 +783,7 @@ void crossSkuDiscountBeatsSpecialPriceWhenHigherPriority() {
     // --- Cross-SKU ---
     // Buy 2 A → get 1 B at 50% discount
     // priority 0 = higher than special price
-    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, false, 0);
+    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, 0, false);
 
     Checkout checkout = new Checkout(rules);
 
@@ -808,8 +813,8 @@ void crossSkuFreeBeatsDiscountWhenHigherPriority() {
     rules.addUnitPrice("B", 40);
 
     // FREE has higher priority
-    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, false, 0);
-    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, false, 1);
+    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 0, false);
+    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, 1, false);
 
     Checkout checkout = new Checkout(rules);
 
@@ -830,8 +835,8 @@ void crossSkuDiscountBeatsFreeWhenHigherPriority() {
     rules.addUnitPrice("B", 40);
 
     // DISCOUNT has higher priority
-    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, false, 0);
-    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, false, 1);
+    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, 0, false);
+    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 1, false);
 
     Checkout checkout = new Checkout(rules);
 
@@ -842,11 +847,172 @@ void crossSkuDiscountBeatsFreeWhenHigherPriority() {
     assertEquals(120, checkout.total());
 }
 ```
-**Test 27:**
+**Test 27:** Cross‑SKU DISCOUNT + Special price (combined optimization).
+```java
+@Test
+void crossSkuDiscountAndSpecialPriceCombinedOptimization() {
+    PricingRules rules = new PricingRules();
+
+    // --- SKU A ---
+    rules.addUnitPrice("A", 50);
+
+    // --- SKU B ---
+    rules.addUnitPrice("B", 40);
+    rules.addSpecialPrice("B", 3, 90, 1, true); // priority 1
+
+    // --- Cross-SKU ---
+    // Buy 2 A → get 1 B at 50% discount
+    // priority 0 = higher than special price
+    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, 0, false);
+
+    Checkout checkout = new Checkout(rules);
+
+    // Basket: A A B B B
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("B");
+    checkout.scan("B");
+    checkout.scan("B");
+
+    // Expected:
+    // Cross-SKU: 1 B at 20 kr
+    // Remaining B: 2 × 40 = 80
+    // A: 100
+    // Total = 200
+
+    assertEquals(200, checkout.total());
+}
+```
+**Test 28:** Cross‑SKU FREE + Cross‑SKU FREE (stackability + priority).
+Two FREE‑rules, both stackable, higher priority wins.
+```java
+@Test
+void higherPriorityFreeRuleWinsWhenBothAreStackable() {
+    PricingRules rules = new PricingRules();
+
+    rules.addUnitPrice("A", 50);
+    rules.addUnitPrice("B", 40);
+
+    // Higher priority (0), stackable
+    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 0, true);
+
+    // Lower priority (1), stackable
+    rules.addCrossSkuBuyXGetYFree("A", 3, "B", 1, 1, true);
+
+    Checkout checkout = new Checkout(rules);
+
+    // Basket: 6 A, 2 B
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+
+    checkout.scan("B");
+    checkout.scan("B");
+
+    // Expected:
+    // Rule 1 applies 3 times → 3 free B, but only 2 exist → 2 free
+    // A = 300
+    // B = 0
+    assertEquals(300, checkout.total());
+}
+```
+**Test 29:** Two FREE‑rules, both stackable, but lower priority is “stronger”.
+```java
+@Test
+void higherPriorityFreeRuleWinsEvenIfLowerPriorityIsMoreGenerous() {
+    PricingRules rules = new PricingRules();
+
+    rules.addUnitPrice("A", 50);
+    rules.addUnitPrice("B", 40);
+
+    // Higher priority (0), stackable
+    rules.addCrossSkuBuyXGetYFree("A", 3, "B", 1, 0, true);
+
+    // Lower priority (1), stackable but more generous
+    rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 1, true);
+
+    Checkout checkout = new Checkout(rules);
+
+    // Basket: 6 A, 2 B
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+
+    checkout.scan("B");
+    checkout.scan("B");
+
+    // Expected:
+    // Rule 1 applies twice → 2 free B
+    // Rule 2 ignored
+    assertEquals(300, checkout.total());
+}
+```
+---
+#### Adding SKU-specific discount rule
+**Test 30:** Cross‑SKU DISCOUNT + SKU‑specific discount (which wins?)
+Cross‑SKU DISCOUNT wins over SKU‑discount
+```java
+@Test
+void crossSkuDiscountBeatsSkuDiscountWhenHigherPriority() {
+    PricingRules rules = new PricingRules();
+
+    rules.addUnitPrice("A", 50);
+    rules.addUnitPrice("B", 40);
+
+    // Cross-SKU discount has higher priority
+    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, 0, false);
+
+    // SKU-specific discount (lower priority)
+    rules.addSkuDiscount("B", 0.25, 1); // 25% off, priority 1
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("B");
+
+    assertEquals(120, checkout.total());
+}
+```
+**Test 31:** SKU‑discount wins over Cross‑SKU DISCOUNT
+```java
+@Test
+void skuDiscountBeatsCrossSkuDiscountWhenHigherPriority() {
+    PricingRules rules = new PricingRules();
+
+    rules.addUnitPrice("A", 50);
+    rules.addUnitPrice("B", 40);
+
+    // SKU-specific discount has higher priority
+    rules.addSkuDiscount("B", 0.25, 0); // 25% off, priority 0
+
+    // Cross-SKU discount (lower priority)
+    rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5, 1, false);
+
+    Checkout checkout = new Checkout(rules);
+
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("B");
+
+    assertEquals(130, checkout.total());
+}
+```
+**Test 32:**
 ```java
 
 ```
-**Test 28:**
+**Test 33:**
+```java
+
+```
+**Test 34:**
 ```java
 
 ```
