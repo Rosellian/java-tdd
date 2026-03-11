@@ -1,4 +1,4 @@
-package com.tdd;
+package com.tdd.rules;
 
 public interface PricingOption {
     int price();      // what does this package cost?

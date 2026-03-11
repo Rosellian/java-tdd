@@ -147,6 +147,50 @@ public record CrossSkuBuyXGetYDiscount(
 record SkuDiscount(String sku, double rate, int priority) {}
 ```
 ---
+### Refactoring
+#### Combined Rule application structure
+```java
+public record SkuMod(int free, int discounted, double rate){}
+
+// Can be used in a Map<String, SkuMod> mods within Checkout 
+// when applying rules;
+```
+#### RuleEngine architecture
+*`RuleEngine`*
+```java
+public class RuleEngine {
+
+    private final PricingRules rules;
+
+    public RuleEngine(PricingRules rules) {
+        this.rules = rules;
+    }
+
+    public List<CrossSkuRule> getOrderedCrossSkuRules() {
+        return rules.getCrossSkuRules().stream()
+                .sorted(Comparator.comparingInt(CrossSkuRule::priority))
+                .toList();
+    }
+
+    public List<SkuDiscount> getSkuDiscounts() {
+        return rules.getSkuDiscounts();
+    }
+
+    public List<PricingOption> getPricingOptions(String sku) {
+        return rules.getPricingOptions(sku);
+    }
+}
+```
+*`RuleEvaluator`*
+```java
+public interface IRuleEvaluator {
+
+   boolean apply(CrossSkuBuyXGetYFree rule, Map<String, Long> counts, Map<String, SkuMod> mods);
+
+   boolean apply(CrossSkuBuyXGetYDiscount rule, Map<String, Long> counts, Map<String, SkuMod> mods);
+}
+```
+---
 ## Testing
 ### Test cases
 #### Base tests

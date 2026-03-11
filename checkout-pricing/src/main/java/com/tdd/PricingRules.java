@@ -1,9 +1,8 @@
 package com.tdd;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.tdd.rules.*;
+
+import java.util.*;
 
 public class PricingRules {
     private final Map<String, Integer> unitPrices = new HashMap<>();
@@ -54,6 +53,33 @@ public class PricingRules {
         return buyXGetYDiscount.getOrDefault(sku, new ArrayList<>());
     }
 
+    public List<PricingOption>  getPricingOptions(String sku) {
+        List<PricingOption> options = new ArrayList<>(getSpecialPrices(sku));
+
+        addBuyXGetYDiscount(sku, options);
+
+        addBuyXGetYFree(sku, options);
+
+        options.sort(Comparator.comparingInt(PricingOption::priority));
+
+        return options;
+    }
+
+    private void addBuyXGetYFree(String sku, List<PricingOption> options) {
+        for(BuyXGetYFree rule : getBuyXGetYFree(sku)) {
+            options.add(new BuyXGetYFreeOption(rule.buy() + rule.free(),
+                    rule.buy() * getUnitPrice(sku), 2, rule.stackable()));
+        }
+    }
+
+    private void addBuyXGetYDiscount(String sku, List<PricingOption> options) {
+        for (BuyXGetYDiscount rule : getBuyXGetYDiscount(sku)) {
+            int unitPrice = getUnitPrice(sku);
+            int price = (int)(rule.buy() * unitPrice + rule.get() * unitPrice * (1-rule.discount()));
+            options.add(new BuyXGetYDiscountOption(rule.buy() + rule.get(), price, 1, rule.stackable()));
+        }
+    }
+
     public void addCrossSkuBuyXGetYFree(String buySku, int buyQuantity,
                                         String freeSku, int freeQuantity, int priority, boolean stackable) {
         crossSku.add(new CrossSkuBuyXGetYFree(buySku, buyQuantity, freeSku, freeQuantity,
@@ -67,5 +93,5 @@ public class PricingRules {
                 priority, stackable));
     }
 
-    public List<CrossSkuRule> getCrossSkuRules() {return  crossSku;}
+    public List<CrossSkuRule> getCrossSkuRules() {return crossSku;}
 }
