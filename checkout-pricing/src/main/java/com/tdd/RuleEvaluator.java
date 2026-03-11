@@ -6,7 +6,11 @@ import com.tdd.rules.CrossSkuBuyXGetYFree;
 import java.util.Map;
 
 public class RuleEvaluator implements IRuleEvaluator {
+    private final PricingRules rules;
 
+    public RuleEvaluator(PricingRules rules) {
+        this.rules = rules;
+    }
 
     @Override
     public boolean apply(CrossSkuBuyXGetYFree rule, Map<String, Long> counts, Map<String, SkuMod> mods) {
@@ -37,6 +41,42 @@ public class RuleEvaluator implements IRuleEvaluator {
 
     @Override
     public boolean apply(CrossSkuBuyXGetYDiscount rule, Map<String, Long> counts, Map<String, SkuMod> mods) {
-        return false;
+        String buySku = rule.buySku();
+        String discountSku = rule.discountSku();
+        if(skuDiscountHasHigherPriorityFor(discountSku, rule.priority())) {
+            return false;
+        }
+
+        int buyQty = rule.buyQty();
+        int discountQty = rule.discountQty();
+
+        long originalBuyCount = counts.get(buySku);
+        long originalDiscountCount = counts.get(discountSku);
+
+        boolean applied = false;
+        while(counts.get(buySku) >= buyQty && counts.get(discountSku) >= discountQty) {
+            counts.put(buySku, counts.get(buySku) - buyQty);
+            applied = true;
+
+            counts.put(discountSku, counts.get(discountSku) - discountQty);
+            mods.merge(discountSku, new SkuMod(0, discountQty, rule.discount()),
+                    (oldMod, newMod) -> new SkuMod(
+                            oldMod.free(),
+                            oldMod.discounted() + newMod.discounted(),
+                            Math.min(oldMod.rate(), newMod.rate()))
+            );
+
+            if(!rule.stackable()) break;
+        }
+
+
+        counts.put(buySku, originalBuyCount);
+        counts.put(discountSku, originalDiscountCount);
+        return applied;
+    }
+
+    private boolean skuDiscountHasHigherPriorityFor(String sku, int crossSkuRulePriority) {
+        return rules.getSkuDiscounts().stream()
+                .anyMatch(r -> r.sku().equals(sku) && r.priority() < crossSkuRulePriority);
     }
 }

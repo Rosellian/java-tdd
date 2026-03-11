@@ -1,7 +1,6 @@
 package com.tdd;
 
 import com.tdd.rules.CrossSkuRule;
-import com.tdd.rules.PricingOption;
 import com.tdd.rules.SkuDiscount;
 
 import java.util.Comparator;
@@ -21,8 +20,4 @@ public class RuleEngine {
     }
 
     public List<SkuDiscount> getSkuDiscounts() {return rules.getSkuDiscounts();}
-
-    public List<PricingOption> getPricingOptions(String sku) {
-        return rules.getPricingOptions(sku);
-    }
 }

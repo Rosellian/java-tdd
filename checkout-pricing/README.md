@@ -156,7 +156,8 @@ public record SkuMod(int free, int discounted, double rate){}
 // when applying rules;
 ```
 #### RuleEngine architecture
-*`RuleEngine`*
+**Main step:**  
+`RuleEngine`
 ```java
 public class RuleEngine {
 
@@ -175,13 +176,9 @@ public class RuleEngine {
     public List<SkuDiscount> getSkuDiscounts() {
         return rules.getSkuDiscounts();
     }
-
-    public List<PricingOption> getPricingOptions(String sku) {
-        return rules.getPricingOptions(sku);
-    }
 }
 ```
-*`RuleEvaluator`*
+`RuleEvaluator`
 ```java
 public interface IRuleEvaluator {
 
@@ -190,6 +187,55 @@ public interface IRuleEvaluator {
    boolean apply(CrossSkuBuyXGetYDiscount rule, Map<String, Long> counts, Map<String, SkuMod> mods);
 }
 ```
+`PriceCalculator`
+```java
+public class PriceCalculator {
+   private final PricingRules rules;
+
+   public PriceCalculator(PricingRules rules) {
+      this.rules = rules;
+   }
+
+   public int calculateTotal(Map<String, Long> counts, Map<String, SkuMod> mods) {
+       //Implement calculation of total including DP-algorithm
+   }
+}
+```
+Checkout class now becomes much cleaner:  
+`Checkout`
+```java
+public class Checkout {
+    private final RuleEngine ruleEngine;
+    private final RuleEvaluator ruleEvaluator;
+    private final PriceCalculator calculator;
+
+   private final List<String> items = new ArrayList<>();
+
+    public Checkout(PricingRules rules) {
+        ruleEngine = new RuleEngine(rules);
+        ruleEvaluator = new RuleEvaluator();
+        calculator = new PriceCalculator();
+    }
+
+    public void scan(String unit) {
+        items.add(unit);
+    }
+
+    public int total() {
+        Map<String, Long> counts = countItems();
+
+        Map<String, SkuMod> mods = new HashMap<>();
+
+        applyCrossSkuRules(counts, mods);
+
+        applySkuDiscount(mods);
+
+        return calculator.calculateTotal(counts, mods);
+    }
+}
+```
+**Next**
+
 ---
 ## Testing
 ### Test cases
