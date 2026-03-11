@@ -7,7 +7,6 @@ import java.util.Map;
 
 public interface IRuleEvaluator {
 
-    boolean apply(CrossSkuBuyXGetYFree rule, Map<String, Long> counts, Map<String, SkuMod> mods);
-
-    boolean apply(CrossSkuBuyXGetYDiscount rule, Map<String, Long> counts, Map<String, SkuMod> mods);
+    RuleResult apply(CrossSkuBuyXGetYFree rule, RuleContext context);
+    RuleResult apply(CrossSkuBuyXGetYDiscount rule, RuleContext context);
 }

@@ -234,7 +234,47 @@ public class Checkout {
     }
 }
 ```
-**Next**
+**Introducing RuleContext:**  
+This is an immutable entity giving the following positives:  
+- No original values
+- No reset
+- No side-effects
+- Clean in → clean out
+
+It can enable more features:
+- Logging
+- Debugging
+- Extensions
+- Make the process easier to follow
+
+`RuleContext`
+```java
+public record RuleContext(
+        Map<String, Long> counts,
+        Map<String, SkuMod> mods
+) {
+
+    public RuleContext copy() {
+        return new RuleContext(
+                new HashMap<>(counts),
+                new HashMap<>(mods)
+        );
+    }
+
+    public long countOf(String sku) {
+        return counts.getOrDefault(sku, 0L);
+    }
+
+    public SkuMod modOf(String sku) {
+        return mods.getOrDefault(sku, new SkuMod(0, 0, 1.0));
+    }
+}
+```
+`RuleResult`
+```java
+public record RuleResult(boolean applied, RuleContext newContext) {}
+```
+These can then be used by the RuleEngine and RuleEvaluator.
 
 ---
 ## Testing

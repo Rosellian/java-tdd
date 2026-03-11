@@ -3,8 +3,6 @@ package com.tdd;
 import com.tdd.rules.CrossSkuBuyXGetYDiscount;
 import com.tdd.rules.CrossSkuBuyXGetYFree;
 
-import java.util.Map;
-
 public class RuleEvaluator implements IRuleEvaluator {
     private final PricingRules rules;
 
@@ -13,34 +11,30 @@ public class RuleEvaluator implements IRuleEvaluator {
     }
 
     @Override
-    public boolean apply(CrossSkuBuyXGetYFree rule, Map<String, Long> counts, Map<String, SkuMod> mods) {
+    public RuleResult apply(CrossSkuBuyXGetYFree rule, RuleContext context) {
         String buySku = rule.buySku();
         String freeSku = rule.freeSku();
         int buyQty = rule.buyQty();
         int freeQty = rule.freeQty();
 
-        long originalBuyCount = counts.get(buySku);
-        long originalFreeCount = counts.get(freeSku);
+        RuleContext next = context.copy();
 
         boolean applied = false;
-        while(counts.get(buySku) >= buyQty && counts.get(freeSku) >= freeQty) {
+        while(next.countOf(buySku) >= buyQty && next.countOf(freeSku) >= freeQty) {
             applied = true;
-            counts.put(buySku, counts.get(buySku) - buyQty);
+            next.counts().put(buySku, next.countOf(buySku) - buyQty);
 
-            counts.put(freeSku, counts.get(freeSku) - freeQty);
-            mods.merge(freeSku, new SkuMod(freeQty, 0, 1.0), (oldMod, newMod)
+            next.counts().put(freeSku, next.countOf(freeSku) - freeQty);
+            next.mods().merge(freeSku, new SkuMod(freeQty, 0, 1.0), (oldMod, newMod)
                     -> new SkuMod(oldMod.free() + newMod.free(), oldMod.discounted(), 1.0));
 
             if(!rule.stackable()) break;
         }
-
-        counts.put(buySku, originalBuyCount);
-        counts.put(freeSku, originalFreeCount);
-        return applied;
+        return new RuleResult(applied, next);
     }
 
     @Override
-    public boolean apply(CrossSkuBuyXGetYDiscount rule, Map<String, Long> counts, Map<String, SkuMod> mods) {
+    public boolean apply(CrossSkuBuyXGetYDiscount rule, RuleContext context) {
         String buySku = rule.buySku();
         String discountSku = rule.discountSku();
         if(skuDiscountHasHigherPriorityFor(discountSku, rule.priority())) {
@@ -68,7 +62,6 @@ public class RuleEvaluator implements IRuleEvaluator {
 
             if(!rule.stackable()) break;
         }
-
 
         counts.put(buySku, originalBuyCount);
         counts.put(discountSku, originalDiscountCount);
