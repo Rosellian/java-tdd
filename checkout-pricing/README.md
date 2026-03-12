@@ -515,6 +515,91 @@ public class RuleInspector {
     }
 }
 ```
+**Extend Inspector with graph representation of DP-path**  
+We accomplish this by adding DP-tracing to PriceCalculator:  
+- Add a structure for a DP-step.  
+    `DPNode`
+    ```java
+    public record DPNode(
+        int index,
+        int price,
+        List<String> explanation
+    ) {}
+    ```
+- And a Dp-trace
+    `DPTrace`
+    ```java
+    public record DPTrace(
+        String sku,
+        long remaining,
+        List<DPNode> nodes,
+        int finalPrice,
+        List<String> winningPath
+    ) {}
+    ```
+- Change implementation in PriceCalculator and add logging
+    `PriceCalculator`
+    ```java
+    //...
+    public DPTrace bestPriceTrace(String sku, long remaining) {
+        // Implement new signature
+    }
+    //...
+    ```
+- Integrate DP-trace in RuleInspector
+  `RuleInspector`
+    ```java
+    public class RuleInspector {
+        public RuleTrace inspect(RuleContext finalContext, List<RuleDebugEvent> events) {
+            //...
+            List<DPTrace> dpTraces = new ArrayList<>();
+
+            for(var s : skuTraces) {
+                //...
+                DPTrace dpTrace = calculator.bestPriceTrace(s.sku(), s.remaining());
+                dpTraces.add(dpTrace);
+                //...
+            }
+            //...
+        }
+    }
+    ```
+- And extend RuleTrace:  
+  `Ruletrace`
+    ```java
+    public record RuleTrace(
+        List<RuleDebugEvent> events,
+        List<SkuTrace> skuTraces,
+        List<DPTrace> dpTraces,
+        int finalTotal
+    ) {}
+    ```
+- Add log visualization:  
+    `RuleInspectorView`
+    ```java
+    public class RuleInspectorView {
+
+        public static void printDP(DPTrace dp) {
+            System.out.println("DP Path for SKU " + dp.sku() +
+                " (remaining = " + dp.remaining() + ")");
+
+            for (var node : dp.nodes()) {
+                System.out.println("[" + node.index() + "] → " + node.price() + " kr");
+                for (var line : node.explanation()) {
+                    System.out.println("     " + line);
+                }
+            }
+
+            System.out.println("Winning path:");
+            for (var step : dp.winningPath()) {
+                System.out.println("  - " + step);
+            }
+
+            System.out.println("Total: " + dp.finalPrice() + " kr\n");
+        }
+    }
+    ```
+
 #### User Interface
 
 ---

@@ -33,4 +33,23 @@ public class RuleInspectorView {
         System.out.println("--- FINAL TOTAL ---");
         System.out.println(trace.finalTotal());
     }
+
+    public static void printDP(DPTrace dp) {
+        System.out.println("DP Path for SKU " + dp.sku() +
+                " (remaining = " + dp.remaining() + ")");
+
+        for (var node : dp.nodes()) {
+            System.out.println("[" + node.index() + "] → " + node.price() + " kr");
+            for (var line : node.explanation()) {
+                System.out.println("     " + line);
+            }
+        }
+
+        System.out.println("Winning path:");
+        for (var step : dp.winningPath()) {
+            System.out.println("  - " + step);
+        }
+
+        System.out.println("Total: " + dp.finalPrice() + " kr\n");
+    }
 }

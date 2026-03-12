@@ -19,6 +19,7 @@ public class RuleInspector {
 
     public RuleTrace inspect(RuleContext finalContext, List<RuleDebugEvent> events) {
         List<SkuTrace> skuTraces = new ArrayList<>();
+        List<DPTrace>  dpTraces = new ArrayList<>();
 
         for(var entry : finalContext.counts().entrySet()) {
             String sku = entry.getKey();
@@ -29,13 +30,15 @@ public class RuleInspector {
             long discounted  = mod.discounted();
             double rate  = mod.rate();
 
-            long remaining = count - free -  discounted;
+            long remaining = count - free - discounted;
 
             int unitPrice = rules.getUnitPrice(sku);
-
             int discountedPrice = (int) (discounted * unitPrice * rate);
-            int dpPrice = calculator.bestPriceFor(sku, remaining);
 
+            DPTrace dpTrace = calculator.bestPriceFor(sku, remaining);
+            dpTraces.add(dpTrace);
+
+            int dpPrice = dpTrace.finalPrice();
             int total = discountedPrice + dpPrice;
 
             skuTraces.add(new SkuTrace(sku, count, free, discounted, rate, remaining,
@@ -43,6 +46,6 @@ public class RuleInspector {
         }
 
         int finalTotal = skuTraces.stream().mapToInt(SkuTrace::total).sum();
-        return new RuleTrace(events, skuTraces, finalTotal);
+        return new RuleTrace(events, skuTraces, dpTraces, finalTotal);
     }
 }

@@ -2,11 +2,12 @@ package com.tdd;
 
 import com.tdd.engine.RuleContext;
 import com.tdd.engine.SkuMod;
+import com.tdd.logging.DPNode;
+import com.tdd.logging.DPTrace;
 import com.tdd.rules.PricingOption;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class PriceCalculator {
     private final PricingRules rules;
@@ -28,41 +29,43 @@ public class PriceCalculator {
             if(remaining < 0) remaining = 0;
 
             int discountedPrice = (int)(discounted * rules.getUnitPrice(sku) * mod.rate());
-            total += discountedPrice + bestPriceFor(sku, remaining);
+            DPTrace dpTrace = bestPriceFor(sku, remaining);
+            total += discountedPrice + dpTrace.finalPrice();
         }
+
 
         return total;
     }
 
-    public int bestPriceFor(String sku, long count) {
+    public DPTrace bestPriceFor(String sku, long remaining) {
         int unitPrice = rules.getUnitPrice(sku);
         List<PricingOption> options = rules.getPricingOptions(sku);
-        Map<Long, Integer> countBestMapping = new HashMap<>();
 
-        return bestPriceFor(count, unitPrice, options, countBestMapping);
-    }
+        int[] dp = new int[(int) (remaining + 1)];
+        List<List<String>> path = new ArrayList<>();
+        List<DPNode>  nodes = new ArrayList<>();
 
-    private int bestPriceFor(long count, int unitPrice, List<PricingOption> options,
-                             Map<Long, Integer> countBestMapping) {
-        if(count == 0) return 0;
-        if(countBestMapping.containsKey(count)) return countBestMapping.get(count);
+        path.add(List.of("0 items -> 0 kr"));
 
-        int best = (int) (count * unitPrice);
+        for(int i = 1; i <= remaining; i++) {
+            dp[i] = i *  unitPrice;
+            List<String> best = new ArrayList<>();
+            best.add(i + " x " + unitPrice + " = " + dp[i] + " kr");
 
-        for(PricingOption opt : options) {
-            if(count >= opt.quantity()) {
-                if(!opt.stackable()) {
-                    int candidate = (int) (opt.price() + (count - opt.quantity()) * unitPrice);
-                    best = Math.min(best, candidate);
-                    continue;
+            for(PricingOption opt : options) {
+                if(i >= opt.quantity()) {
+                    int candidate = dp[i - opt.quantity()] + opt.price();
+                    if(candidate < dp[i]) {
+                        dp[i] = candidate;
+                        best = new ArrayList<>(path.get(i - opt.quantity()));
+                        best.add(opt.quantity() + "-for-" + opt.price());
+                    }
                 }
-                int candidate = opt.price() + bestPriceFor(count - opt.quantity(),
-                        unitPrice, options, countBestMapping);
-                best = Math.min(best, candidate);
             }
+            path.add(best);
+            nodes.add(new DPNode(i, dp[i], List.copyOf(best)));
         }
 
-        countBestMapping.put(count, best);
-        return best;
+        return new DPTrace(sku, remaining, nodes, dp[(int) remaining], path.get((int) remaining));
     }
 }

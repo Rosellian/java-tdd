@@ -40,7 +40,11 @@ public class Checkout {
     private void display(RuleContext context) {
         RuleInspector inspector = new RuleInspector(rules, calculator);
         RuleTrace trace = inspector.inspect(context, debugger.getEvents());
+
         RuleInspectorView.print(trace);
+        for(var dp : trace.dpTraces()) {
+            RuleInspectorView.printDP(dp);
+        }
     }
 
     private Map<String, Long> countItems() {
