@@ -1,18 +1,20 @@
 package com.tdd;
 
-import com.tdd.rules.*;
+import com.tdd.engine.RuleContext;
+import com.tdd.logging.RuleDebugger;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Checkout {
+    public  final RuleDebugger debugger = new RuleDebugger();
     private final RuleEngine ruleEngine;
     private final PriceCalculator calculator;
 
     private final List<String> items = new ArrayList<>();
 
     public Checkout(PricingRules rules) {
-        ruleEngine = new RuleEngine(rules);
+        ruleEngine = new RuleEngine(rules, debugger);
         calculator = new PriceCalculator(rules);
     }
 
@@ -24,6 +26,8 @@ public class Checkout {
         RuleContext context = new RuleContext(countItems(), new HashMap<>());
 
         context = ruleEngine.evaluate(context);
+
+        debugger.print();
 
         return calculator.calculateTotal(context);
     }

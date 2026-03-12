@@ -314,7 +314,51 @@ public RuleContext apply(RuleDelta delta) {
 For stackability to work you have to simulate the loop without using counts.
 
 **Introducing Debug logging**
+You want to see:
+- what rules were applied
+- why they applied
+- number of times they applied
+- what delta they generated
+- how context changed step by step
 
+`RuleDebugEvent`
+```java
+public record RuleDebugEvent(
+        String ruleName,
+        boolean applied,
+        RuleDelta delta,
+        RuleContext before,
+        RuleContext after
+) {}
+```
+`RuleDebugger`
+```java
+public class RuleDebugger {
+
+    private final List<RuleDebugEvent> events = new ArrayList<>();
+
+    public void log(String ruleName, boolean applied, RuleDelta delta,
+                    RuleContext before, RuleContext after) {
+
+        events.add(new RuleDebugEvent(ruleName, applied, delta, before, after));
+    }
+
+    public List<RuleDebugEvent> events() {
+        return events;
+    }
+
+    public void print() {
+        for (var e : events) {
+            System.out.println("→ Rule: " + e.ruleName());
+            System.out.println("   Applied: " + e.applied());
+            System.out.println("   Delta: " + e.delta());
+            System.out.println("   Before: " + e.before());
+            System.out.println("   After: " + e.after());
+            System.out.println();
+        }
+    }
+}
+```
 
 ---
 ## Testing

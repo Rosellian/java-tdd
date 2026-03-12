@@ -1,5 +1,9 @@
 package com.tdd;
 
+import com.tdd.engine.RuleContext;
+import com.tdd.engine.RuleDelta;
+import com.tdd.engine.RuleEvaluator;
+import com.tdd.logging.RuleDebugger;
 import com.tdd.rules.CrossSkuBuyXGetYDiscount;
 import com.tdd.rules.CrossSkuBuyXGetYFree;
 import com.tdd.rules.CrossSkuRule;
@@ -11,10 +15,12 @@ import java.util.List;
 public class RuleEngine {
     private final PricingRules rules;
     private final RuleEvaluator evaluator;
+    private final RuleDebugger debugger;
 
-    public RuleEngine(PricingRules rules) {
+    public RuleEngine(PricingRules rules, RuleDebugger debugger) {
         this.rules = rules;
         this.evaluator = new RuleEvaluator(rules);
+        this.debugger = debugger;
     }
 
     public RuleContext evaluate(RuleContext context) {
@@ -25,11 +31,16 @@ public class RuleEngine {
 
     private RuleContext applyCrossSkuRules(RuleContext context) {
         for (var rule : getOrderedCrossSkuRules()) {
+            RuleContext before = context;
+
             RuleDelta delta = switch(rule) {
                 case CrossSkuBuyXGetYFree free -> evaluator.apply(free, context);
                 case CrossSkuBuyXGetYDiscount discount -> evaluator.apply(discount, context);
                 default -> throw new IllegalStateException("Unexpected value: " + rule);
             };
+
+            RuleContext after = delta.applied() ? context.apply(delta) : context;
+            debugger.log(rule.toString(), delta.applied(), delta, before, after);
 
             if(delta.applied()) {
                 context = context.apply(delta);
@@ -41,7 +52,13 @@ public class RuleEngine {
 
     private RuleContext applySkuDiscount(RuleContext context) {
         for(var rule : getSkuDiscounts()) {
+            RuleContext before = context;
+
             RuleDelta delta = evaluator.apply(rule, context);
+
+            RuleContext after = delta.applied() ? context.apply(delta) : context;
+            debugger.log(rule.toString(), delta.applied(), delta, before, after);
+
             if(delta.applied()){
                 context = context.apply(delta);
             }

@@ -1,5 +1,6 @@
-package com.tdd;
+package com.tdd.engine;
 
+import com.tdd.PricingRules;
 import com.tdd.rules.CrossSkuBuyXGetYDiscount;
 import com.tdd.rules.CrossSkuBuyXGetYFree;
 import com.tdd.rules.SkuDiscount;

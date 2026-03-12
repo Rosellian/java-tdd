@@ -1,4 +1,4 @@
-package com.tdd;
+package com.tdd.engine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,13 +21,6 @@ public record RuleContext(
                         ))
         );
         return new RuleContext(newCounts, newMods);
-    }
-
-    public RuleContext copy() {
-        return new RuleContext(
-                new HashMap<>(counts),
-                new HashMap<>(mods)
-        );
     }
 
     public long countOf(String sku) {
