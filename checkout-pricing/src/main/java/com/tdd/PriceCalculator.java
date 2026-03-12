@@ -34,7 +34,7 @@ public class PriceCalculator {
         return total;
     }
 
-    private int bestPriceFor(String sku, long count) {
+    public int bestPriceFor(String sku, long count) {
         int unitPrice = rules.getUnitPrice(sku);
         List<PricingOption> options = rules.getPricingOptions(sku);
         Map<Long, Integer> countBestMapping = new HashMap<>();

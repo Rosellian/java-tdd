@@ -359,6 +359,163 @@ public class RuleDebugger {
     }
 }
 ```
+---
+### Visual components
+#### RuleInspector
+**Introducing RuleInspector component**
+- Takes a list of RuleDebugEvent from RuleDebugger
+- Presents them in a structured format
+- Shows:
+  - What rules that applied
+  - why they applied
+  - How many times
+  - What delta they created
+  - How context changed
+  - How remaining was counted
+  - How DP chose special prices
+  - How the total was built
+
+`RuleInspector` - Data model
+```java
+public class RuleInspector {
+
+    private final List<RuleDebugEvent> events;
+
+    public RuleInspector(List<RuleDebugEvent> events) {
+        this.events = events;
+    }
+
+    public List<RuleDebugEvent> events() {
+        return events;
+    }
+}
+```
+`RuleInspectorView` - Textbased rendering
+```java
+public class RuleInspectorView {
+
+    public static void print(RuleInspector inspector) {
+        System.out.println("=== Rule Inspector ===");
+
+        for (var e : inspector.events()) {
+            System.out.println("Rule: " + e.ruleName());
+            System.out.println("Applied: " + e.applied());
+            System.out.println("Delta: " + e.delta());
+
+            System.out.println("Before:");
+            printContext(e.before());
+
+            System.out.println("After:");
+            printContext(e.after());
+
+            System.out.println("----------------------");
+        }
+    }
+
+    private static void printContext(RuleContext ctx) {
+        System.out.println("  Counts: " + ctx.counts());
+        System.out.println("  Mods:   " + ctx.mods());
+    }
+}
+```
+**JavaScript (React) component for displaying rule events**  
+`RuleInspector UI` - React-based representation
+```text
+export function RuleInspector({ events }) {
+  return (
+    <div style={{ fontFamily: "monospace", padding: 20 }}>
+      <h2>Rule Inspector</h2>
+
+      {events.map((e, i) => (
+        <div key={i} style={{ marginBottom: 20 }}>
+          <h3>{e.ruleName}</h3>
+
+          <div>Applied: {String(e.applied)}</div>
+
+          <h4>Delta</h4>
+          <pre>{JSON.stringify(e.delta, null, 2)}</pre>
+
+          <h4>Before</h4>
+          <pre>{JSON.stringify(e.before, null, 2)}</pre>
+
+          <h4>After</h4>
+          <pre>{JSON.stringify(e.after, null, 2)}</pre>
+
+          <hr />
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+#### RuleInspector 2.0
+Shows:
+- What special prices were chosen
+- Why
+- What combinations were tested
+- Which DP-path that won
+
+Will enable further visualization. Builds upon current implementation but adds more data through new component RuleTrace.  
+**Introducing RuleTrace:**  
+RuleTrace gives full history over:
+- rules
+- deltas
+- content before/after
+- remaining
+- DP-choice
+- totals per SKU
+- totals per step
+
+`RuleTrace`
+```java
+public record RuleTrace(
+        List<RuleDebugEvent> events,
+        List<SkuTrace> skuTraces,
+        int finalTotal
+) {}
+```
+`SkuTrace`
+```java
+public record SkuTrace(
+        String sku,
+        long count,
+        long free,
+        long discounted,
+        double rate,
+        long remaining,
+        int unitPrice,
+        int discountedPrice,
+        int dpPrice,
+        int total
+) {}
+```
+**Extend Inspector with RuleTrace**  
+RuleInspector takes:
+- RuleDebugger.events()
+- Final RuleContext
+- PricingRules
+- PriceCalculator
+
+And builds a complete trace. Here is the new version:
+
+`RuleInspector`
+```java
+public class RuleInspector {
+
+    private final PricingRules rules;
+    private final PriceCalculator calculator;
+
+    public RuleInspector(PricingRules rules, PriceCalculator calculator) {
+        this.rules = rules;
+        this.calculator = calculator;
+    }
+
+    public RuleTrace inspect(RuleContext finalContext, List<RuleDebugEvent> events) {
+        // Form full RuleTrace here
+    }
+}
+```
+#### User Interface
 
 ---
 ## Testing
