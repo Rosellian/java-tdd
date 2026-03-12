@@ -18,35 +18,35 @@ public class RuleEngine {
     }
 
     public RuleContext evaluate(RuleContext context) {
-        RuleContext next = context;
+        context = applyCrossSkuRules(context);
 
-        next = applyCrossSkuRules(next);
-
-        return applySkuDiscount(next);
+        return applySkuDiscount(context);
     }
 
     private RuleContext applyCrossSkuRules(RuleContext context) {
         for (var rule : getOrderedCrossSkuRules()) {
-            RuleResult result = switch(rule) {
+            RuleDelta delta = switch(rule) {
                 case CrossSkuBuyXGetYFree free -> evaluator.apply(free, context);
                 case CrossSkuBuyXGetYDiscount discount -> evaluator.apply(discount, context);
                 default -> throw new IllegalStateException("Unexpected value: " + rule);
             };
 
-            if(result.applied()) return result.newContext();
+            if(delta.applied()) {
+                context = context.apply(delta);
+                break;
+            }
         }
         return context;
     }
 
     private RuleContext applySkuDiscount(RuleContext context) {
-        RuleContext next = context;
-
         for(var rule : getSkuDiscounts()) {
-            RuleResult result = evaluator.apply(rule, next);
-            if(result.applied())
-                next = result.newContext();
+            RuleDelta delta = evaluator.apply(rule, context);
+            if(delta.applied()){
+                context = context.apply(delta);
+            }
         }
-        return next;
+        return context;
     }
 
     public List<CrossSkuRule> getOrderedCrossSkuRules() {

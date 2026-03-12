@@ -293,6 +293,26 @@ Applying a rule will then have the following work flow:
 1. RuleContext -> RuleDelta
 2. RuleContext + RuleDelta -> RuleContext
 
+For complete immutability counts should not be changed so RuleDelta becomes:
+```java
+public record RuleDelta(
+        Map<String, SkuMod> modChanges,
+        boolean applied
+) {
+
+    public static RuleDelta none() {
+        return new RuleDelta(Map.of(), false);
+    }
+}
+```
+`RuleContext` needs the following method:
+```java
+public RuleContext apply(RuleDelta delta) {
+    // Apply changes to mods
+}
+```
+For stackability to work you have to simulate the loop without using counts.
+
 **Introducing Debug logging**
 
 

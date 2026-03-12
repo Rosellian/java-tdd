@@ -21,9 +21,7 @@ public class Checkout {
     }
 
     public int total() {
-        Map<String, Long> counts = countItems();
-        Map<String, SkuMod> mods = new HashMap<>();
-        RuleContext context = new RuleContext(counts, mods);
+        RuleContext context = new RuleContext(countItems(), new HashMap<>());
 
         context = ruleEngine.evaluate(context);
 

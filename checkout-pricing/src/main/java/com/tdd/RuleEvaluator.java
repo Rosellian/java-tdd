@@ -4,6 +4,8 @@ import com.tdd.rules.CrossSkuBuyXGetYDiscount;
 import com.tdd.rules.CrossSkuBuyXGetYFree;
 import com.tdd.rules.SkuDiscount;
 
+import java.util.Map;
+
 public class RuleEvaluator implements IRuleEvaluator {
     private final PricingRules rules;
 
@@ -12,79 +14,47 @@ public class RuleEvaluator implements IRuleEvaluator {
     }
 
     @Override
-    public RuleResult apply(CrossSkuBuyXGetYFree rule, RuleContext context) {
-        String buySku = rule.buySku();
+    public RuleDelta apply(CrossSkuBuyXGetYFree rule, RuleContext context) {
         String freeSku = rule.freeSku();
-        int buyQty = rule.buyQty();
-        int freeQty = rule.freeQty();
 
-        RuleContext next = context.copy();
-        long originalBuy = next.countOf(buySku);
-        long originalFree = next.countOf(freeSku);
+        long times = Math.min(context.countOf(rule.buySku()) / rule.buyQty(),
+                context.countOf(rule.freeSku()) / rule.freeQty());
 
-        boolean applied = false;
-        while(next.countOf(buySku) >= buyQty && next.countOf(freeSku) >= freeQty) {
-            applied = true;
-            next.counts().put(buySku, next.countOf(buySku) - buyQty);
+        if(times == 0) return RuleDelta.none();
+        if(!rule.stackable()) times = 1;
 
-            next.counts().put(freeSku, next.countOf(freeSku) - freeQty);
-            next.mods().merge(freeSku, new SkuMod(freeQty, 0, 1.0), (oldMod, newMod)
-                    -> new SkuMod(oldMod.free() + newMod.free(), oldMod.discounted(), 1.0));
-
-            if(!rule.stackable()) break;
-        }
-
-        next.counts().put(buySku, originalBuy);
-        next.counts().put(freeSku, originalFree);
-        return new RuleResult(applied, next);
+        int totalFree = (int) (times * rule.freeQty());
+        return new RuleDelta(Map.of(freeSku, new SkuMod(totalFree, 0, 1.0)), true);
     }
 
     @Override
-    public RuleResult apply(CrossSkuBuyXGetYDiscount rule, RuleContext context) {
-        String buySku = rule.buySku();
+    public RuleDelta apply(CrossSkuBuyXGetYDiscount rule, RuleContext context) {
         String discountSku = rule.discountSku();
-        if(skuDiscountHasHigherPriorityFor(discountSku, rule.priority())) {
-            return new RuleResult(false, context);
+
+        long times = Math.min(context.countOf(rule.buySku()) / rule.buyQty(),
+                context.countOf(discountSku) / rule.discountQty());
+
+        if(skuDiscountHasHigherPriorityFor(discountSku, rule.priority()) || times == 0) {
+            return RuleDelta.none();
         }
+        if(!rule.stackable()) times = 1;
 
-        int buyQty = rule.buyQty();
-        int discountQty = rule.discountQty();
-        RuleContext next = context.copy();
-        long originalBuy = next.countOf(buySku);
-        long originalDiscount = next.countOf(discountSku);
-
-        boolean applied = false;
-        while(next.countOf(buySku) >= buyQty && next.countOf(discountSku) >= discountQty) {
-            next.counts().put(buySku, next.countOf(buySku) - buyQty);
-            applied = true;
-
-            next.counts().put(discountSku, next.countOf(discountSku) - discountQty);
-            next.mods().merge(discountSku, new SkuMod(0, discountQty, rule.discount()),
-                    (oldMod, newMod) -> new SkuMod(
-                            oldMod.free(),
-                            oldMod.discounted() + newMod.discounted(),
-                            Math.min(oldMod.rate(), newMod.rate()))
-            );
-
-            if(!rule.stackable()) break;
-        }
-
-        next.counts().put(buySku, originalBuy);
-        next.counts().put(discountSku, originalDiscount);
-        return new RuleResult(applied, next);
+        int totalDiscounted = (int) (rule.discountQty() * times);
+        return new RuleDelta(Map.of(discountSku,
+                new SkuMod(0, totalDiscounted, rule.discount())), true);
     }
 
     @Override
-    public RuleResult apply(SkuDiscount rule, RuleContext context) {
-        RuleContext next = context.copy();
-        SkuMod skuMod = context.modOf(rule.sku());
+    public RuleDelta apply(SkuDiscount rule, RuleContext context) {
+        SkuMod mod = context.modOf(rule.sku());
 
-        if(skuMod != null && (skuMod.free() > 0 || skuMod.discounted() > 0)) {
-            return new RuleResult(false, context);
+        if((mod.free() > 0 || mod.discounted() > 0)) {
+            return RuleDelta.none();
         }
 
-        next.mods().put(rule.sku(), new SkuMod(0, 1, 1-rule.discount()));
-        return new RuleResult(true, next);
+        return new RuleDelta(
+                Map.of(rule.sku(), new SkuMod(0, 1, 1 - rule.discount())),
+                true);
     }
 
     private boolean skuDiscountHasHigherPriorityFor(String sku, int crossSkuRulePriority) {

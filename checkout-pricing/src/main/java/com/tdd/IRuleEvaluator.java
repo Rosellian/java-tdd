@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface IRuleEvaluator {
 
-    RuleResult apply(CrossSkuBuyXGetYFree rule, RuleContext context);
-    RuleResult apply(CrossSkuBuyXGetYDiscount rule, RuleContext context);
-    RuleResult apply(SkuDiscount rule, RuleContext context);
+    RuleDelta apply(CrossSkuBuyXGetYFree rule, RuleContext context);
+    RuleDelta apply(CrossSkuBuyXGetYDiscount rule, RuleContext context);
+    RuleDelta apply(SkuDiscount rule, RuleContext context);
 }
