@@ -274,7 +274,27 @@ public record RuleContext(
 ```java
 public record RuleResult(boolean applied, RuleContext newContext) {}
 ```
-These can then be used by the RuleEngine and RuleEvaluator.
+These can then be used by the RuleEngine and RuleEvaluator.  
+In order to avoid all mutations of RuleContext content another structure is needed:
+`RuleDelta`
+```java
+public record RuleDelta(
+        Map<String, Long> countChanges,
+        Map<String, SkuMod> modChanges,
+        boolean applied
+) {
+
+    public static RuleDelta none() {
+        return new RuleDelta(Map.of(), Map.of(), false);
+    }
+}
+```
+Applying a rule will then have the following work flow:
+1. RuleContext -> RuleDelta
+2. RuleContext + RuleDelta -> RuleContext
+
+**Introducing Debug logging**
+
 
 ---
 ## Testing

@@ -13,13 +13,13 @@ public class PriceCalculator {
         this.rules = rules;
     }
 
-    public int calculateTotal(Map<String, Long> counts, Map<String, SkuMod> mods) {
+    public int calculateTotal(RuleContext context) {
         int total = 0;
 
-        for(var entry : counts.entrySet()) {
+        for(var entry : context.counts().entrySet()) {
             String sku = entry.getKey();
+            SkuMod mod = context.modOf(sku);
 
-            SkuMod mod = mods.getOrDefault(sku, new SkuMod(0, 0, 1.0));
             long discounted = mod.discounted();
 
             long remaining = entry.getValue() - mod.free() - discounted;
