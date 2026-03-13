@@ -1,3 +1,5 @@
+import styles from "./Styles";
+
 export function Section({ title, children }) {
     return (
         <div style={styles.section}>

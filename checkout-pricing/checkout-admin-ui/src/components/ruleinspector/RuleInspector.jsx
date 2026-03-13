@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./Styles";
 import {Section} from "./Section";
 import {RuleTimeline} from "./RuleTimeLine";
 import {SkuBreakdown} from "./SkuBreakdown";

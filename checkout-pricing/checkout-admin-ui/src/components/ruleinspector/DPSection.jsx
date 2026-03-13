@@ -1,4 +1,5 @@
 import {useState} from "react";
+import styles from "./Styles";
 
 export function DPSection({ dpTraces }) {
     return (
