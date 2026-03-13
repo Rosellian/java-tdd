@@ -47,15 +47,14 @@ public class PriceCalculator {
 
         int n = (int) remaining;
         int[] dp = new int[n + 1];
+        dp[0] = 0;
         List<List<String>> path = new ArrayList<>();
         path.add(List.of(ITEMS_0_KR));
-        dp[0] = 0;
         List<DPNode>  nodes = new ArrayList<>();
 
         for(int i = 1; i <= n; i++) {
-            dp[i] = i *  unitPrice;
-            List<String> best = new ArrayList<>();
-            best.add(i + " x " + unitPrice + " = " + dp[i] + " kr");
+            dp[i] = i * unitPrice;
+            List<String> best = createUnitPriceEntry(i, unitPrice);
 
             for(PricingOption opt: options) {
                 if(i >= opt.quantity()) {
@@ -74,7 +73,13 @@ public class PriceCalculator {
         return new DPTrace(sku, remaining, nodes, dp[n], path.get(n));
     }
 
-    private static List<String> createBestPriceList(PricingOption opt, List<List<String>> path, int i) {
+    private List<String> createUnitPriceEntry(int i, int unitPrice) {
+        List<String> best = new ArrayList<>();
+        best.add(i + " x " + unitPrice + " = " + i*unitPrice + " kr");
+        return best;
+    }
+
+    private List<String> createBestPriceList(PricingOption opt, List<List<String>> path, int i) {
         List<String> best;
         int quantity = opt.quantity();
         if(opt.stackable()) {
@@ -87,7 +92,7 @@ public class PriceCalculator {
         return best;
     }
 
-    private static int calculateCandidate(PricingOption opt, int[] dp, int i, int unitPrice) {
+    private int calculateCandidate(PricingOption opt, int[] dp, int i, int unitPrice) {
         int quantity = opt.quantity();
         int price = opt.price();
         if(opt.stackable()) {// chain
