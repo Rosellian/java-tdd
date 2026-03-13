@@ -601,6 +601,241 @@ We accomplish this by adding DP-tracing to PriceCalculator:
     ```
 
 #### User Interface
+**RuleInspector 3.0 – React UI**  
+An interactive, collapsible timeline with:
+- Rule-timeline
+- Delta
+- Context before/after
+- DP-graph per SKU
+- Sku-breakdown
+- Final total
+
+1. Main component: `<RuleInspector/>`
+```text
+import React, { useState } from "react";
+
+export function RuleInspector({ trace }) {
+  return (
+    <div style={styles.container}>
+      <h1 style={styles.header}>Rule Inspector</h1>
+
+      <Section title="Rule Execution">
+        <RuleTimeline events={trace.events} />
+      </Section>
+
+      <Section title="SKU Breakdown">
+        <SkuBreakdown skuTraces={trace.skuTraces} />
+      </Section>
+
+      <Section title="Dynamic Programming Paths">
+        <DPSection dpTraces={trace.dpTraces} />
+      </Section>
+
+      <Section title="Final Total">
+        <div style={styles.total}>{trace.finalTotal} kr</div>
+      </Section>
+    </div>
+  );
+}
+```
+2. Section-wrapper
+```text
+function Section({ title, children }) {
+  return (
+    <div style={styles.section}>
+      <h2 style={styles.sectionHeader}>{title}</h2>
+      {children}
+    </div>
+  );
+}
+```
+3. Rule-timeline (collapsible)
+```text
+function RuleTimeline({ events }) {
+  return (
+    <div>
+      {events.map((e, i) => (
+        <RuleEvent key={i} event={e} index={i} />
+      ))}
+    </div>
+  );
+}
+
+function RuleEvent({ event, index }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div style={styles.event}>
+      <div style={styles.eventHeader} onClick={() => setOpen(!open)}>
+        <strong>{index + 1}. {event.ruleName}</strong>
+        <span>{event.applied ? "✔ Applied" : "✖ Skipped"}</span>
+      </div>
+
+      {open && (
+        <div style={styles.eventBody}>
+          <pre>Delta: {JSON.stringify(event.delta, null, 2)}</pre>
+          <pre>Before: {JSON.stringify(event.before, null, 2)}</pre>
+          <pre>After: {JSON.stringify(event.after, null, 2)}</pre>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+4. SKU breakdown (collapsible per SKU)
+```text
+function SkuBreakdown({ skuTraces }) {
+  return (
+    <div>
+      {skuTraces.map((s, i) => (
+        <SkuItem key={i} sku={s} />
+      ))}
+    </div>
+  );
+}
+
+function SkuItem({ sku }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div style={styles.sku}>
+      <div style={styles.skuHeader} onClick={() => setOpen(!open)}>
+        <strong>{sku.sku}</strong>
+        <span>{sku.total} kr</span>
+      </div>
+
+      {open && (
+        <div style={styles.skuBody}>
+          <pre>{JSON.stringify(sku, null, 2)}</pre>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+5. DP-graph per SKU (collapsible)
+```text
+function DPSection({ dpTraces }) {
+  return (
+    <div>
+      {dpTraces.map((dp, i) => (
+        <DPTraceView key={i} dp={dp} />
+      ))}
+    </div>
+  );
+}
+
+function DPTraceView({ dp }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div style={styles.dp}>
+      <div style={styles.dpHeader} onClick={() => setOpen(!open)}>
+        <strong>SKU {dp.sku}</strong>
+        <span>Remaining: {dp.remaining}</span>
+      </div>
+
+      {open && (
+        <div style={styles.dpBody}>
+          {dp.nodes.map((node) => (
+            <div key={node.index} style={styles.dpNode}>
+              <strong>[{node.index}] → {node.price} kr</strong>
+              <pre>{node.explanation.join("\n")}</pre>
+            </div>
+          ))}
+
+          <h4>Winning Path</h4>
+          <pre>{dp.winningPath.join("\n")}</pre>
+
+          <h4>Total</h4>
+          <div>{dp.finalPrice} kr</div>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+6. Styling
+```text
+const styles = {
+  container: {
+    fontFamily: "monospace",
+    padding: 20,
+    maxWidth: 900,
+    margin: "0 auto",
+  },
+  header: {
+    textAlign: "center",
+    marginBottom: 30,
+  },
+  section: {
+    marginBottom: 40,
+  },
+  sectionHeader: {
+    borderBottom: "1px solid #ccc",
+    paddingBottom: 5,
+    marginBottom: 15,
+  },
+  event: {
+    border: "1px solid #ddd",
+    marginBottom: 10,
+    borderRadius: 4,
+  },
+  eventHeader: {
+    padding: 10,
+    background: "#f7f7f7",
+    cursor: "pointer",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  eventBody: {
+    padding: 10,
+    background: "#fff",
+  },
+  sku: {
+    border: "1px solid #ddd",
+    marginBottom: 10,
+    borderRadius: 4,
+  },
+  skuHeader: {
+    padding: 10,
+    background: "#eef",
+    cursor: "pointer",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  skuBody: {
+    padding: 10,
+    background: "#fff",
+  },
+  dp: {
+    border: "1px solid #ddd",
+    marginBottom: 10,
+    borderRadius: 4,
+  },
+  dpHeader: {
+    padding: 10,
+    background: "#efe",
+    cursor: "pointer",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  dpBody: {
+    padding: 10,
+    background: "#fff",
+  },
+  dpNode: {
+    marginBottom: 10,
+    padding: 10,
+    background: "#fafafa",
+    borderLeft: "3px solid #ccc",
+  },
+  total: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+};
+```
 
 ---
 ## Testing
