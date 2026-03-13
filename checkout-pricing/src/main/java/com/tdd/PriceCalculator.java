@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PriceCalculator {
+    public static final String ITEMS_0_KR = "0 items -> 0 kr";
     private final PricingRules rules;
 
     public PriceCalculator(PricingRules rules) {
@@ -33,7 +34,6 @@ public class PriceCalculator {
             total += discountedPrice + dpTrace.finalPrice();
         }
 
-
         return total;
     }
 
@@ -41,24 +41,45 @@ public class PriceCalculator {
         int unitPrice = rules.getUnitPrice(sku);
         List<PricingOption> options = rules.getPricingOptions(sku);
 
-        int[] dp = new int[(int) (remaining + 1)];
+        if(remaining <= 0) {
+            return new DPTrace(sku, remaining, List.of(), 0, List.of(ITEMS_0_KR));
+        }
+
+        int n = (int) remaining;
+        int[] dp = new int[n + 1];
         List<List<String>> path = new ArrayList<>();
         List<DPNode>  nodes = new ArrayList<>();
 
-        path.add(List.of("0 items -> 0 kr"));
+        path.add(List.of(ITEMS_0_KR));
+        dp[0] = 0;
 
-        for(int i = 1; i <= remaining; i++) {
+        for(int i = 1; i <= n; i++) {
             dp[i] = i *  unitPrice;
             List<String> best = new ArrayList<>();
             best.add(i + " x " + unitPrice + " = " + dp[i] + " kr");
 
-            for(PricingOption opt : options) {
-                if(i >= opt.quantity()) {
-                    int candidate = dp[i - opt.quantity()] + opt.price();
+            for(PricingOption opt: options) {
+                int quantity = opt.quantity();
+                int price = opt.price();
+
+                if(i >= quantity) {
+                    int candidate;
+                    if(opt.stackable()) {// chain
+                        candidate = dp[i - quantity] + price;
+                    }
+                    else {//only once: rest unit price
+                        candidate = price + (i - quantity) * unitPrice;
+                    }
+
                     if(candidate < dp[i]) {
                         dp[i] = candidate;
-                        best = new ArrayList<>(path.get(i - opt.quantity()));
-                        best.add(opt.quantity() + "-for-" + opt.price());
+                        if(opt.stackable()) {
+                            best = new ArrayList<>(path.get(i - quantity));
+                        }
+                        else {
+                            best = new ArrayList<>();
+                        }
+                        best.add(quantity + "-for-" + price + (opt.stackable() ? "" : " (non-stackable)"));
                     }
                 }
             }
@@ -66,6 +87,6 @@ public class PriceCalculator {
             nodes.add(new DPNode(i, dp[i], List.copyOf(best)));
         }
 
-        return new DPTrace(sku, remaining, nodes, dp[(int) remaining], path.get((int) remaining));
+        return new DPTrace(sku, remaining, nodes, dp[n], path.get(n));
     }
 }
