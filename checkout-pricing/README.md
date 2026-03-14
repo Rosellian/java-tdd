@@ -714,6 +714,31 @@ Add any additional rulesets here.
     }
     ```
 **Backend App**
+`CheckoutApplication.java`
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class CheckoutApplication {
+    static void main(String[] args) {
+        SpringApplication.run(CheckoutApplication.class, args);
+    }
+}
+```
+---
+**Rule Debugger**  
+Shall show the *full* chain of price calculation for a given cart:
+
+| Step | Content                                           |
+|------|---------------------------------------------------|
+| 1    | Input-cart and metadata                           |
+| 2    | Matching rules (in order)                         |
+| 3    | non-matching rules (with cause)                   |
+| 4    | DP-step (ex. stackable/non-stackable transitions) |
+| 5    | Price changes after each step                     |
+| 6    | End result                                        |
+
 
 
 ---
