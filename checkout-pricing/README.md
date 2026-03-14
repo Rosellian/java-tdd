@@ -19,7 +19,7 @@ You will build a checkout system where every product has a price, but some have 
 ## Architecture and steps
 ### Starting point:
 **Main parts with minimal sample code:**
-- `PricingRules`
+- `PricingRules.java`
 ```java
 import java.util.Map;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class PricingRules {
     }
 }
 ```
-- `Checkout`
+- `Checkout.java`
 ```java
 import java.util.List;
 import java.util.ArrayList;
@@ -60,40 +60,40 @@ public class Checkout {
 ```
 ### Additions:
 #### Pricing Rules:
-- `PricingRule`
+- `PricingRule.java`
 ```java
 public interface PricingRule {
     int calculatePrice(List<String> items);
 }
 ```
-- `SpecialPrice`
+- `SpecialPrice.java`
 ```java
 public record SpecialPrice(int quantity, int price) {}
 ```
-- `BuyXGetYFree`
+- `BuyXGetYFree.java`
 ```java
 public record BuyXGetYFree(int buy, int free) {}
 ```
 #### Pricing Option:  
 Can replace PricingRule interface.
-- `PricingOption`
+- `PricingOption.java`
 ```java
 public interface PricingOption {
     int price();      // what does this package cost?
     int quantity();   // how many items are consumed?
 }
 ```
-`SpecialPrice`
+`SpecialPrice.java`
 ```java
 public record SpecialPrice(int quantity, int price) implements PricingOption {}
 ```
-`BuyXGetYFreeOption`
+`BuyXGetYFreeOption.java`
 ```java
 public record BuyXGetYFreeOption(int quantity, int price) implements PricingOption {}
 ```
 #### Priority and stackability rules:
 Note memoization might need rethinking here.
-- `PricingOption`, new version
+- `PricingOption.java`, new version
 ```java
 public interface PricingOption {
     int price();         // what does this package cost?
@@ -107,11 +107,11 @@ Example rules to use:
 - BuyXGetYFree is lower and not stackable
 - BuyXGetYFree is stackable for product A, but not others.
 #### Buy X, get Y at discount
-- `BuyXGetYDiscount`, new rule
+- `BuyXGetYDiscount.java`, new rule
 ```java
 public record BuyXGetYDiscount(int buy, int get, double discount, boolean stackable) {}
 ```
-- `BuyXGetYDiscountOption`, new PricingOption
+- `BuyXGetYDiscountOption.java`, new PricingOption
 ```java
 public record BuyXGetYDiscountOption(int quantity, int price, int priority, boolean stackable)
         implements PricingOption {}
@@ -119,6 +119,7 @@ public record BuyXGetYDiscountOption(int quantity, int price, int priority, bool
 #### Cross-SKU campaigns
 - **Buy X of A, get Y of B free**  
 This creates the need for basket-level or pre-stage rule processing, handling cross-SKU rules.
+`CrossSkuBuyXGetYFree.java`
 ```java
 public record CrossSkuBuyXGetYFree(
     String buySku,
@@ -130,6 +131,7 @@ public record CrossSkuBuyXGetYFree(
 ) {}
 ```
 - **Buy X of A, get Y of B at discount**
+`CrossSkuBuyXGetYDiscount.java`
 ```java
 public record CrossSkuBuyXGetYDiscount(
     String buySku,
@@ -143,12 +145,14 @@ public record CrossSkuBuyXGetYDiscount(
 ```
 ---
 #### Adding SKU-specific discount rule
+`SkuDiscount.java`
 ```java
 record SkuDiscount(String sku, double rate, int priority) {}
 ```
 ---
 ### Refactoring
 #### Combined Rule application structure
+`SkuMod.java`
 ```java
 public record SkuMod(int free, int discounted, double rate){}
 
@@ -157,7 +161,7 @@ public record SkuMod(int free, int discounted, double rate){}
 ```
 #### RuleEngine architecture
 **Main step:**  
-`RuleEngine`
+`RuleEngine.java`
 ```java
 public class RuleEngine {
 
@@ -178,7 +182,7 @@ public class RuleEngine {
     }
 }
 ```
-`RuleEvaluator`
+`RuleEvaluator.java`
 ```java
 public interface IRuleEvaluator {
 
@@ -187,7 +191,7 @@ public interface IRuleEvaluator {
    boolean apply(CrossSkuBuyXGetYDiscount rule, Map<String, Long> counts, Map<String, SkuMod> mods);
 }
 ```
-`PriceCalculator`
+`PriceCalculator.java`
 ```java
 public class PriceCalculator {
    private final PricingRules rules;
@@ -202,7 +206,7 @@ public class PriceCalculator {
 }
 ```
 Checkout class now becomes much cleaner:  
-`Checkout`
+`Checkout.java`
 ```java
 public class Checkout {
     private final RuleEngine ruleEngine;
@@ -247,7 +251,7 @@ It can enable more features:
 - Extensions
 - Make the process easier to follow
 
-`RuleContext`
+`RuleContext.java`
 ```java
 public record RuleContext(
         Map<String, Long> counts,
@@ -270,13 +274,13 @@ public record RuleContext(
     }
 }
 ```
-`RuleResult`
+`RuleResult.java`
 ```java
 public record RuleResult(boolean applied, RuleContext newContext) {}
 ```
 These can then be used by the RuleEngine and RuleEvaluator.  
 In order to avoid all mutations of RuleContext content another structure is needed:
-`RuleDelta`
+`RuleDelta.java`
 ```java
 public record RuleDelta(
         Map<String, Long> countChanges,
@@ -294,6 +298,7 @@ Applying a rule will then have the following work flow:
 2. RuleContext + RuleDelta -> RuleContext
 
 For complete immutability counts should not be changed so RuleDelta becomes:
+`RuleDelta.java`
 ```java
 public record RuleDelta(
         Map<String, SkuMod> modChanges,
@@ -305,7 +310,7 @@ public record RuleDelta(
     }
 }
 ```
-`RuleContext` needs the following method:
+`RuleContext.java` needs the following method:
 ```java
 public RuleContext apply(RuleDelta delta) {
     // Apply changes to mods
@@ -321,7 +326,7 @@ You want to see:
 - what delta they generated
 - how context changed step by step
 
-`RuleDebugEvent`
+`RuleDebugEvent.java`
 ```java
 public record RuleDebugEvent(
         String ruleName,
@@ -331,7 +336,7 @@ public record RuleDebugEvent(
         RuleContext after
 ) {}
 ```
-`RuleDebugger`
+`RuleDebugger.java`
 ```java
 public class RuleDebugger {
 
@@ -375,7 +380,7 @@ public class RuleDebugger {
   - How DP chose special prices
   - How the total was built
 
-`RuleInspector` - Data model
+`RuleInspector.java` - Data model
 ```java
 public class RuleInspector {
 
@@ -390,7 +395,7 @@ public class RuleInspector {
     }
 }
 ```
-`RuleInspectorView` - Textbased rendering
+`RuleInspectorView.java` - Textbased rendering
 ```java
 public class RuleInspectorView {
 
@@ -440,7 +445,7 @@ RuleTrace gives full history over:
 - totals per SKU
 - totals per step
 
-`RuleTrace`
+`RuleTrace.java`
 ```java
 public record RuleTrace(
         List<RuleDebugEvent> events,
@@ -448,7 +453,7 @@ public record RuleTrace(
         int finalTotal
 ) {}
 ```
-`SkuTrace`
+`SkuTrace.java`
 ```java
 public record SkuTrace(
         String sku,
@@ -472,7 +477,7 @@ RuleInspector takes:
 
 And builds a complete trace. Here is the new version:
 
-`RuleInspector`
+`RuleInspector.java`
 ```java
 public class RuleInspector {
 
@@ -492,7 +497,7 @@ public class RuleInspector {
 **Extend Inspector with graph representation of DP-path**  
 We accomplish this by adding DP-tracing to PriceCalculator:  
 - Add a structure for a DP-step.  
-    `DPNode`
+    `DPNode.java`
     ```java
     public record DPNode(
         int index,
@@ -501,7 +506,7 @@ We accomplish this by adding DP-tracing to PriceCalculator:
     ) {}
     ```
 - And a Dp-trace
-    `DPTrace`
+    `DPTrace.java`
     ```java
     public record DPTrace(
         String sku,
@@ -512,7 +517,7 @@ We accomplish this by adding DP-tracing to PriceCalculator:
     ) {}
     ```
 - Change implementation in PriceCalculator and add logging
-    `PriceCalculator`
+    `PriceCalculator.java`
     ```java
     //...
     public DPTrace bestPriceTrace(String sku, long remaining) {
@@ -521,7 +526,7 @@ We accomplish this by adding DP-tracing to PriceCalculator:
     //...
     ```
 - Integrate DP-trace in RuleInspector
-  `RuleInspector`
+  `RuleInspector.java`
     ```java
     public class RuleInspector {
         public RuleTrace inspect(RuleContext finalContext, List<RuleDebugEvent> events) {
@@ -539,7 +544,7 @@ We accomplish this by adding DP-tracing to PriceCalculator:
     }
     ```
 - And extend RuleTrace:  
-  `Ruletrace`
+  `Ruletrace.java`
     ```java
     public record RuleTrace(
         List<RuleDebugEvent> events,
@@ -549,7 +554,7 @@ We accomplish this by adding DP-tracing to PriceCalculator:
     ) {}
     ```
 - Add log visualization:  
-    `RuleInspectorView`
+    `RuleInspectorView.java`
     ```java
     public class RuleInspectorView {
 
@@ -589,7 +594,120 @@ Admin tool using the RuleInspector UI in which you can:
 
 **UI**
 See checkout-admin-ui readme file.
-**Backend**
+**Backend API**
+- Takes `{cart, ruleSet}`
+- Runs the rule engine
+- Returns `RuleTrace` as JSON
+
+1. DTOs for request/response
+    `EvaluateRequest.java`
+    ```java
+    public class EvaluateRequest {
+        public Map<String, Long> cart;
+        public String ruleSet;
+    }
+    ```
+   `EvaluateResponse.java`
+    ```java
+    public class EvaluateResponse {
+        public RuleTrace trace;
+
+        public EvaluateResponse(RuleTrace trace) {
+            this.trace = trace;
+        }
+    }
+    ```
+2. PricingEngineService – wrapper around the engine.
+    A thin service that:
+    - Loads correct rule set
+    - Runs RuleEngine
+    - Runs RuleInspector
+    - Returns RuleTrace
+   `PricingEngineService.java`
+   ```java
+   import org.springframework.stereotype.Service;
+
+    @Service
+    public class PricingEngineService {
+        private final RuleEvaluator evaluator = new RuleEvaluator();
+
+        public RuleTrace evaluate(Map<String, Long> cart, String ruleSetName) {
+            PricingRules rules = RuleSetRegistry.get(ruleSetName);
+            PriceCalculator calculator = new PriceCalculator(rules);
+
+            RuleDebugger debugger = new RuleDebugger();
+            RuleEngine engine = new RuleEngine(rules, evaluator, debugger);
+
+            RuleContext ctx = new RuleContext(cart, Map.of());
+            ctx = engine.evaluate(ctx);
+
+            RuleInspector inspector = new RuleInspector(rules, calculator);
+            return inspector.inspect(ctx, debugger.events());
+        }
+    }
+    ```
+3. RuleSetRegistry - Choose rule set  
+Add any additional rulesets here.
+    `RuleSetRegistry.java`
+    ```java
+    import java.util.Map;
+
+    public class RuleSetRegistry {
+
+        public static PricingRules get(String name) {
+            return switch (name) {
+                case "campaignA" -> CampaignARules.build();
+                case "campaignB" -> CampaignBRules.build();
+                default -> DefaultRules.build();
+            };
+        }
+    }
+    ```
+4. REST-controller: `/api/evaluate`
+    `PricingController.java`
+    ```java
+    import org.springframework.web.bind.annotation.*;
+
+    @RestController
+    @RequestMapping("/api")
+    public class PricingController {
+        private final PricingEngineService service;
+
+        public PricingController(PricingEngineService service) {
+            this.service = service;
+        }
+
+        @PostMapping("/evaluate")
+        public EvaluateResponse evaluate(@RequestBody EvaluateRequest req) {
+            RuleTrace trace = service.evaluate(req.cart, req.ruleSet);
+            return new EvaluateResponse(trace);
+        }
+    }
+    ```
+5. CORS (if React runs on localhost:3000)
+    `CorsConfig.java`
+    ```java
+    import org.springframework.context.annotation.Bean;
+    import org.springframework.context.annotation.Configuration;
+    import org.springframework.web.servlet.config.annotation.CorsRegistry;
+    import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+    @Configuration
+    public class CorsConfig {
+
+        @Bean
+        public WebMvcConfigurer corsConfigurer() {
+            return new WebMvcConfigurer() {
+                @Override
+                public void addCorsMappings(CorsRegistry registry) {
+                    registry.addMapping("/api/**")
+                            .allowedOrigins("http://localhost:3000")
+                            .allowedMethods("GET", "POST");
+                }
+            };
+        }
+    }
+    ```
 
 ---
 ## Testing
@@ -1449,15 +1567,204 @@ void skuDiscountBeatsCrossSkuDiscountWhenHigherPriority() {
     assertEquals(130, checkout.total());
 }
 ```
-**Test 32:**
-```java
-
+---
+### User Interface testing
+#### Manual server poke
+To test the backend endpoint you can use the following curl command:
+```shell
+curl -X POST http://localhost:8080/api/evaluate \
+  -H "Content-Type: application/json" \
+  -d '{"cart":{"A":3,"B":4},"ruleSet":"default"}'
 ```
-**Test 33:**
-```java
-
+You should get:
+```json
+{
+  "trace": {
+    "events": [...],
+    "skuTraces": [...],
+    "dpTraces": [...],
+    "finalTotal": 445
+  }
+}
 ```
-**Test 34:**
+#### Sample rulesets
+- DefaultRules – base rules, simple special prices
+- CampaignARules – aggressive campaign with more discounts
+- CampaignBRules – premium campaign with cross‑SKU‑logic
+`DefaultRules.java`
 ```java
+import java.util.List;
+import java.util.Map;
 
+public class DefaultRules {
+
+    public static PricingRules build() {
+
+        Map<String, Integer> unitPrices = Map.of(
+                "A", 50,
+                "B", 40,
+                "C", 25,
+                "D", 20
+        );
+
+        Map<String, List<PricingOption>> options = Map.of(
+                "A", List.of(
+                        new PricingOption(3, 130, true)   // 3-for-130
+                ),
+                "B", List.of(
+                        new PricingOption(2, 40, false)   // 2-for-40 (non-stackable)
+                ),
+                "C", List.of(),
+                "D", List.of()
+        );
+
+        List<CrossSkuBuyXGetYFree> freeRules = List.of(
+                // no cross-SKU in default
+        );
+
+        List<CrossSkuBuyXGetYDiscount> discountRules = List.of(
+                // no cross-SKU in default
+        );
+
+        List<SkuDiscount> skuDiscounts = List.of(
+                // no per-SKU discounts in default
+        );
+
+        return new PricingRules(unitPrices, options, freeRules, discountRules, skuDiscounts);
+    }
+}
+```
+`CampaignARules.java`
+A campaign with:
+- More special prices
+- cross-SKU free
+- per-SKU discount
+```java
+import com.tdd.PricingRules;
+import com.tdd.rules.*;
+
+import java.util.List;
+import java.util.Map;
+
+public class CampaignARules {
+
+    public static PricingRules build() {
+
+        Map<String, Integer> unitPrices = Map.of(
+                "A", 50,
+                "B", 40,
+                "C", 25,
+                "D", 20
+        );
+
+        Map<String, List<PricingOption>> options = Map.of(
+                "A", List.of(
+                        new SpecialPrice(3, 120, 1, true),   // better deal than default
+                        new SpecialPrice(5, 180, 1, true)    // 5-for-180
+                ),
+                "B", List.of(
+                        new BuyXGetYFreeOption(2, 40, 2, false)    // buy one, get one free
+                ),
+                "C", List.of(
+                        new SpecialPrice(4, 70, 1, true)     // 4-for-70
+                ),
+                "D", List.of()
+        );
+
+        List<CrossSkuBuyXGetYFree> freeRules = List.of(
+                new CrossSkuBuyXGetYFree(
+                        "A", 2,
+                        "C", 1,
+                        10,   // priority
+                        true  // stackable
+                )
+        );
+
+        List<CrossSkuBuyXGetYDiscount> discountRules = List.of(
+                new CrossSkuBuyXGetYDiscount(
+                        "B", 2,
+                        "D", 1,
+                        0.50, // 50% off D
+                        5,
+                        false
+                )
+        );
+
+        List<SkuDiscount> skuDiscounts = List.of(
+                new SkuDiscount("C", 0.10, 1)  // 10% off C
+        );
+
+        return new PricingRules(unitPrices, options, freeRules, discountRules, skuDiscounts);
+    }
+}
+```
+`CampaignBRules.java`
+A more advanced campaign with:
+- cross-SKU free
+- cross-SKU discount
+- per-SKU discount
+- premium special prices
+```java
+import com.tdd.PricingRules;
+import com.tdd.rules.*;
+
+import java.util.List;
+import java.util.Map;
+
+public class CampaignBRules {
+
+    public static PricingRules build() {
+
+        Map<String, Integer> unitPrices = Map.of(
+                "A", 50,
+                "B", 40,
+                "C", 25,
+                "D", 20,
+                "E", 60
+        );
+
+        Map<String, List<PricingOption>> options = Map.of(
+                "A", List.of(
+                        new SpecialPrice(3, 130, 1, true),  //3-for-130
+                        new SpecialPrice(6, 240, 1, true)   //6-for-240
+                ),
+                "B", List.of(
+                        new SpecialPrice(2, 40, 1,false)    // 2-for-40
+                ),
+                "C", List.of(
+                        new SpecialPrice(5, 100, 1, true)   // 5-for-100
+                ),
+                "D", List.of(),
+                "E", List.of(
+                        new SpecialPrice(2, 90, 1, true)   // 2-for-90
+                )
+        );
+
+        List<CrossSkuBuyXGetYFree> freeRules = List.of(
+                new CrossSkuBuyXGetYFree(
+                        "E", 2,
+                        "A", 1,
+                        20,
+                        false
+                )
+        );
+
+        List<CrossSkuBuyXGetYDiscount> discountRules = List.of(
+                new CrossSkuBuyXGetYDiscount(
+                        "A", 3,
+                        "B", 1,
+                        0.25, // 25% off B
+                        15,
+                        true
+                )
+        );
+
+        List<SkuDiscount> skuDiscounts = List.of(
+                new SkuDiscount("D", 0.20, 1), // 20% off D
+                new SkuDiscount("E", 0.10, 2)  // 10% off E
+        );
+
+        return new PricingRules(unitPrices, options, freeRules, discountRules, skuDiscounts);
+    }
+}
 ```

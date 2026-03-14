@@ -5,12 +5,24 @@ import com.tdd.rules.*;
 import java.util.*;
 
 public class PricingRules {
-    private final Map<String, Integer> unitPrices = new HashMap<>();
-    private final Map<String, List<SpecialPrice>> specialPrices = new HashMap<>();
-    private final List<SkuDiscount> discountPrices = new ArrayList<>();
-    private final Map<String, List<BuyXGetYFree>> buyXGetYFree = new HashMap<>();
-    private final Map<String, List<BuyXGetYDiscount>> buyXGetYDiscount = new HashMap<>();
-    private final List<CrossSkuRule> crossSku = new ArrayList<>();
+    private Map<String, Integer> unitPrices = new HashMap<>();
+    private Map<String, List<SpecialPrice>> specialPrices = new HashMap<>();
+    private List<SkuDiscount> skuDiscounts = new ArrayList<>();
+    private Map<String, List<BuyXGetYFree>> buyXGetYFree = new HashMap<>();
+    private Map<String, List<BuyXGetYDiscount>> buyXGetYDiscount = new HashMap<>();
+    private List<CrossSkuRule> crossSku = new ArrayList<>();
+
+    public PricingRules(Map<String, Integer> unitPrices, Map<String, List<PricingOption>> options,
+                        List<CrossSkuBuyXGetYFree> freeRules, List<CrossSkuBuyXGetYDiscount> discountRules,
+                        List<SkuDiscount> skuDiscounts) {
+        this.unitPrices = unitPrices;
+        this.options = options;
+        this.skuDiscounts = skuDiscounts;
+        this.crossSku.addAll(freeRules);
+        this.crossSku.addAll(discountRules);
+    }
+
+    public PricingRules() {}
 
     public void addUnitPrice(String sku, int price) {
         unitPrices.put(sku, price);
@@ -30,10 +42,10 @@ public class PricingRules {
     }
 
     public void addSkuDiscount(String sku, double discount, int priority) {
-        discountPrices.add(new SkuDiscount(sku, discount, priority));
+        skuDiscounts.add(new SkuDiscount(sku, discount, priority));
     }
 
-    public List<SkuDiscount> getSkuDiscounts() {return discountPrices;}
+    public List<SkuDiscount> getSkuDiscounts() {return skuDiscounts;}
 
     public void addBuyXGetYFree(String sku, int buy, int free, boolean stackable) {
         buyXGetYFree.computeIfAbsent(sku, _ -> new ArrayList<>())
