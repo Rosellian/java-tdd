@@ -1,3 +1,5 @@
 package com.tdd.rules;
 
-public record BuyXGetYDiscount(int buy, int get, double discount, boolean stackable) {}
+public record BuyXGetYDiscount(int quantity, int price, int priority, boolean stackable)
+        implements PricingOption {
+}

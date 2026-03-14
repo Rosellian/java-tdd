@@ -7,8 +7,6 @@ import java.util.*;
 public class PricingRules {
     private Map<String, Integer> unitPrices = new HashMap<>();
     private Map<String, List<PricingOption>> options = new HashMap<>();
-    private Map<String, List<BuyXGetYFree>> buyXGetYFree = new HashMap<>();
-    private Map<String, List<BuyXGetYDiscount>> buyXGetYDiscount = new HashMap<>();
     private List<SkuDiscount> skuDiscounts = new ArrayList<>();
     private final List<CrossSkuRule> crossSku = new ArrayList<>();
 
@@ -43,49 +41,24 @@ public class PricingRules {
 
     public List<SkuDiscount> getSkuDiscounts() {return skuDiscounts;}
 
-    public void addBuyXGetYFree(String sku, int buy, int free, boolean stackable) {
-        buyXGetYFree.computeIfAbsent(sku, _ -> new ArrayList<>())
-                .add(new BuyXGetYFree(buy, free, stackable));
+    public void addBuyXGetYFree(String sku, int buy, int free, int priority, boolean stackable) {
+        options.computeIfAbsent(sku, _ -> new ArrayList<>())
+                .add(new BuyXGetYFree(buy + free, buy * getUnitPrice(sku), 2, stackable));
     }
 
-    public List<BuyXGetYFree> getBuyXGetYFree(String sku) {
-        return buyXGetYFree.getOrDefault(sku, new ArrayList<>());
-    }
-
-    public void addBuyXGetYDiscount(String sku, int buy, int get, double discount) {
-        buyXGetYDiscount.computeIfAbsent(sku, _ -> new ArrayList<>())
-                .add(new BuyXGetYDiscount(buy, get, discount, true));
-    }
-
-    public List<BuyXGetYDiscount> getBuyXGetYDiscount(String sku) {
-        return buyXGetYDiscount.getOrDefault(sku, new ArrayList<>());
+    public void addBuyXGetYDiscount(String sku, int buy, int get, double discount, int priority, boolean stackable) {
+        int unitPrice = getUnitPrice(sku);
+        int price = (int)(buy * unitPrice + get * unitPrice * (1-discount));
+        options.computeIfAbsent(sku, _ -> new ArrayList<>()).
+                add(new BuyXGetYDiscount(buy + get, price, priority, stackable));
     }
 
     public List<PricingOption>  getPricingOptions(String sku) {
-        List<PricingOption> optionsFull = new ArrayList<>(options.getOrDefault(sku, new ArrayList<>()));
+        List<PricingOption> skuOptions = new ArrayList<>(options.getOrDefault(sku, new ArrayList<>()));
 
-        addBuyXGetYDiscount(sku, optionsFull);
+        skuOptions.sort(Comparator.comparingInt(PricingOption::priority));
 
-        addBuyXGetYFree(sku, optionsFull);
-
-        optionsFull.sort(Comparator.comparingInt(PricingOption::priority));
-
-        return optionsFull;
-    }
-
-    private void addBuyXGetYFree(String sku, List<PricingOption> options) {
-        for(BuyXGetYFree rule : getBuyXGetYFree(sku)) {
-            options.add(new BuyXGetYFreeOption(rule.buy() + rule.free(),
-                    rule.buy() * getUnitPrice(sku), 2, rule.stackable()));
-        }
-    }
-
-    private void addBuyXGetYDiscount(String sku, List<PricingOption> options) {
-        for (BuyXGetYDiscount rule : getBuyXGetYDiscount(sku)) {
-            int unitPrice = getUnitPrice(sku);
-            int price = (int)(rule.buy() * unitPrice + rule.get() * unitPrice * (1-rule.discount()));
-            options.add(new BuyXGetYDiscountOption(rule.buy() + rule.get(), price, 1, rule.stackable()));
-        }
+        return skuOptions;
     }
 
     public void addCrossSkuBuyXGetYFree(String buySku, int buyQuantity,

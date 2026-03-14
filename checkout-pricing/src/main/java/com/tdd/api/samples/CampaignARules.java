@@ -23,7 +23,7 @@ public class CampaignARules {
                         new SpecialPrice(5, 180, 1, true)    // 5-for-180
                 ),
                 "B", List.of(
-                        new BuyXGetYFreeOption(2, 40, 2, false)    // buy one, get one free
+                        new BuyXGetYFree(2, 40, 2, false)    // buy one, get one free
                 ),
                 "C", List.of(
                         new SpecialPrice(4, 70, 1, true)     // 4-for-70

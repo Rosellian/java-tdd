@@ -174,7 +174,7 @@ public class CheckoutTest {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("A", 50);
 
-        rules.addBuyXGetYFree("A", 1, 1, true);
+        rules.addBuyXGetYFree("A", 1, 1, 2, true);
 
         Checkout checkout = new Checkout(rules);
 
@@ -189,7 +189,7 @@ public class CheckoutTest {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice("A", 50);
 
-        rules.addBuyXGetYFree("A", 1, 1, true);
+        rules.addBuyXGetYFree("A", 1, 1, 2, true);
 
         Checkout checkout = new Checkout(rules);
 
@@ -207,7 +207,7 @@ public class CheckoutTest {
         rules.addUnitPrice("A", 50);
 
         rules.addSpecialPrice("A", 3, 130,1, true);
-        rules.addBuyXGetYFree("A", 1, 1, true);
+        rules.addBuyXGetYFree("A", 1, 1, 2, true);
 
         Checkout checkout = new Checkout(rules);
 
@@ -227,7 +227,7 @@ public class CheckoutTest {
         rules.addUnitPrice("A", 50);
 
         // Two conflicting rules
-        rules.addBuyXGetYFree("A", 1, 1, false); // 2 for 50 In this case set as non-stackable
+        rules.addBuyXGetYFree("A", 1, 1, 2, false); // 2 for 50 In this case set as non-stackable
         rules.addSpecialPrice("A", 3, 100,1, true); // 3 for 100
 
         Checkout checkout;
@@ -268,7 +268,7 @@ public class CheckoutTest {
         rules.addUnitPrice("A", 50);
 
         // A is stackable
-        rules.addBuyXGetYFree("A", 1, 1, true);
+        rules.addBuyXGetYFree("A", 1, 1, 2, true);
 
         Checkout checkout = new Checkout(rules);
 
@@ -287,7 +287,7 @@ public class CheckoutTest {
         rules.addUnitPrice("B", 40);
 
         // B is non-stackable
-        rules.addBuyXGetYFree("B", 1, 1, false);
+        rules.addBuyXGetYFree("B", 1, 1, 2, false);
 
         Checkout checkout = new Checkout(rules);
 
@@ -306,8 +306,8 @@ public class CheckoutTest {
         rules.addUnitPrice("A", 50);
         rules.addUnitPrice("B", 40);
 
-        rules.addBuyXGetYFree("A", 1, 1, true);   // A stackable
-        rules.addBuyXGetYFree("B", 1, 1, false);  // B non-stackable
+        rules.addBuyXGetYFree("A", 1, 1, 2, true);   // A stackable
+        rules.addBuyXGetYFree("B", 1, 1, 2, false);  // B non-stackable
 
         Checkout checkout = new Checkout(rules);
 
@@ -332,7 +332,7 @@ public class CheckoutTest {
         rules.addUnitPrice("A", 50);
 
         // buy 2, get 1 at 50% discount
-        rules.addBuyXGetYDiscount("A", 2, 1, 0.5);
+        rules.addBuyXGetYDiscount("A", 2, 1, 0.5, 1, false);
 
         Checkout checkout = new Checkout(rules);
 
@@ -353,19 +353,19 @@ public class CheckoutTest {
         // special price: 3 for 120 (priority 1, stackable)
         rules.addSpecialPrice("A", 3, 120,1, true);
         // buy 1, get 1 free (stackable)
-        rules.addBuyXGetYFree("A", 2, 1, true);
+        rules.addBuyXGetYFree("A", 2, 1, 2, true);
 
         // --- SKU B ---
         rules.addUnitPrice("B", 40);
         // special price: 2 for 70 (priority 1)
         rules.addSpecialPrice("B", 2, 70,1, true);
         // buy 1, get 1 free (non-stackable)
-        rules.addBuyXGetYFree("B", 1, 1, false);
+        rules.addBuyXGetYFree("B", 1, 1, 2, false);
 
         // --- SKU C ---
         rules.addUnitPrice("C", 30);
         // buy 2, get 1 at 50% discount (stackable)
-        rules.addBuyXGetYDiscount("C", 2, 1, 0.5);
+        rules.addBuyXGetYDiscount("C", 2, 1, 0.5, 1, true);
 
         Checkout checkout = new Checkout(rules);
 

@@ -151,6 +151,11 @@ record SkuDiscount(String sku, double rate, int priority) {}
 ```
 ---
 ### Refactoring
+#### Free and Discount rules merged with options
+If `BuyXGetYFree.java` and `BuyXGetYDiscount.java` are kept they can be replaced like:
+- BuyXGetYFreeOption.java -> BuyXGetYFree.java
+- BuyXGetYDiscountOption.java → BuyXGetYDiscount.java  
+And then `PricingRules` can  be refactored to hold all per-sku options in 1 structure.
 #### Combined Rule application structure
 `SkuMod.java`
 ```java
@@ -708,6 +713,8 @@ Add any additional rulesets here.
         }
     }
     ```
+**Backend App**
+
 
 ---
 ## Testing
@@ -1639,6 +1646,7 @@ A campaign with:
 - More special prices
 - cross-SKU free
 - per-SKU discount
+
 ```java
 import com.tdd.PricingRules;
 import com.tdd.rules.*;
@@ -1663,7 +1671,7 @@ public class CampaignARules {
                         new SpecialPrice(5, 180, 1, true)    // 5-for-180
                 ),
                 "B", List.of(
-                        new BuyXGetYFreeOption(2, 40, 2, false)    // buy one, get one free
+                        new BuyXGetYFree(2, 40, 2, false)    // buy one, get one free
                 ),
                 "C", List.of(
                         new SpecialPrice(4, 70, 1, true)     // 4-for-70
