@@ -6,11 +6,11 @@ import java.util.*;
 
 public class PricingRules {
     private Map<String, Integer> unitPrices = new HashMap<>();
-    private Map<String, List<SpecialPrice>> specialPrices = new HashMap<>();
-    private List<SkuDiscount> skuDiscounts = new ArrayList<>();
+    private Map<String, List<PricingOption>> options = new HashMap<>();
     private Map<String, List<BuyXGetYFree>> buyXGetYFree = new HashMap<>();
     private Map<String, List<BuyXGetYDiscount>> buyXGetYDiscount = new HashMap<>();
-    private List<CrossSkuRule> crossSku = new ArrayList<>();
+    private List<SkuDiscount> skuDiscounts = new ArrayList<>();
+    private final List<CrossSkuRule> crossSku = new ArrayList<>();
 
     public PricingRules(Map<String, Integer> unitPrices, Map<String, List<PricingOption>> options,
                         List<CrossSkuBuyXGetYFree> freeRules, List<CrossSkuBuyXGetYDiscount> discountRules,
@@ -33,12 +33,8 @@ public class PricingRules {
     }
 
     public void addSpecialPrice(String sku, int quantity, int price, int priority, boolean stackable) {
-        specialPrices.computeIfAbsent(sku, _ -> new ArrayList<>())
+        options.computeIfAbsent(sku, _ -> new ArrayList<>())
                 .add(new SpecialPrice(quantity, price, priority, stackable));
-    }
-
-    public List<SpecialPrice> getSpecialPrices(String sku) {
-        return specialPrices.getOrDefault(sku, new ArrayList<>());
     }
 
     public void addSkuDiscount(String sku, double discount, int priority) {
@@ -66,15 +62,15 @@ public class PricingRules {
     }
 
     public List<PricingOption>  getPricingOptions(String sku) {
-        List<PricingOption> options = new ArrayList<>(getSpecialPrices(sku));
+        List<PricingOption> optionsFull = new ArrayList<>(options.getOrDefault(sku, new ArrayList<>()));
 
-        addBuyXGetYDiscount(sku, options);
+        addBuyXGetYDiscount(sku, optionsFull);
 
-        addBuyXGetYFree(sku, options);
+        addBuyXGetYFree(sku, optionsFull);
 
-        options.sort(Comparator.comparingInt(PricingOption::priority));
+        optionsFull.sort(Comparator.comparingInt(PricingOption::priority));
 
-        return options;
+        return optionsFull;
     }
 
     private void addBuyXGetYFree(String sku, List<PricingOption> options) {
