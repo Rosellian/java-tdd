@@ -1,0 +1,31 @@
+.rule-debugger {
+    background: #1a1a1a;
+    padding: 16px;
+    border-radius: 8px;
+    color: #eee;
+}
+
+.debugger-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+section {
+    background: #222;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.timeline-item.matched {
+    color: #4caf50;
+}
+
+.timeline-item.skipped {
+    color: #f44336;
+}
+
+.chart-placeholder {
+    display: flex;
+    gap: 4px;
+}

@@ -727,6 +727,41 @@ public class CheckoutApplication {
 }
 ```
 ---
+**Separating current RuleDebugger**
+Renaming current Rule-Debugger/Logger to RuleTracer. This is the one used by current RuleInspector.  
+This could be replaced by the new RuleDebugger implementation later, including tracing data structures.  
+Renaming:  
+RuleDebugEvent.java → RuleTraceEvent.java  
+RuleDebugger.java → RuleTracer.java  
+
+Below is an example structure.
+Go from:  
+```
+logging
+├── DPNode.java
+├── DPTrace.java
+├── RuleDebugEvent.java
+├── RuleDebugger.java
+├── RuleTrace.java
+├── SkuTrace.java
+├── RuleInspector.java
+└── RuleInspectorView.java
+```
+to:
+```
+tracing
+├── DPNode.java
+├── DPTrace.java
+├── RuleTraceEvent.java
+├── RuleTracer.java
+├── RuleTrace.java
+├── SkuTrace.java
+├── debug
+└── inspector
+    ├── RuleInspector.java
+    └── RuleInspectorView.java
+```
+
 **Rule Debugger**  
 Shall show the *full* chain of price calculation for a given cart:
 
@@ -739,6 +774,46 @@ Shall show the *full* chain of price calculation for a given cart:
 | 5    | Price changes after each step                     |
 | 6    | End result                                        |
 
+**Components:**
+1. `PricingTrace.java`
+    ```java
+    ```
+2. `RuleTrace.java`
+    ```java
+    ```
+3. `StepTrace.java`
+    ```java
+    ```
+4. `DPTrace.java`
+    ```java
+    ```
+5. `CartSnapshot.java`
+    ```java
+    ```
+6. `CartItem.java`
+    ```java
+    ```
+7. `CustomerInfo.java`
+    ```java
+    ```
+8. `Metadata.java`
+    ```java
+    ```
+9. `PricingTraceCollector.java`
+    ```java
+    ```
+Separation in project structure:
+```
+
+```
+**Backend API endpoint**
+```java
+@PostMapping("/trace")
+    public TraceResponse getTrace(@RequestBody EvaluateRequest req) {
+        PricingTrace trace = service.getTrace(req.cart, req.ruleSet);
+        return new TraceResponse(trace);
+    }
+```
 
 
 ---

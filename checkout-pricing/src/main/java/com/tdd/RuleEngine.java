@@ -3,7 +3,7 @@ package com.tdd;
 import com.tdd.engine.RuleContext;
 import com.tdd.engine.RuleDelta;
 import com.tdd.engine.RuleEvaluator;
-import com.tdd.logging.RuleDebugger;
+import com.tdd.tracing.RuleTracer;
 import com.tdd.rules.CrossSkuBuyXGetYDiscount;
 import com.tdd.rules.CrossSkuBuyXGetYFree;
 import com.tdd.rules.CrossSkuRule;
@@ -15,9 +15,9 @@ import java.util.List;
 public class RuleEngine {
     private final PricingRules rules;
     private final RuleEvaluator evaluator;
-    private final RuleDebugger debugger;
+    private final RuleTracer debugger;
 
-    public RuleEngine(PricingRules rules, RuleDebugger debugger) {
+    public RuleEngine(PricingRules rules, RuleTracer debugger) {
         this.rules = rules;
         this.evaluator = new RuleEvaluator(rules);
         this.debugger = debugger;

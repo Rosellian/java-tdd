@@ -1,16 +1,16 @@
 package com.tdd;
 
 import com.tdd.engine.RuleContext;
-import com.tdd.logging.RuleDebugger;
-import com.tdd.logging.RuleInspector;
-import com.tdd.logging.RuleInspectorView;
-import com.tdd.logging.RuleTrace;
+import com.tdd.tracing.RuleTracer;
+import com.tdd.tracing.inspector.RuleInspector;
+import com.tdd.tracing.inspector.RuleInspectorView;
+import com.tdd.tracing.RuleTrace;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Checkout {
-    public  final RuleDebugger debugger = new RuleDebugger();
+    public  final RuleTracer debugger = new RuleTracer();
     private final PricingRules rules;
     private final RuleEngine ruleEngine;
     private final PriceCalculator calculator;

@@ -3,11 +3,15 @@ import { CartEditor } from "../components/CartEditor";
 import { RuleSetSelector } from "../components/RuleSetSelector";
 import { RuleInspector } from "../components/ruleinspector/RuleInspector";
 import { runPricingEngine } from "../api/pricingEngine";
+import { RuleDebugger } from "../components/ruledebugger/RuleDebugger";
+import {usePricingTrace} from "../api/pricingTrace";
 
 export default function AdminApp() {
     const [cart, setCart] = useState({});
     const [ruleSet, setRuleSet] = useState("default");
     const [trace, setTrace] = useState(null);
+    const { traceNew, loading, error } = usePricingTrace(ruleSet, cart);
+
 
     async function evaluate() {
         const result = await runPricingEngine(cart, ruleSet);
@@ -26,7 +30,11 @@ export default function AdminApp() {
                 </button>
             </div>
 
+            {loading && <p>Evaluating pricing…</p>}
+            {error && <p>Error loading trace</p>}
+
             {trace && <RuleInspector trace={trace} />}
+            <RuleDebugger trace={traceNew} />
         </div>
     );
 }

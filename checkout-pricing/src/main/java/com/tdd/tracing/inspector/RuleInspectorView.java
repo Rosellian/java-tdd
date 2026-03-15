@@ -1,4 +1,7 @@
-package com.tdd.logging;
+package com.tdd.tracing.inspector;
+
+import com.tdd.tracing.DPTrace;
+import com.tdd.tracing.RuleTrace;
 
 public class RuleInspectorView {
 

@@ -1,4 +1,4 @@
-package com.tdd.logging;
+package com.tdd.tracing;
 
 public record SkuTrace(
         String sku,

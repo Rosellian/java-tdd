@@ -1,9 +1,13 @@
-package com.tdd.logging;
+package com.tdd.tracing.inspector;
 
 import com.tdd.PriceCalculator;
 import com.tdd.PricingRules;
 import com.tdd.engine.RuleContext;
 import com.tdd.engine.SkuMod;
+import com.tdd.tracing.DPTrace;
+import com.tdd.tracing.RuleTraceEvent;
+import com.tdd.tracing.RuleTrace;
+import com.tdd.tracing.SkuTrace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +21,7 @@ public class RuleInspector {
         this.calculator = calculator;
     }
 
-    public RuleTrace inspect(RuleContext finalContext, List<RuleDebugEvent> events) {
+    public RuleTrace inspect(RuleContext finalContext, List<RuleTraceEvent> events) {
         List<SkuTrace> skuTraces = new ArrayList<>();
         List<DPTrace>  dpTraces = new ArrayList<>();
 

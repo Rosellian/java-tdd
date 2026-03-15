@@ -2,8 +2,8 @@ package com.tdd;
 
 import com.tdd.engine.RuleContext;
 import com.tdd.engine.SkuMod;
-import com.tdd.logging.DPNode;
-import com.tdd.logging.DPTrace;
+import com.tdd.tracing.DPNode;
+import com.tdd.tracing.DPTrace;
 import com.tdd.rules.PricingOption;
 
 import java.util.ArrayList;

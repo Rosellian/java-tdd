@@ -10,6 +10,10 @@ Admin tool using the RuleInspector UI in which you can:
 ## Architecture
 Starting with the main components built upon the RuleInspector tracing.
 
+**Main project structure**
+```
+```
+
 ### RuleInspector UI - Starting point
 JavaScript (React) component for displaying rule events.  
 `RuleInspector.jsx` - Initial version
@@ -41,7 +45,7 @@ export function RuleInspector({ events }) {
   );
 }
 ```
-
+---
 ### RuleInspector 3.0 – React UI
 An interactive, collapsible timeline with:
 - Rule-timeline
@@ -293,9 +297,30 @@ An interactive, collapsible timeline with:
       },
     };
     ```
+---
 ### Admin tool
 #### Structure
-
+```
+├── App.css
+├── App.js
+├── api
+│   └── pricingEngine.js
+├── components
+│   ├── CartEditor.jsx
+│   ├── Layout.jsx
+│   ├── RuleSetSelector.jsx
+│   └── ruleinspector
+│       ├── DPSection.jsx
+│       ├── RuleInspector.jsx
+│       ├── RuleTimeLine.jsx
+│       ├── Section.jsx
+│       ├── SkuBreakdown.jsx
+│       └── Styles.jsx
+├── index.css
+├── index.js
+├── pages
+│   └── AdminApp.jsx
+```
 #### Components
 - CartEditor – Input SKU + number
 - RuleSetSelector – Choose rule setup to use
@@ -522,4 +547,208 @@ export async function runPricingEngine(cart, ruleSet) {
 
   return await res.json();
 }
+```
+---
+### Rule Debugger
+#### Structure
+```
+ruledebugger
+├── ChainOverview.jsx
+├── DPGraph.jsx
+├── PriceEvolutionChart.jsx
+├── RuleDebugger.css
+├── RuleDebugger.jsx
+└── RuleTimeline.jsx
+```
+#### Components
+1. `RuleDebugger.jsx`
+   ```jsx
+   import React from "react";
+   import {ChainOverview} from "./ChainOverview";
+   import {RuleTimeline} from "./RuleTimeline";
+   import {DPGraph} from "./DPGraph";
+   import {PriceEvolutionChart} from "./PriceEvolutionChart";
+
+   export function RuleDebugger({ trace }) {
+        if (!trace) {
+            return (
+                <div className="rule-debugger empty">
+                    <p>No trace available. Run a pricing evaluation.</p>
+                </div>
+            );
+        }
+
+        return (
+            <div className="rule-debugger">
+                <h2>Rule Debugger</h2>
+
+                <div className="debugger-grid">
+                    <ChainOverview steps={trace.steps} />
+                    <RuleTimeline rules={trace.rules} />
+                    <DPGraph dp={trace.dp} />
+                    <PriceEvolutionChart prices={trace.priceEvolution} />
+                </div>
+            </div>
+        );
+   }
+   ```
+2. `ChainOverview.jsx`
+   ```jsx
+   export function ChainOverview({ steps }) {
+    return (
+        <section className="chain-overview">
+            <h3>Pricing Chain</h3>
+            <ul>
+                {steps.map((s, i) => (
+                    <li key={i} className="chain-step">
+                        <div className="step-title">{s.step}</div>
+                        <div className="step-desc">{s.description}</div>
+                        <div className="step-price">
+                            {s.priceBefore} → {s.priceAfter}
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </section>
+    );
+   }
+   ```
+3. `RuleTimeline.jsx`
+   ```jsx
+   export function RuleTimeline({ rules }) {
+    return (
+        <section className="rule-timeline">
+            <h3>Rule Timeline</h3>
+
+            <div className="timeline">
+                {rules.map((r) => (
+                    <div
+                        key={r.id}
+                        className={`timeline-item ${r.matched ? "matched" : "skipped"}`}
+                    >
+                        <span className="rule-name">{r.name}</span>
+                        <span className="rule-delta">
+                        {r.delta > 0 ? "+" : ""}
+                            {r.delta}
+                        </span>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+   }
+   ```
+4. `DPGraph.jsx`
+   ```jsx
+   export function DPGraph({ dp }) {
+    return (
+        <section className="dp-graph">
+            <h3>DP States</h3>
+
+            <ul>
+                {dp.map((state, i) => (
+                    <li key={i} className="dp-state">
+                        <div className="dp-label">{state.state}</div>
+                        <div className="dp-options">
+                            Options: {state.options.join(", ")}
+                        </div>
+                        <div className="dp-chosen">Chosen: {state.chosen}</div>
+                        <div className="dp-price">Price: {state.price}</div>
+                    </li>
+                ))}
+            </ul>
+        </section>
+    );
+   }
+   ```
+5. `PriceEvolutionChart.jsx`
+   ```jsx
+   export function PriceEvolutionChart({ prices }) {
+    return (
+        <section className="price-evolution">
+            <h3>Price Evolution</h3>
+
+            <div className="chart-placeholder">
+                {prices.map((p, i) => (
+                    <div key={i} className="chart-bar">
+                        <span>{p}</span>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+   }
+   ```
+6. ```css
+   .rule-debugger {
+    background: #1a1a1a;
+    padding: 16px;
+    border-radius: 8px;
+    color: #eee;
+   }
+
+   .debugger-grid {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 16px;
+   }
+
+   section {
+     background: #222;
+     padding: 12px;
+     border-radius: 6px;
+   }
+
+   .timeline-item.matched {
+     color: #4caf50;
+   }
+
+   .timeline-item.skipped {
+     color: #f44336;
+   }
+
+   .chart-placeholder {
+     display: flex;
+     gap: 4px;
+   }
+   ```
+**API-call to backend**  
+`pricingTrace.jsx`
+```jsx
+import {useEffect, useState} from "react";
+
+export function usePricingTrace(ruleSet, cart) {
+   const [trace, setTrace] = useState(null);
+   const [loading, setLoading] = useState(false);
+   const [error, setError] = useState(null);
+
+   useEffect(() => {
+      if (!ruleSet || !cart) return;
+
+      setLoading(true);
+      setError(null);
+
+      fetch("/api/pricing/trace", {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({ ruleSet, cart }),
+      })
+              .then((res) => res.json())
+              .then((data) => setTrace(data))
+              .catch((err) => setError(err))
+              .finally(() => setLoading(false));
+   }, [ruleSet, cart]);
+
+   return { trace, loading, error };
+}
+```
+****  
+`AdminApp.jsx`
+```jsx
+```
+
+---
+### Current structure
+```
+
 ```
