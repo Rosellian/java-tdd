@@ -5,6 +5,7 @@ import com.tdd.engine.SkuMod;
 import com.tdd.tracing.DPNode;
 import com.tdd.tracing.DPTrace;
 import com.tdd.rules.PricingOption;
+import com.tdd.tracing.debug.PricingTraceCollector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class PriceCalculator {
         this.rules = rules;
     }
 
-    public int calculateTotal(RuleContext context) {
+    public int calculateTotal(RuleContext context, PricingTraceCollector collector) {
         int total = 0;
 
         for(var entry : context.counts().entrySet()) {
@@ -30,7 +31,7 @@ public class PriceCalculator {
             if(remaining < 0) remaining = 0;
 
             int discountedPrice = (int)(discounted * rules.getUnitPrice(sku) * mod.rate());
-            DPTrace dpTrace = bestPriceFor(sku, remaining);
+            DPTrace dpTrace = bestPriceFor(sku, remaining, collector);
             total += discountedPrice + dpTrace.finalPrice();
         }
 
@@ -38,7 +39,13 @@ public class PriceCalculator {
     }
 
     public DPTrace bestPriceFor(String sku, long remaining) {
+        return bestPriceFor(sku, remaining, null);
+    }
+    public DPTrace bestPriceFor(String sku, long remaining, PricingTraceCollector collector) {
         if(remaining <= 0) {
+            if(collector != null)
+                collector.recordDP("i=0", List.of(), ITEMS_0_KR, 0);
+
             return new DPTrace(sku, remaining, List.of(), 0, List.of(ITEMS_0_KR));
         }
 
@@ -56,9 +63,13 @@ public class PriceCalculator {
             dp[i] = i * unitPrice;
             List<String> best = createUnitPriceEntry(i, unitPrice);
 
+            List<String> optionsLabels = new ArrayList<>();
+            optionsLabels.add("unitPrice x" + i + " = " + dp[i]);
+
             for(PricingOption opt: options) {
                 if(i >= opt.quantity()) {
                     int candidate = calculateCandidate(opt, dp, i, unitPrice);
+                    optionsLabels.add(opt.quantity() + " for " + opt.price() + " -> " + candidate);
 
                     if(candidate < dp[i]) {
                         dp[i] = candidate;
@@ -68,6 +79,8 @@ public class PriceCalculator {
             }
             path.add(best);
             nodes.add(new DPNode(i, dp[i], List.copyOf(best)));
+            if(collector != null)
+                collector.recordDP("i=" + i, optionsLabels, String.join(" + ", best), dp[i]);
         }
 
         return new DPTrace(sku, remaining, nodes, dp[n], path.get(n));

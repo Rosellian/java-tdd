@@ -3,4 +3,32 @@ package com.tdd.tracing.debug;
 import java.util.List;
 import java.util.Map;
 
-public record CartSnapshot(List<CartItem> items, CustomerInfo customer, Map<String, Object> context) {}
+public class CartSnapshot {
+    private List<CartItem> items;
+    private CustomerInfo customer;
+    private Map<String, Object> context;
+
+    public List<CartItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<CartItem> items) {
+        this.items = items;
+    }
+
+    public CustomerInfo getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerInfo customer) {
+        this.customer = customer;
+    }
+
+    public Map<String, Object> getContext() {
+        return context;
+    }
+
+    public void setContext(Map<String, Object> context) {
+        this.context = context;
+    }
+}

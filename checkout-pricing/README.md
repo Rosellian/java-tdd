@@ -814,7 +814,26 @@ Separation in project structure:
         return new TraceResponse(trace);
     }
 ```
-
+**Instrumentation in engine code:**  
+**DP-algorithm**
+`PriceCalculator.java`
+```java
+public DPTrace bestPriceFor(String sku, long remaining, PricingTraceCollector collector) {
+    //... no run
+    collector.recordDP("i=0", List.of(), ITEMS_0_KR, 0);
+    //... before main loop
+    List<String> optionsLabels = new ArrayList<>();
+    optionsLabels.add("unitPrice x" + i + " = " + dp[i]);
+    //... in options loop
+    optionsLabels.add(opt.quantity() + " for " + opt.price() + " -> " + candidate);
+    //... end of main loop
+    collector.recordDP("i=" + i, optionsLabels, String.join(" + ", best), dp[i]);
+}
+```
+****
+``
+```java
+```
 
 ---
 ## Testing

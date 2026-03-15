@@ -34,7 +34,7 @@ public class Checkout {
 
         display(context);
 
-        return calculator.calculateTotal(context);
+        return calculator.calculateTotal(context, null);
     }
 
     private void display(RuleContext context) {

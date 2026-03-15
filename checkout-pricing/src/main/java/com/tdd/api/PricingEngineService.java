@@ -27,7 +27,7 @@ public class PricingEngineService {
         ctx = engine.evaluate(ctx);
 
         RuleInspector inspector = new RuleInspector(rules, calculator);
-        return inspector.inspect(ctx, tracer.getEvents());
+        return inspector.inspect(ctx, tracer.getEvents(), collector);
     }
 
     public PricingTrace getTrace(Map<String, Long> cart, String ruleSetName) {

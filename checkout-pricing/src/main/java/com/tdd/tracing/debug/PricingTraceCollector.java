@@ -1,20 +1,46 @@
 package com.tdd.tracing.debug;
 
+import java.time.Instant;
+import java.util.List;
+
 public class PricingTraceCollector {
-    private PricingTrace trace = new PricingTrace();
+    private final PricingTrace trace = new PricingTrace();
+
+    public PricingTraceCollector(CartSnapshot cart, String ruleset, String engineVersion) {
+        trace.setCart(cart);
+        Metadata metadata = new Metadata();
+        metadata.setRuleSet(ruleset);
+        metadata.setEngineVersion(engineVersion);
+        metadata.setTimestamp(Instant.now().toString());
+        trace.setMetadata(metadata);
+    }
 
     public void recordRule(RuleTrace rt) {
-        trace.rules().add(rt);
-        trace.priceEvolution().add(rt.after());
+        trace.getRules().add(rt);
+        trace.getPriceEvolution().add(rt.getAfter());
     }
 
     public void recordStep(StepTrace st) {
-        trace.steps().add(st);
-        trace.priceEvolution().add(st.priceAfter());
+        trace.getSteps().add(st);
+        trace.getPriceEvolution().add(st.getPriceAfter());
     }
 
     public void recordDP(DPTrace dp) {
-        trace.dp().add(dp);
+        trace.getDp().add(dp);
+    }
+
+    public void recordDP(String stateLabel, List<String> options, String chosen, double priceAfter) {
+        DPTrace dp = new DPTrace();
+        dp.setState(stateLabel);
+        dp.setOptions(options);
+        dp.setChosen(chosen);
+        dp.setPrice(priceAfter);
+
+        trace.getDp().add(dp);
+    }
+
+    public void setFinalPrice(double finalPrice) {
+        trace.setFinalPrice(finalPrice);
     }
 
     public PricingTrace build() {
