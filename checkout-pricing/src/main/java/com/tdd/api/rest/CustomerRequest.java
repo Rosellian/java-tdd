@@ -1,13 +1,8 @@
-package com.tdd.tracing.debug;
+package com.tdd.api.rest;
 
-public class CustomerInfo {
+public class CustomerRequest {
     private String id;
     private String segment;
-
-    public CustomerInfo(String id, String segment) {
-        this.id = id;
-        this.segment = segment;
-    }
 
     public String getId() {
         return id;

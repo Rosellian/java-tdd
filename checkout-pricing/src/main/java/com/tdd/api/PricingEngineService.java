@@ -3,19 +3,22 @@ package com.tdd.api;
 import com.tdd.PriceCalculator;
 import com.tdd.PricingRules;
 import com.tdd.RuleEngine;
+import com.tdd.api.rest.PricingRequest;
 import com.tdd.engine.RuleContext;
 import com.tdd.tracing.RuleTracer;
-import com.tdd.tracing.debug.CartSnapshot;
-import com.tdd.tracing.debug.PricingTrace;
-import com.tdd.tracing.debug.PricingTraceCollector;
+import com.tdd.tracing.debug.*;
 import com.tdd.tracing.inspector.RuleInspector;
 import com.tdd.tracing.RuleTrace;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class PricingEngineService {
+    public static final String ENGINE_VERSION = "v1";
 
     public RuleTrace evaluate(Map<String, Long> cart, String ruleSetName) {
         PricingRules rules = RuleSetRegistry.get(ruleSetName);
@@ -31,22 +34,39 @@ public class PricingEngineService {
         return inspector.inspect(ctx, tracer.getEvents());
     }
 
-    public PricingTrace getTrace(Map<String, Long> cart, String ruleSetName) {
-        PricingRules rules = RuleSetRegistry.get(ruleSetName);
-        CartSnapshot cartSnapshot = new CartSnapshot();
+    public PricingTrace getTrace(PricingRequest request) {
+        PricingRules rules = RuleSetRegistry.get(request.getRuleSet());
+        CartSnapshot cartSnapshot = toCartSnapshot(request, rules);
 
-        PricingTraceCollector collector = new PricingTraceCollector(cartSnapshot, ruleSetName, "v1");
+        PricingTraceCollector collector = new PricingTraceCollector(cartSnapshot,
+                request.getRuleSet(), ENGINE_VERSION);
         RuleTracer tracer = new RuleTracer();
-        RuleEngine engine = new RuleEngine(rules,  tracer);
+        RuleEngine engine = new RuleEngine(rules, tracer);
 
-        RuleContext ctx = new RuleContext(cart, Map.of());
+        RuleContext ctx = RuleContext.fromCart(cartSnapshot);
         ctx = engine.evaluate(ctx, collector);
 
         RuleInspector inspector = new RuleInspector(rules, new PriceCalculator(rules));
         RuleTrace ruleTrace = inspector.inspect(ctx, tracer.getEvents());
 
-        PricingTrace trace = collector.build();
-        trace.setFinalPrice(ruleTrace.finalTotal());
-        return trace;
+        collector.setFinalPrice(ruleTrace.finalTotal());
+        return collector.build();
+    }
+
+    private CartSnapshot toCartSnapshot(PricingRequest req, PricingRules rules) {
+        List<CartItem> items = req.getItems().stream()
+                .map(item ->
+                        new CartItem(item.getSku(), (int) item.getQuantity(),
+                                rules.getUnitPrice(item.getSku())))
+                .collect(toList());
+
+        CustomerInfo customerInfo = null;
+        if(req.getCustomer() != null) {
+            customerInfo = new CustomerInfo(req.getCustomer().getId(), req.getCustomer().getSegment());
+        }
+
+        Map<String, Object> context = req.getContext() != null ? req.getContext() : Map.of();
+
+        return new CartSnapshot(items, customerInfo, context);
     }
 }

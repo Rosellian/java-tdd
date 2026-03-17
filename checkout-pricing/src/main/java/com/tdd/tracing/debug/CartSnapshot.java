@@ -8,6 +8,12 @@ public class CartSnapshot {
     private CustomerInfo customer;
     private Map<String, Object> context;
 
+    public CartSnapshot(List<CartItem> items, CustomerInfo customerInfo, Map<String, Object> context) {
+        this.items = items;
+        this.customer = customerInfo;
+        this.context = context;
+    }
+
     public List<CartItem> getItems() {
         return items;
     }

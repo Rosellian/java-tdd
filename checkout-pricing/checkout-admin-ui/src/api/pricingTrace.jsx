@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-export function usePricingTrace(ruleSet, cart) {
+export function usePricingTrace(cart, ruleSet) {
     const [trace, setTrace] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);

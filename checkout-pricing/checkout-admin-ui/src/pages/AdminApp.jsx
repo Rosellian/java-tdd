@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { CartEditor } from "../components/CartEditor";
 import { RuleSetSelector } from "../components/RuleSetSelector";
 import { RuleInspector } from "../components/ruleinspector/RuleInspector";
-import { runPricingEngine } from "../api/pricingEngine";
+import {runPricingEngine, runPricingTrace} from "../api/pricingEngine";
 import { RuleDebugger } from "../components/ruledebugger/RuleDebugger";
 import {usePricingTrace} from "../api/pricingTrace";
 
@@ -10,12 +10,18 @@ export default function AdminApp() {
     const [cart, setCart] = useState({});
     const [ruleSet, setRuleSet] = useState("default");
     const [trace, setTrace] = useState(null);
-    const { traceNew, loading, error } = usePricingTrace(ruleSet, cart);
-
+    const [traceNew, setNewTrace] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     async function evaluate() {
         const result = await runPricingEngine(cart, ruleSet);
         setTrace(result.trace);
+    }
+
+    async function getTrace() {
+        const result = await runPricingTrace(cart, ruleSet);
+        setNewTrace((result.trace));
     }
 
     return (
@@ -25,9 +31,14 @@ export default function AdminApp() {
             <div style={styles.controls}>
                 <RuleSetSelector value={ruleSet} onChange={setRuleSet} />
                 <CartEditor cart={cart} onChange={setCart} />
-                <button style={styles.button} onClick={evaluate}>
-                    Evaluate
-                </button>
+                <div style={styles.buttons}>
+                    <button style={styles.button} onClick={evaluate}>
+                        Evaluate
+                    </button>
+                    <button style={styles.button} onClick={getTrace}>
+                        Get trace
+                    </button>
+                </div>
             </div>
 
             {loading && <p>Evaluating pricing…</p>}
@@ -53,6 +64,11 @@ const styles = {
         color: "#BB86FC",
     },
     controls: {
+        display: "flex",
+        gap: 20,
+        marginBottom: 40,
+    },
+    buttons: {
         display: "flex",
         gap: 20,
         marginBottom: 40,

@@ -12,6 +12,16 @@ Starting with the main components built upon the RuleInspector tracing.
 
 **Main project structure**
 ```
+├── api
+├── components
+│   ├── CartEditor.jsx
+│   ├── RuleSetSelector.jsx
+│   ├── ruledebugger
+│   └── ruleinspector
+├── index.css
+├── index.js
+├── pages
+│   └── AdminApp.jsx
 ```
 
 ### RuleInspector UI - Starting point
@@ -715,36 +725,47 @@ ruledebugger
 **API-call to backend**  
 `pricingTrace.jsx`
 ```jsx
-import {useEffect, useState} from "react";
 
-export function usePricingTrace(ruleSet, cart) {
-   const [trace, setTrace] = useState(null);
-   const [loading, setLoading] = useState(false);
-   const [error, setError] = useState(null);
+```
+`pricingEngine.jsx`
+```js
+export async function runPricingTrace(cart, ruleSet) {
+   const res = await fetch("/api/pricing/trace", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cart, ruleSet }),
+   });
 
-   useEffect(() => {
-      if (!ruleSet || !cart) return;
-
-      setLoading(true);
-      setError(null);
-
-      fetch("/api/pricing/trace", {
-         method: "POST",
-         headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({ ruleSet, cart }),
-      })
-              .then((res) => res.json())
-              .then((data) => setTrace(data))
-              .catch((err) => setError(err))
-              .finally(() => setLoading(false));
-   }, [ruleSet, cart]);
-
-   return { trace, loading, error };
+   return await res.json();
 }
 ```
-****  
+**Adding to main app**  
 `AdminApp.jsx`
 ```jsx
+//... Add at top
+const [traceNew, setNewTrace] = useState(null);
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState(null);
+async function getTrace() {
+   const result = await runPricingTrace(cart, ruleSet);
+   setNewTrace((result.trace));
+   setLoading(result.loading);
+   setError(result.error);
+}
+
+//... add in to controls-div
+<button style={styles.button} onClick={getTrace}>
+   Get trace
+</button>
+//... add to container-div
+{loading && <p>Evaluating pricing…</p>}
+{error && <p>Error loading trace</p>}
+<RuleDebugger trace={traceNew} />
+```
+****  
+``
+```js
+
 ```
 
 ---

@@ -1,8 +1,12 @@
 package com.tdd.api;
 
+import com.tdd.api.rest.*;
 import com.tdd.tracing.RuleTrace;
+import com.tdd.tracing.debug.CartItem;
 import com.tdd.tracing.debug.PricingTrace;
 import org.springframework.web.bind.annotation.*;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/api/pricing")
@@ -22,7 +26,17 @@ public class PricingController {
 
     @PostMapping("/trace")
     public TraceResponse getTrace(@RequestBody EvaluateRequest req) {
-        PricingTrace trace = service.getTrace(req.cart, req.ruleSet);
+        //PricingTrace trace = service.getTrace(req);
+        PricingTrace trace = service.getTrace(toPricingRequest(req));
         return new TraceResponse(trace);
+    }
+
+    private PricingRequest toPricingRequest(EvaluateRequest req) {
+        PricingRequest pricingRequest = new PricingRequest();
+        pricingRequest.setItems(req.cart.entrySet().stream()
+                .map(entry -> new CartItemRequest(entry.getKey(), entry.getValue()))
+                .collect(toList()));
+        pricingRequest.setRuleSet(req.ruleSet);
+        return pricingRequest;
     }
 }

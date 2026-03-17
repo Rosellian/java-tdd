@@ -1,12 +1,24 @@
 package com.tdd.engine;
 
+import com.tdd.tracing.debug.CartItem;
+import com.tdd.tracing.debug.CartSnapshot;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import static java.util.stream.Collectors.toMap;
 
 public record RuleContext(
         Map<String, Long> counts,
         Map<String, SkuMod> mods
 ) {
+
+    public static RuleContext fromCart(CartSnapshot cartSnapshot) {
+        Map<String, Long> counts = cartSnapshot.getItems().stream()
+                .collect(toMap(CartItem::getSku, i -> (long)i.getQuantity()));
+
+        return new RuleContext(counts, Map.of());
+    }
 
     public RuleContext apply(RuleDelta delta) {
         Map<String, Long> newCounts = new HashMap<>(counts);
