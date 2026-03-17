@@ -762,7 +762,7 @@ tracing
     └── RuleInspectorView.java
 ```
 
-**Rule Debugger**  
+#### Rule Debugger
 Shall show the *full* chain of price calculation for a given cart:
 
 | Step | Content                                           |
@@ -777,34 +777,446 @@ Shall show the *full* chain of price calculation for a given cart:
 **Components:**
 1. `PricingTrace.java`
     ```java
+    public class PricingTrace {
+        private CartSnapshot cart;
+        private List<RuleTrace> rules = new ArrayList<>();
+        private List<StepTrace> steps = new ArrayList<>();
+        private List<DPTrace> dp = new ArrayList<>();
+        private List<Double> priceEvolution = new ArrayList<>();
+        private double finalPrice;
+        private Metadata metadata;
+
+        public CartSnapshot getCart() {
+            return cart;
+        }
+    
+        public void setCart(CartSnapshot cart) {
+            this.cart = cart;
+        }
+    
+        public List<RuleTrace> getRules() {
+            return rules;
+        }
+    
+        public void setRules(List<RuleTrace> rules) {
+            this.rules = rules;
+        }
+    
+        public List<StepTrace> getSteps() {
+            return steps;
+        }
+    
+        public void setSteps(List<StepTrace> steps) {
+            this.steps = steps;
+        }
+    
+        public List<DPTrace> getDp() {
+            return dp;
+        }
+    
+        public void setDp(List<DPTrace> dp) {
+            this.dp = dp;
+        }
+    
+        public List<Double> getPriceEvolution() {
+            return priceEvolution;
+        }
+    
+        public void setPriceEvolution(List<Double> priceEvolution) {
+            this.priceEvolution = priceEvolution;
+        }
+    
+        public double getFinalPrice() {
+            return finalPrice;
+        }
+    
+        public void setFinalPrice(double finalPrice) {
+            this.finalPrice = finalPrice;
+        }
+    
+        public Metadata getMetadata() {
+            return metadata;
+        }
+    
+        public void setMetadata(Metadata metadata) {
+            this.metadata = metadata;
+        }
+    }
     ```
 2. `RuleTrace.java`
     ```java
+    public class RuleTrace {
+        private String id;
+        private String name;
+        private boolean matched;
+        private String reason;
+        private double before;
+        private double after;
+        private double delta;
+        private Map<String, Object> inputs;
+        private Map<String, Object> outputs;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public boolean isMatched() {
+            return matched;
+        }
+
+        public void setMatched(boolean matched) {
+            this.matched = matched;
+        }
+
+        public String getReason() {
+            return reason;
+        }
+
+        public void setReason(String reason) {
+            this.reason = reason;
+        }
+
+        public double getAfter() {
+            return after;
+        }
+
+        public void setAfter(double after) {
+            this.after = after;
+        }
+
+        public double getBefore() {
+            return before;
+        }
+
+        public void setBefore(double before) {
+            this.before = before;
+        }
+
+        public double getDelta() {
+            return delta;
+        }
+
+        public void setDelta(double delta) {
+            this.delta = delta;
+        }
+
+        public Map<String, Object> getInputs() {
+            return inputs;
+        }
+
+        public void setInputs(Map<String, Object> inputs) {
+            this.inputs = inputs;
+        }
+
+        public Map<String, Object> getOutputs() {
+            return outputs;
+        }
+
+        public void setOutputs(Map<String, Object> outputs) {
+            this.outputs = outputs;
+        }
+    }
     ```
 3. `StepTrace.java`
     ```java
+    public class StepTrace {
+        private String step;
+        private String description;
+        private double priceBefore;
+        private double priceAfter;
+
+        public String getStep() {
+            return step;
+        }
+
+        public void setStep(String step) {
+            this.step = step;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public double getPriceBefore() {
+            return priceBefore;
+        }
+
+        public void setPriceBefore(double priceBefore) {
+            this.priceBefore = priceBefore;
+        }
+
+        public double getPriceAfter() {
+            return priceAfter;
+        }
+
+        public void setPriceAfter(double priceAfter) {
+            this.priceAfter = priceAfter;
+        }
+    }
     ```
 4. `DPTrace.java`
     ```java
+    public class DPTrace {
+        private String state;
+        private List<String> options;
+        private String chosen;
+        private double price;
+
+        public String getState() {
+            return state;
+        }
+
+        public void setState(String state) {
+            this.state = state;
+        }
+
+        public List<String> getOptions() {
+            return options;
+        }
+
+        public void setOptions(List<String> options) {
+            this.options = options;
+        }
+
+        public String getChosen() {
+            return chosen;
+        }
+
+        public void setChosen(String chosen) {
+            this.chosen = chosen;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+        public void setPrice(double price) {
+            this.price = price;
+        }
+    }
     ```
 5. `CartSnapshot.java`
     ```java
+    public class CartSnapshot {
+        private List<CartItem> items;
+        private CustomerInfo customer;
+        private Map<String, Object> context;
+
+        public List<CartItem> getItems() {
+            return items;
+        }
+
+        public void setItems(List<CartItem> items) {
+            this.items = items;
+        }
+
+        public CustomerInfo getCustomer() {
+            return customer;
+        }
+
+        public void setCustomer(CustomerInfo customer) {
+            this.customer = customer;
+        }
+
+        public Map<String, Object> getContext() {
+            return context;
+        }
+
+        public void setContext(Map<String, Object> context) {
+            this.context = context;
+        }
+    }
     ```
 6. `CartItem.java`
     ```java
+    public class CartItem {
+        private String sku;
+        private int quantity;
+        private double unitPrice;
+
+        public CartItem(String sku, int quantity, double unitPrice) {
+            this.sku = sku;
+            this.quantity = quantity;
+            this.unitPrice = unitPrice;
+        }
+
+        public String getSku() {
+            return sku;
+        }
+
+        public void setSku(String sku) {
+            this.sku = sku;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
+
+        public double getUnitPrice() {
+            return unitPrice;
+        }
+
+        public void setUnitPrice(double unitPrice) {
+            this.unitPrice = unitPrice;
+        }
+    }
     ```
 7. `CustomerInfo.java`
     ```java
+    public class CustomerInfo {
+        private String id;
+        private String segment;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getSegment() {
+            return segment;
+        }
+
+        public void setSegment(String segment) {
+            this.segment = segment;
+        }
+    }
     ```
 8. `Metadata.java`
     ```java
+    public class Metadata {
+        private String ruleSet;
+        private String timestamp;
+        private String engineVersion;
+
+        public String getRuleSet() {
+            return ruleSet;
+        }
+
+        public void setRuleSet(String ruleSet) {
+            this.ruleSet = ruleSet;
+        }
+
+        public String getTimestamp() {
+            return timestamp;
+        }
+
+        public void setTimestamp(String timestamp) {
+            this.timestamp = timestamp;
+        }
+
+        public String getEngineVersion() {
+            return engineVersion;
+        }
+
+        public void setEngineVersion(String engineVersion) {
+            this.engineVersion = engineVersion;
+        }
+    }
     ```
 9. `PricingTraceCollector.java`
     ```java
+    public class PricingTraceCollector {
+        private final PricingTrace trace = new PricingTrace();
+
+        public PricingTraceCollector(CartSnapshot cart, String ruleset, String engineVersion) {
+            trace.setCart(cart);
+            Metadata metadata = new Metadata();
+            metadata.setRuleSet(ruleset);
+            metadata.setEngineVersion(engineVersion);
+            metadata.setTimestamp(Instant.now().toString());
+            trace.setMetadata(metadata);
+        }
+
+        public void recordRule(RuleTrace rt) {
+            trace.getRules().add(rt);
+            trace.getPriceEvolution().add(rt.getAfter());
+        }
+
+        public void recordStep(StepTrace st) {
+            trace.getSteps().add(st);
+            trace.getPriceEvolution().add(st.getPriceAfter());
+        }
+   
+        public void recordStep(String step, String description, double before, double after) {
+            StepTrace st = new StepTrace();
+            st.setStep(step);
+            st.setDescription(description);
+            st.setPriceBefore(before);
+            st.setPriceAfter(after);
+
+            trace.getSteps().add(st);
+            trace.getPriceEvolution().add(after);
+        }
+
+        public void recordDP(DPTrace dp) {
+            trace.getDp().add(dp);
+        }
+
+        public void recordDP(String stateLabel, List<String> options, String chosen, double priceAfter) {
+            DPTrace dp = new DPTrace();
+            dp.setState(stateLabel);
+            dp.setOptions(options);
+            dp.setChosen(chosen);
+            dp.setPrice(priceAfter);
+
+            trace.getDp().add(dp);
+        }
+
+        public void setFinalPrice(double finalPrice) {
+            trace.setFinalPrice(finalPrice);
+        }
+
+        public PricingTrace build() {
+            return trace;
+        }
+    }
+
     ```
 Separation in project structure:
 ```
-
+└── tracing
+    ├── DPNode.java
+    ├── DPTrace.java
+    ├── RuleTrace.java
+    ├── RuleTraceEvent.java
+    ├── RuleTracer.java
+    ├── SkuTrace.java
+    ├── debug
+    │   ├── CartItem.java
+    │   ├── CartSnapshot.java
+    │   ├── CustomerInfo.java
+    │   ├── DPTrace.java
+    │   ├── Metadata.java
+    │   ├── PricingTrace.java
+    │   ├── PricingTraceCollector.java
+    │   ├── RuleTrace.java
+    │   └── StepTrace.java
+    └── inspector
+        ├── RuleInspector.java
+        └── RuleInspectorView.java
 ```
 **Backend API endpoint**
 ```java
@@ -815,7 +1227,7 @@ Separation in project structure:
     }
 ```
 **Instrumentation in engine code:**  
-**DP-algorithm**
+**DP-algorithm**  
 `PriceCalculator.java`
 ```java
 public DPTrace bestPriceFor(String sku, long remaining, PricingTraceCollector collector) {
@@ -830,9 +1242,151 @@ public DPTrace bestPriceFor(String sku, long remaining, PricingTraceCollector co
     collector.recordDP("i=" + i, optionsLabels, String.join(" + ", best), dp[i]);
 }
 ```
-****
-``
+**Rules**  
+`RuleEngine.java`
 ```java
+public RuleContext evaluate(RuleContext context, PricingTraceCollector collector) {
+        context = applyCrossSkuRules(context, collector);
+
+        return applySkuDiscount(context, collector);
+}
+
+private RuleContext applyCrossSkuRules(RuleContext context, PricingTraceCollector collector) {
+    //... create RuleTrace
+    RuleTrace rt = new RuleTrace();
+    rt.setId(rule.id());
+    rt.setName(rule.name());
+    int beforePrice = computeTotalPrice(before, rules);
+    rt.setBefore(beforePrice);
+    //... record status after rule evaluation, within loop
+    rt.setMatched(applied);
+    int afterPrice = computeTotalPrice(after, rules);
+    rt.setAfter(afterPrice);
+    rt.setDelta(afterPrice - beforePrice);
+    if(!applied) {
+        rt.setReason("Rule conditions not met");
+    }
+    else {
+        rt.setOutputs(Map.of("delta", delta,
+                "newCounts", after.counts()));
+    }
+    if(collector != null)
+        collector.recordRule(rt);
+}
+
+private RuleContext applySkuDiscount(RuleContext context, PricingTraceCollector collector) {
+    //... create RuleTrace
+    RuleTrace rt = new RuleTrace();
+    rt.setId(rule.id());
+    rt.setName(rule.name());
+    int beforePrice = computeTotalPrice(before, rules);
+    rt.setBefore(beforePrice);
+    //... record status after rule evaluation, within loop
+    rt.setMatched(applied);
+    int afterPrice = computeTotalPrice(after, rules);
+    rt.setAfter(afterPrice);
+    rt.setDelta(afterPrice - beforePrice);
+    if(!applied) {
+        rt.setReason("Rule conditions not met");
+    }
+    else {
+        rt.setOutputs(Map.of("delta", delta,
+                "newCounts", after.counts()));
+    }
+    if(collector != null)
+        collector.recordRule(rt);
+}
+```
+`RuleEvaluator.java`
+```java
+public RuleDelta apply(CrossSkuBuyXGetYFree rule, RuleContext context,
+                           PricingTraceCollector collector, RuleTrace rt) {
+    //... record inputs
+    rt.setInputs(Map.of("buySku", rule.buySku(),
+            "freeSku", rule.freeSku(),
+            "contextCounts", context.counts()));
+    //...
+}
+
+public RuleDelta apply(CrossSkuBuyXGetYDiscount rule, RuleContext context,
+                       PricingTraceCollector collector, RuleTrace rt) {
+    //... record inputs
+    rt.setInputs(Map.of("buySku", rule.buySku(),
+            "discountSku", rule.discountSku(),
+            "contextCounts", context.counts()));
+    //...
+}
+
+public RuleDelta apply(SkuDiscount rule, RuleContext context,
+                       PricingTraceCollector collector, RuleTrace rt) {
+    rt.setInputs(Map.of("sku", rule.sku(),
+            "discount", rule.discount(),
+            "contextCounts", context.counts()));
+    //...
+}
+```
+Utility method to calculate total price at current state on the fly:
+`PriceUtils.java`
+```java
+public final class PriceUtils {
+
+    private PriceUtils() {}
+
+    public static int computeTotalPrice(RuleContext context, PricingRules rules) {
+        int total = 0;
+        //Implement calculation
+        return total;
+    }
+}
+```
+**Step trace**  
+
+
+#### Refactoring for Rule Debugger
+**Rule classes:**  
+Adding fields in cross-sku for tracing:  
+`SkuDiscount.java`
+```java
+public String id() {
+        return String.format("%sDiscount", sku);
+}
+public String name() {
+    return String.format("Buy %s at %.2f discount", sku, discount);
+}
+```
+`CrossSkuRule.java`
+```java
+String id();
+String name();
+```
+`CrossSkuBuyXGetYFree.java`
+```java
+public String id() {
+    return String.format("CrossSkuBuy%dGet%dFree", buyQty, freeQty);
+}
+public String name() {
+    return String.format("Buy %d of %s get %d of %s free", buyQty, buySku, freeQty, freeSku);
+}
+```
+`CrossSkuBuyXGetYDiscount.java`
+```java
+public String id() {
+        return String.format("CrossSkuBuy%dGet%dDiscount",  buyQty, discountQty);
+}
+public String name() {
+    return String.format("Buy %d of %s get %d of %s at %.2f", buyQty, buySku,
+                discountQty, discountSku, discount);
+}
+```
+New method signature for evaluator:  
+`IRuleEvaluator.java`
+```java
+public interface IRuleEvaluator {
+
+    RuleDelta apply(CrossSkuBuyXGetYFree rule, RuleContext context, PricingTraceCollector collector, RuleTrace rt);
+    RuleDelta apply(CrossSkuBuyXGetYDiscount rule, RuleContext context, PricingTraceCollector collector, RuleTrace rt);
+    RuleDelta apply(SkuDiscount rule, RuleContext context,   PricingTraceCollector collector, RuleTrace rt);
+}
 ```
 
 ---

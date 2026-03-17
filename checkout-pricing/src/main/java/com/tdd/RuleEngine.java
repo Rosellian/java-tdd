@@ -8,41 +8,70 @@ import com.tdd.rules.CrossSkuBuyXGetYDiscount;
 import com.tdd.rules.CrossSkuBuyXGetYFree;
 import com.tdd.rules.CrossSkuRule;
 import com.tdd.rules.SkuDiscount;
+import com.tdd.tracing.debug.PricingTraceCollector;
+import com.tdd.tracing.debug.RuleTrace;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+
+import static com.tdd.PriceUtils.computeTotalPrice;
 
 public class RuleEngine {
     private final PricingRules rules;
     private final RuleEvaluator evaluator;
-    private final RuleTracer debugger;
+    private final RuleTracer tracer;
 
-    public RuleEngine(PricingRules rules, RuleTracer debugger) {
+    public RuleEngine(PricingRules rules, RuleTracer tracer) {
         this.rules = rules;
         this.evaluator = new RuleEvaluator(rules);
-        this.debugger = debugger;
+        this.tracer = tracer;
     }
 
     public RuleContext evaluate(RuleContext context) {
-        context = applyCrossSkuRules(context);
+        return evaluate(context, null);
+    }
+    public RuleContext evaluate(RuleContext context, PricingTraceCollector collector) {
+        context = applyCrossSkuRules(context, collector);
 
-        return applySkuDiscount(context);
+        return applySkuDiscount(context, collector);
     }
 
-    private RuleContext applyCrossSkuRules(RuleContext context) {
+    private RuleContext applyCrossSkuRules(RuleContext context, PricingTraceCollector collector) {
         for (var rule : getOrderedCrossSkuRules()) {
             RuleContext before = context;
 
+            RuleTrace rt = new RuleTrace();
+            rt.setId(rule.id());
+            rt.setName(rule.name());
+            int beforePrice = computeTotalPrice(before, rules);
+            rt.setBefore(beforePrice);
+
             RuleDelta delta = switch(rule) {
-                case CrossSkuBuyXGetYFree free -> evaluator.apply(free, context);
-                case CrossSkuBuyXGetYDiscount discount -> evaluator.apply(discount, context);
+                case CrossSkuBuyXGetYFree free -> evaluator.apply(free, context, collector, rt);
+                case CrossSkuBuyXGetYDiscount discount -> evaluator.apply(discount, context, collector, rt);
                 default -> throw new IllegalStateException("Unexpected value: " + rule);
             };
 
-            RuleContext after = delta.applied() ? context.apply(delta) : context;
-            debugger.log(rule.toString(), delta.applied(), delta, before, after);
+            boolean applied = delta.applied();
+            RuleContext after = applied ? context.apply(delta) : context;
+            tracer.log(rule.toString(), applied, delta, before, after);
 
-            if(delta.applied()) {
+            rt.setMatched(applied);
+            int afterPrice = computeTotalPrice(after, rules);
+            rt.setAfter(afterPrice);
+            rt.setDelta(afterPrice - beforePrice);
+            if(!applied) {
+                rt.setReason("Rule conditions not met");
+            }
+            else {
+                rt.setOutputs(Map.of("delta", delta,
+                        "newCounts", after.counts()));
+            }
+            if(collector != null)
+                collector.recordRule(rt);
+
+            if(applied) {
                 context = context.apply(delta);
                 break;
             }
@@ -50,16 +79,37 @@ public class RuleEngine {
         return context;
     }
 
-    private RuleContext applySkuDiscount(RuleContext context) {
+    private RuleContext applySkuDiscount(RuleContext context, PricingTraceCollector collector) {
         for(var rule : getSkuDiscounts()) {
             RuleContext before = context;
 
-            RuleDelta delta = evaluator.apply(rule, context);
+            RuleTrace rt = new RuleTrace();
+            rt.setId(rule.id());
+            rt.setName(rule.name());
+            int beforePrice = computeTotalPrice(before, rules);
+            rt.setBefore(beforePrice);
 
-            RuleContext after = delta.applied() ? context.apply(delta) : context;
-            debugger.log(rule.toString(), delta.applied(), delta, before, after);
+            RuleDelta delta = evaluator.apply(rule, context, collector, rt);
 
-            if(delta.applied()){
+            boolean applied = delta.applied();
+            RuleContext after = applied ? context.apply(delta) : context;
+            tracer.log(rule.toString(), applied, delta, before, after);
+
+            rt.setMatched(applied);
+            int afterPrice = computeTotalPrice(after, rules);
+            rt.setAfter(afterPrice);
+            rt.setDelta(afterPrice - beforePrice);
+            if(!applied) {
+                rt.setReason("Rule conditions not met");
+            }
+            else {
+                rt.setOutputs(Map.of("delta", delta,
+                        "newCounts", after.counts()));
+            }
+            if(collector != null)
+                collector.recordRule(rt);
+
+            if(applied){
                 context = context.apply(delta);
             }
         }

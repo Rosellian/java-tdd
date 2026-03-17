@@ -25,6 +25,17 @@ public class PricingTraceCollector {
         trace.getPriceEvolution().add(st.getPriceAfter());
     }
 
+    public void recordStep(String step, String description, double before, double after) {
+        StepTrace st = new StepTrace();
+        st.setStep(step);
+        st.setDescription(description);
+        st.setPriceBefore(before);
+        st.setPriceAfter(after);
+
+        trace.getSteps().add(st);
+        trace.getPriceEvolution().add(after);
+    }
+
     public void recordDP(DPTrace dp) {
         trace.getDp().add(dp);
     }
