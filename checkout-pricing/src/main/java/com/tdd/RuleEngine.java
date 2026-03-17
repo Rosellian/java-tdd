@@ -32,9 +32,25 @@ public class RuleEngine {
         return evaluate(context, null);
     }
     public RuleContext evaluate(RuleContext context, PricingTraceCollector collector) {
-        context = applyCrossSkuRules(context, collector);
+        int beforeCrossPrice = computeTotalPrice(context, rules);
 
-        return applySkuDiscount(context, collector);
+        RuleContext afterCross = applyCrossSkuRules(context, collector);
+
+        int afterCrossPrice = computeTotalPrice(afterCross, rules);
+        if(collector != null) {
+            collector.recordStep("Cross-SKU rules",
+                    "Evaluates cross-SKU promotions such as Buy X Get Y", beforeCrossPrice, afterCrossPrice);
+            }
+
+        RuleContext afterDiscount = applySkuDiscount(afterCross, collector);
+
+        int afterDiscountPrice = computeTotalPrice(afterDiscount, rules);
+        if(collector != null) {
+            collector.recordStep("SKU-specific discounts",
+                    "Applies per-SKU discounts and price adjustments", afterCrossPrice, afterDiscountPrice);
+        }
+
+        return afterDiscount;
     }
 
     private RuleContext applyCrossSkuRules(RuleContext context, PricingTraceCollector collector) {

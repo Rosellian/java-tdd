@@ -1340,7 +1340,30 @@ public final class PriceUtils {
 }
 ```
 **Step trace**  
+`RuleEngine.java`
+```java
+public RuleContext evaluate(RuleContext context, PricingTraceCollector collector) {
+    int beforeCrossPrice = computeTotalPrice(context, rules);
 
+    RuleContext afterCross = applyCrossSkuRules(context, collector);
+
+    int afterCrossPrice = computeTotalPrice(afterCross, rules);
+    if(collector != null) {
+        collector.recordStep("Cross-SKU rules",
+                "Evaluates cross-SKU promotions such as Buy X Get Y", beforeCrossPrice, afterCrossPrice);
+    }
+
+    RuleContext afterDiscount = applySkuDiscount(afterCross, collector);
+
+    int afterDiscountPrice = computeTotalPrice(afterDiscount, rules);
+    if(collector != null) {
+        collector.recordStep("SKU-specific discounts",
+                "Applies per-SKU discounts and price adjustments", afterCrossPrice, afterDiscountPrice);
+    }
+
+    return afterDiscount;
+}
+```
 
 #### Refactoring for Rule Debugger
 **Rule classes:**  
@@ -1388,6 +1411,7 @@ public interface IRuleEvaluator {
     RuleDelta apply(SkuDiscount rule, RuleContext context,   PricingTraceCollector collector, RuleTrace rt);
 }
 ```
+
 
 ---
 ## Testing
