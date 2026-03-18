@@ -1,8 +1,6 @@
-package com.tdd;
+package com.tdd.engine;
 
-import com.tdd.engine.RuleContext;
-import com.tdd.engine.RuleDelta;
-import com.tdd.engine.RuleEvaluator;
+import com.tdd.PricingRules;
 import com.tdd.tracing.RuleTracer;
 import com.tdd.rules.CrossSkuBuyXGetYDiscount;
 import com.tdd.rules.CrossSkuBuyXGetYFree;

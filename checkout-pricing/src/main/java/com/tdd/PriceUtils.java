@@ -16,10 +16,10 @@ public final class PriceUtils {
             int discounted = skuMod.discounted();
             int unitPrice = rules.getUnitPrice(sku);
 
-            long paid = Math.min(0, entry.getValue() - skuMod.free());
+            int paid = (int) Math.max(0, entry.getValue() - skuMod.free());
 
-            int fullPricePart = (int) (Math.min(0, paid - discounted) * unitPrice);
-            int discountedPart = (int) (discounted * unitPrice * (1-skuMod.rate()));
+            int fullPricePart = Math.max(0, paid - discounted) * unitPrice;
+            int discountedPart = (int) (discounted * unitPrice * (1.0-skuMod.rate()));
 
             total += fullPricePart + discountedPart;
         }

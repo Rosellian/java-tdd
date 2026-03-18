@@ -2,7 +2,6 @@ package com.tdd.api;
 
 import com.tdd.api.rest.*;
 import com.tdd.tracing.RuleTrace;
-import com.tdd.tracing.debug.CartItem;
 import com.tdd.tracing.debug.PricingTrace;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +10,6 @@ import static java.util.stream.Collectors.toList;
 @RestController
 @RequestMapping("/api/pricing")
 public class PricingController {
-
     private final PricingEngineService service;
 
     public PricingController(PricingEngineService service) {

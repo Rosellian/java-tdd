@@ -1187,13 +1187,13 @@ Shall show the *full* chain of price calculation for a given cart:
 
         public void setFinalPrice(double finalPrice) {
             trace.setFinalPrice(finalPrice);
+            trace.getPriceEvolution().add(finalPrice);
         }
 
         public PricingTrace build() {
             return trace;
         }
     }
-
     ```
 Separation in project structure:
 ```
@@ -1218,13 +1218,160 @@ Separation in project structure:
         ├── RuleInspector.java
         └── RuleInspectorView.java
 ```
-**Backend API endpoint**
+**Backend API endpoint**  
+`PricingController.java`
 ```java
 @PostMapping("/trace")
-    public TraceResponse getTrace(@RequestBody EvaluateRequest req) {
-        PricingTrace trace = service.getTrace(req.cart, req.ruleSet);
-        return new TraceResponse(trace);
+public TraceResponse getTrace(@RequestBody EvaluateRequest req) {
+    PricingTrace trace = service.getTrace(toPricingRequest(req));
+    return new TraceResponse(trace);
+}
+
+private PricingRequest toPricingRequest(EvaluateRequest req) {
+    //... Conversion to internal format, refactoring possible later to use as REST-format.
+}
+```
+`TraceResponse.java`
+```java
+public class TraceResponse {
+    public PricingTrace trace;
+
+    public TraceResponse(PricingTrace trace) {
+        this.trace = trace;
     }
+}
+```
+**Using internal request data structure in service**
+`PricingEngineService.java`
+```java
+public static final String ENGINE_VERSION = "v1";
+//...
+public PricingTrace getTrace(PricingRequest request) {
+    PricingRules rules = RuleSetRegistry.get(request.getRuleSet());
+    CartSnapshot cartSnapshot = toCartSnapshot(request, rules);
+
+    PricingTraceCollector collector = new PricingTraceCollector(cartSnapshot,
+            request.getRuleSet(), ENGINE_VERSION);
+    RuleTracer tracer = new RuleTracer();
+    RuleEngine engine = new RuleEngine(rules, tracer);
+
+    RuleContext ctx = RuleContext.fromCart(cartSnapshot);
+    ctx = engine.evaluate(ctx, collector);
+    //...
+}
+//...
+private CartSnapshot toCartSnapshot(PricingRequest req, PricingRules rules) {
+    //...
+}
+```
+New request format used internally at this point:  
+`PricingRequest.java`
+```java
+public class PricingRequest {
+    private String ruleSet;
+    private List<CartItemRequest> items;
+    private CustomerRequest customer;
+    private Map<String, Object> context;
+
+    public String getRuleSet() {
+        return ruleSet;
+    }
+
+    public void setRuleSet(String ruleSet) {
+        this.ruleSet = ruleSet;
+    }
+
+    public List<CartItemRequest> getItems() {
+        return items;
+    }
+
+    public void setItems(List<CartItemRequest> items) {
+        this.items = items;
+    }
+
+    public CustomerRequest getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerRequest customer) {
+        this.customer = customer;
+    }
+
+    public Map<String, Object> getContext() {
+        return context;
+    }
+
+    public void setContext(Map<String, Object> context) {
+        this.context = context;
+    }
+}
+```
+`CartItemRequest.java`
+```java
+public class CartItemRequest {
+    private String sku;
+    private long quantity;
+
+    public CartItemRequest(String sku, long quantity) {
+        this.sku = sku;
+        this.quantity = quantity;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
+    }
+}
+```
+`CustomerRequest.java`
+```java
+public class CustomerRequest {
+    private String id;
+    private String segment;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getSegment() {
+        return segment;
+    }
+
+    public void setSegment(String segment) {
+        this.segment = segment;
+    }
+}
+```
+Adding in project structure:
+```
+api
+├── PricingController.java
+├── PricingEngineService.java
+├── RuleSetRegistry.java
+├── config
+├── rest
+│   ├── CartItemRequest.java
+│   ├── CustomerRequest.java
+│   ├── EvaluateRequest.java
+│   ├── EvaluateResponse.java
+│   ├── PricingRequest.java
+│   └── TraceResponse.java
+└── samples
 ```
 **Instrumentation in engine code:**  
 **DP-algorithm**  
@@ -1364,14 +1511,14 @@ public RuleContext evaluate(RuleContext context, PricingTraceCollector collector
     return afterDiscount;
 }
 ```
-
+---
 #### Refactoring for Rule Debugger
 **Rule classes:**  
 Adding fields in cross-sku for tracing:  
 `SkuDiscount.java`
 ```java
 public String id() {
-        return String.format("%sDiscount", sku);
+        return String.format("%s-Discount", sku);
 }
 public String name() {
     return String.format("Buy %s at %.2f discount", sku, discount);
@@ -1401,7 +1548,7 @@ public String name() {
                 discountQty, discountSku, discount);
 }
 ```
-New method signature for evaluator:  
+**New method signature for evaluator:**  
 `IRuleEvaluator.java`
 ```java
 public interface IRuleEvaluator {
@@ -1411,7 +1558,8 @@ public interface IRuleEvaluator {
     RuleDelta apply(SkuDiscount rule, RuleContext context,   PricingTraceCollector collector, RuleTrace rt);
 }
 ```
-
+---
+#### Refactoring 
 
 ---
 ## Testing

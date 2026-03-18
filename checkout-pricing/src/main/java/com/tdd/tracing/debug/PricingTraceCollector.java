@@ -52,6 +52,7 @@ public class PricingTraceCollector {
 
     public void setFinalPrice(double finalPrice) {
         trace.setFinalPrice(finalPrice);
+        trace.getPriceEvolution().add(finalPrice);
     }
 
     public PricingTrace build() {

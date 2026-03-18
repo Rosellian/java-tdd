@@ -1,6 +1,7 @@
 package com.tdd;
 
 import com.tdd.engine.RuleContext;
+import com.tdd.engine.RuleEngine;
 import com.tdd.tracing.RuleTracer;
 import com.tdd.tracing.inspector.RuleInspector;
 import com.tdd.tracing.inspector.RuleInspectorView;
@@ -10,16 +11,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Checkout {
-    public  final RuleTracer debugger = new RuleTracer();
+    public  final RuleTracer tracer = new RuleTracer();
     private final PricingRules rules;
-    private final RuleEngine ruleEngine;
+    private final RuleEngine engine;
     private final PriceCalculator calculator;
 
     private final List<String> items = new ArrayList<>();
 
     public Checkout(PricingRules rules) {
         this.rules = rules;
-        ruleEngine = new RuleEngine(rules, debugger);
+        engine = new RuleEngine(rules, tracer);
         calculator = new PriceCalculator(rules);
     }
 
@@ -30,7 +31,7 @@ public class Checkout {
     public int total() {
         RuleContext context = new RuleContext(countItems(), new HashMap<>());
 
-        context = ruleEngine.evaluate(context);
+        context = engine.evaluate(context);
 
         display(context);
 
@@ -39,7 +40,7 @@ public class Checkout {
 
     private void display(RuleContext context) {
         RuleInspector inspector = new RuleInspector(rules, calculator);
-        RuleTrace trace = inspector.inspect(context, debugger.getEvents());
+        RuleTrace trace = inspector.inspect(context, tracer.getEvents());
 
         RuleInspectorView.print(trace);
         for(var dp : trace.dpTraces()) {

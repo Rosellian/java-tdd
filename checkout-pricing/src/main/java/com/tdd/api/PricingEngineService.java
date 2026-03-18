@@ -2,7 +2,7 @@ package com.tdd.api;
 
 import com.tdd.PriceCalculator;
 import com.tdd.PricingRules;
-import com.tdd.RuleEngine;
+import com.tdd.engine.RuleEngine;
 import com.tdd.api.rest.PricingRequest;
 import com.tdd.engine.RuleContext;
 import com.tdd.tracing.RuleTracer;
@@ -46,10 +46,10 @@ public class PricingEngineService {
         RuleContext ctx = RuleContext.fromCart(cartSnapshot);
         ctx = engine.evaluate(ctx, collector);
 
-        RuleInspector inspector = new RuleInspector(rules, new PriceCalculator(rules));
-        RuleTrace ruleTrace = inspector.inspect(ctx, tracer.getEvents());
+        PriceCalculator calculator = new PriceCalculator(rules);
+        int finalPrice = calculator.calculateTotal(ctx, collector);
 
-        collector.setFinalPrice(ruleTrace.finalTotal());
+        collector.setFinalPrice(finalPrice);
         return collector.build();
     }
 
