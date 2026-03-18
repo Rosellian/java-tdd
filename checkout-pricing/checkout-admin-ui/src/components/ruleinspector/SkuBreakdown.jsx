@@ -1,5 +1,4 @@
 import {useState} from "react";
-import styles from "./Styles";
 
 export function SkuBreakdown({ skuTraces }) {
     return (
@@ -28,4 +27,25 @@ function SkuItem({ sku }) {
             )}
         </div>
     );
+}
+
+const styles = {
+    sku: {
+        border: "1px solid #333",
+        marginBottom: 10,
+        borderRadius: 4,
+        background: "#1E1E1E",
+    },
+    skuHeader: {
+        padding: 10,
+        background: "#263238",
+        cursor: "pointer",
+        display: "flex",
+        justifyContent: "space-between",
+        color: "#80CBC4",
+    },
+    skuBody: {
+        padding: 10,
+        background: "#1A1A1A",
+    },
 }

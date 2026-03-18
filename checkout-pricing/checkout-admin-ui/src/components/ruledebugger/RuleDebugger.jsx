@@ -7,17 +7,17 @@ import {PriceEvolutionChart} from "./PriceEvolutionChart";
 export function RuleDebugger({ trace }) {
     if (!trace) {
         return (
-            <div className="rule-debugger empty">
+            <div style={styles.ruleDebugger}>
                 <p>No trace available. Run a pricing evaluation.</p>
             </div>
         );
     }
 
     return (
-        <div className="rule-debugger">
+        <div style={styles.ruleDebugger}>
             <h2>Rule Debugger</h2>
 
-            <div className="debugger-grid">
+            <div style={styles.debuggerGrid}>
                 <ChainOverview steps={trace.steps} />
                 <RuleTimeline rules={trace.rules} />
                 <DPGraph dp={trace.dp} />
@@ -25,4 +25,25 @@ export function RuleDebugger({ trace }) {
             </div>
         </div>
     );
+}
+
+export const styles = {
+    ruleDebugger: {
+        background: "#1a1a1a",
+        padding: 16,
+        borderRadius: 8,
+        color: "#eee",
+    },
+
+    debuggerGrid: {
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: 16,
+    },
+
+    section: {
+        background: "#222",
+        padding: 12,
+        borderRadius: 6,
+    },
 }

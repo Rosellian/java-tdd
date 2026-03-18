@@ -767,8 +767,37 @@ async function getTrace() {
 ```js
 
 ```
+---
+#### Improvements
+**Rule Debugger**  
+Fixing styling of module by moving css-style to jsx-file of Rule Debugger.  
+``
+```jsx
+```
+**Chain Overview**  
+
+``
+```jsx
+```
 
 ---
+### Refactoring RuleInspector
+Fixing styling of module by separating Styles-file and moving parts to relevant module.  
+`RuleInspector.jsx`
+```jsx
+```
+`Section.jsx`
+```jsx
+```
+`RuleTimeLine.jsx`
+```jsx
+```
+`SkuBreakdown.jsx`
+```jsx
+```
+`DPSection.jsx`
+```jsx
+```
 ### Current structure
 ```
 

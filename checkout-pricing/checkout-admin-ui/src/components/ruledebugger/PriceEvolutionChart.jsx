@@ -3,7 +3,7 @@ export function PriceEvolutionChart({ prices }) {
         <section className="price-evolution">
             <h3>Price Evolution</h3>
 
-            <div className="chart-placeholder">
+            <div style={styles.chartPlaceholder}>
                 {prices.map((p, i) => (
                     <div key={i} className="chart-bar">
                         <span>{p}</span>
@@ -12,4 +12,11 @@ export function PriceEvolutionChart({ prices }) {
             </div>
         </section>
     );
+}
+
+const styles = {
+    chartPlaceholder: {
+        display: "flex",
+        gap: 4,
+    },
 }

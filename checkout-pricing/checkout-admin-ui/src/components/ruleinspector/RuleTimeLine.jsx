@@ -1,5 +1,4 @@
 import {useState} from "react";
-import styles from "./Styles";
 
 export function RuleTimeline({ events }) {
     return (
@@ -32,4 +31,24 @@ function RuleEvent({ event, index }) {
             )}
         </div>
     );
+}
+
+const styles = {
+    event: {
+        border: "1px solid #333",
+        marginBottom: 10,
+        borderRadius: 4,
+        background: "#1E1E1E",
+    },
+    eventHeader: {
+        padding: 10,
+        background: "#2A2A2A",
+        cursor: "pointer",
+        display: "flex",
+        justifyContent: "space-between",
+    },
+    eventBody: {
+        padding: 10,
+        background: "#1A1A1A",
+    },
 }

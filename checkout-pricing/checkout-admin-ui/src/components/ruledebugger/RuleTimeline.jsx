@@ -7,7 +7,7 @@ export function RuleTimeline({ rules }) {
                 {rules.map((r) => (
                     <div
                         key={r.id}
-                        className={`timeline-item ${r.matched ? "matched" : "skipped"}`}
+                        style={r.matched ? styles.timelineItemMatched : styles.timelineItemSkipped}
                     >
                         <span className="rule-name">{r.name}</span>
                         <span className="rule-delta">
@@ -19,4 +19,14 @@ export function RuleTimeline({ rules }) {
             </div>
         </section>
     );
+}
+
+const styles = {
+    timelineItemMatched: {
+        color: "#4caf50",
+    },
+
+    timelineItemSkipped: {
+        color: "#f44336",
+    },
 }

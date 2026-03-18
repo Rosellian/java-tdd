@@ -1,5 +1,4 @@
 import {useState} from "react";
-import styles from "./Styles";
 
 export function DPSection({ dpTraces }) {
     return (
@@ -39,4 +38,31 @@ function DPTraceView({ dp }) {
             )}
         </div>
     );
+}
+
+const styles = {
+    dp: {
+        border: "1px solid #333",
+        marginBottom: 10,
+        borderRadius: 4,
+        background: "#1E1E1E",
+    },
+    dpHeader: {
+        padding: 10,
+        background: "#2E3A59",
+        cursor: "pointer",
+        display: "flex",
+        justifyContent: "space-between",
+        color: "#82B1FF",
+    },
+    dpBody: {
+        padding: 10,
+        background: "#1A1A1A",
+    },
+    dpNode: {
+        marginBottom: 10,
+        padding: 10,
+        background: "#222",
+        borderLeft: "3px solid #555",
+    },
 }

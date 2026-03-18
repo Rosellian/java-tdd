@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./Styles";
 import {Section} from "./Section";
 import {RuleTimeline} from "./RuleTimeLine";
 import {SkuBreakdown} from "./SkuBreakdown";
@@ -27,4 +26,25 @@ export function RuleInspector({ trace }) {
             </Section>
         </div>
     );
+}
+
+const styles = {
+    container: {
+        fontFamily: "monospace",
+        padding: 20,
+        maxWidth: 900,
+        margin: "0 auto",
+        background: "#121212",
+        color: "#E0E0E0",
+    },
+    header: {
+        textAlign: "center",
+        marginBottom: 30,
+        color: "#BB86FC",
+    },
+    total: {
+        fontSize: 24,
+        fontWeight: "bold",
+        color: "#03DAC6",
+    },
 }
