@@ -1,34 +1,99 @@
 export function RuleTimeline({ rules }) {
-    if (!rules) return null;
+    if (!rules) {
+        return (
+            <div style={styles.timelineEmpty}>
+                No rules matched in this step.
+            </div>
+        );
+    }
 
     return (
-        <section className="rule-timeline">
-            <h3>Rule Timeline</h3>
+        <div style={styles.timelineWrapper}>
+            <h3 style={styles.timelineHeader}>Rule Timeline</h3>
 
-            <div className="timeline">
-                {rules.map((r) => (
-                    <div
-                        key={r.id}
-                        style={r.matched ? styles.timelineItemMatched : styles.timelineItemSkipped}
-                    >
-                        <span className="rule-name">{r.name}</span>
-                        <span className="rule-delta">
-                        {r.delta > 0 ? "+" : ""}
+            <ul style={styles.timelineList}>
+                {rules.map((r, i) => (
+                    <li key={i} style={styles.timelineItem}>
+                        <div style={styles.ruleName}>{r.name}</div>
+                        <div style={styles.ruleDesc}>{r.description}</div>
+                        <div style={styles.ruleEffect}>
                             {r.delta}
-                        </span>
-                    </div>
+                        </div>
+                    </li>
                 ))}
-            </div>
-        </section>
+            </ul>
+
+            <section className="rule-timeline">
+                <h3>Rule Timeline</h3>
+
+                <div className="timeline">
+                    {rules.map((r) => (
+                        <div
+                            key={r.id}
+                            style={r.matched ? styles.timelineItemMatched : styles.timelineItemSkipped}
+                        >
+                            <span className="rule-name">{r.name}</span>
+                            <span className="rule-delta">
+                        {r.delta > 0 ? "+" : ""}
+                                {r.delta}
+                        </span>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        </div>
     );
 }
 
 const styles = {
-    timelineItemMatched: {
+    timelineWrapper: {
+        background: "#1a1a1a",
+        padding: 16,
+        borderRadius: 8,
+        color: "#eee",
+    },
+
+    timelineHeader: {
+        marginBottom: 12,
+        fontSize: "1.1rem",
+        fontWeight: 600,
+        color: "#fff",
+    },
+
+    timelineList: {
+        listStyle: "none",
+        padding: 0,
+        margin: 0,
+    },
+
+    timelineItem: {
+        padding: "10px 0",
+        borderBottom: "1px solid #333",
+    },
+
+    ruleName: {
+        fontSize: "1rem",
+        fontWeight: 600,
+        color: "#BB86FC",
+    },
+
+    ruleDesc: {
+        fontSize: "0.85rem",
+        color: "#bbb",
+        marginTop: 2,
+    },
+
+    ruleEffect: {
+        marginTop: 4,
+        fontSize: "0.85rem",
         color: "#4caf50",
     },
 
-    timelineItemSkipped: {
-        color: "#f44336",
+    timelineEmpty: {
+        background: "#1a1a1a",
+        padding: 16,
+        borderRadius: 8,
+        color: "#777",
+        fontStyle: "italic",
     },
-}
+};

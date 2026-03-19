@@ -982,19 +982,342 @@ export async function runPricingTrace(cart, ruleSet) {
 Fixing styling of module by separating Styles-file and moving parts to relevant module.  
 `RuleInspector.jsx`
 ```jsx
+const styles = {
+   container: {
+      fontFamily: "monospace",
+      padding: 20,
+      maxWidth: 900,
+      margin: "0 auto",
+      background: "#121212",
+      color: "#E0E0E0",
+   },
+   header: {
+      textAlign: "center",
+      marginBottom: 30,
+      color: "#BB86FC",
+   },
+   total: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: "#03DAC6",
+   },
+}
 ```
 `Section.jsx`
 ```jsx
+const styles = {
+   section: {
+      marginBottom: 40,
+   },
+   sectionHeader: {
+      borderBottom: "1px solid #333",
+      paddingBottom: 5,
+      marginBottom: 15,
+      color: "#BB86FC",
+   },
+}
 ```
 `RuleTimeLine.jsx`
 ```jsx
+const styles = {
+   event: {
+      border: "1px solid #333",
+      marginBottom: 10,
+      borderRadius: 4,
+      background: "#1E1E1E",
+   },
+   eventHeader: {
+      padding: 10,
+      background: "#2A2A2A",
+      cursor: "pointer",
+      display: "flex",
+      justifyContent: "space-between",
+   },
+   eventBody: {
+      padding: 10,
+      background: "#1A1A1A",
+   },
+}
 ```
 `SkuBreakdown.jsx`
 ```jsx
+const styles = {
+   sku: {
+      border: "1px solid #333",
+      marginBottom: 10,
+      borderRadius: 4,
+      background: "#1E1E1E",
+   },
+   skuHeader: {
+      padding: 10,
+      background: "#263238",
+      cursor: "pointer",
+      display: "flex",
+      justifyContent: "space-between",
+      color: "#80CBC4",
+   },
+   skuBody: {
+      padding: 10,
+      background: "#1A1A1A",
+   },
+}
 ```
 `DPSection.jsx`
 ```jsx
+const styles = {
+   dp: {
+      border: "1px solid #333",
+      marginBottom: 10,
+      borderRadius: 4,
+      background: "#1E1E1E",
+   },
+   dpHeader: {
+      padding: 10,
+      background: "#2E3A59",
+      cursor: "pointer",
+      display: "flex",
+      justifyContent: "space-between",
+      color: "#82B1FF",
+   },
+   dpBody: {
+      padding: 10,
+      background: "#1A1A1A",
+   },
+   dpNode: {
+      marginBottom: 10,
+      padding: 10,
+      background: "#222",
+      borderLeft: "3px solid #555",
+   },
+}
 ```
+### Improve graphical display - Rule Debugger:
+#### RuleTimeline
+`RuleTimeline.jsx`
+```jsx
+if (!rules) {
+   return (
+           <div style={styles.timelineEmpty}>
+              No rules matched in this step.
+           </div>
+   );
+}
+
+return (
+        <div style={styles.timelineWrapper}>
+           <h3 style={styles.timelineHeader}>Rule Timeline</h3>
+
+           <ul style={styles.timelineList}>
+              {rules.map((r, i) => (
+                      <li key={i} style={styles.timelineItem}>
+                         <div style={styles.ruleName}>{r.name}</div>
+                         <div style={styles.ruleDesc}>{r.description}</div>
+                         <div style={styles.ruleEffect}>
+                            {r.effect}
+                         </div>
+                      </li>
+              ))}
+           </ul>
+        </div>
+);
+
+const styles = {
+   timelineWrapper: {
+      background: "#1a1a1a",
+      padding: 16,
+      borderRadius: 8,
+      color: "#eee",
+   },
+
+   timelineHeader: {
+      marginBottom: 12,
+      fontSize: "1.1rem",
+      fontWeight: 600,
+      color: "#fff",
+   },
+
+   timelineList: {
+      listStyle: "none",
+      padding: 0,
+      margin: 0,
+   },
+
+   timelineItem: {
+      padding: "10px 0",
+      borderBottom: "1px solid #333",
+   },
+
+   ruleName: {
+      fontSize: "1rem",
+      fontWeight: 600,
+      color: "#BB86FC",
+   },
+
+   ruleDesc: {
+      fontSize: "0.85rem",
+      color: "#bbb",
+      marginTop: 2,
+   },
+
+   ruleEffect: {
+      marginTop: 4,
+      fontSize: "0.85rem",
+      color: "#4caf50",
+   },
+
+   timelineEmpty: {
+      background: "#1a1a1a",
+      padding: 16,
+      borderRadius: 8,
+      color: "#777",
+      fontStyle: "italic",
+   },
+};
+```
+#### DPGraph
+`DPGraph.jsx`
+```jsx
+if (!dp) {
+   return (
+           <div style={styles.dpEmpty}>
+              No dynamic programming steps recorded.
+           </div>
+   );
+}
+
+return (
+        <div style={styles.dpWrapper}>
+           <h3 style={styles.dpHeader}>DP Graph</h3>
+
+           <ul style={styles.dpList}>
+              {dp.map((node, i) => (
+                      <li key={i} style={styles.dpItem}>
+                         <div style={styles.dpState}>State: {node.state}</div>
+                         <div style={styles.dpValue}>Value: {node.value}</div>
+                      </li>
+              ))}
+           </ul>
+        </div>
+);
+
+const styles = {
+   dpWrapper: {
+      background: "#1a1a1a",
+      padding: 16,
+      borderRadius: 8,
+      color: "#eee",
+   },
+   dpHeader: {
+      marginBottom: 12,
+      fontSize: "1.1rem",
+      fontWeight: 600,
+      color: "#fff",
+   },
+   dpList: {
+      listStyle: "none",
+      padding: 0,
+      margin: 0,
+   },
+   dpItem: {
+      padding: "10px 0",
+      borderBottom: "1px solid #333",
+   },
+   dpState: {
+      fontSize: "0.9rem",
+      color: "#BB86FC",
+   },
+   dpValue: {
+      fontSize: "0.85rem",
+      color: "#4caf50",
+      marginTop: 2,
+   },
+   dpEmpty: {
+      background: "#1a1a1a",
+      padding: 16,
+      borderRadius: 8,
+      color: "#777",
+      fontStyle: "italic",
+   },
+};
+```
+#### PriceEvolutionChart
+`PriceEvolutionChart.jsx`
+```jsx
+if (!prices) {
+   return (
+           <div style={styles.priceEmpty}>
+              No price evolution data available.
+           </div>
+   );
+}
+
+return (
+        <div style={styles.priceWrapper}>
+           <h3 style={styles.priceHeader}>Price Evolution</h3>
+
+           <ul style={styles.priceList}>
+              {prices.map((p, i) => (
+                      <li key={i} style={styles.priceItem}>
+                         <span style={styles.priceStep}>Step {i + 1}</span>
+                         <span style={styles.priceValue}>{p}</span>
+                      </li>
+              ))}
+           </ul>
+        </div>
+);
+
+const styles = {
+   chartPlaceholder: {
+      display: "flex",
+      gap: 4,
+   },
+   priceWrapper: {
+      background: "#1a1a1a",
+      padding: 16,
+      borderRadius: 8,
+      color: "#eee",
+   },
+   priceHeader: {
+      marginBottom: 12,
+      fontSize: "1.1rem",
+      fontWeight: 600,
+      color: "#fff",
+   },
+   priceList: {
+      listStyle: "none",
+      padding: 0,
+      margin: 0,
+   },
+   priceItem: {
+      display: "flex",
+      justifyContent: "space-between",
+      padding: "8px 0",
+      borderBottom: "1px solid #333",
+   },
+   priceStep: {
+      color: "#BB86FC",
+   },
+   priceValue: {
+      color: "#4caf50",
+      fontWeight: 600,
+   },
+   priceEmpty: {
+      background: "#1a1a1a",
+      padding: 16,
+      borderRadius: 8,
+      color: "#777",
+      fontStyle: "italic",
+   },
+}
+```
+---
+### Improve graphical display - RuleInspector:
+####  
+`.jsx`
+```jsx
+```
+
+---
 ### Current structure
 ```
 

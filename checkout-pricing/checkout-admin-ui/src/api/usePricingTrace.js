@@ -17,7 +17,7 @@ export function usePricingTrace() {
 
         try {
             const result = await runPricingTrace(cart, ruleSet);
-            setTrace(result);
+            setTrace(result.trace);
         } catch (err) {
             setError(err.message);
         } finally {
