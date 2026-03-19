@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import { CartEditor } from "../components/CartEditor";
 import { RuleSetSelector } from "../components/RuleSetSelector";
 import { RuleInspector } from "../components/ruleinspector/RuleInspector";
 import {runPricingEngine, runPricingTrace} from "../api/pricingEngine";
 import { RuleDebugger } from "../components/ruledebugger/RuleDebugger";
-import {usePricingTrace} from "../api/pricingTrace";
 
 export default function AdminApp() {
     const [cart, setCart] = useState({});
@@ -42,9 +41,9 @@ export default function AdminApp() {
             </div>
 
             {loading && <p>Evaluating pricing…</p>}
-            {error && <p>Error loading trace</p>}
+            {error && <p style={{ color: "red" }}>Error loading trace: {error}</p>}
 
-            {trace && <RuleInspector trace={trace} />}
+            <RuleInspector trace={trace} />
             <RuleDebugger trace={traceNew} />
         </div>
     );

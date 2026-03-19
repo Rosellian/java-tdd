@@ -1559,7 +1559,8 @@ public interface IRuleEvaluator {
 }
 ```
 ---
-#### Refactoring 
+#### Refactoring
+
 
 ---
 ## Testing

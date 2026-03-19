@@ -722,11 +722,7 @@ ruledebugger
      gap: 4px;
    }
    ```
-**API-call to backend**  
-`pricingTrace.jsx`
-```jsx
-
-```
+**API-call to backend**
 `pricingEngine.jsx`
 ```js
 export async function runPricingTrace(cart, ruleSet) {
@@ -762,24 +758,166 @@ async function getTrace() {
 {error && <p>Error loading trace</p>}
 <RuleDebugger trace={traceNew} />
 ```
-****  
-``
-```js
-
-```
 ---
 #### Improvements
 **Rule Debugger**  
 Fixing styling of module by moving css-style to jsx-file of Rule Debugger.  
-``
+`RuleDebugger.jsx`
 ```jsx
+//... adding main styles here
+export const styles = {
+   ruleDebugger: {
+      background: "#1a1a1a",
+      padding: 16,
+      borderRadius: 8,
+      color: "#eee",
+   },
+
+   debuggerGrid: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 16,
+   },
+
+   section: {
+      background: "#222",
+      padding: 12,
+      borderRadius: 6,
+   },
+}
+```
+`RuleTimeline.jsx`
+```jsx
+//...
+const styles = {
+   timelineItemMatched: {
+      color: "#4caf50",
+   },
+
+   timelineItemSkipped: {
+      color: "#f44336",
+   },
+}
+```
+`PriceEvolutionChart.jsx`
+```jsx
+//...
+const styles = {
+   chartPlaceholder: {
+      display: "flex",
+      gap: 4,
+   },
+}
 ```
 **Chain Overview**  
-
-``
+Improving graphical display.
+`ChainOverview.jsx`
 ```jsx
-```
+export function ChainOverview({ steps }) {
+   return (
+           <section style={styles.chainOverview}>
+              <h3>Pricing Chain</h3>
 
+              <ul style={styles.chainList}>
+                 {steps.map((s, i) => (
+                         <li key={i} style={styles.chainItem}>
+                            <div style={styles.chainIndex}>{i + 1}</div>
+
+                            <div style={styles.chainContent}>
+                               <div style={styles.chainStep}>{s.step}</div>
+                               <div style={styles.chainDesc}>{s.description}</div>
+
+                               <div style={styles.chainPrice}>
+                                  <span style={styles.priceBefore}>{s.priceBefore}</span>
+                                  <span style={styles.priceArrow}>→</span>
+                                  <span style={styles.priceAfter}>{s.priceAfter}</span>
+                               </div>
+                            </div>
+                         </li>
+                 ))}
+              </ul>
+           </section>
+   );
+}
+
+const styles = {
+   chainOverview: {
+      background: "#1a1a1a",
+      padding: 16,
+      borderRadius: 8,
+      color: "#eee",
+   },
+
+   chainList: {
+      listStyle: "none",
+      padding: 0,
+      margin: 0,
+   },
+
+   chainItem: {
+      display: "flex",
+      gap: 12,
+      padding: "12px 0",
+      borderBottom: "1px solid #333",
+   },
+
+   chainItemLast: {
+      borderBottom: "none",
+   },
+
+   chainIndex: {
+      width: 28,
+      height: 28,
+      background: "#333",
+      borderRadius: "50%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontWeight: "bold",
+      color: "#aaa",
+   },
+
+   chainContent: {
+      flex: 1,
+   },
+
+   chainStep: {
+      fontSize: "1rem",
+      fontWeight: 600,
+      color: "#fff",
+   },
+
+   chainDesc: {
+      fontSize: "0.85rem",
+      color: "#bbb",
+      marginTop: 2,
+   },
+
+   chainPrice: {
+      marginTop: 6,
+      fontSize: "0.9rem",
+      color: "#ccc",
+   },
+
+   priceBefore: {
+      color: "#f44336",
+   },
+
+   priceAfter: {
+      color: "#4caf50",
+   },
+
+   priceArrow: {
+      margin: "0 6px",
+      color: "#888",
+   },
+};
+```
+**Adding loading and error status display**  
+`.jsx`
+```jsx
+
+```
 ---
 ### Refactoring RuleInspector
 Fixing styling of module by separating Styles-file and moving parts to relevant module.  

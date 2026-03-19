@@ -5,6 +5,14 @@ import {SkuBreakdown} from "./SkuBreakdown";
 import {DPSection} from "./DPSection";
 
 export function RuleInspector({ trace }) {
+    if (!trace) {
+        return (
+            <div style={styles.container}>
+                <p>No trace available. Run a pricing evaluation.</p>
+            </div>
+        );
+    }
+
     return (
         <div style={styles.container}>
             <h1 style={styles.header}>Rule Inspector</h1>
