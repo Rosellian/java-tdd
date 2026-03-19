@@ -1,4 +1,5 @@
 export function ChainOverview({ steps }) {
+    if (!steps) return null;
     return (
         <section style={styles.chainOverview}>
             <h3>Pricing Chain</h3>

@@ -15,5 +15,10 @@ export async function runPricingTrace(cart, ruleSet) {
         body: JSON.stringify({ cart, ruleSet }),
     });
 
+    if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Server error: ${res.status} ${text}`);
+    }
+
     return await res.json();
 }

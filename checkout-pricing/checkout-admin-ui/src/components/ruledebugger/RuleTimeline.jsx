@@ -1,4 +1,6 @@
 export function RuleTimeline({ rules }) {
+    if (!rules) return null;
+
     return (
         <section className="rule-timeline">
             <h3>Rule Timeline</h3>

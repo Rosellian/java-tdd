@@ -914,9 +914,68 @@ const styles = {
 };
 ```
 **Adding loading and error status display**  
-`.jsx`
+`AdminApp.jsx`
 ```jsx
+//...
+const { traceNew, loading, error, getTrace } = usePricingTrace(cart, ruleSet);
+//...
+<button style={styles.button} onClick={() => getTrace(cart, ruleSet)}>
+   Get trace
+</button>
+//...
+{loading && <p>Evaluating pricing…</p>}
+{error && <p style={{ color: "red" }}>Error loading trace: {error}</p>}
+``` 
+`usePricingTrace.js`
+```js
+export function usePricingTrace() {
+   const [trace, setTrace] = useState(null);
+   const [loading, setLoading] = useState(false);
+   const [error, setError] = useState(null);
 
+   async function getTrace(cart, ruleSet) {
+      if (!cart || !ruleSet) {
+         setError("Missing cart or ruleSet");
+         return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+         const result = await runPricingTrace(cart, ruleSet);
+         setTrace(result);
+      } catch (err) {
+         setError(err.message);
+      } finally {
+         setLoading(false);
+      }
+   }
+
+   return {
+      traceNew: trace,
+      loading,
+      error,
+      getTrace,
+   };
+}
+``` 
+`pricingEngine.js`
+```js
+export async function runPricingTrace(cart, ruleSet) {
+   const res = await fetch("/api/pricing/trace", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cart, ruleSet }),
+   });
+
+   if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Server error: ${res.status} ${text}`);
+   }
+
+   return await res.json();
+}
 ```
 ---
 ### Refactoring RuleInspector

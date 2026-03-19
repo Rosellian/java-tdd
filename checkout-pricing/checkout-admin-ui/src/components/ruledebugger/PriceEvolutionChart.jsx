@@ -1,4 +1,6 @@
 export function PriceEvolutionChart({ prices }) {
+    if (!prices) return null;
+
     return (
         <section className="price-evolution">
             <h3>Price Evolution</h3>

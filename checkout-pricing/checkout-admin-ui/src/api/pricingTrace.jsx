@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import {runPricingTrace} from "./pricingEngine";
 
 export function usePricingTrace(cart, ruleSet) {
     const [trace, setTrace] = useState(null);
@@ -11,12 +12,7 @@ export function usePricingTrace(cart, ruleSet) {
         setLoading(true);
         setError(null);
 
-        fetch("/api/pricing/trace", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ruleSet, cart }),
-        })
-            .then((res) => res.json())
+        runPricingTrace(cart, ruleSet)
             .then((data) => setTrace(data))
             .catch((err) => setError(err))
             .finally(() => setLoading(false));

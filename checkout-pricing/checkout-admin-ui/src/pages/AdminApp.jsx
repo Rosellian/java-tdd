@@ -2,26 +2,21 @@ import React, {useState} from "react";
 import { CartEditor } from "../components/CartEditor";
 import { RuleSetSelector } from "../components/RuleSetSelector";
 import { RuleInspector } from "../components/ruleinspector/RuleInspector";
-import {runPricingEngine, runPricingTrace} from "../api/pricingEngine";
 import { RuleDebugger } from "../components/ruledebugger/RuleDebugger";
+import {runPricingEngine} from "../api/pricingEngine";
+import {usePricingTrace} from "../api/usePricingTrace";
 
 export default function AdminApp() {
     const [cart, setCart] = useState({});
     const [ruleSet, setRuleSet] = useState("default");
     const [trace, setTrace] = useState(null);
-    const [traceNew, setNewTrace] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
 
     async function evaluate() {
         const result = await runPricingEngine(cart, ruleSet);
         setTrace(result.trace);
     }
 
-    async function getTrace() {
-        const result = await runPricingTrace(cart, ruleSet);
-        setNewTrace((result.trace));
-    }
+    const { traceNew, loading, error, getTrace } = usePricingTrace(cart, ruleSet);
 
     return (
         <div style={styles.container}>
@@ -34,7 +29,7 @@ export default function AdminApp() {
                     <button style={styles.button} onClick={evaluate}>
                         Evaluate
                     </button>
-                    <button style={styles.button} onClick={getTrace}>
+                    <button style={styles.button} onClick={() => getTrace(cart, ruleSet)}>
                         Get trace
                     </button>
                 </div>

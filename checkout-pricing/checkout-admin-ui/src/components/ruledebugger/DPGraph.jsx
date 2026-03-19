@@ -1,4 +1,6 @@
 export function DPGraph({ dp }) {
+    if (!dp) return null;
+
     return (
         <section className="dp-graph">
             <h3>DP States</h3>
