@@ -1,6 +1,9 @@
 import {useState} from "react";
+import {useTraceSync} from "./TraceSyncProvider";
 
 export function RuleTimeline({ rules }) {
+    const {selectedStep} = useTraceSync();
+
     if (!rules) {
         return (
             <div style={styles.timelineEmpty}>
@@ -24,10 +27,19 @@ export function RuleTimeline({ rules }) {
 
 function RuleItem({ rule }) {
     const [open, setOpen] = useState(false);
+    const {selectedStep, setSelectedStep} = useTraceSync();
+
+    const isActive = rule.stepIndex === selectedStep;
 
     return (
-        <li style={styles.timelineItem}>
-            <div style={styles.ruleHeader} onClick={() => setOpen(!open)}>
+        <li style={{
+            ...styles.timelineItem,
+            ...(isActive ? styles.ruleActive : {})
+        }}>
+            <div style={styles.ruleHeader} onClick={() => {
+                setOpen(!open)
+                setSelectedStep(selectedStep);
+            }}>
                 <span style={styles.ruleName}>{rule.name}</span>
                 <span style={styles.ruleToggle}>{open ? "▲" : "▼"}</span>
             </div>
@@ -92,6 +104,10 @@ const styles = {
         marginTop: 4,
         fontSize: "0.85rem",
         color: "#4caf50",
+    },
+    ruleActive: {
+        background: "#222",
+        borderLeft: "3px solid #BB86FC",
     },
     timelineItemMatched: {
         color: "#4caf50",

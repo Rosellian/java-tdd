@@ -1593,6 +1593,130 @@ const styles = {
 }
 ```
 ---
+### Synchronization between Rule Debugger components
+Introducing **TraceSyncContext** that holds:
+- `selectedStep` (DPGraph‑index)
+- `setSelectedStep(stepIndex)`
+- `selectedRule` (rule name or id)
+- `setSelectedRule(ruleName)`
+- `selectedChainStep`
+- `setSelectedChainStep(stepIndex)`
+
+This works like:
+- Click in DPGraph → highlight in RuleTimeline + ChainOverview
+- Click in RuleTimeline → highlight in DPGraph + ChainOverview
+- Click in ChainOverview → highlight in DPGraph + RuleTimeline
+
+#### Implementation steps:  
+1. Create TraceSyncContext
+   `TraceSyncProvider.jsx`
+   ```jsx
+   import { createContext, useContext, useState } from "react";
+   
+   const TraceSyncContext = createContext(null);
+   
+   export function TraceSyncProvider({ children }) {
+       const [selectedStep, setSelectedStep] = useState(null);
+       const [selectedRule, setSelectedRule] = useState(null);
+       const [selectedChainStep, setSelectedChainStep] = useState(null);
+   
+       return (
+           <TraceSyncContext.Provider value={{
+               selectedStep,
+               setSelectedStep,
+               selectedRule,
+               setSelectedRule,
+               selectedChainStep,
+               setSelectedChainStep
+           }}>
+               {children}
+           </TraceSyncContext.Provider>
+       );
+   }
+   
+   export function useTraceSync() {
+       return useContext(TraceSyncContext);
+   }
+   ```
+2. Wrap RuleDebugger within the provider
+   `RuleDebugger.jsx`
+   ```jsx
+   //...
+   <TraceSyncProvider>
+       <ChainOverview steps={trace.steps} />
+       <DPGraph dp={trace.dp} />
+       <RuleTimeline rules={trace.rules} />
+   </TraceSyncProvider>
+   //...
+   ```
+3. DPGraph ->
+   - writes selectedStep
+   - highlights when RuleTimeline is clicked
+     `DPGraph.jsx`
+      ```jsx
+      //...
+      const {selectedStep, setSelectedStep, selectedRule } = useTraceSync();
+
+      const isSelectedByRule = node.appliedRules?.includes(selectedRule);
+      //...
+      const isSelected = selectedStep === i;
+      //...
+      ...(isSelectedByRule ? styles.dpNodeSelectedByRule : {})
+      //...
+      onClick={() => setSelectedStep(i)}
+      //...
+      const styles = {
+        dpNodeSelectedByRule: {
+        background: "#4caf50",
+        borderColor: "#4caf50",
+        color: "#000",
+        fontWeight: 600,
+        },
+      }
+      ```
+4. RuleTimeline -> highlight rules that belongs to selectedStep  
+   If every rule has a field like stepIndex or similar use that.  
+   If not, you can connect rules to DP-step by the trace-structure.
+   `RuleTimeline.jsx`
+   ```jsx
+   //...
+   const { selectedStep, setSelectedRule } = useTraceSync();
+   //...
+   const isActive = rule.stepIndex === selectedStep;
+   //...
+   <div style={{
+    ...styles.ruleHeader,
+    ...(isActive ? styles.ruleActive : {})
+   }}></div>
+   //...
+   <div onClick={() => setSelectedRule(rule.name)}></div>
+   //...
+   const styles = {
+    ruleActive: {
+        background: "#333",
+        borderLeft: "3px solid #BB86FC",
+    },
+   }
+   ```
+5. ChainOverview -> highlight the DP-step
+   `ChainOverview.jsx`
+   ```jsx
+   //...
+   const { selectedStep, setSelectedChainStep } = useTraceSync();
+   //...
+   const isActive = index === selectedStep;
+   //...
+   
+   <div onClick={() => setSelectedChainStep(index)}></div>
+   //...
+   const styles = {
+    chainActive: {
+        background: "#222",
+        borderLeft: "3px solid #4caf50",
+    },
+   }
+   ```
+---
 ### Improve graphical display - RuleInspector:
 ####  
 `.jsx`

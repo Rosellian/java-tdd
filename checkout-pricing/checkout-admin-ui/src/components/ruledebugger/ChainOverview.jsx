@@ -1,4 +1,8 @@
+import {useTraceSync} from "./TraceSyncProvider";
+
 export function ChainOverview({ steps }) {
+    const { selectedStep, setSelectedStep } = useTraceSync();
+
     if (!steps) return null;
 
     return (
@@ -6,22 +10,29 @@ export function ChainOverview({ steps }) {
             <h3>Pricing Chain</h3>
 
             <ul style={styles.chainList}>
-                {steps.map((s, i) => (
-                    <li key={i} style={styles.chainItem}>
-                        <div style={styles.chainIndex}>{i + 1}</div>
+                {steps.map((s, i) => {
+                    const isActive = selectedStep === i;
 
-                        <div style={styles.chainContent}>
-                            <div style={styles.chainStep}>{s.step}</div>
-                            <div style={styles.chainDesc}>{s.description}</div>
+                    return (
+                        <li key={i} style={{
+                            ...styles.chainItem,
+                            ...(isActive ? styles.chainActive : {})
+                        }} onClick={() => setSelectedStep(i)}>
+                            <div style={styles.chainIndex}>{i + 1}</div>
 
-                            <div style={styles.chainPrice}>
-                                <span style={styles.priceBefore}>{s.priceBefore}</span>
-                                <span style={styles.priceArrow}>→</span>
-                                <span style={styles.priceAfter}>{s.priceAfter}</span>
+                            <div style={styles.chainContent}>
+                                <div style={styles.chainStep}>{s.step}</div>
+                                <div style={styles.chainDesc}>{s.description}</div>
+
+                                <div style={styles.chainPrice}>
+                                    <span style={styles.priceBefore}>{s.priceBefore}</span>
+                                    <span style={styles.priceArrow}>→</span>
+                                    <span style={styles.priceAfter}>{s.priceAfter}</span>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                ))}
+                        </li>
+                    );
+                })}
             </ul>
         </section>
     );
@@ -34,24 +45,24 @@ const styles = {
         borderRadius: 8,
         color: "#eee",
     },
-
     chainList: {
         listStyle: "none",
         padding: 0,
         margin: 0,
     },
-
     chainItem: {
         display: "flex",
         gap: 12,
         padding: "12px 0",
         borderBottom: "1px solid #333",
     },
-
     chainItemLast: {
         borderBottom: "none",
     },
-
+    chainActive: {
+        background: "#222",
+        borderLeft: "3px solid #4caf50",
+    },
     chainIndex: {
         width: 28,
         height: 28,
@@ -63,37 +74,30 @@ const styles = {
         fontWeight: "bold",
         color: "#aaa",
     },
-
     chainContent: {
         flex: 1,
     },
-
     chainStep: {
         fontSize: "1rem",
         fontWeight: 600,
         color: "#fff",
     },
-
     chainDesc: {
         fontSize: "0.85rem",
         color: "#bbb",
         marginTop: 2,
     },
-
     chainPrice: {
         marginTop: 6,
         fontSize: "0.9rem",
         color: "#ccc",
     },
-
     priceBefore: {
         color: "#f44336",
     },
-
     priceAfter: {
         color: "#4caf50",
     },
-
     priceArrow: {
         margin: "0 6px",
         color: "#888",

@@ -3,6 +3,7 @@ import {ChainOverview} from "./ChainOverview";
 import {RuleTimeline} from "./RuleTimeline";
 import {DPGraph} from "./DPGraph";
 import {PriceEvolutionChart} from "./PriceEvolutionChart";
+import {TraceSyncProvider} from "./TraceSyncProvider";
 
 export function RuleDebugger({ trace }) {
     if (!trace) {
@@ -18,9 +19,11 @@ export function RuleDebugger({ trace }) {
             <h2>Rule Debugger</h2>
 
             <div style={styles.debuggerGrid}>
-                <ChainOverview steps={trace.steps} />
-                <RuleTimeline rules={trace.rules} />
-                <DPGraph dp={trace.dp} />
+                <TraceSyncProvider>
+                    <ChainOverview steps={trace.steps} />
+                    <RuleTimeline rules={trace.rules} />
+                    <DPGraph dp={trace.dp} />
+                </TraceSyncProvider>
                 <PriceEvolutionChart prices={trace.priceEvolution} />
             </div>
         </div>
@@ -34,13 +37,11 @@ export const styles = {
         borderRadius: 8,
         color: "#eee",
     },
-
     debuggerGrid: {
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
         gap: 16,
     },
-
     section: {
         background: "#222",
         padding: 12,

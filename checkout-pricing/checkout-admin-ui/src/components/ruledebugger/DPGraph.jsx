@@ -1,8 +1,9 @@
 import {useState} from "react";
+import {useTraceSync} from "./TraceSyncProvider";
 
 export function DPGraph({ dp }) {
     const [hoverIndex, setHoverIndex] = useState(null);
-    const [selectedIndex, setSelectedIndex] = useState(null);
+    const { selectedStep, setSelectedStep } = useTraceSync();
 
     if (!dp) {
         return (
@@ -19,7 +20,7 @@ export function DPGraph({ dp }) {
             <div style={styles.dpNodes}>
                 {dp.map((node, i) => {
                     const isHovered = hoverIndex === i;
-                    const isSelected = selectedIndex === i;
+                    const isSelected = selectedStep === i;
 
                     return (
                         <div
@@ -31,7 +32,7 @@ export function DPGraph({ dp }) {
                             }}
                             onMouseEnter={() => setHoverIndex(i)}
                             onMouseLeave={() => setHoverIndex(null)}
-                            onClick={() => setSelectedIndex(i)}
+                            onClick={() => setSelectedStep(i)}
                         >
                             {node.state}
                         </div>
@@ -39,8 +40,8 @@ export function DPGraph({ dp }) {
                 })}
             </div>
 
-            {selectedIndex !== null && (
-                <DPDetails node={dp[selectedIndex]} index={selectedIndex} />
+            {selectedStep !== null && (
+                <DPDetails node={dp[selectedStep]} index={selectedStep} />
             )}
         </div>
     );
