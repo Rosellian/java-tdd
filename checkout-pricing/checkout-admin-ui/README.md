@@ -1311,6 +1311,288 @@ const styles = {
 }
 ```
 ---
+### Improve graphical display - RuleDebugger:
+#### Collapsible RuleTimeline  
+`RuleTimeline.jsx`
+```jsx
+//...
+return (
+        <div style={styles.timelineWrapper}>
+           <h3 style={styles.timelineHeader}>Rule Timeline</h3>
+
+           <ul style={styles.timelineList}>
+              {rules.map((r, i) => (
+                      <RuleItem key={i} rule={r} />
+              ))}
+           </ul>
+        </div>
+);
+
+function RuleItem({ rule }) {
+   const [open, setOpen] = useState(false);
+
+   return (
+           <li style={styles.timelineItem}>
+              <div style={styles.ruleHeader} onClick={() => setOpen(!open)}>
+                 <span style={styles.ruleName}>{rule.name}</span>
+                 <span style={styles.ruleToggle}>{open ? "▲" : "▼"}</span>
+              </div>
+
+              {open && (
+                      <div style={styles.ruleBody}>
+                         <div style={styles.ruleDesc}>{rule.description}</div>
+                         <div style={styles.ruleEffect}>{rule.delta}</div>
+                      </div>
+              )}
+           </li>
+   );
+}
+
+const styles = {
+//...
+    ruleHeader: {
+        display: "flex",
+        justifyContent: "space-between",
+        cursor: "pointer",
+        userSelect: "none",
+    },
+
+    ruleToggle: {
+        color: "#888",
+        fontSize: "0.9rem",
+    },
+
+    ruleBody: {
+        marginTop: 8,
+        paddingLeft: 4,
+    },
+   //...
+}
+```
+#### Interactive DPGraph
+Features:
+- Hover -> highlight node
+- Click -> set node as selected
+- Selected node shows details
+
+`DPGraph.jsx`
+```jsx
+const [hoverIndex, setHoverIndex] = useState(null);
+const [selectedIndex, setSelectedIndex] = useState(null);
+//...
+<div style={styles.dpNodes}>
+   {dp.map((node, i) => {
+      const isHovered = hoverIndex === i;
+      const isSelected = selectedIndex === i;
+
+      return (
+              <div
+                      key={i}
+                      style={{
+                         ...styles.dpNode,
+                         ...(isHovered ? styles.dpNodeHover : {}),
+                         ...(isSelected ? styles.dpNodeSelected : {}),
+                      }}
+                      onMouseEnter={() => setHoverIndex(i)}
+                      onMouseLeave={() => setHoverIndex(null)}
+                      onClick={() => setSelectedIndex(i)}
+              >
+                 {node.state}
+              </div>
+      );
+   })}
+</div>
+
+{selectedIndex !== null && (
+        <DPDetails node={dp[selectedIndex]} index={selectedIndex} />
+)}
+//...
+function DPDetails({ node, index }) {
+   return (
+           <div style={styles.dpDetails}>
+              <h4 style={styles.dpDetailsHeader}>
+                 Step {index + 1}
+              </h4>
+
+              <div style={styles.dpDetailsRow}>
+                 <span style={styles.dpLabel}>State:</span>
+                 <span style={styles.dpValue}>{node.state}</span>
+              </div>
+
+              <div style={styles.dpDetailsRow}>
+                 <span style={styles.dpLabel}>Chosen:</span>
+                 <span style={styles.dpValue}>{node.chosen}</span>
+              </div>
+
+              <div style={styles.dpDetailsRow}>
+                 <span style={styles.dpLabel}>Price:</span>
+                 <span style={styles.dpValue}>{node.price}</span>
+              </div>
+
+              <div style={styles.dpDetailsRow}>
+                 <span style={styles.dpLabel}>Options:</span>
+                 <span style={styles.dpValueList}>
+                    {node.options && node.options.length > 0
+                            ? node.options.join(", ")
+                            : "None"}
+                </span>
+              </div>
+           </div>
+   );
+}
+
+const styles = {
+   dpWrapper: {
+      background: "#1a1a1a",
+      padding: 16,
+      borderRadius: 8,
+      color: "#eee",
+   },
+   dpHeader: {
+      marginBottom: 12,
+      fontSize: "1.1rem",
+      fontWeight: 600,
+      color: "#fff",
+   },
+   dpNodes: {
+      display: "flex",
+      gap: 12,
+      flexWrap: "wrap",
+      marginBottom: 16,
+   },
+   dpNode: {
+      padding: "10px 14px",
+      borderRadius: 6,
+      background: "#333",
+      cursor: "pointer",
+      transition: "all 0.15s ease",
+      color: "#ccc",
+      border: "1px solid #444",
+   },
+   dpNodeHover: {
+      background: "#444",
+      borderColor: "#666",
+      color: "#fff",
+   },
+   dpNodeSelected: {
+      background: "#BB86FC",
+      borderColor: "#BB86FC",
+      color: "#000",
+      fontWeight: 600,
+   },
+   dpDetails: {
+      background: "#111",
+      padding: 12,
+      borderRadius: 6,
+      border: "1px solid #333",
+   },
+   dpDetailsHeader: {
+      marginBottom: 8,
+      fontSize: "1rem",
+      fontWeight: 600,
+      color: "#BB86FC",
+   },
+   dpDetailsRow: {
+      display: "flex",
+      justifyContent: "space-between",
+      marginBottom: 6,
+   },
+   dpLabel: {
+      color: "#bbb",
+   },
+   dpValue: {
+      color: "#4caf50",
+      fontWeight: 600,
+   },
+   dpValueList: {
+      color: "#ccc",
+      fontStyle: "italic",
+   },
+   dpEmpty: {
+      background: "#1a1a1a",
+      padding: 16,
+      borderRadius: 8,
+      color: "#777",
+      fontStyle: "italic",
+   },
+};
+```
+#### PriceEvolutionChart – interactive SVG Line Chart
+- The line is drawn with <polyline>
+- Nodes är <circle> with hover‑effect
+- Tooltip is shown under the graph
+- Scaling is automatic based on min/max‑price
+
+`PriceEvolutionChart.jsx`
+```jsx
+const [hoverIndex, setHoverIndex] = useState(null);
+//...
+const width = 500;
+const height = 200;
+const padding = 30;
+const max = Math.max(...prices);
+const min = Math.min(...prices);
+
+const points = prices.map((p, i) => {
+   const x = padding + (i / (prices.length - 1)) * (width - padding * 2);
+   const y = height - padding - ((p - min) / (max - min)) * (height - padding * 2);
+   return { x, y, value: p };
+});
+
+const path = points.map((p) => `${p.x},${p.y}`).join(" ");
+//...
+<svg width={width} height={height} style={styles.svg}>
+   {/* Line */}
+   <polyline
+           fill="none"
+           stroke="#BB86FC"
+           strokeWidth="2"
+           points={path}
+   />
+
+   {/* Points */}
+   {points.map((p, i) => (
+           <circle
+                   key={i}
+                   cx={p.x}
+                   cy={p.y}
+                   r={hoverIndex === i ? 6 : 4}
+                   fill={hoverIndex === i ? "#4caf50" : "#fff"}
+                   stroke="#333"
+                   strokeWidth="1"
+                   onMouseEnter={() => setHoverIndex(i)}
+                   onMouseLeave={() => setHoverIndex(null)}
+           />
+   ))}
+</svg>
+
+{/* Tooltip */}
+{hoverIndex !== null && (
+        <div style={styles.tooltip}>
+           Step {hoverIndex + 1}: {prices[hoverIndex]}
+        </div>
+)}
+//...
+const styles = {
+    //...
+   svg: {
+      background: "#111",
+      borderRadius: 6,
+      border: "1px solid #333",
+   },
+   tooltip: {
+      marginTop: 10,
+      padding: "6px 10px",
+      background: "#333",
+      borderRadius: 4,
+      color: "#fff",
+      fontSize: "0.85rem",
+      display: "inline-block",
+   },
+   //...
+}
+```
+---
 ### Improve graphical display - RuleInspector:
 ####  
 `.jsx`

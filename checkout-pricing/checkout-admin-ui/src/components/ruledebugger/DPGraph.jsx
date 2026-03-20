@@ -1,4 +1,9 @@
+import {useState} from "react";
+
 export function DPGraph({ dp }) {
+    const [hoverIndex, setHoverIndex] = useState(null);
+    const [selectedIndex, setSelectedIndex] = useState(null);
+
     if (!dp) {
         return (
             <div style={styles.dpEmpty}>
@@ -11,31 +16,66 @@ export function DPGraph({ dp }) {
         <div style={styles.dpWrapper}>
             <h3 style={styles.dpHeader}>DP Graph</h3>
 
-            <ul style={styles.dpList}>
-                {dp.map((node, i) => (
-                    <li key={i} style={styles.dpItem}>
-                        <div style={styles.dpState}>State: {node.state}</div>
-                        <div style={styles.dpValue}>Value: {node.value}</div>
-                    </li>
-                ))}
-            </ul>
+            <div style={styles.dpNodes}>
+                {dp.map((node, i) => {
+                    const isHovered = hoverIndex === i;
+                    const isSelected = selectedIndex === i;
 
-            <section className="dp-graph">
-                <h3>DP States</h3>
+                    return (
+                        <div
+                            key={i}
+                            style={{
+                                ...styles.dpNode,
+                                ...(isHovered ? styles.dpNodeHover : {}),
+                                ...(isSelected ? styles.dpNodeSelected : {}),
+                            }}
+                            onMouseEnter={() => setHoverIndex(i)}
+                            onMouseLeave={() => setHoverIndex(null)}
+                            onClick={() => setSelectedIndex(i)}
+                        >
+                            {node.state}
+                        </div>
+                    );
+                })}
+            </div>
 
-                <ul>
-                    {dp.map((state, i) => (
-                        <li key={i} className="dp-state">
-                            <div className="dp-label">{state.state}</div>
-                            <div className="dp-options">
-                                Options: {state.options.join(", ")}
-                            </div>
-                            <div className="dp-chosen">Chosen: {state.chosen}</div>
-                            <div className="dp-price">Price: {state.price}</div>
-                        </li>
-                    ))}
-                </ul>
-            </section>
+            {selectedIndex !== null && (
+                <DPDetails node={dp[selectedIndex]} index={selectedIndex} />
+            )}
+        </div>
+    );
+}
+
+function DPDetails({ node, index }) {
+    return (
+        <div style={styles.dpDetails}>
+            <h4 style={styles.dpDetailsHeader}>
+                Step {index + 1}
+            </h4>
+
+            <div style={styles.dpDetailsRow}>
+                <span style={styles.dpLabel}>State:</span>
+                <span style={styles.dpValue}>{node.state}</span>
+            </div>
+
+            <div style={styles.dpDetailsRow}>
+                <span style={styles.dpLabel}>Chosen:</span>
+                <span style={styles.dpValue}>{node.chosen}</span>
+            </div>
+
+            <div style={styles.dpDetailsRow}>
+                <span style={styles.dpLabel}>Price:</span>
+                <span style={styles.dpValue}>{node.price}</span>
+            </div>
+
+            <div style={styles.dpDetailsRow}>
+                <span style={styles.dpLabel}>Options:</span>
+                <span style={styles.dpValueList}>
+                    {node.options && node.options.length > 0
+                        ? node.options.join(", ")
+                        : "None"}
+                </span>
+            </div>
         </div>
     );
 }
@@ -53,23 +93,59 @@ const styles = {
         fontWeight: 600,
         color: "#fff",
     },
-    dpList: {
-        listStyle: "none",
-        padding: 0,
-        margin: 0,
+    dpNodes: {
+        display: "flex",
+        gap: 12,
+        flexWrap: "wrap",
+        marginBottom: 16,
     },
-    dpItem: {
-        padding: "10px 0",
-        borderBottom: "1px solid #333",
+    dpNode: {
+        padding: "10px 14px",
+        borderRadius: 6,
+        background: "#333",
+        cursor: "pointer",
+        transition: "all 0.15s ease",
+        color: "#ccc",
+        border: "1px solid #444",
     },
-    dpState: {
-        fontSize: "0.9rem",
+    dpNodeHover: {
+        background: "#444",
+        borderColor: "#666",
+        color: "#fff",
+    },
+    dpNodeSelected: {
+        background: "#BB86FC",
+        borderColor: "#BB86FC",
+        color: "#000",
+        fontWeight: 600,
+    },
+    dpDetails: {
+        background: "#111",
+        padding: 12,
+        borderRadius: 6,
+        border: "1px solid #333",
+    },
+    dpDetailsHeader: {
+        marginBottom: 8,
+        fontSize: "1rem",
+        fontWeight: 600,
         color: "#BB86FC",
     },
+    dpDetailsRow: {
+        display: "flex",
+        justifyContent: "space-between",
+        marginBottom: 6,
+    },
+    dpLabel: {
+        color: "#bbb",
+    },
     dpValue: {
-        fontSize: "0.85rem",
         color: "#4caf50",
-        marginTop: 2,
+        fontWeight: 600,
+    },
+    dpValueList: {
+        color: "#ccc",
+        fontStyle: "italic",
     },
     dpEmpty: {
         background: "#1a1a1a",
