@@ -5,6 +5,7 @@ import { RuleInspector } from "../components/ruleinspector/RuleInspector";
 import { RuleDebugger } from "../components/ruledebugger/RuleDebugger";
 import {runPricingEngine} from "../api/pricingEngine";
 import {usePricingTrace} from "../api/usePricingTrace";
+import {TraceSyncProvider} from "../components/TraceSyncProvider";
 
 export default function AdminApp() {
     const [cart, setCart] = useState({});
@@ -38,8 +39,10 @@ export default function AdminApp() {
             {loading && <p>Evaluating pricing…</p>}
             {error && <p style={{ color: "red" }}>Error loading trace: {error}</p>}
 
-            <RuleInspector trace={trace} />
-            <RuleDebugger trace={traceNew} />
+            <TraceSyncProvider>
+                <RuleInspector trace={trace} />
+                <RuleDebugger trace={traceNew} />
+            </TraceSyncProvider>
         </div>
     );
 }

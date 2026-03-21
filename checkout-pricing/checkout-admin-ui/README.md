@@ -1719,9 +1719,39 @@ This works like:
 ---
 ### Improve graphical display - RuleInspector:
 #### Include in synchronization  
-`.jsx`
+`RuleTimeline.jsx`
 ```jsx
+//...
+const { selectedStep, setSelectedStep } = useTraceSync();
+const isActive = event.stepIndex === selectedStep;
+//...
+<div style={{
+   ...styles.event,
+   ...(isActive ? styles.eventActive : {})
+}}>
+   <div style={styles.eventHeader} onClick={() =>
+   {
+      setOpen(!open);
+      setSelectedStep(event.stepIndex);
+   }}>
+      <strong>{index + 1}. {event.ruleName}</strong>
+      <span style={{ color: event.applied ? "#7CFC7C" : "#FF6B6B" }}>
+          {event.applied ? "✔ Applied" : "✖ Skipped"}
+        </span>
+   </div>
+//...
 ```
+`AdminApp.jsx`
+```jsx
+//...
+<TraceSyncProvider>
+   <RuleInspector trace={trace} />
+   <RuleDebugger trace={traceNew} />
+</TraceSyncProvider>
+//...
+```
+### Adding stepIndex in trace
+
 
 ---
 ### Current structure
