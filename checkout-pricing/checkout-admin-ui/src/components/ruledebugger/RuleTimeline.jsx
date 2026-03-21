@@ -1,9 +1,7 @@
 import {useState} from "react";
-import {useTraceSync} from "./TraceSyncProvider";
+import {useTraceSync} from "../TraceSyncProvider";
 
 export function RuleTimeline({ rules }) {
-    const {selectedStep} = useTraceSync();
-
     if (!rules) {
         return (
             <div style={styles.timelineEmpty}>

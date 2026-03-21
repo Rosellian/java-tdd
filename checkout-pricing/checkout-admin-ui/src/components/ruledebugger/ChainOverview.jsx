@@ -1,4 +1,4 @@
-import {useTraceSync} from "./TraceSyncProvider";
+import {useTraceSync} from "../TraceSyncProvider";
 
 export function ChainOverview({ steps }) {
     const { selectedStep, setSelectedStep } = useTraceSync();

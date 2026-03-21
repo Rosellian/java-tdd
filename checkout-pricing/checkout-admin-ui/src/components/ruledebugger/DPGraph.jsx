@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useTraceSync} from "./TraceSyncProvider";
+import {useTraceSync} from "../TraceSyncProvider";
 
 export function DPGraph({ dp }) {
     const [hoverIndex, setHoverIndex] = useState(null);

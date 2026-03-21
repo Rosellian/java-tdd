@@ -3,7 +3,7 @@ import {ChainOverview} from "./ChainOverview";
 import {RuleTimeline} from "./RuleTimeline";
 import {DPGraph} from "./DPGraph";
 import {PriceEvolutionChart} from "./PriceEvolutionChart";
-import {TraceSyncProvider} from "./TraceSyncProvider";
+import {TraceSyncProvider} from "../TraceSyncProvider";
 
 export function RuleDebugger({ trace }) {
     if (!trace) {

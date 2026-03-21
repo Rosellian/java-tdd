@@ -1718,7 +1718,7 @@ This works like:
    ```
 ---
 ### Improve graphical display - RuleInspector:
-####  
+#### Include in synchronization  
 `.jsx`
 ```jsx
 ```
