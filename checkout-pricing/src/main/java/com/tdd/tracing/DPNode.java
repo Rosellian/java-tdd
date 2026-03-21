@@ -3,7 +3,7 @@ package com.tdd.tracing;
 import java.util.List;
 
 public record DPNode(
-        int index,
+        int stepIndex,
         int price,
         List<String> explanation
 ) {}

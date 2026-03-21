@@ -2,6 +2,7 @@ package com.tdd.tracing.debug;
 
 public class StepTrace {
     private String step;
+    private int stepIndex;
     private String description;
     private double priceBefore;
     private double priceAfter;
@@ -12,6 +13,14 @@ public class StepTrace {
 
     public void setStep(String step) {
         this.step = step;
+    }
+
+    public int getStepIndex() {
+        return stepIndex;
+    }
+
+    public void setStepIndex(int stepIndex) {
+        this.stepIndex = stepIndex;
     }
 
     public String getDescription() {

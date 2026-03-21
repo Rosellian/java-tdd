@@ -4,6 +4,7 @@ import java.util.List;
 
 public class DPTrace {
     private String state;
+    private int stepIndex;
     private List<String> options;
     private String chosen;
     private double price;
@@ -14,6 +15,14 @@ public class DPTrace {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public int getStepIndex() {
+        return stepIndex;
+    }
+
+    public void setStepIndex(int stepIndex) {
+        this.stepIndex = stepIndex;
     }
 
     public List<String> getOptions() {

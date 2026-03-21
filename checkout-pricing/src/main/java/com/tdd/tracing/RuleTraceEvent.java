@@ -8,5 +8,6 @@ public record RuleTraceEvent(
         boolean applied,
         RuleDelta delta,
         RuleContext before,
-        RuleContext after
+        RuleContext after,
+        int stepIndex
 ) {}

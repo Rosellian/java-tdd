@@ -9,8 +9,9 @@ import java.util.List;
 public class RuleTracer {
     private final List<RuleTraceEvent> events = new ArrayList<>();
 
-    public void log(String ruleName, boolean applied, RuleDelta delta, RuleContext before, RuleContext after) {
-        events.add(new RuleTraceEvent(ruleName, applied, delta, before, after));
+    public void log(String ruleName, boolean applied, RuleDelta delta, RuleContext before, RuleContext after,
+                    int stepIndex) {
+        events.add(new RuleTraceEvent(ruleName, applied, delta, before, after, stepIndex));
     }
 
     public List<RuleTraceEvent> getEvents() {

@@ -42,7 +42,7 @@ public class RuleInspectorView {
                 " (remaining = " + dp.remaining() + ")");
 
         for (var node : dp.nodes()) {
-            System.out.println("[" + node.index() + "] → " + node.price() + " kr");
+            System.out.println("[" + node.stepIndex() + "] → " + node.price() + " kr");
             for (var line : node.explanation()) {
                 System.out.println("     " + line);
             }

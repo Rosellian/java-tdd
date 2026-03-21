@@ -25,9 +25,10 @@ public class PricingTraceCollector {
         trace.getPriceEvolution().add(st.getPriceAfter());
     }
 
-    public void recordStep(String step, String description, double before, double after) {
+    public void recordStep(String step, int stepIndex, String description, double before, double after) {
         StepTrace st = new StepTrace();
         st.setStep(step);
+        st.setStepIndex(stepIndex);
         st.setDescription(description);
         st.setPriceBefore(before);
         st.setPriceAfter(after);
@@ -40,9 +41,10 @@ public class PricingTraceCollector {
         trace.getDp().add(dp);
     }
 
-    public void recordDP(String stateLabel, List<String> options, String chosen, double priceAfter) {
+    public void recordDP(String stateLabel, int stepIndex, List<String> options, String chosen, double priceAfter) {
         DPTrace dp = new DPTrace();
         dp.setState(stateLabel);
+        dp.setStepIndex(stepIndex);
         dp.setOptions(options);
         dp.setChosen(chosen);
         dp.setPrice(priceAfter);

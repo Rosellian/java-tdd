@@ -12,6 +12,7 @@ import com.tdd.tracing.debug.RuleTrace;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.tdd.PriceUtils.computeTotalPrice;
 
@@ -30,34 +31,37 @@ public class RuleEngine {
         return evaluate(context, null);
     }
     public RuleContext evaluate(RuleContext context, PricingTraceCollector collector) {
+        AtomicInteger stepIndex = new AtomicInteger(0);
         int beforeCrossPrice = computeTotalPrice(context, rules);
 
-        RuleContext afterCross = applyCrossSkuRules(context, collector);
+        RuleContext afterCross = applyCrossSkuRules(context, collector, stepIndex);
 
         int afterCrossPrice = computeTotalPrice(afterCross, rules);
         if(collector != null) {
-            collector.recordStep("Cross-SKU rules",
+            collector.recordStep("Cross-SKU rules", stepIndex.get()-1,
                     "Evaluates cross-SKU promotions such as Buy X Get Y", beforeCrossPrice, afterCrossPrice);
             }
 
-        RuleContext afterDiscount = applySkuDiscount(afterCross, collector);
+        RuleContext afterDiscount = applySkuDiscount(afterCross, collector, stepIndex);
 
         int afterDiscountPrice = computeTotalPrice(afterDiscount, rules);
         if(collector != null) {
-            collector.recordStep("SKU-specific discounts",
+            collector.recordStep("SKU-specific discounts", stepIndex.get()-1,
                     "Applies per-SKU discounts and price adjustments", afterCrossPrice, afterDiscountPrice);
         }
 
         return afterDiscount;
     }
 
-    private RuleContext applyCrossSkuRules(RuleContext context, PricingTraceCollector collector) {
+    private RuleContext applyCrossSkuRules(RuleContext context,
+                                           PricingTraceCollector collector, AtomicInteger stepIndex) {
         for (var rule : getOrderedCrossSkuRules()) {
             RuleContext before = context;
 
             RuleTrace rt = new RuleTrace();
             rt.setId(rule.id());
             rt.setName(rule.name());
+            rt.setStepIndex(stepIndex.getAndIncrement());
             int beforePrice = computeTotalPrice(before, rules);
             rt.setBefore(beforePrice);
 
@@ -69,7 +73,7 @@ public class RuleEngine {
 
             boolean applied = delta.applied();
             RuleContext after = applied ? context.apply(delta) : context;
-            tracer.log(rule.toString(), applied, delta, before, after);
+            tracer.log(rule.toString(), applied, delta, before, after, stepIndex.get());
 
             rt.setMatched(applied);
             int afterPrice = computeTotalPrice(after, rules);
@@ -93,13 +97,15 @@ public class RuleEngine {
         return context;
     }
 
-    private RuleContext applySkuDiscount(RuleContext context, PricingTraceCollector collector) {
+    private RuleContext applySkuDiscount(RuleContext context,
+                                         PricingTraceCollector collector, AtomicInteger stepIndex) {
         for(var rule : getSkuDiscounts()) {
             RuleContext before = context;
 
             RuleTrace rt = new RuleTrace();
             rt.setId(rule.id());
             rt.setName(rule.name());
+            rt.setStepIndex(stepIndex.getAndIncrement());
             int beforePrice = computeTotalPrice(before, rules);
             rt.setBefore(beforePrice);
 
@@ -107,7 +113,7 @@ public class RuleEngine {
 
             boolean applied = delta.applied();
             RuleContext after = applied ? context.apply(delta) : context;
-            tracer.log(rule.toString(), applied, delta, before, after);
+            tracer.log(rule.toString(), applied, delta, before, after, stepIndex.get());
 
             rt.setMatched(applied);
             int afterPrice = computeTotalPrice(after, rules);

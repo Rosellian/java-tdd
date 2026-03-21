@@ -1559,7 +1559,135 @@ public interface IRuleEvaluator {
 }
 ```
 ---
-#### Refactoring
+#### Adding `stepIndex` to trace
+1. Add `stepIndex` when building DP-steps
+2. Connect every rule to the DP-step where it applied
+3. Connect every chain-step to DP-step
+
+**Changes:**  
+Currently two versions of tracing data are used and some rules are run before DP-loop. 
+Refactoring and implementation changes can alleviate these complications, but currently both data structures has to be updated 
+and in different places due to implementation. 
+1. DPNode and DPTrace has to carry stepIndex  
+    `PriceCalculator.java`
+    ```java
+    public DPTrace bestPriceFor(String sku, long remaining, PricingTraceCollector collector) {
+        //...
+        collector.recordDP("i=0", 0, List.of(), ITEMS_0_KR, 0);
+        //...
+        collector.recordDP("i=" + i, i, optionsLabels, String.join(" + ", best), dp[i]);
+    }
+    ```
+    `DPNode.java`
+    ```java
+    public record DPNode(
+        int stepIndex,
+        int price,
+        List<String> explanation
+    ) {}
+    ```
+   `debug/DPTrace.java`
+    ```java
+    public class DPTrace {
+        private int stepIndex;
+        
+        public void setState(String state) {
+            this.state = state;
+        }
+
+        public int getStepIndex() {
+            return stepIndex;
+        }
+    }
+    ```
+2. Set stepIndex in PricingTraceCollector
+    `PricingTraceCollector.java`
+    ```java
+    public void recordStep(String step, int stepIndex, String description, double before, double after) {
+        //...
+        st.setStepIndex(stepIndex);
+        //...
+    }
+    
+    public void recordDP(String stateLabel, int stepIndex, List<String> options, String chosen, double priceAfter) {
+        //...
+        dp.setStepIndex(stepIndex);
+        //...
+    }
+    ```
+3. RuleTraceEvent needs stepIndex
+    `RuleTraceEvent.java`
+    ```java
+    public record RuleTraceEvent(
+        String ruleName,
+        boolean applied,
+        RuleDelta delta,
+        RuleContext before,
+        RuleContext after,
+        int stepIndex
+    ) {}
+    ```
+4. RuleTrace needs stepIndex
+    `debug/RuleTrace.java`
+    ```java
+    private int stepIndex;
+    //...
+    public int getStepIndex() {
+        return stepIndex;
+    }
+
+    public void setStepIndex(int stepIndex) {
+        this.stepIndex = stepIndex;
+    }
+    ```
+5. StepTrace needs stepIndex
+    `StepTrace.java`
+    ```java
+    private int stepIndex;
+    
+    public int getStepIndex() {
+        return stepIndex;
+    }
+
+    public void setStepIndex(int stepIndex) {
+        this.stepIndex = stepIndex;
+    }
+    ```
+6. Implement stepIndex in evaluate and apply-methods
+    ```java
+    public RuleContext evaluate(RuleContext context, PricingTraceCollector collector) {
+        AtomicInteger stepIndex = new AtomicInteger(0);
+        //...
+        RuleContext afterCross = applyCrossSkuRules(context, collector, stepIndex);
+        //...
+        collector.recordStep("Cross-SKU rules", stepIndex.get()-1,
+                    "Evaluates cross-SKU promotions such as Buy X Get Y", beforeCrossPrice, afterCrossPrice);
+        //...
+        RuleContext afterDiscount = applySkuDiscount(afterCross, collector, stepIndex);
+        //...
+        collector.recordStep("SKU-specific discounts", stepIndex.get()-1,
+                    "Applies per-SKU discounts and price adjustments", afterCrossPrice, afterDiscountPrice);
+        //...
+    }
+    
+    private RuleContext applyCrossSkuRules(RuleContext context,
+                                           PricingTraceCollector collector, AtomicInteger stepIndex) {
+        //...
+        rt.setStepIndex(stepIndex.getAndIncrement());
+        //...
+    }
+    
+    private RuleContext applySkuDiscount(RuleContext context,
+                                         PricingTraceCollector collector, AtomicInteger stepIndex) {
+    
+        //...
+        rt.setStepIndex(stepIndex.getAndIncrement());
+        //...
+    }
+    ```
+
+---
+### Refactoring
 
 
 ---
