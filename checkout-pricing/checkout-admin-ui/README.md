@@ -1719,6 +1719,7 @@ This works like:
 ---
 ### Improve graphical display - RuleInspector:
 #### Include in synchronization  
+**Rule Execution**  
 `RuleTimeline.jsx`
 ```jsx
 //...
@@ -1741,6 +1742,15 @@ const isActive = event.stepIndex === selectedStep;
    </div>
 //...
 ```
+**SKU Breakdown**  
+`.jsx`
+```jsx
+```
+**DP Paths**  
+`.jsx`
+```jsx
+```
+**Sync**  
 `AdminApp.jsx`
 ```jsx
 //...
@@ -1750,8 +1760,18 @@ const isActive = event.stepIndex === selectedStep;
 </TraceSyncProvider>
 //...
 ```
-### Adding stepIndex in trace
+### Mark or divide DP-steps in DPGraph
+Some ways to do this:
+- Show DP-nodes grouped by SKU, or
+- Mark which SKU each step belongs to, or
+- Let the user click on a SKU and filter DPGraph, or
+- Color code by SKU, or
+- Show titles or sections per SKU.
 
+`.jsx`
+```jsx
+
+```
 
 ---
 ### Current structure
