@@ -1555,7 +1555,7 @@ public interface IRuleEvaluator {
 
     RuleDelta apply(CrossSkuBuyXGetYFree rule, RuleContext context, PricingTraceCollector collector, RuleTrace rt);
     RuleDelta apply(CrossSkuBuyXGetYDiscount rule, RuleContext context, PricingTraceCollector collector, RuleTrace rt);
-    RuleDelta apply(SkuDiscount rule, RuleContext context,   PricingTraceCollector collector, RuleTrace rt);
+    RuleDelta apply(SkuDiscount rule, RuleContext context, PricingTraceCollector collector, RuleTrace rt);
 }
 ```
 ---
@@ -1685,6 +1685,44 @@ and in different places due to implementation.
         //...
     }
     ```
+
+---
+### Added SKU to DP-trace for mapping in UI
+`DPTrace.java`
+```java
+private String sku;
+
+public String getSku() {
+    return sku;
+}
+
+public void setSku(String sku) {
+    this.sku = sku;
+}
+```
+`PricingTraceCollector.java`
+```java
+public void recordDP(String stateLabel, int stepIndex, List<String> options, String chosen, double price,
+                     String sku) {
+    DPTrace dp = new DPTrace();
+    //...
+    dp.setSku(sku);
+
+    trace.getDp().add(dp);
+}
+```
+`PriceCalculator.java`
+```java
+public DPTrace bestPriceFor(String sku, long remaining, PricingTraceCollector collector) {
+    //...
+    if(collector != null)
+        collector.recordDP("i=0", 0, List.of(), ITEMS_0_KR, 0, sku);
+    //...
+    if(collector != null)
+        collector.recordDP("i=" + i, i, optionsLabels, String.join(" + ", best), dp[i], sku);
+    //...
+}
+```
 
 ---
 ### Refactoring

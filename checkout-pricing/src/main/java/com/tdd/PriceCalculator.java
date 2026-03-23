@@ -44,7 +44,7 @@ public class PriceCalculator {
     public DPTrace bestPriceFor(String sku, long remaining, PricingTraceCollector collector) {
         if(remaining <= 0) {
             if(collector != null)
-                collector.recordDP("i=0", 0, List.of(), ITEMS_0_KR, 0);
+                collector.recordDP("i=0", 0, List.of(), ITEMS_0_KR, 0, sku);
 
             return new DPTrace(sku, remaining, List.of(), 0, List.of(ITEMS_0_KR));
         }
@@ -80,7 +80,7 @@ public class PriceCalculator {
             path.add(best);
             nodes.add(new DPNode(i, dp[i], List.copyOf(best)));
             if(collector != null)
-                collector.recordDP("i=" + i, i, optionsLabels, String.join(" + ", best), dp[i]);
+                collector.recordDP("i=" + i, i, optionsLabels, String.join(" + ", best), dp[i], sku);
         }
 
         return new DPTrace(sku, remaining, nodes, dp[n], path.get(n));

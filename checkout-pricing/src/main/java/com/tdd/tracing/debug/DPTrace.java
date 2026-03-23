@@ -8,6 +8,7 @@ public class DPTrace {
     private List<String> options;
     private String chosen;
     private double price;
+    private String sku;
 
     public String getState() {
         return state;
@@ -47,5 +48,13 @@ public class DPTrace {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 }

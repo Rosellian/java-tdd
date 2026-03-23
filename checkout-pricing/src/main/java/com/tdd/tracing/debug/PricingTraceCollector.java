@@ -41,13 +41,15 @@ public class PricingTraceCollector {
         trace.getDp().add(dp);
     }
 
-    public void recordDP(String stateLabel, int stepIndex, List<String> options, String chosen, double priceAfter) {
+    public void recordDP(String stateLabel, int stepIndex, List<String> options, String chosen, double price,
+                         String sku) {
         DPTrace dp = new DPTrace();
         dp.setState(stateLabel);
         dp.setStepIndex(stepIndex);
         dp.setOptions(options);
         dp.setChosen(chosen);
-        dp.setPrice(priceAfter);
+        dp.setPrice(price);
+        dp.setSku(sku);
 
         trace.getDp().add(dp);
     }

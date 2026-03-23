@@ -2,7 +2,6 @@ import {useState} from "react";
 import {useTraceSync} from "../TraceSyncProvider";
 
 export function DPGraph({ dp }) {
-    const [hoverIndex, setHoverIndex] = useState(null);
     const { selectedStep, setSelectedStep } = useTraceSync();
 
     if (!dp) {
@@ -13,36 +12,61 @@ export function DPGraph({ dp }) {
         );
     }
 
+    const indexedDP = dp.map((node, idx) => ({
+        ...node,
+        globalIndex: idx
+    }));
+    const grouped = indexedDP.reduce((acc, node) => {
+        if (!acc[node.sku]) acc[node.sku] = [];
+        acc[node.sku].push(node);
+        return acc;
+    }, {});
+
     return (
         <div style={styles.dpWrapper}>
             <h3 style={styles.dpHeader}>DP Graph</h3>
 
-            <div style={styles.dpNodes}>
-                {dp.map((node, i) => {
-                    const isHovered = hoverIndex === i;
-                    const isSelected = selectedStep === i;
-
-                    return (
-                        <div
-                            key={i}
-                            style={{
-                                ...styles.dpNode,
-                                ...(isHovered ? styles.dpNodeHover : {}),
-                                ...(isSelected ? styles.dpNodeSelected : {}),
-                            }}
-                            onMouseEnter={() => setHoverIndex(i)}
-                            onMouseLeave={() => setHoverIndex(null)}
-                            onClick={() => setSelectedStep(i)}
-                        >
-                            {node.state}
-                        </div>
-                    );
-                })}
-            </div>
+            {Object.entries(grouped).map(([sku, nodes]) => (
+                <div key={sku} style={styles.skuBlock}>
+                    <h3 style={styles.skuHeader}>{sku}</h3>
+                    <DPNodes nodes={nodes}></DPNodes>
+                </div>
+            ))}
 
             {selectedStep !== null && (
                 <DPDetails node={dp[selectedStep]} index={selectedStep} />
             )}
+        </div>
+    );
+}
+
+function DPNodes({ nodes }) {
+    const [hoverIndex, setHoverIndex] = useState(null);
+    const { selectedStep, setSelectedStep } = useTraceSync();
+
+    return (
+        <div style={styles.dpNodes}>
+            {nodes.map((node) => {
+                const i = node.globalIndex;
+                const isHovered = hoverIndex === i;
+                const isSelected = selectedStep === i;
+
+                return (
+                    <div
+                        key={i}
+                        style={{
+                            ...styles.dpNode,
+                            ...(isHovered ? styles.dpNodeHover : {}),
+                            ...(isSelected ? styles.dpNodeSelected : {}),
+                        }}
+                        onMouseEnter={() => setHoverIndex(i)}
+                        onMouseLeave={() => setHoverIndex(null)}
+                        onClick={() => setSelectedStep(i)}
+                    >
+                        {node.state}
+                    </div>
+                );
+            })}
         </div>
     );
 }
@@ -93,6 +117,18 @@ const styles = {
         fontSize: "1.1rem",
         fontWeight: 600,
         color: "#fff",
+    },
+    skuBlock: {
+        marginBottom: 24,
+        padding: 12,
+        background: "#1a1a1a",
+        borderRadius: 8,
+    },
+    skuHeader: {
+        color: "#BB86FC",
+        marginBottom: 12,
+        fontSize: "1.1rem",
+        fontWeight: 600,
     },
     dpNodes: {
         display: "flex",

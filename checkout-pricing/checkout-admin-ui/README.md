@@ -1768,9 +1768,32 @@ Some ways to do this:
 - Color code by SKU, or
 - Show titles or sections per SKU.
 
-`.jsx`
+#### Group DP-nodes by SKU
+Chosen path SKU-grouping.  
+`DPGraph.jsx`
 ```jsx
-
+//...
+const indexedDP = dp.map((node, idx) => ({
+   ...node,
+   globalIndex: idx
+}));
+const grouped = indexedDP.reduce((acc, node) => {
+   if (!acc[node.sku]) acc[node.sku] = [];
+   acc[node.sku].push(node);
+   return acc;
+}, {});
+//...
+{Object.entries(grouped).map(([sku, nodes]) => (
+        <div key={sku} style={styles.skuBlock}>
+           <h3 style={styles.skuHeader}>{sku}</h3>
+           <DPNodes nodes={nodes}></DPNodes>
+        </div>
+))}
+//...
+function DPNodes({ nodes }) {
+    const i = node.globalIndex;
+}
+//...
 ```
 
 ---
