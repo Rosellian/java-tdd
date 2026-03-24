@@ -6,16 +6,9 @@ import com.tdd.rules.*;
 import java.util.List;
 import java.util.Map;
 
-public class DefaultRules {
+public class DefaultRules implements Ruleset {
 
     public static PricingRules build() {
-
-        Map<String, Integer> unitPrices = Map.of(
-                "A", 50,
-                "B", 40,
-                "C", 25,
-                "D", 20
-        );
 
         Map<String, List<PricingOption>> options = Map.of(
                 "A", List.of(
@@ -40,6 +33,6 @@ public class DefaultRules {
                 // no per-SKU discounts in default
         );
 
-        return new PricingRules(unitPrices, options, freeRules, discountRules, skuDiscounts);
+        return new PricingRules(DEFAULT_UNIT_PRICES, options, freeRules, discountRules, skuDiscounts);
     }
 }

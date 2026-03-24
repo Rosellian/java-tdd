@@ -55,6 +55,7 @@ public class RuleEngine {
 
     private RuleContext applyCrossSkuRules(RuleContext context,
                                            PricingTraceCollector collector, AtomicInteger stepIndex) {
+        boolean alreadyApplied = false;
         for (var rule : getOrderedCrossSkuRules()) {
             RuleContext before = context;
 
@@ -65,7 +66,7 @@ public class RuleEngine {
             int beforePrice = computeTotalPrice(before, rules);
             rt.setBefore(beforePrice);
 
-            RuleDelta delta = switch(rule) {
+            RuleDelta delta = alreadyApplied ? RuleDelta.none() : switch(rule) {
                 case CrossSkuBuyXGetYFree free -> evaluator.apply(free, context, collector, rt);
                 case CrossSkuBuyXGetYDiscount discount -> evaluator.apply(discount, context, collector, rt);
                 default -> throw new IllegalStateException("Unexpected value: " + rule);
@@ -91,7 +92,8 @@ public class RuleEngine {
 
             if(applied) {
                 context = context.apply(delta);
-                break;
+                //break;
+                alreadyApplied = true;
             }
         }
         return context;
