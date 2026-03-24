@@ -92,7 +92,6 @@ public class RuleEngine {
 
             if(applied) {
                 context = context.apply(delta);
-                //break;
                 alreadyApplied = true;
             }
         }

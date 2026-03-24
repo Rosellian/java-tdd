@@ -1726,9 +1726,21 @@ public DPTrace bestPriceFor(String sku, long remaining, PricingTraceCollector co
 
 ---
 ### Including skipped rules in trace
-
-`.java`
+`RuleEngine.java`
 ```java
+private RuleContext applyCrossSkuRules(RuleContext context,
+                                       PricingTraceCollector collector, AtomicInteger stepIndex) {
+    boolean alreadyApplied = false;
+    //...
+    RuleDelta delta = alreadyApplied ? RuleDelta.none() : switch(rule) {
+        //...
+    };
+    if(applied) {
+        context = context.apply(delta);
+        alreadyApplied = true;
+    }
+    //...
+}
 ```
 
 ---
