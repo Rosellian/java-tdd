@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { CartEditor } from "../components/CartEditor";
+import { CartEditor } from "../components/carteditor/CartEditor";
 import { RuleSetSelector } from "../components/RuleSetSelector";
 import { RuleInspector } from "../components/ruleinspector/RuleInspector";
 import { RuleDebugger } from "../components/ruledebugger/RuleDebugger";
@@ -78,5 +78,5 @@ const styles = {
         cursor: "pointer",
         color: "#000",
         fontWeight: "bold",
-    },
+    }
 };

@@ -1742,6 +1742,7 @@ private RuleContext applyCrossSkuRules(RuleContext context,
     //...
 }
 ```
+### Including PricingOptions in trace
 
 ---
 ### Refactoring

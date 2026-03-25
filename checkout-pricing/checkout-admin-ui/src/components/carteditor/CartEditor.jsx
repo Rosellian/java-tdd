@@ -1,6 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
+import {AddSkuForm} from "./AddSkuForm";
+import {CartLoader} from "./CartLoader";
 
 export function CartEditor({ cart, onChange }) {
+
     function updateSku(sku, qty) {
         const next = { ...cart };
         if (qty <= 0) delete next[sku];
@@ -25,38 +28,7 @@ export function CartEditor({ cart, onChange }) {
             ))}
 
             <AddSkuForm onAdd={updateSku} />
-        </div>
-    );
-}
-
-function AddSkuForm({ onAdd }) {
-    const [sku, setSku] = React.useState("");
-    const [qty, setQty] = React.useState(1);
-
-    function submit() {
-        if (!sku) return;
-        onAdd(sku, qty);
-        setSku("");
-        setQty(1);
-    }
-
-    return (
-        <div style={styles.addRow}>
-            <input
-                placeholder="SKU"
-                value={sku}
-                onChange={(e) => setSku(e.target.value)}
-                style={styles.input}
-            />
-            <input
-                type="number"
-                value={qty}
-                onChange={(e) => setQty(Number(e.target.value))}
-                style={styles.input}
-            />
-            <button style={styles.addButton} onClick={submit}>
-                Add
-            </button>
+            <CartLoader cart={cart} setCart={onChange} />
         </div>
     );
 }
@@ -83,18 +55,5 @@ const styles = {
         color: "#E0E0E0",
         padding: 5,
         width: 60,
-    },
-    addRow: {
-        marginTop: 10,
-        display: "flex",
-        gap: 5,
-    },
-    addButton: {
-        background: "#03DAC6",
-        border: "none",
-        padding: "5px 10px",
-        borderRadius: 4,
-        cursor: "pointer",
-        color: "#000",
-    },
+    }
 };
