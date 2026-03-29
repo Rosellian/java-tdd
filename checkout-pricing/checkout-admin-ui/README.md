@@ -1908,7 +1908,25 @@ const styles = {
 };
 ```
 ---
+#### Recent carts
+Extra feature for Cart editor:  
+A list of the last 5 carts
+- Stored in `localStorage`
+- Updates every time the user updates the cart
+- Shown as a drop-down in UI
 
+`CartEditor.jsx`
+```jsx
+//...
+<RecentCarts cart={cart} setCart={onChange}/>
+//...
+```
+`RecentCarts.jsx`
+```jsx
+
+```
+
+---
 
 ### Current structure
 ```

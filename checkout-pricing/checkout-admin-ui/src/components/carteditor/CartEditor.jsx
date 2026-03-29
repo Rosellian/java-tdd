@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {AddSkuForm} from "./AddSkuForm";
 import {CartLoader} from "./CartLoader";
+import {RecentCarts} from "./RecentCarts";
 
 export function CartEditor({ cart, onChange }) {
 
@@ -28,6 +29,7 @@ export function CartEditor({ cart, onChange }) {
             ))}
 
             <AddSkuForm onAdd={updateSku} />
+            <RecentCarts cart={cart} setCart={onChange}/>
             <CartLoader cart={cart} setCart={onChange} />
         </div>
     );
