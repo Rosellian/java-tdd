@@ -1760,6 +1760,7 @@ const isActive = event.stepIndex === selectedStep;
 </TraceSyncProvider>
 //...
 ```
+---
 ### Mark or divide DP-steps in DPGraph by SKU
 Some ways to do this:
 - Show DP-nodes grouped by SKU, or

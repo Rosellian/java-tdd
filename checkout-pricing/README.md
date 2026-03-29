@@ -1744,6 +1744,7 @@ private RuleContext applyCrossSkuRules(RuleContext context,
 ```
 ### Including PricingOptions in trace
 
+
 ---
 ### Refactoring
 
@@ -2915,3 +2916,4 @@ public interface Ruleset {
             .collect(toMap(Enum::name, sku -> sku.unitPrice));
 }
 ```
+---
