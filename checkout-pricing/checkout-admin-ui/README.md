@@ -1923,8 +1923,95 @@ A list of the last 5 carts
 ```
 `RecentCarts.jsx`
 ```jsx
+export function RecentCarts({ cart, setCart}) {
+   const recent = useRecentCarts(cart);
+
+   if (!recent) return null;
+
+   return (
+           <div style={styles.recentBox}>
+              <h4 style={styles.recentTitle}>Recent carts</h4>
+              <select style={styles.dropdown}
+                      onChange={(e) => {
+                         const index = Number(e.target.value);
+                         if(!isNaN(index)) setCart(recent[index]);
+                      }}
+              >
+                 <option value="">Recent carts...</option>
+                 {recent.map((c, i) => (
+                         <option key={i} value={i}>
+                            #{i + 1} - {Object.keys(c).length} SKUs
+                         </option>
+                 ))}
+              </select>
+           </div>
+   );
+}
+
+const styles = {
+   dropdown: {
+      width: "100%",
+      padding: "6px 10px",
+      background: "#2A2A2A",
+      border: "1px solid #444",
+      color: "#E0E0E0",
+      borderRadius: 4,
+      cursor: "pointer",
+   },
+   recentBox: {
+      marginTop: 15,
+      padding: 10,
+      background: "#2A2A2A",
+      borderRadius: 4,
+   },
+   recentTitle: {
+      color: "#BB86FC",
+      marginBottom: 8,
+   }
+};
+```
+Hook used:  
+`useRecentCarts.js`
+```js
+export function useRecentCarts(cart) {
+   const [recent, setRecent] = useState(() => {
+      const saved = localStorage.getItem("recentCarts");
+      return saved ? JSON.parse(saved) : [];
+   });
+
+   useEffect(() => {
+      if(!cart || Object.keys(cart).length === 0) return;
+
+      setRecent(prev => {
+         const next = [cart, ...prev.filter(c => JSON.stringify(c) !== JSON.stringify(cart))];
+         const trimmed = next.slice(0, 5);
+         localStorage.setItem("recentCarts", JSON.stringify(trimmed));
+         return trimmed;
+      })
+   }, [cart]);
+
+   return recent;
+}
+```
+#### Adding tooltip for drop-down
+Show cart details for dropdown choice on hover.
+1. Wrap every `<option>` in a custom dropdown row
+2. Build a custom dropdown with absolute-positioned list
+3. Tooltip is shown when hovering on a row
+
+`RecentCartsDropdown.jsx`
+```jsx
 
 ```
+`RecentCartRow.jsx`
+```jsx
+
+```
+`RecentCarts.jsx`
+```jsx
+
+```
+---
 
 ---
 

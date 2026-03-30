@@ -1,4 +1,3 @@
-import React, {useState} from "react";
 import {AddSkuForm} from "./AddSkuForm";
 import {CartLoader} from "./CartLoader";
 import {RecentCarts} from "./RecentCarts";
