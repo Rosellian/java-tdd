@@ -1,6 +1,6 @@
 import {AddSkuForm} from "./AddSkuForm";
 import {CartLoader} from "./CartLoader";
-import {RecentCarts} from "./RecentCarts";
+import {RecentCarts} from "./recentcarts/RecentCarts";
 
 export function CartEditor({ cart, onChange }) {
 

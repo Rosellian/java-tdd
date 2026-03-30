@@ -1999,17 +1999,132 @@ Show cart details for dropdown choice on hover.
 2. Build a custom dropdown with absolute-positioned list
 3. Tooltip is shown when hovering on a row
 
+Also moving RecentCarts into separate folder.
 `RecentCartsDropdown.jsx`
 ```jsx
+export function RecentCartsDropdown({recent, onSelect}) {
+   const [open, setOpen] = useState(false);
 
+   return (
+           <div style={styles.dropdownWrapper}>
+              <div style={styles.dropdownHeader}
+                   onClick={() => setOpen(!open)}>
+                 Recent carts...
+              </div>
+
+              { open && <RecentCartList recent={recent} onSelect={onSelect} setOpen={setOpen}/>}
+           </div>
+   );
+}
+
+function RecentCartList({recent, onSelect, setOpen}) {
+   return (
+           <div style={styles.dropdownList}>
+              {recent.map((cart, i) => (
+                      <RecentCartRow
+                              key={i}
+                              index={i}
+                              cart={cart}
+                              onSelect={() => {
+                                 onSelect(cart);
+                                 setOpen(false);
+                              }}
+                      />
+              ))}
+           </div>
+   )
+}
+
+const styles = {
+   dropdownWrapper: {
+      position: "relative",
+      width: "100%",
+   },
+   dropdownHeader: {
+      padding: "6px 10px",
+      background: "#2A2A2A",
+      border: "1px solid #444",
+      borderRadius: 4,
+      cursor: "pointer",
+      color: "#E0E0E0",
+   },
+   dropdownList: {
+      position: "absolute",
+      top: "100%",
+      left: 0,
+      right: 0,
+      background: "#1E1E1E",
+      border: "1px solid #444",
+      borderRadius: 4,
+      marginTop: 4,
+      zIndex: 10,
+   }
+};
 ```
 `RecentCartRow.jsx`
 ```jsx
+export function RecentCartRow({ index, cart, onSelect }) {
+   const [hover, setHover] = useState(false);
 
+   return (
+           <div style={styles.dropdownItem}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+                onClick={onSelect}
+           >
+              #{index + 1} - {Object.keys(cart).length} SKUs
+
+              {hover && <CartTooltip cart={cart} />}
+           </div>
+   );
+}
+
+function CartTooltip({ cart }) {
+   return (
+           <div style={styles.tooltip}>
+            <pre style={styles.tooltipPre}>
+                {JSON.stringify(cart, null, 2)}
+            </pre>
+           </div>
+   );
+}
+
+const styles = {
+   dropdownItem: {
+      padding: "6px 10px",
+      cursor: "pointer",
+      color: "#E0E0E0",
+      borderBottom: "1px solid #333",
+      position: "relative",
+   },
+   tooltip: {
+      position: "absolute",
+      left: "105%",
+      top: 0,
+      background: "#2A2A2A",
+      border: "1px solid #444",
+      padding: 10,
+      borderRadius: 4,
+      whiteSpace: "pre",
+      zIndex: 20,
+      minWidth: 200,
+   },
+   tooltipPre: {
+      margin: 0,
+      color: "#BB86FC",
+      fontSize: "0.8rem",
+   }
+};
 ```
+Replacing `<select>` with custom component:
 `RecentCarts.jsx`
 ```jsx
-
+//...
+<RecentCartsDropdown
+        recent={recent}
+        onSelect={setCart}
+/>
+//...
 ```
 ---
 
