@@ -31,5 +31,5 @@ const styles = {
         color: "#E0E0E0",
         padding: 5,
         width: "100%",
-    },
+    }
 };

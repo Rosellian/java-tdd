@@ -2128,6 +2128,59 @@ Replacing `<select>` with custom component:
 ```
 ---
 
+### Refactoring
+- Minor code styling fixes
+- Extraction into helper-methods when appropriate
+- Separated Trace action buttons into separate component
+   `AdminApp.jsx`
+   ```jsx
+   <ButtonPanel cart={cart} ruleSet={ruleSet} getTrace={getTrace} setTrace={setTrace} />
+   ```
+- Created function for per-SKU cart display part
+   `CartEditor.jsx`
+   ```jsx
+   {Object.entries(cart).map(([sku, qty]) => (
+       <SkuRow sku={sku} qty={qty} updateSku={updateSku} />
+   ))}
+   ```
+- **Rule Debugger:** Separated Chain Overview content into nested components
+  1. Chain Overview
+  2. ChainStep
+  3. ChainContent
+  4. ChainPrice
+  
+   `ChainOverview.jsx`
+   ```jsx
+   <ChainStep step={s} index={i} selectedStep={selectedStep} setSelectedStep={setSelectedStep} />
+   ```
+   `ChainStep.jsx`
+   ```jsx
+   <ChainContent step={step}/>
+   ```
+   `ChainContent.jsx`
+   ```jsx
+   <ChainPrice step={step}/>
+   ```
+- Separated DP Graph into separate components
+  1. DPGraph `<DPGraph dp={trace.dp} />`
+  2. DPNode `<DPNodes nodes={nodes}></DPNodes>`
+  3. DPDetails `<DPDetails node={dp[selectedStep]} index={selectedStep} />`   
+  subcomponents: 
+  `<DPDetail label={"LABEL"} value={NODE.VALUE} />`  
+  `<DPOptions node={node} />`
+- Separated Rule Timeline into separate components
+  1. RuleTimeline `<RuleTimeline rules={trace.rules} />`
+  2. RuleItem `<RuleItem key={i} rule={r} />`
+  3. RuleEntry `<RuleEntry rule={rule} onClick={selectOnClick} open={open} />`
+  4. RuleBody `<RuleBody rule={rule} />`
+- Separated Price Evolution Chart into separate components
+  1. PriceEvolutionChart `<PriceEvolutionChart prices={trace.priceEvolution} />`
+  2. PriceGraph `<PriceGraph prices={prices} path={path} points={points} />`  
+  subcomponents:  
+  `<DrawGraph path={path}/>`  
+  `<DrawPoint i={i} p={p} hoverIndex={hoverIndex} setHoverIndex={setHoverIndex} />`
+  3. PriceTooltip `<PriceTooltip prices={prices} hoverIndex={hoverIndex}/>`
+
 ---
 
 ### Current structure

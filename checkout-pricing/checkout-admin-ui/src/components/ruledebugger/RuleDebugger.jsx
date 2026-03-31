@@ -1,4 +1,3 @@
-import React from "react";
 import {ChainOverview} from "./ChainOverview";
 import {RuleTimeline} from "./RuleTimeline";
 import {DPGraph} from "./DPGraph";
@@ -46,5 +45,5 @@ export const styles = {
         background: "#222",
         padding: 12,
         borderRadius: 6,
-    },
+    }
 }

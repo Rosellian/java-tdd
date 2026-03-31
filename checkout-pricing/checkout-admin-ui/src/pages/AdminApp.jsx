@@ -1,21 +1,16 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import { CartEditor } from "../components/carteditor/CartEditor";
 import { RuleSetSelector } from "../components/RuleSetSelector";
 import { RuleInspector } from "../components/ruleinspector/RuleInspector";
 import { RuleDebugger } from "../components/ruledebugger/RuleDebugger";
-import {runPricingEngine} from "../api/pricingEngine";
 import {usePricingTrace} from "../api/usePricingTrace";
 import {TraceSyncProvider} from "../components/TraceSyncProvider";
+import {ButtonPanel} from "../components/ButtonPanel";
 
 export default function AdminApp() {
     const [cart, setCart] = useState({});
     const [ruleSet, setRuleSet] = useState("default");
     const [trace, setTrace] = useState(null);
-
-    async function evaluate() {
-        const result = await runPricingEngine(cart, ruleSet);
-        setTrace(result.trace);
-    }
 
     const { traceNew, loading, error, getTrace } = usePricingTrace(cart, ruleSet);
 
@@ -26,14 +21,7 @@ export default function AdminApp() {
             <div style={styles.controls}>
                 <RuleSetSelector value={ruleSet} onChange={setRuleSet} />
                 <CartEditor cart={cart} onChange={setCart} />
-                <div style={styles.buttons}>
-                    <button style={styles.button} onClick={evaluate}>
-                        Evaluate
-                    </button>
-                    <button style={styles.button} onClick={() => getTrace(cart, ruleSet)}>
-                        Get trace
-                    </button>
-                </div>
+                <ButtonPanel cart={cart} ruleSet={ruleSet} getTrace={getTrace} setTrace={setTrace} />
             </div>
 
             {loading && <p>Evaluating pricing…</p>}
@@ -64,19 +52,5 @@ const styles = {
         display: "flex",
         gap: 20,
         marginBottom: 40,
-    },
-    buttons: {
-        display: "flex",
-        gap: 20,
-        marginBottom: 40,
-    },
-    button: {
-        background: "#BB86FC",
-        border: "none",
-        padding: "10px 20px",
-        borderRadius: 4,
-        cursor: "pointer",
-        color: "#000",
-        fontWeight: "bold",
     }
 };

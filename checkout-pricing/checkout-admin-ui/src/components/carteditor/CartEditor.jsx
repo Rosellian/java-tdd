@@ -16,20 +16,26 @@ export function CartEditor({ cart, onChange }) {
             <h3 style={styles.title}>Cart</h3>
 
             {Object.entries(cart).map(([sku, qty]) => (
-                <div key={sku} style={styles.row}>
-                    <span>{sku}</span>
-                    <input
-                        type="number"
-                        value={qty}
-                        onChange={(e) => updateSku(sku, Number(e.target.value))}
-                        style={styles.input}
-                    />
-                </div>
+                <SkuRow sku={sku} qty={qty} updateSku={updateSku} />
             ))}
 
             <AddSkuForm onAdd={updateSku} />
             <RecentCarts cart={cart} setCart={onChange}/>
             <CartLoader cart={cart} setCart={onChange} />
+        </div>
+    );
+}
+
+function SkuRow({sku, qty}, update) {
+    return (
+        <div key={sku} style={styles.row}>
+            <span>{sku}</span>
+            <input
+                type="number"
+                value={qty}
+                onChange={(e) => update(sku, Number(e.target.value))}
+                style={styles.input}
+            />
         </div>
     );
 }
