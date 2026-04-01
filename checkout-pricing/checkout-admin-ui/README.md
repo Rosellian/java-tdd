@@ -2213,7 +2213,9 @@ Replacing `<select>` with custom component:
 
 ### UI data and layout fixes
 #### Button panel size
-
+Changing styling to avoid buttons flexing along with Rule- and Cart-editor.  
+Changes in: `ButtonPanel.jsx`
+#### 
 
 ### Current structure
 ```

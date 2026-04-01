@@ -21,17 +21,20 @@ export function ButtonPanel({ cart, ruleSet, getTrace, setTrace }) {
 
 const styles = {
     buttons: {
-        display: "flex",
-        gap: 20,
         marginBottom: 40,
     },
     button: {
+        display: "block",
+        width: "100%",
         background: "#BB86FC",
         border: "none",
-        padding: "10px 20px",
-        borderRadius: 4,
+        padding: "14px 20px",
+        borderRadius: 6,
         cursor: "pointer",
         color: "#000",
         fontWeight: "bold",
+        fontSize: "1rem",
+        marginBottom: 12,
+        transition: "background 0.2s",
     }
 }
