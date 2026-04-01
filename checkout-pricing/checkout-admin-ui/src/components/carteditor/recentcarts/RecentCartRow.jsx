@@ -51,4 +51,4 @@ const styles = {
         color: "#BB86FC",
         fontSize: "0.8rem",
     }
-};
+}

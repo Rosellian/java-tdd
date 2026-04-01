@@ -53,4 +53,4 @@ const styles = {
         gap: 20,
         marginBottom: 40,
     }
-};
+}

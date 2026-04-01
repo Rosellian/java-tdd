@@ -1,12 +1,15 @@
 import {useState} from "react";
+import {Section} from "./Section";
 
 export function SkuBreakdown({ skuTraces }) {
     return (
-        <div>
-            {skuTraces.map((s, i) => (
-                <SkuItem key={i} sku={s} />
-            ))}
-        </div>
+        <Section title="SKU Breakdown">
+            <div>
+                {skuTraces.map((s, i) => (
+                    <SkuItem key={i} sku={s} />
+                ))}
+            </div>
+        </Section>
     );
 }
 
@@ -47,5 +50,5 @@ const styles = {
     skuBody: {
         padding: 10,
         background: "#1A1A1A",
-    },
+    }
 }

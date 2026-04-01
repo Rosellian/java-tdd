@@ -24,4 +24,4 @@ const styles = {
         color: "#bbb",
         marginTop: 2,
     }
-};
+}

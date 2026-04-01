@@ -32,4 +32,4 @@ const styles = {
         padding: 5,
         width: "100%",
     }
-};
+}

@@ -1,13 +1,18 @@
 import {useState} from "react";
 import {useTraceSync} from "../TraceSyncProvider";
+import {Section} from "./Section";
+import {EventBody} from "./ruletimeline/EventBody";
+import {EventHeader} from "./ruletimeline/EventHeader";
 
 export function RuleTimeline({ events }) {
     return (
-        <div>
-            {events.map((e, i) => (
-                <RuleEvent key={i} event={e} index={i} />
-            ))}
-        </div>
+        <Section title="Rule Execution">
+            <div>
+                {events.map((e, i) => (
+                    <RuleEvent key={i} event={e} index={i} />
+                ))}
+            </div>
+        </Section>
     );
 }
 
@@ -16,29 +21,19 @@ function RuleEvent({ event, index }) {
     const { selectedStep, setSelectedStep } = useTraceSync();
     const isActive = event.stepIndex === selectedStep;
 
+    function selectOnClick(event) {
+        setOpen(!open);
+        setSelectedStep(event.stepIndex);
+    }
+
     return (
         <div style={{
             ...styles.event,
             ...(isActive ? styles.eventActive : {})
         }}>
-            <div style={styles.eventHeader} onClick={() =>
-            {
-                setOpen(!open);
-                setSelectedStep(event.stepIndex);
-            }}>
-                <strong>{index + 1}. {event.ruleName}</strong>
-                <span style={{ color: event.applied ? "#7CFC7C" : "#FF6B6B" }}>
-          {event.applied ? "✔ Applied" : "✖ Skipped"}
-        </span>
-            </div>
+            <EventHeader event={event} index={index} onClick={() => selectOnClick(event)} />
 
-            {open && (
-                <div style={styles.eventBody}>
-                    <pre>Delta: {JSON.stringify(event.delta, null, 2)}</pre>
-                    <pre>Before: {JSON.stringify(event.before, null, 2)}</pre>
-                    <pre>After: {JSON.stringify(event.after, null, 2)}</pre>
-                </div>
-            )}
+            {open && <EventBody event={event}/>}
         </div>
     );
 }
@@ -53,16 +48,5 @@ const styles = {
     eventActive: {
         background: "#2A2A2A",
         borderLeft: "3px solid #BB86FC",
-    },
-    eventHeader: {
-        padding: 10,
-        background: "#2A2A2A",
-        cursor: "pointer",
-        display: "flex",
-        justifyContent: "space-between",
-    },
-    eventBody: {
-        padding: 10,
-        background: "#1A1A1A",
-    },
+    }
 }

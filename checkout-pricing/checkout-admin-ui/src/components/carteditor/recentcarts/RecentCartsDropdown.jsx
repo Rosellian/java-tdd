@@ -58,4 +58,4 @@ const styles = {
         marginTop: 4,
         zIndex: 10,
     }
-};
+}

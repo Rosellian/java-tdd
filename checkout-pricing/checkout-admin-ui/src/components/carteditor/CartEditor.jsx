@@ -63,4 +63,4 @@ const styles = {
         padding: 5,
         width: 60,
     }
-};
+}

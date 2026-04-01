@@ -1,4 +1,3 @@
-import React from "react";
 import {Section} from "./Section";
 import {RuleTimeline} from "./RuleTimeLine";
 import {SkuBreakdown} from "./SkuBreakdown";
@@ -17,17 +16,9 @@ export function RuleInspector({ trace }) {
         <div style={styles.container}>
             <h1 style={styles.header}>Rule Inspector</h1>
 
-            <Section title="Rule Execution">
-                <RuleTimeline events={trace.events} />
-            </Section>
-
-            <Section title="SKU Breakdown">
-                <SkuBreakdown skuTraces={trace.skuTraces} />
-            </Section>
-
-            <Section title="Dynamic Programming Paths">
-                <DPSection dpTraces={trace.dpTraces} />
-            </Section>
+            <RuleTimeline events={trace.events} />
+            <SkuBreakdown skuTraces={trace.skuTraces} />
+            <DPSection dpTraces={trace.dpTraces} />
 
             <Section title="Final Total">
                 <div style={styles.total}>{trace.finalTotal} kr</div>
@@ -54,5 +45,5 @@ const styles = {
         fontSize: 24,
         fontWeight: "bold",
         color: "#03DAC6",
-    },
+    }
 }

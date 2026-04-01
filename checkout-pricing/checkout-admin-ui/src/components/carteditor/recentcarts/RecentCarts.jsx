@@ -28,4 +28,4 @@ const styles = {
         color: "#BB86FC",
         marginBottom: 8,
     }
-};
+}

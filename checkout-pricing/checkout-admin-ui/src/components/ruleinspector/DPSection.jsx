@@ -1,12 +1,15 @@
 import {useState} from "react";
+import {Section} from "./Section";
 
 export function DPSection({ dpTraces }) {
     return (
-        <div>
-            {dpTraces.map((dp, i) => (
-                <DPTraceView key={i} dp={dp} />
-            ))}
-        </div>
+        <Section title="Dynamic Programming Paths">
+            <div>
+                {dpTraces.map((dp, i) => (
+                    <DPTraceView key={i} dp={dp} />
+                ))}
+            </div>
+        </Section>
     );
 }
 
@@ -64,5 +67,5 @@ const styles = {
         padding: 10,
         background: "#222",
         borderLeft: "3px solid #555",
-    },
+    }
 }

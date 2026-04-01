@@ -31,4 +31,4 @@ const styles = {
         padding: 0,
         margin: 0,
     }
-};
+}

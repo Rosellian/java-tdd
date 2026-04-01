@@ -51,4 +51,4 @@ const styles = {
         cursor: "pointer",
         color: "#000",
     }
-};
+}

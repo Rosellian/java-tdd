@@ -37,4 +37,4 @@ const styles = {
         fontWeight: "bold",
         color: "#aaa",
     }
-};
+}

@@ -63,4 +63,4 @@ const styles = {
         color: "#000",
         fontWeight: 600,
     }
-};
+}

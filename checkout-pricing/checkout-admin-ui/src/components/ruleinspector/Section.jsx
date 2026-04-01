@@ -16,5 +16,5 @@ const styles = {
         paddingBottom: 5,
         marginBottom: 15,
         color: "#BB86FC",
-    },
+    }
 }

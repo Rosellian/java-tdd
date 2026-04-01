@@ -2143,7 +2143,8 @@ Replacing `<select>` with custom component:
        <SkuRow sku={sku} qty={qty} updateSku={updateSku} />
    ))}
    ```
-- **Rule Debugger:** Separated Chain Overview content into nested components
+#### Rule Debugger
+- Separated Chain Overview content into nested components
   1. Chain Overview
   2. ChainStep
   3. ChainContent
@@ -2168,11 +2169,15 @@ Replacing `<select>` with custom component:
   subcomponents: 
   `<DPDetail label={"LABEL"} value={NODE.VALUE} />`  
   `<DPOptions node={node} />`
+
+
 - Separated Rule Timeline into separate components
   1. RuleTimeline `<RuleTimeline rules={trace.rules} />`
   2. RuleItem `<RuleItem key={i} rule={r} />`
   3. RuleEntry `<RuleEntry rule={rule} onClick={selectOnClick} open={open} />`
   4. RuleBody `<RuleBody rule={rule} />`
+
+
 - Separated Price Evolution Chart into separate components
   1. PriceEvolutionChart `<PriceEvolutionChart prices={trace.priceEvolution} />`
   2. PriceGraph `<PriceGraph prices={prices} path={path} points={points} />`  
@@ -2181,6 +2186,16 @@ Replacing `<select>` with custom component:
   `<DrawPoint i={i} p={p} hoverIndex={hoverIndex} setHoverIndex={setHoverIndex} />`
   3. PriceTooltip `<PriceTooltip prices={prices} hoverIndex={hoverIndex}/>`
 
+#### Rule Inspector
+- Embedding `Section` in subcomponents
+- Separated Rule TimeLine into separate components
+  1. RuleTimeLine `<RuleTimeline events={trace.events} />`
+  2. EventHeader ``
+  3. EventBody `<EventBody event={event}/>`
+- Separated Sku Breakdown into separate components
+  1. SkuBreakdown `<SkuBreakdown skuTraces={trace.skuTraces} />`
+- Separated DP Section into separate components
+  1. DPSection `<DPSection dpTraces={trace.dpTraces} />`
 ---
 
 ### Current structure

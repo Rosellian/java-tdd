@@ -64,4 +64,4 @@ const styles = {
         color: "#ccc",
         fontStyle: "italic",
     }
-};
+}

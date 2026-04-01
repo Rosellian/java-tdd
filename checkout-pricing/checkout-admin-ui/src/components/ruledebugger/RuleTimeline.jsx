@@ -47,4 +47,4 @@ const styles = {
         color: "#777",
         fontStyle: "italic",
     }
-};
+}
