@@ -21,7 +21,7 @@ function RuleEvent({ event, index }) {
     const { selectedStep, setSelectedStep } = useTraceSync();
     const isActive = event.stepIndex === selectedStep;
 
-    function selectOnClick(event) {
+    function openAndSelect() {
         setOpen(!open);
         setSelectedStep(event.stepIndex);
     }
@@ -31,7 +31,7 @@ function RuleEvent({ event, index }) {
             ...styles.event,
             ...(isActive ? styles.eventActive : {})
         }}>
-            <EventHeader event={event} index={index} onClick={() => selectOnClick(event)} />
+            <EventHeader event={event} index={index} onClick={openAndSelect} />
 
             {open && <EventBody event={event}/>}
         </div>

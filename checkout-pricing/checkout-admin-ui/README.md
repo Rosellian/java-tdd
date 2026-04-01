@@ -2190,13 +2190,30 @@ Replacing `<select>` with custom component:
 - Embedding `Section` in subcomponents
 - Separated Rule TimeLine into separate components
   1. RuleTimeLine `<RuleTimeline events={trace.events} />`
-  2. EventHeader ``
+  subcomponents: `<RuleEvent key={i} event={e} index={i} />`
+  2. EventHeader `<EventHeader event={event} index={index} onClick={openAndSelect} />`
   3. EventBody `<EventBody event={event}/>`
+
+
 - Separated Sku Breakdown into separate components
   1. SkuBreakdown `<SkuBreakdown skuTraces={trace.skuTraces} />`
+  subcomponents: `<SkuItem key={i} sku={s} />`
+  2. SkuHeader `<SkuHeader sku={sku} onClick={() => setOpen(!open)}/>`
+  3. SkuBody `<SkuBody sku={sku} />`
+
+
 - Separated DP Section into separate components
   1. DPSection `<DPSection dpTraces={trace.dpTraces} />`
+  subcomponents: `<DPTraceView key={i} dp={dp} />`
+  2. DPHeader `<DPHeader dp={dp} onClick={() => setOpen(!open)} />`
+  3. DPBody `<DPBody dp={dp} />`
+  4. DPNode `<DPNode node={node} />`
+  subcomponents: `<DPResult dp={dp} />`
 ---
+
+### UI data and layout fixes
+#### Button panel size
+
 
 ### Current structure
 ```
