@@ -53,11 +53,11 @@ public class RulesetTest {
 
     private int createCampaignBExpected() {
         return 130 + 2 * A.unitPrice //A: 3-for-130 + 2-for-unitPrice
-                + 10 + 40 + B.unitPrice //B: 1-at-25% + 2-for-40(1 free) + 1-for-unitPrice
+                + 30 + 40 + B.unitPrice //B: 1-at-25%-discount + 2-for-40(1 free) + 1-for-unitPrice
                 + 3 * C.unitPrice //C: 3-for-unitPrice
                 + 16 + D.unitPrice //D: 1-at-20%-discount + 1-for-unitPrice
                 + 54; //E: 1-at-10%-discount (unitPrice: 60)
-                // 485
+                // 505
     }
 
     private void scanStandardInput(Checkout checkout) {

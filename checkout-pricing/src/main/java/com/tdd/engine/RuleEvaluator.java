@@ -53,7 +53,7 @@ public class RuleEvaluator implements IRuleEvaluator {
 
         int totalDiscounted = (int) (rule.discountQty() * times);
         return new RuleDelta(Map.of(discountSku,
-                new SkuMod(0, totalDiscounted, rule.discount())), true);
+                new SkuMod(0, totalDiscounted, 1 - rule.discount())), true);
     }
 
     @Override

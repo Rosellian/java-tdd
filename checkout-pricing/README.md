@@ -1746,6 +1746,15 @@ private RuleContext applyCrossSkuRules(RuleContext context,
 
 
 ---
+### Normalize discount values
+#### RuleTimeLine (Rule Inspector)
+Making sure the same convention holds for all rules:
+- discount = discount
+- rate = rate
+
+These should never be mixed up.
+
+---
 ### Refactoring
 
 
