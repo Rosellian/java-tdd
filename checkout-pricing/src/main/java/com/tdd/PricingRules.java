@@ -22,6 +22,10 @@ public class PricingRules {
 
     public PricingRules() {}
 
+    public PricingRules(Map<String, Integer> unitPrices) {
+        this.unitPrices = unitPrices;
+    }
+
     public void addUnitPrice(String sku, int price) {
         unitPrices.put(sku, price);
     }
@@ -43,17 +47,17 @@ public class PricingRules {
 
     public void addBuyXGetYFree(String sku, int buy, int free, int priority, boolean stackable) {
         options.computeIfAbsent(sku, _ -> new ArrayList<>())
-                .add(new BuyXGetYFree(buy + free, buy * getUnitPrice(sku), 2, stackable));
+                .add(new BuyXGetYFree(buy + free, buy * getUnitPrice(sku), priority, stackable));
     }
 
     public void addBuyXGetYDiscount(String sku, int buy, int get, double discount, int priority, boolean stackable) {
         int unitPrice = getUnitPrice(sku);
-        int price = (int)(buy * unitPrice + get * unitPrice * (1-discount));
+        int price = BuyXGetYDiscount.calculatePrice(buy, unitPrice, get, discount);
         options.computeIfAbsent(sku, _ -> new ArrayList<>()).
                 add(new BuyXGetYDiscount(buy + get, price, priority, stackable));
     }
 
-    public List<PricingOption>  getPricingOptions(String sku) {
+    public List<PricingOption> getPricingOptions(String sku) {
         List<PricingOption> skuOptions = new ArrayList<>(options.getOrDefault(sku, new ArrayList<>()));
 
         skuOptions.sort(Comparator.comparingInt(PricingOption::priority));

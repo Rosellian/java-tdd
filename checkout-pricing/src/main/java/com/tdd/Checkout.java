@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Checkout {
-    public  final RuleTracer tracer = new RuleTracer();
+    private final RuleTracer tracer = new RuleTracer();
     private final PricingRules rules;
     private final RuleEngine engine;
     private final PriceCalculator calculator;
@@ -33,19 +33,16 @@ public class Checkout {
 
         context = engine.evaluate(context);
 
-        display(context);
+        inspect(context);
 
         return calculator.calculateTotal(context, null);
     }
 
-    private void display(RuleContext context) {
+    private void inspect(RuleContext context) {
         RuleInspector inspector = new RuleInspector(rules, calculator);
         RuleTrace trace = inspector.inspect(context, tracer.getEvents());
 
         RuleInspectorView.print(trace);
-        for(var dp : trace.dpTraces()) {
-            RuleInspectorView.printDP(dp);
-        }
     }
 
     private Map<String, Long> countItems() {

@@ -1756,7 +1756,13 @@ These should never be mixed up.
 
 ---
 ### Refactoring
-
+- Minor code styling fixes
+- Extraction into helper-methods when appropriate
+- Simplify code when appropriate
+- Reuse code when possible
+- Remove unused code or make sure all functionality is used
+- Identifying bugs or potential improvements for later
+  - Issues for stackability and priority for some rule combinations
 
 ---
 ## Testing

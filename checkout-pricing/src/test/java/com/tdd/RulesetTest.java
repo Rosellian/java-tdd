@@ -1,10 +1,9 @@
 package com.tdd;
 
-import com.tdd.api.samples.CampaignARules;
-import com.tdd.api.samples.CampaignBRules;
-import com.tdd.api.samples.DefaultRules;
+import com.tdd.api.samples.*;
 import org.junit.jupiter.api.Test;
 
+import static com.tdd.TestUtils.scanStandardInput;
 import static com.tdd.api.samples.SKUs.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,12 +24,26 @@ public class RulesetTest {
         runForStandardInput(CampaignBRules.build(), createCampaignBExpected());
     }
 
+    @Test
+    public void NoCrossNoDiscountStandardInput() {
+        runForStandardInput(NoCrossNoSkuDiscount.build(), createNoCrossNoSkuDiscountStandardExpected());
+    }
+
     private void runForStandardInput(PricingRules rules, int expectedPrice) {
         Checkout checkout = new Checkout(rules);
 
         scanStandardInput(checkout);
 
         assertEquals(expectedPrice, checkout.total());
+    }
+
+    private int createNoCrossNoSkuDiscountStandardExpected() {
+        return 100 + 2 * A.unitPrice //A: 3-for-100(1 free) + 2-for-unitPrice
+                + 40 + 70 //B: 2-for-40(1 free) + 2-for-70
+                + 75 //C: 2-for-unitPrice + 1-at-50%
+                + 2 * D.unitPrice //D: 2-for-unitPrice
+                + E.unitPrice; //E:
+                // 435
     }
 
     private int createDefaultStandardExpected() {
@@ -58,19 +71,5 @@ public class RulesetTest {
                 + 16 + D.unitPrice //D: 1-at-20%-discount + 1-for-unitPrice
                 + 54; //E: 1-at-10%-discount (unitPrice: 60)
                 // 505
-    }
-
-    private void scanStandardInput(Checkout checkout) {
-        scanProduct(checkout, "A", 5);
-        scanProduct(checkout, "B", 4);
-        scanProduct(checkout, "C", 3);
-        scanProduct(checkout, "D", 2);
-        scanProduct(checkout, "E", 1);
-    }
-
-    private void scanProduct(Checkout checkout, String sku, int n) {
-        for(int i = 0; i < n; i++) {
-            checkout.scan(sku);
-        }
     }
 }

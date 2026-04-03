@@ -6,15 +6,12 @@ import com.tdd.rules.*;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.stream.Collectors.toMap;
+import static com.tdd.api.samples.Ruleset.defaultUnitPricesWithChange;
 
 public class CampaignBRules implements Ruleset {
 
     public static PricingRules build() {
-
-        Map<String, Integer> unitPrices = DEFAULT_UNIT_PRICES.entrySet().stream()
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-        unitPrices.put("E", 60);
+        Map<String, Integer> unitPrices = defaultUnitPricesWithChange("E", 60);
 
         Map<String, List<PricingOption>> options = Map.of(
                 "A", List.of(

@@ -9,9 +9,10 @@ import com.tdd.tracing.debug.PricingTraceCollector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PriceCalculator {
-    public static final String ITEMS_0_KR = "0 items -> 0 kr";
+    private static final String ITEMS_0_KR = "0 items -> 0 kr";
     private final PricingRules rules;
 
     public PriceCalculator(PricingRules rules) {
@@ -22,21 +23,37 @@ public class PriceCalculator {
         int total = 0;
 
         for(var entry : context.counts().entrySet()) {
-            String sku = entry.getKey();
-            SkuMod mod = context.modOf(sku);
+            SkuTotal skuTotal = calculateTotalFor(context, collector, entry);
 
-            long discounted = mod.discounted();
-
-            long remaining = entry.getValue() - mod.free() - discounted;
-            if(remaining < 0) remaining = 0;
-
-            int discountedPrice = (int)(discounted * rules.getUnitPrice(sku) * mod.rate());
-            DPTrace dpTrace = bestPriceFor(sku, remaining, collector);
-            total += discountedPrice + dpTrace.finalPrice();
+            total += skuTotal.discountedPrice() + skuTotal.dpTrace().finalPrice();
         }
 
         return total;
     }
+
+    private SkuTotal calculateTotalFor(RuleContext context, PricingTraceCollector collector, Map.Entry<String, Long> entry) {
+        String sku = entry.getKey();
+        SkuMod mod = context.modOf(sku);
+
+        long discounted = mod.discounted();
+
+        long remaining = computeRemaining(entry, mod, discounted);
+
+        int discountedPrice = (int)(discounted * rules.getUnitPrice(sku) * mod.rate());
+
+        DPTrace dpTrace = bestPriceFor(sku, remaining, collector);
+
+        return new SkuTotal(discountedPrice, dpTrace);
+    }
+
+    private long computeRemaining(Map.Entry<String, Long> entry, SkuMod mod, long discounted) {
+        long remaining = entry.getValue() - mod.free() - discounted;
+        if(remaining < 0) remaining = 0;
+
+        return remaining;
+    }
+
+    private record SkuTotal(int discountedPrice, DPTrace dpTrace) {}
 
     public DPTrace bestPriceFor(String sku, long remaining) {
         return bestPriceFor(sku, remaining, null);

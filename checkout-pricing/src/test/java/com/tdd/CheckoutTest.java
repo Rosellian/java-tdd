@@ -1,7 +1,18 @@
 package com.tdd;
 
+import com.tdd.api.samples.NoCrossNoSkuDiscount;
+import com.tdd.rulesets.CrossSkuBeatsSpecialPriceWhenHigherPriority;
 import org.junit.jupiter.api.Test;
 
+import static com.tdd.TestUtils.scanProduct;
+import static com.tdd.TestUtils.testForA;
+import static com.tdd.rulesets.SimpleRulesets.*;
+import static com.tdd.rulesets.simple.CrossDiscountRules.buy2AGet1BDiscount;
+import static com.tdd.rulesets.simple.CrossFreeRules.buy2AGet1BFree;
+import static com.tdd.rulesets.simple.DiscountRules.buy1Get1Discount;
+import static com.tdd.rulesets.simple.FreeRules.buy1Get1Free;
+import static com.tdd.rulesets.simple.FreeRules.buy1Get1FreeTwoSkus;
+import static com.tdd.rulesets.simple.SpecialPrices.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CheckoutTest {
@@ -19,39 +30,27 @@ public class CheckoutTest {
 
     @Test
     void appliesThreeFor130SpecialPrice() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-        rules.addSpecialPrice("A", 3, 130, 1, true);
+        PricingRules rules = specialPrice("A", 50, 3, 130);
 
         Checkout checkout = new Checkout(rules);
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 3);
 
         assertEquals(130, checkout.total());
     }
 
     @Test
     void appliesTwoFor45SpecialPrice() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("B", 30);
-        rules.addSpecialPrice("B", 2, 45,1, true);
+        PricingRules rules = specialPrice("B", 30, 2, 45);
 
         Checkout checkout = new Checkout(rules);
-        checkout.scan("B");
-        checkout.scan("B");
+        scanProduct(checkout, "B", 2);
 
         assertEquals(45, checkout.total());
     }
 
     @Test
     void calculatesTotalForMixedProductsWithSpecialPrices() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-        rules.addSpecialPrice("A", 3, 130,1, true);
-
-        rules.addUnitPrice("B", 30);
-        rules.addSpecialPrice("B", 2, 45,1, true);
+        PricingRules rules = twoSpecialPrices();
 
         Checkout checkout = new Checkout(rules);
 
@@ -66,18 +65,12 @@ public class CheckoutTest {
 
     @Test
     void scanningOrderDoesNotAffectTotal() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-        rules.addSpecialPrice("A", 3, 130,1, true);
-
-        rules.addUnitPrice("B", 30);
-        rules.addSpecialPrice("B", 2, 45,1, true);
+        PricingRules rules = twoSpecialPrices();
 
         Checkout checkout = new Checkout(rules);
 
         checkout.scan("B");
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 2);
         checkout.scan("B");
         checkout.scan("A");
 
@@ -86,15 +79,7 @@ public class CheckoutTest {
 
     @Test
     void calculatesTotalForMixedProductsWithAndWithoutSpecialPrices() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-        rules.addSpecialPrice("A", 3, 130,1, true);
-
-        rules.addUnitPrice("B", 30);
-        rules.addSpecialPrice("B", 2, 45,1, true);
-
-        rules.addUnitPrice("C", 20);
-        rules.addUnitPrice("D", 15);
+        PricingRules rules = twoSpecialPricesFourSkus();
 
         Checkout checkout = new Checkout(rules);
 
@@ -111,110 +96,66 @@ public class CheckoutTest {
 
     @Test
     void appliesBestSpecialPriceWhenMultipleSpecialPricesExist() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-
-        rules.addSpecialPrice("A", 3, 130,1, true);
-        rules.addSpecialPrice("A", 5, 200,1, true);
+        PricingRules rules = twoSpecialPricesSameSku();
 
         Checkout checkout = new Checkout(rules);
 
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 5);
 
         assertEquals(200, checkout.total());
     }
 
     @Test
     void combinesMultipleSpecialPricesToGetBestTotal() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-
-        rules.addSpecialPrice("A", 3, 130,1, true);
-        rules.addSpecialPrice("A", 5, 200,1, true);
+        PricingRules rules = twoSpecialPricesSameSku();
 
         Checkout checkout = new Checkout(rules);
 
-        // 8 items
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 8);
 
         assertEquals(330, checkout.total());
     }
 
     @Test
     void choosesBestCombinationWhenSpecialPricesConflict() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-
-        rules.addSpecialPrice("A", 3, 120,1, true);
-        rules.addSpecialPrice("A", 2, 80,1, true);
+        PricingRules rules = specialPriceConflict();
 
         Checkout checkout = new Checkout(rules);
 
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 4);
 
         assertEquals(160, checkout.total());
     }
 
     @Test
     void appliesBuyOneGetOneFree() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-
-        rules.addBuyXGetYFree("A", 1, 1, 2, true);
+        PricingRules rules = buy1Get1Free();
 
         Checkout checkout = new Checkout(rules);
 
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 2);
 
         assertEquals(50, checkout.total());
     }
 
     @Test
     void appliesBuyOneGetOneFreeForMultiplePairs() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-
-        rules.addBuyXGetYFree("A", 1, 1, 2, true);
+        PricingRules rules = buy1Get1Free();
 
         Checkout checkout = new Checkout(rules);
 
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 4);
 
         assertEquals(100, checkout.total());
     }
 
     @Test
     void choosesBestPriceAcrossDifferentRuleTypes() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-
-        rules.addSpecialPrice("A", 3, 130,1, true);
-        rules.addBuyXGetYFree("A", 1, 1, 2, true);
+        PricingRules rules = buy1Get1FreeAndSpecial(true, 130);
 
         Checkout checkout = new Checkout(rules);
 
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 4);
 
         assertEquals(100, checkout.total());
     }
@@ -223,181 +164,91 @@ public class CheckoutTest {
     //!Important! Here BuyXGetYFree is set as not stackable for product A
     @Test
     void choosesOptimalCombinationBetweenBuyXGetYFreeAndSpecialPrices() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-
-        // Two conflicting rules
-        rules.addBuyXGetYFree("A", 1, 1, 2, false); // 2 for 50 In this case set as non-stackable
-        rules.addSpecialPrice("A", 3, 100,1, true); // 3 for 100
-
-        Checkout checkout;
+        PricingRules rules = buy1Get1FreeAndSpecial(false, 100);
 
         // Case 1: 3 items → best is 3-for-100
-        checkout = new Checkout(rules);
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        assertEquals(100, checkout.total());
+        testForA(rules, 3, 100);
 
         // Case 2: 4 items → best is 3-for-100 + 1×50 = 150
-        checkout = new Checkout(rules);
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        assertEquals(150, checkout.total());
+        testForA(rules, 4, 150);
 
         // Case 3: 5 items → best is 3-for-100 + buy-1-get-1-free = 150
-        checkout = new Checkout(rules);
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        assertEquals(150, checkout.total());
+        testForA(rules, 5, 150);
 
         // Case 4: 6 items → best is 3-for-100 + 3-for-100 = 200
-        checkout = new Checkout(rules);
-        for (int i = 0; i < 6; i++) checkout.scan("A");
-        assertEquals(200, checkout.total());
+        testForA(rules, 6, 200);
     }
 
     @Test
     void buyOneGetOneFreeIsStackableForA() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-
-        // A is stackable
-        rules.addBuyXGetYFree("A", 1, 1, 2, true);
+        PricingRules rules = buy1Get1Free();
 
         Checkout checkout = new Checkout(rules);
 
-        // 4 A → two packets → 100 kr
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 4);
 
         assertEquals(100, checkout.total());
     }
 
     @Test
     void buyOneGetOneFreeIsNotStackableForB() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("B", 40);
-
-        // B is non-stackable
-        rules.addBuyXGetYFree("B", 1, 1, 2, false);
+        PricingRules rules = buy1Get1Free("B", 40, false);
 
         Checkout checkout = new Checkout(rules);
 
         // 4 B → 1 packets (2 for 40) + 2×40 = 120
-        checkout.scan("B");
-        checkout.scan("B");
-        checkout.scan("B");
-        checkout.scan("B");
+        scanProduct(checkout, "B", 4);
 
         assertEquals(120, checkout.total());
     }
 
     @Test
     void stackabilityIsPerSku() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-        rules.addUnitPrice("B", 40);
-
-        rules.addBuyXGetYFree("A", 1, 1, 2, true);   // A stackable
-        rules.addBuyXGetYFree("B", 1, 1, 2, false);  // B non-stackable
+        PricingRules rules = buy1Get1FreeTwoSkus();
 
         Checkout checkout = new Checkout(rules);
 
-        // 4 A → stackable → 100
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-
-        // 4 B → non-stackable → 120
-        checkout.scan("B");
-        checkout.scan("B");
-        checkout.scan("B");
-        checkout.scan("B");
+        scanProduct(checkout, "A", 4);
+        scanProduct(checkout, "B", 4);
 
         assertEquals(220, checkout.total());
     }
 
     @Test
     void appliesBuyTwoGetOneHalfPrice() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-
-        // buy 2, get 1 at 50% discount
-        rules.addBuyXGetYDiscount("A", 2, 1, 0.5, 1, false);
+        PricingRules rules = buy1Get1Discount(0.5);
 
         Checkout checkout = new Checkout(rules);
 
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 3);
 
         assertEquals(125, checkout.total());
     }
 
+    //TODO Rule decision needed!
     @Test
     void combinesAllRuleTypesWithPriorityAndStackability() {
-        PricingRules rules = new PricingRules();
-
-        // --- SKU A ---
-        // unit price
-        rules.addUnitPrice("A", 50);
-        // special price: 3 for 120 (priority 1, stackable)
-        rules.addSpecialPrice("A", 3, 120,1, true);
-        // buy 1, get 1 free (stackable)
-        rules.addBuyXGetYFree("A", 2, 1, 2, true);
-
-        // --- SKU B ---
-        rules.addUnitPrice("B", 40);
-        // special price: 2 for 70 (priority 1)
-        rules.addSpecialPrice("B", 2, 70,1, true);
-        // buy 1, get 1 free (non-stackable)
-        rules.addBuyXGetYFree("B", 1, 1, 2, false);
-
-        // --- SKU C ---
-        rules.addUnitPrice("C", 30);
-        // buy 2, get 1 at 50% discount (stackable)
-        rules.addBuyXGetYDiscount("C", 2, 1, 0.5, 1, true);
+        PricingRules rules = NoCrossNoSkuDiscount.build();
 
         Checkout checkout = new Checkout(rules);
 
-        // --- Basket ---
-        // A: 6 items
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 6);
+        scanProduct(checkout, "B", 4);
+        scanProduct(checkout, "C", 5);
 
-        // B: 4 items
-        checkout.scan("B");
-        checkout.scan("B");
-        checkout.scan("B");
-        checkout.scan("B");
-
-        // C: 5 items
-        checkout.scan("C");
-        checkout.scan("C");
-        checkout.scan("C");
-        checkout.scan("C");
-        checkout.scan("C");
-
+        assertEquals(445, checkout.total());
         // --- Expected ---
         // A:
         // best is 3-for-120 + 3-for-120 = 240
+        // or stackable buy-2-get-1-free:
+        // 2 package (3 for 100) = 200
         //
         // B:
         // non-stackable buy-1-get-1-free:
         // 1 package (2 for 40) + 2×40 = 120
+        // or
+        // non-stackable buy-1-get-1-free, 2-for-70:
+        // 1 package (2 for 40) + 1 package (2-for-70) = 110
         //
         // C:
         // buy 2, get 1 half price (stackable):
@@ -405,23 +256,19 @@ public class CheckoutTest {
         // 5 items → 2 leftover at 30
         // total C = 75 + 2*30 = 135
         //
-        // TOTAL = 240 + 120 + 135 = 445
-
-        assertEquals(445, checkout.total());
+        // TOTAL = 240 + 120 + 135
+        // or
+        // 200 + 110 + 135
+        // = ???(445)
     }
 
     @Test
     void buyTwoAGetOneBFree() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-        rules.addUnitPrice("B", 40);
-
-        rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 0, true);
+        PricingRules rules = buy2AGet1BFree();
 
         Checkout checkout = new Checkout(rules);
 
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 2);
         checkout.scan("B");
 
         assertEquals(100, checkout.total());
@@ -429,20 +276,12 @@ public class CheckoutTest {
 
     @Test
     void crossSkuStackable() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-        rules.addUnitPrice("B", 40);
-
-        rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 0, true);
+        PricingRules rules = buy2AGet1BFree();
 
         Checkout checkout = new Checkout(rules);
 
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("B");
-        checkout.scan("B");
+        scanProduct(checkout, "A", 4);
+        scanProduct(checkout, "B", 2);
 
         // 4 A = 200
         // 2 B = free
@@ -451,20 +290,12 @@ public class CheckoutTest {
 
     @Test
     void crossSkuNonStackable() {
-        PricingRules rules = new PricingRules();
-        rules.addUnitPrice("A", 50);
-        rules.addUnitPrice("B", 40);
-
-        rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 0, false);
+        PricingRules rules = buy2AGet1BFree(0, false);
 
         Checkout checkout = new Checkout(rules);
 
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("B");
-        checkout.scan("B");
+        scanProduct(checkout, "A", 4);
+        scanProduct(checkout, "B", 2);
 
         // 4 A = 200
         // 1 B free, 1 B paid = 40
@@ -473,118 +304,61 @@ public class CheckoutTest {
 
     @Test
     void crossSkuBeatsSpecialPriceWhenHigherPriority() {
-        PricingRules rules = new PricingRules();
-
-        // --- SKU A ---
-        rules.addUnitPrice("A", 50);
-        rules.addSpecialPrice("A", 3, 120, 1, true);
-
-        // --- SKU B ---
-        rules.addUnitPrice("B", 40);
-        rules.addSpecialPrice("B", 2, 70, 1, true);
-
-        // --- Cross-SKU ---
-        // priority 0 = higher than special prices
-        rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 0, false);
+        PricingRules rules = CrossSkuBeatsSpecialPriceWhenHigherPriority.build();
 
         Checkout checkout = new Checkout(rules);
 
-        // Basket: A A A B B
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("B");
-        checkout.scan("B");
+        scanProduct(checkout, "A", 3);
+        scanProduct(checkout, "B", 2);
 
         // Expected:
         // Cross-SKU: 1 B free
         // A: 3 → 120
         // B: 1 → 40
         // Total = 160
-
         assertEquals(160, checkout.total());
     }
 
     @Test
     void crossSkuBuyXGetYAtDiscount() {
-        PricingRules rules = new PricingRules();
-
-        // --- SKU A ---
-        rules.addUnitPrice("A", 50);
-
-        // --- SKU B ---
-        rules.addUnitPrice("B", 40);
-
-        // --- Cross-SKU ---
-        // Buy 2 A → get 1 B at 50% discount
-        rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5,
-                0, true);
+        PricingRules rules = buy2AGet1BDiscount(0.5);
 
         Checkout checkout = new Checkout(rules);
 
-        // Basket: A A B
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 2);
         checkout.scan("B");
 
         // Expected:
         // A: 50 + 50 = 100
         // B: 40 * 0.5 = 20
         // Total = 120
-
         assertEquals(120, checkout.total());
     }
 
     @Test
     void crossSkuDiscountBeatsSpecialPriceWhenHigherPriority() {
-        PricingRules rules = new PricingRules();
-
-        // --- SKU A ---
-        rules.addUnitPrice("A", 50);
-
-        // --- SKU B ---
-        rules.addUnitPrice("B", 40);
-        rules.addSpecialPrice("B", 2, 70, 1, true); // priority 1
-
-        // --- Cross-SKU ---
-        // Buy 2 A → get 1 B at 50% discount
-        // priority 0 = higher than special price
-        rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5,
-                0, false);
+        PricingRules rules = crossDiscountAndSpecialPrice(2, 70);
 
         Checkout checkout = new Checkout(rules);
 
-        // Basket: A A B B
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("B");
-        checkout.scan("B");
+        scanProduct(checkout, "A", 2);
+        scanProduct(checkout, "B", 2);
 
         // Expected:
         // Cross-SKU: 1 B at 20 kr
         // Remaining B: 1 at 40 kr
         // A: 100
         // Total = 160
-
         assertEquals(160, checkout.total());
     }
 
     @Test
     void crossSkuFreeBeatsDiscountWhenHigherPriority() {
-        PricingRules rules = new PricingRules();
-
-        rules.addUnitPrice("A", 50);
-        rules.addUnitPrice("B", 40);
-
-        // FREE has higher priority
-        rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 0, false);
-        rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5,
-                1, false);
+        PricingRules rules = crossDiscountAndFree(1, 0);
 
         Checkout checkout = new Checkout(rules);
 
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 2);
         checkout.scan("B");
 
         assertEquals(100, checkout.total());
@@ -592,20 +366,11 @@ public class CheckoutTest {
 
     @Test
     void crossSkuDiscountBeatsFreeWhenHigherPriority() {
-        PricingRules rules = new PricingRules();
-
-        rules.addUnitPrice("A", 50);
-        rules.addUnitPrice("B", 40);
-
-        // DISCOUNT has higher priority
-        rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5,
-                0, false);
-        rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 1, false);
+        PricingRules rules = crossDiscountAndFree(0, 1);
 
         Checkout checkout = new Checkout(rules);
 
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 2);
         checkout.scan("B");
 
         assertEquals(120, checkout.total());
@@ -613,64 +378,29 @@ public class CheckoutTest {
 
     @Test
     void crossSkuDiscountAndSpecialPriceCombinedOptimization() {
-        PricingRules rules = new PricingRules();
-
-        // --- SKU A ---
-        rules.addUnitPrice("A", 50);
-
-        // --- SKU B ---
-        rules.addUnitPrice("B", 40);
-        rules.addSpecialPrice("B", 3, 90, 1, true); // priority 1
-
-        // --- Cross-SKU ---
-        // Buy 2 A → get 1 B at 50% discount
-        // priority 0 = higher than special price
-        rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5,
-                0, false);
+        PricingRules rules = crossDiscountAndSpecialPrice(3, 90);
 
         Checkout checkout = new Checkout(rules);
 
-        // Basket: A A B B B
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("B");
-        checkout.scan("B");
-        checkout.scan("B");
+        scanProduct(checkout, "A", 2);
+        scanProduct(checkout, "B", 3);
 
         // Expected:
         // Cross-SKU: 1 B at 20 kr
         // Remaining B: 2 × 40 = 80
         // A: 100
         // Total = 200
-
         assertEquals(200, checkout.total());
     }
 
     @Test
     void higherPriorityFreeRuleWinsWhenBothAreStackable() {
-        PricingRules rules = new PricingRules();
-
-        rules.addUnitPrice("A", 50);
-        rules.addUnitPrice("B", 40);
-
-        // Higher priority (0), stackable
-        rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 0, true);
-
-        // Lower priority (1), stackable
-        rules.addCrossSkuBuyXGetYFree("A", 3, "B", 1, 1, true);
+        PricingRules rules = crossFreeAndBetterFree(0, 1);
 
         Checkout checkout = new Checkout(rules);
 
-        // Basket: 6 A, 2 B
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-
-        checkout.scan("B");
-        checkout.scan("B");
+        scanProduct(checkout, "A", 6);
+        scanProduct(checkout, "B", 2);
 
         // Expected:
         // Rule 1 applies 3 times → 3 free B, but only 2 exist → 2 free
@@ -681,29 +411,12 @@ public class CheckoutTest {
 
     @Test
     void higherPriorityFreeRuleWinsEvenIfLowerPriorityIsMoreGenerous() {
-        PricingRules rules = new PricingRules();
-
-        rules.addUnitPrice("A", 50);
-        rules.addUnitPrice("B", 40);
-
-        // Higher priority (0), stackable
-        rules.addCrossSkuBuyXGetYFree("A", 3, "B", 1, 0, true);
-
-        // Lower priority (1), stackable but more generous
-        rules.addCrossSkuBuyXGetYFree("A", 2, "B", 1, 1, true);
+        PricingRules rules = crossFreeAndBetterFree(1, 0);
 
         Checkout checkout = new Checkout(rules);
 
-        // Basket: 6 A, 2 B
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-        checkout.scan("A");
-
-        checkout.scan("B");
-        checkout.scan("B");
+        scanProduct(checkout, "A", 6);
+        scanProduct(checkout, "B", 2);
 
         // Expected:
         // Rule 1 applies twice → 2 free B
@@ -713,22 +426,11 @@ public class CheckoutTest {
 
     @Test
     void crossSkuDiscountBeatsSkuDiscountWhenHigherPriority() {
-        PricingRules rules = new PricingRules();
-
-        rules.addUnitPrice("A", 50);
-        rules.addUnitPrice("B", 40);
-
-        // Cross-SKU discount has higher priority
-        rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5,
-                0, false);
-
-        // SKU-specific discount (lower priority)
-        rules.addSkuDiscount("B", 0.25, 1); // 25% off, priority 1
+        PricingRules rules = crossDiscountAndSkuDiscount(0, 1);
 
         Checkout checkout = new Checkout(rules);
 
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 2);
         checkout.scan("B");
 
         assertEquals(120, checkout.total());
@@ -736,22 +438,11 @@ public class CheckoutTest {
 
     @Test
     void skuDiscountBeatsCrossSkuDiscountWhenHigherPriority() {
-        PricingRules rules = new PricingRules();
-
-        rules.addUnitPrice("A", 50);
-        rules.addUnitPrice("B", 40);
-
-        // SKU-specific discount has higher priority
-        rules.addSkuDiscount("B", 0.25, 0); // 25% off, priority 0
-
-        // Cross-SKU discount (lower priority)
-        rules.addCrossSkuBuyXGetYDiscount("A", 2, "B", 1, 0.5,
-                1, false);
+        PricingRules rules = crossDiscountAndSkuDiscount(1, 0);
 
         Checkout checkout = new Checkout(rules);
 
-        checkout.scan("A");
-        checkout.scan("A");
+        scanProduct(checkout, "A", 2);
         checkout.scan("B");
 
         assertEquals(130, checkout.total());

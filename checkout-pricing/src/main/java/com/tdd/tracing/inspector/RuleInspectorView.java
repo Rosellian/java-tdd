@@ -9,6 +9,21 @@ public class RuleInspectorView {
         System.out.println("=== RULE INSPECTOR 2.0 ===");
 
         System.out.println("\n--- Rule Execution ---");
+        printRuleExecution(trace);
+
+        System.out.println("\n--- SKU Breakdown ---");
+        printSkuBreakdown(trace);
+
+        System.out.println("\n--- DP Trace ---");
+        for(var dp : trace.dpTraces()) {
+            printDP(dp);
+        }
+
+        System.out.println("--- FINAL TOTAL ---");
+        System.out.println(trace.finalTotal());
+    }
+
+    private static void printRuleExecution(RuleTrace trace) {
         for (var e : trace.events()) {
             System.out.println("Rule: " + e.ruleName());
             System.out.println("Applied: " + e.applied());
@@ -17,8 +32,9 @@ public class RuleInspectorView {
             System.out.println("After: " + e.after());
             System.out.println();
         }
+    }
 
-        System.out.println("\n--- SKU Breakdown ---");
+    private static void printSkuBreakdown(RuleTrace trace) {
         for (var s : trace.skuTraces()) {
             System.out.println("SKU: " + s.sku());
             System.out.println("  Count:       " + s.count());
@@ -32,9 +48,6 @@ public class RuleInspectorView {
             System.out.println("  Total:       " + s.total());
             System.out.println();
         }
-
-        System.out.println("--- FINAL TOTAL ---");
-        System.out.println(trace.finalTotal());
     }
 
     public static void printDP(DPTrace dp) {
