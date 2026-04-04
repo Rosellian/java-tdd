@@ -4,6 +4,7 @@ import com.tdd.PricingRules;
 import com.tdd.api.samples.CampaignARules;
 import com.tdd.api.samples.CampaignBRules;
 import com.tdd.api.samples.DefaultRules;
+import com.tdd.api.samples.NoCrossNoSkuDiscount;
 
 public class RuleSetRegistry {
 
@@ -11,6 +12,7 @@ public class RuleSetRegistry {
         return switch (name) {
             case "campaignA" -> CampaignARules.build();
             case "campaignB" -> CampaignBRules.build();
+            case "NoCrossNoSkuDiscount" -> NoCrossNoSkuDiscount.build();
             default -> DefaultRules.build();
         };
     }

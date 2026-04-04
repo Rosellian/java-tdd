@@ -1767,6 +1767,19 @@ These should never be mixed up.
   - Reusable builder-pattern methods
   - Separate rulesets
 - Moving price calculation code to its own package
+  - DP algorithm in separate package
+  - Main algorithm class:
+  ```java
+  public BestPriceAlgorithm(PricingRules rules, PricingTraceCollector collector) {}
+  
+  public DPTrace bestPriceFor(String sku, long remaining) {}
+  ```
+  - Candidate calculator as separate class:
+  ```java
+  public CandidateCalculator(PricingRules rules, String sku) {}
+  
+  public Candidate candidateFor(int[] dp, int i, List<List<String>> path){}
+  ```
 
 ---
 ## Testing

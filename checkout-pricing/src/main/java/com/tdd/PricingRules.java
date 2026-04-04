@@ -46,15 +46,20 @@ public class PricingRules {
     public List<SkuDiscount> getSkuDiscounts() {return skuDiscounts;}
 
     public void addBuyXGetYFree(String sku, int buy, int free, int priority, boolean stackable) {
+        int quantity = BuyXGetYFree.calculateQuantity(buy, free);
+        int price =  BuyXGetYFree.calculatePrice(buy, getUnitPrice(sku));
+
         options.computeIfAbsent(sku, _ -> new ArrayList<>())
-                .add(new BuyXGetYFree(buy + free, buy * getUnitPrice(sku), priority, stackable));
+                .add(new BuyXGetYFree(quantity, price, priority, stackable));
     }
 
     public void addBuyXGetYDiscount(String sku, int buy, int get, double discount, int priority, boolean stackable) {
         int unitPrice = getUnitPrice(sku);
         int price = BuyXGetYDiscount.calculatePrice(buy, unitPrice, get, discount);
-        options.computeIfAbsent(sku, _ -> new ArrayList<>()).
-                add(new BuyXGetYDiscount(buy + get, price, priority, stackable));
+        int quantity = BuyXGetYDiscount.calculateQuantity(buy, get);
+
+        options.computeIfAbsent(sku, _ -> new ArrayList<>())
+                .add(new BuyXGetYDiscount(quantity, price, priority, stackable));
     }
 
     public List<PricingOption> getPricingOptions(String sku) {
@@ -65,15 +70,13 @@ public class PricingRules {
         return skuOptions;
     }
 
-    public void addCrossSkuBuyXGetYFree(String buySku, int buyQuantity,
-                                        String freeSku, int freeQuantity, int priority, boolean stackable) {
-        crossSku.add(new CrossSkuBuyXGetYFree(buySku, buyQuantity, freeSku, freeQuantity,
-                priority, stackable));
+    public void addCrossSkuBuyXGetYFree(String buySku, int buyQuantity, String freeSku, int freeQuantity,
+                                        int priority, boolean stackable) {
+        crossSku.add(new CrossSkuBuyXGetYFree(buySku, buyQuantity, freeSku, freeQuantity, priority, stackable));
     }
 
-    public void addCrossSkuBuyXGetYDiscount(String buySku, int buyQty,
-                                            String discountSku, int discountQty, double discount,
-                                            int priority, boolean stackable) {
+    public void addCrossSkuBuyXGetYDiscount(String buySku, int buyQty, String discountSku, int discountQty,
+                                            double discount, int priority, boolean stackable) {
         crossSku.add(new CrossSkuBuyXGetYDiscount(buySku, buyQty, discountSku, discountQty, discount,
                 priority, stackable));
     }
