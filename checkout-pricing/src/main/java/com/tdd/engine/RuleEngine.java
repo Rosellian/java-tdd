@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.tdd.PriceUtils.computeTotalPrice;
+import static com.tdd.calculation.PriceUtils.computeTotalPrice;
 
 public class RuleEngine {
     private final PricingRules rules;

@@ -1,7 +1,7 @@
 package com.tdd.tracing.inspector;
 
-import com.tdd.PriceCalculator;
 import com.tdd.PricingRules;
+import com.tdd.calculation.dp.BestPriceAlgorithm;
 import com.tdd.engine.RuleContext;
 import com.tdd.engine.SkuMod;
 import com.tdd.tracing.DPTrace;
@@ -14,11 +14,11 @@ import java.util.List;
 
 public class RuleInspector {
     private final PricingRules rules;
-    private final PriceCalculator calculator;
+    private final BestPriceAlgorithm algorithm;
 
-    public RuleInspector(PricingRules rules, PriceCalculator calculator) {
+    public RuleInspector(PricingRules rules, BestPriceAlgorithm algorithm) {
         this.rules = rules;
-        this.calculator = calculator;
+        this.algorithm = algorithm;
     }
 
     public RuleTrace inspect(RuleContext finalContext, List<RuleTraceEvent> events) {
@@ -39,7 +39,7 @@ public class RuleInspector {
             int unitPrice = rules.getUnitPrice(sku);
             int discountedPrice = (int) (discounted * unitPrice * rate);
 
-            DPTrace dpTrace = calculator.bestPriceFor(sku, remaining);
+            DPTrace dpTrace = algorithm.bestPriceFor(sku, remaining);
             dpTraces.add(dpTrace);
 
             int dpPrice = dpTrace.finalPrice();
@@ -50,6 +50,7 @@ public class RuleInspector {
         }
 
         int finalTotal = skuTraces.stream().mapToInt(SkuTrace::total).sum();
+
         return new RuleTrace(events, skuTraces, dpTraces, finalTotal);
     }
 }

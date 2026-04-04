@@ -1,5 +1,6 @@
-package com.tdd;
+package com.tdd.calculation;
 
+import com.tdd.PricingRules;
 import com.tdd.engine.RuleContext;
 import com.tdd.engine.SkuMod;
 

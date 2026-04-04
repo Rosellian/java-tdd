@@ -1,5 +1,7 @@
 package com.tdd;
 
+import com.tdd.calculation.dp.BestPriceAlgorithm;
+import com.tdd.calculation.PriceCalculator;
 import com.tdd.engine.RuleContext;
 import com.tdd.engine.RuleEngine;
 import com.tdd.tracing.RuleTracer;
@@ -21,7 +23,7 @@ public class Checkout {
     public Checkout(PricingRules rules) {
         this.rules = rules;
         engine = new RuleEngine(rules, tracer);
-        calculator = new PriceCalculator(rules);
+        calculator = new PriceCalculator(rules, null);
     }
 
     public void scan(String unit) {
@@ -35,11 +37,11 @@ public class Checkout {
 
         inspect(context);
 
-        return calculator.calculateTotal(context, null);
+        return calculator.calculateTotal(context);
     }
 
     private void inspect(RuleContext context) {
-        RuleInspector inspector = new RuleInspector(rules, calculator);
+        RuleInspector inspector = new RuleInspector(rules, new BestPriceAlgorithm(rules, null));
         RuleTrace trace = inspector.inspect(context, tracer.getEvents());
 
         RuleInspectorView.print(trace);

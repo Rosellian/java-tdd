@@ -1763,6 +1763,10 @@ These should never be mixed up.
 - Remove unused code or make sure all functionality is used
 - Identifying bugs or potential improvements for later
   - Issues for stackability and priority for some rule combinations
+- Extracting ruleset creation for unit tests:
+  - Reusable builder-pattern methods
+  - Separate rulesets
+- Moving price calculation code to its own package
 
 ---
 ## Testing
