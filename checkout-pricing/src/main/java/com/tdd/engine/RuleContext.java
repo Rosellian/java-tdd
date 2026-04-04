@@ -6,6 +6,7 @@ import com.tdd.tracing.debug.CartSnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.tdd.engine.SkuMod.skuModRemapper;
 import static java.util.stream.Collectors.toMap;
 
 public record RuleContext(
@@ -24,14 +25,8 @@ public record RuleContext(
         Map<String, Long> newCounts = new HashMap<>(counts);
         Map<String, SkuMod> newMods = new HashMap<>(mods);
 
-        delta.modChanges().forEach((sku, mod) ->
-                newMods.merge(sku, mod,
-                        (oldMod, newMod) -> new SkuMod(
-                                oldMod.free() + newMod.free(),
-                                oldMod.discounted() + newMod.discounted(),
-                                Math.min(oldMod.rate(), newMod.rate())
-                        ))
-        );
+        delta.modChanges().forEach((sku, mod) -> newMods.merge(sku, mod, skuModRemapper));
+
         return new RuleContext(newCounts, newMods);
     }
 

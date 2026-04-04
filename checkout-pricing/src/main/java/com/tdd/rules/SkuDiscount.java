@@ -1,6 +1,6 @@
 package com.tdd.rules;
 
-public record SkuDiscount(String sku, double discount, int priority) {
+public record SkuDiscount(String sku, double discount, int priority) implements Rule {
 
     public String id() {
         return String.format("%s-Discount", sku);

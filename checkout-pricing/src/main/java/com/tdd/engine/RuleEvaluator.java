@@ -4,7 +4,6 @@ import com.tdd.PricingRules;
 import com.tdd.rules.CrossSkuBuyXGetYDiscount;
 import com.tdd.rules.CrossSkuBuyXGetYFree;
 import com.tdd.rules.SkuDiscount;
-import com.tdd.tracing.debug.PricingTraceCollector;
 import com.tdd.tracing.debug.RuleTrace;
 
 import java.util.Map;
@@ -17,8 +16,7 @@ public class RuleEvaluator implements IRuleEvaluator {
     }
 
     @Override
-    public RuleDelta apply(CrossSkuBuyXGetYFree rule, RuleContext context,
-                           PricingTraceCollector collector, RuleTrace rt) {
+    public RuleDelta apply(CrossSkuBuyXGetYFree rule, RuleContext context, RuleTrace rt) {
         String freeSku = rule.freeSku();
 
         rt.setInputs(Map.of("buySku", rule.buySku(),
@@ -36,8 +34,7 @@ public class RuleEvaluator implements IRuleEvaluator {
     }
 
     @Override
-    public RuleDelta apply(CrossSkuBuyXGetYDiscount rule, RuleContext context,
-                           PricingTraceCollector collector, RuleTrace rt) {
+    public RuleDelta apply(CrossSkuBuyXGetYDiscount rule, RuleContext context, RuleTrace rt) {
         String discountSku = rule.discountSku();
         rt.setInputs(Map.of("buySku", rule.buySku(),
                 "discountSku", rule.discountSku(),
@@ -57,8 +54,7 @@ public class RuleEvaluator implements IRuleEvaluator {
     }
 
     @Override
-    public RuleDelta apply(SkuDiscount rule, RuleContext context,
-                           PricingTraceCollector collector, RuleTrace rt) {
+    public RuleDelta apply(SkuDiscount rule, RuleContext context, RuleTrace rt) {
         rt.setInputs(Map.of("sku", rule.sku(),
                 "discount", rule.discount(),
                 "contextCounts", context.counts()));

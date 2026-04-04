@@ -25,7 +25,7 @@ public class PricingEngineService {
         PricingRules rules = RuleSetRegistry.get(ruleSetName);
 
         RuleTracer tracer = new RuleTracer();
-        RuleEngine engine = new RuleEngine(rules, tracer);
+        RuleEngine engine = new RuleEngine(rules, tracer, null);
 
         RuleContext ctx = new RuleContext(cart, Map.of());
         ctx = engine.evaluate(ctx);
@@ -41,10 +41,10 @@ public class PricingEngineService {
         PricingTraceCollector collector = new PricingTraceCollector(cartSnapshot,
                 request.getRuleSet(), ENGINE_VERSION);
         RuleTracer tracer = new RuleTracer();
-        RuleEngine engine = new RuleEngine(rules, tracer);
+        RuleEngine engine = new RuleEngine(rules, tracer, collector);
 
         RuleContext ctx = RuleContext.fromCart(cartSnapshot);
-        ctx = engine.evaluate(ctx, collector);
+        ctx = engine.evaluate(ctx);
 
         PriceCalculator calculator = new PriceCalculator(rules, collector);
         int finalPrice = calculator.calculateTotal(ctx);

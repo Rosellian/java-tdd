@@ -1780,6 +1780,19 @@ These should never be mixed up.
   
   public Candidate candidateFor(int[] dp, int i, List<List<String>> path){}
   ```
+- Separating Rule Engine logic:
+  - Engine
+  ```java
+  
+  ```
+  - Application
+  ```java
+  
+  ```
+  - Evaluation
+  ```java
+  
+  ```
 
 ---
 ## Testing

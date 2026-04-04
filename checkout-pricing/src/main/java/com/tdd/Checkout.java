@@ -22,7 +22,7 @@ public class Checkout {
 
     public Checkout(PricingRules rules) {
         this.rules = rules;
-        engine = new RuleEngine(rules, tracer);
+        engine = new RuleEngine(rules, tracer, null);
         calculator = new PriceCalculator(rules, null);
     }
 

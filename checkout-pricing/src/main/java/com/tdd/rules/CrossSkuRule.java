@@ -1,8 +1,6 @@
 package com.tdd.rules;
 
-public interface CrossSkuRule {
-    String id();
-    String name();
+public interface CrossSkuRule extends Rule {
     String buySku();
     int buyQty();
     int priority();
