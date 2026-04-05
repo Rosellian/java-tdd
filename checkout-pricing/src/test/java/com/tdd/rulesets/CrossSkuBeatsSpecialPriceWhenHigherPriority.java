@@ -2,7 +2,7 @@ package com.tdd.rulesets;
 
 import com.tdd.PricingRules;
 import com.tdd.api.samples.Ruleset;
-import com.tdd.rules.CrossSkuBuyXGetYFree;
+import com.tdd.rules.cross.CrossSkuBuyXGetYFree;
 import com.tdd.rules.PricingOption;
 import com.tdd.rules.SpecialPrice;
 

@@ -1,4 +1,4 @@
-package com.tdd.rules;
+package com.tdd.rules.cross;
 
 public record CrossSkuBuyXGetYDiscount(
     String buySku,

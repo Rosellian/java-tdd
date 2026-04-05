@@ -1,7 +1,13 @@
-package com.tdd.engine;
+package com.tdd.engine.application.rules;
 
 import com.tdd.PricingRules;
+import com.tdd.engine.RuleContext;
+import com.tdd.engine.RuleDelta;
+import com.tdd.engine.evaluation.RuleEvaluator;
 import com.tdd.rules.*;
+import com.tdd.rules.cross.CrossSkuBuyXGetYDiscount;
+import com.tdd.rules.cross.CrossSkuBuyXGetYFree;
+import com.tdd.rules.cross.CrossSkuRule;
 import com.tdd.tracing.RuleTracer;
 import com.tdd.tracing.debug.RuleTrace;
 
@@ -16,49 +22,39 @@ public class RuleApplier {
     private final RuleTracer tracer;
     private final AtomicInteger stepIndex;
 
-    public  RuleApplier(PricingRules rules, RuleTracer tracer, AtomicInteger stepIndex) {
+    public RuleApplier(PricingRules rules, RuleTracer tracer, AtomicInteger stepIndex) {
         this.rules = rules;
         this.evaluator = new RuleEvaluator(rules);
         this.tracer = tracer;
         this.stepIndex = stepIndex;
     }
 
-    public RuleApplication apply(RuleContext context, CrossSkuRule rule, boolean alreadyApplied) {
-        RuleContext before = context;
+    public RuleApplication apply(RuleContext context, CrossSkuRule rule, boolean skip) {
+        Before beforeResult = recordBefore(context, rule);
+        RuleTrace rt = beforeResult.rt();
 
-        RuleTrace rt = createRuleTrace(rule);
-        int beforePrice = computeTotalPrice(before, rules);
-        rt.setBefore(beforePrice);
-
-        RuleDelta delta = alreadyApplied ? RuleDelta.none() : switch(rule) {
+        RuleDelta delta = skip ? RuleDelta.none() : switch(rule) {
             case CrossSkuBuyXGetYFree free -> evaluator.apply(free, context, rt);
             case CrossSkuBuyXGetYDiscount discount -> evaluator.apply(discount, context, rt);
             default -> throw new IllegalStateException("Unexpected value: " + rule);
         };
 
-        boolean applied = delta.applied();
-        RuleContext after = applied ? context.apply(delta) : context;
-        tracer.log(rule.toString(), applied, delta, before, after, stepIndex.get());
-
-        updateRuleTrace(rt, applied, after, beforePrice, delta);
+        After afterResult = recordAfter(context, rule, delta);
+        boolean applied = afterResult.applied();
+        updateRuleTrace(rt, applied, afterResult.after(), beforeResult.beforePrice(), delta);
 
         return new RuleApplication(rt, delta, applied);
     }
 
     public RuleApplication apply(RuleContext context, SkuDiscount rule) {
-        RuleContext before = context;
-
-        RuleTrace rt = createRuleTrace(rule);
-        int beforePrice = computeTotalPrice(before, rules);
-        rt.setBefore(beforePrice);
+        Before beforeResult = recordBefore(context, rule);
+        RuleTrace rt = beforeResult.rt();
 
         RuleDelta delta = evaluator.apply(rule, context, rt);
 
-        boolean applied = delta.applied();
-        RuleContext after = applied ? context.apply(delta) : context;
-        tracer.log(rule.toString(), applied, delta, before, after, stepIndex.get());
-
-        updateRuleTrace(rt, applied, after, beforePrice, delta);
+        After afterResult = recordAfter(context, rule, delta);
+        boolean applied = afterResult.applied();
+        updateRuleTrace(rt, applied, afterResult.after(), beforeResult.beforePrice(), delta);
 
         return new RuleApplication(rt, delta, applied);
     }
@@ -77,6 +73,22 @@ public class RuleApplier {
             rt.setOutputs(Map.of("delta", delta,
                     "newCounts", after.counts()));
         }
+    }
+
+    private Before recordBefore(RuleContext context, Rule rule) {
+        RuleTrace rt = createRuleTrace(rule);
+        int beforePrice = computeTotalPrice(context, rules);
+        rt.setBefore(beforePrice);
+
+        return new Before(rt, beforePrice);
+    }
+
+    private After recordAfter(RuleContext context, Rule rule, RuleDelta delta) {
+        boolean applied = delta.applied();
+        RuleContext after = applied ? context.apply(delta) : context;
+        tracer.log(rule.toString(), applied, delta, context, after, stepIndex.get());
+
+        return new After(applied, after);
     }
 
     private RuleTrace createRuleTrace(Rule rule) {

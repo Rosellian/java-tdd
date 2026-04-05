@@ -1,3 +1,3 @@
 package com.tdd.engine;
 
-record Evaluation(RuleContext afterCross, int afterCrossPrice) {}
+record Evaluation(RuleContext context, int price) {}

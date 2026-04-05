@@ -1,6 +1,9 @@
 package com.tdd;
 
 import com.tdd.rules.*;
+import com.tdd.rules.cross.CrossSkuBuyXGetYDiscount;
+import com.tdd.rules.cross.CrossSkuBuyXGetYFree;
+import com.tdd.rules.cross.CrossSkuRule;
 
 import java.util.*;
 

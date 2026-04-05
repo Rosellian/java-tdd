@@ -1783,12 +1783,27 @@ These should never be mixed up.
 - Separating Rule Engine logic:
   - Engine
   ```java
+  public RuleEngine(PricingRules rules, RuleTracer tracer, PricingTraceCollector collector) {}
   
+  public RuleContext evaluate(RuleContext context) {}
   ```
   - Application
-  ```java
+    - Step
+      ```java
+      public StepApplier(PricingRules rules, RuleTracer tracer, PricingTraceCollector collector) {}
+      
+      public RuleContext applyCrossSkuRules(RuleContext context, AtomicInteger stepIndex) {}
+      
+      public RuleContext applySkuDiscount(RuleContext context, AtomicInteger stepIndex) {}
+      ```
+    - Rules
+    ```java
+    public RuleApplier(PricingRules rules, RuleTracer tracer, AtomicInteger stepIndex) {}
   
-  ```
+    public RuleApplication apply(RuleContext context, CrossSkuRule rule, boolean alreadyApplied) {}
+  
+    public RuleApplication apply(RuleContext context, SkuDiscount rule) {}
+    ```
   - Evaluation
   ```java
   
@@ -2728,6 +2743,8 @@ A campaign with:
 ```java
 import com.tdd.PricingRules;
 import com.tdd.rules.*;
+import com.tdd.rules.cross.CrossSkuBuyXGetYDiscount;
+import com.tdd.rules.cross.CrossSkuBuyXGetYFree;
 
 import java.util.List;
 import java.util.Map;
@@ -2790,9 +2807,12 @@ A more advanced campaign with:
 - cross-SKU discount
 - per-SKU discount
 - premium special prices
+
 ```java
 import com.tdd.PricingRules;
 import com.tdd.rules.*;
+import com.tdd.rules.cross.CrossSkuBuyXGetYDiscount;
+import com.tdd.rules.cross.CrossSkuBuyXGetYFree;
 
 import java.util.List;
 import java.util.Map;
@@ -2815,7 +2835,7 @@ public class CampaignBRules {
                         new SpecialPrice(6, 240, 1, true)   //6-for-240
                 ),
                 "B", List.of(
-                        new SpecialPrice(2, 40, 1,false)    // 2-for-40
+                        new SpecialPrice(2, 40, 1, false)    // 2-for-40
                 ),
                 "C", List.of(
                         new SpecialPrice(5, 100, 1, true)   // 5-for-100
