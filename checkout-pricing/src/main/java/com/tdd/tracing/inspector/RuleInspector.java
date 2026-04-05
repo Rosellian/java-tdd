@@ -2,8 +2,8 @@ package com.tdd.tracing.inspector;
 
 import com.tdd.PricingRules;
 import com.tdd.calculation.dp.BestPriceAlgorithm;
-import com.tdd.engine.RuleContext;
-import com.tdd.engine.SkuMod;
+import com.tdd.engine.utility.RuleContext;
+import com.tdd.engine.utility.SkuMod;
 import com.tdd.tracing.DPTrace;
 import com.tdd.tracing.RuleTraceEvent;
 import com.tdd.tracing.RuleTrace;

@@ -5,7 +5,7 @@ import com.tdd.PricingRules;
 import com.tdd.calculation.dp.BestPriceAlgorithm;
 import com.tdd.engine.RuleEngine;
 import com.tdd.api.rest.PricingRequest;
-import com.tdd.engine.RuleContext;
+import com.tdd.engine.utility.RuleContext;
 import com.tdd.tracing.RuleTracer;
 import com.tdd.tracing.debug.*;
 import com.tdd.tracing.inspector.RuleInspector;

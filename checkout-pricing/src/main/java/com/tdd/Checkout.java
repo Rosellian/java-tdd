@@ -2,7 +2,7 @@ package com.tdd;
 
 import com.tdd.calculation.dp.BestPriceAlgorithm;
 import com.tdd.calculation.PriceCalculator;
-import com.tdd.engine.RuleContext;
+import com.tdd.engine.utility.RuleContext;
 import com.tdd.engine.RuleEngine;
 import com.tdd.tracing.RuleTracer;
 import com.tdd.tracing.inspector.RuleInspector;

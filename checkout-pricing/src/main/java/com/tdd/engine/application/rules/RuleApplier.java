@@ -1,24 +1,25 @@
 package com.tdd.engine.application.rules;
 
 import com.tdd.PricingRules;
-import com.tdd.engine.RuleContext;
-import com.tdd.engine.RuleDelta;
+import com.tdd.engine.utility.RuleContext;
+import com.tdd.engine.utility.RuleDelta;
+import com.tdd.engine.application.rules.utility.After;
+import com.tdd.engine.application.rules.utility.Before;
+import com.tdd.engine.application.rules.utility.RuleApplication;
 import com.tdd.engine.evaluation.RuleEvaluator;
 import com.tdd.rules.*;
-import com.tdd.rules.cross.CrossSkuBuyXGetYDiscount;
-import com.tdd.rules.cross.CrossSkuBuyXGetYFree;
-import com.tdd.rules.cross.CrossSkuRule;
 import com.tdd.tracing.RuleTracer;
 import com.tdd.tracing.debug.RuleTrace;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import static com.tdd.calculation.PriceUtils.computeTotalPrice;
 
 public class RuleApplier {
     private final PricingRules rules;
-    private final RuleEvaluator evaluator;
+    protected final RuleEvaluator evaluator;
     private final RuleTracer tracer;
     private final AtomicInteger stepIndex;
 
@@ -29,49 +30,34 @@ public class RuleApplier {
         this.stepIndex = stepIndex;
     }
 
-    public RuleApplication apply(RuleContext context, CrossSkuRule rule, boolean skip) {
+    protected RuleApplication applyRule(RuleContext context, Rule rule, Function<RuleTrace, RuleDelta> eval) {
         Before beforeResult = recordBefore(context, rule);
         RuleTrace rt = beforeResult.rt();
 
-        RuleDelta delta = skip ? RuleDelta.none() : switch(rule) {
-            case CrossSkuBuyXGetYFree free -> evaluator.apply(free, context, rt);
-            case CrossSkuBuyXGetYDiscount discount -> evaluator.apply(discount, context, rt);
-            default -> throw new IllegalStateException("Unexpected value: " + rule);
-        };
+        RuleDelta delta = eval.apply(rt);
 
         After afterResult = recordAfter(context, rule, delta);
         boolean applied = afterResult.applied();
-        updateRuleTrace(rt, applied, afterResult.after(), beforeResult.beforePrice(), delta);
+        updateRuleTrace(beforeResult, afterResult, delta);
 
         return new RuleApplication(rt, delta, applied);
     }
 
-    public RuleApplication apply(RuleContext context, SkuDiscount rule) {
-        Before beforeResult = recordBefore(context, rule);
-        RuleTrace rt = beforeResult.rt();
+    private void updateRuleTrace(Before before, After after, RuleDelta delta) {
+        RuleTrace rt = before.rt();
 
-        RuleDelta delta = evaluator.apply(rule, context, rt);
+        rt.setMatched(after.applied());
 
-        After afterResult = recordAfter(context, rule, delta);
-        boolean applied = afterResult.applied();
-        updateRuleTrace(rt, applied, afterResult.after(), beforeResult.beforePrice(), delta);
-
-        return new RuleApplication(rt, delta, applied);
-    }
-
-    private void updateRuleTrace(RuleTrace rt, boolean applied, RuleContext after, int beforePrice, RuleDelta delta) {
-        rt.setMatched(applied);
-
-        int afterPrice = computeTotalPrice(after, rules);
+        int afterPrice = computeTotalPrice(after.context(), rules);
         rt.setAfter(afterPrice);
-        rt.setDelta(afterPrice - beforePrice);
+        rt.setDelta(afterPrice - before.price());
 
-        if(!applied) {
+        if(!after.applied()) {
             rt.setReason("Rule conditions not met");
         }
         else {
             rt.setOutputs(Map.of("delta", delta,
-                    "newCounts", after.counts()));
+                    "newCounts", after.context().counts()));
         }
     }
 

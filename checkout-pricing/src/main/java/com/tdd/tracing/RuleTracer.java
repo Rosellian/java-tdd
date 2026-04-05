@@ -1,7 +1,7 @@
 package com.tdd.tracing;
 
-import com.tdd.engine.RuleContext;
-import com.tdd.engine.RuleDelta;
+import com.tdd.engine.utility.RuleContext;
+import com.tdd.engine.utility.RuleDelta;
 
 import java.util.ArrayList;
 import java.util.List;

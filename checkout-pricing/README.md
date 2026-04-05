@@ -1766,7 +1766,7 @@ These should never be mixed up.
 - Extracting ruleset creation for unit tests:
   - Reusable builder-pattern methods
   - Separate rulesets
-- Moving price calculation code to its own package
+- #### Moving price calculation code to its own package
   - DP algorithm in separate package
   - Main algorithm class:
   ```java
@@ -1780,7 +1780,7 @@ These should never be mixed up.
   
   public Candidate candidateFor(int[] dp, int i, List<List<String>> path){}
   ```
-- Separating Rule Engine logic:
+- #### Separating Rule Engine logic:
   - Engine
   ```java
   public RuleEngine(PricingRules rules, RuleTracer tracer, PricingTraceCollector collector) {}
@@ -1797,17 +1797,20 @@ These should never be mixed up.
       public RuleContext applySkuDiscount(RuleContext context, AtomicInteger stepIndex) {}
       ```
     - Rules
-    ```java
-    public RuleApplier(PricingRules rules, RuleTracer tracer, AtomicInteger stepIndex) {}
-  
-    public RuleApplication apply(RuleContext context, CrossSkuRule rule, boolean alreadyApplied) {}
-  
-    public RuleApplication apply(RuleContext context, SkuDiscount rule) {}
-    ```
+      ```java
+      public DiscountRuleApplier(PricingRules rules, RuleTracer tracer, AtomicInteger stepIndex) {}
+    
+      public RuleApplication apply(RuleContext context, SkuDiscount rule) {}
+      ```
+      ```java
+      public CrossRuleApplier(PricingRules rules, RuleTracer tracer, AtomicInteger stepIndex) {}
+    
+      public RuleApplication apply(RuleContext context, CrossSkuRule rule, boolean skip) {}
+      ```
   - Evaluation
-  ```java
-  
-  ```
+    ```java
+    
+    ```
 
 ---
 ## Testing

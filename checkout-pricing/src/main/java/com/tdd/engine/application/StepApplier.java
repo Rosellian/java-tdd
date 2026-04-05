@@ -1,9 +1,10 @@
 package com.tdd.engine.application;
 
 import com.tdd.PricingRules;
-import com.tdd.engine.RuleContext;
-import com.tdd.engine.application.rules.RuleApplication;
-import com.tdd.engine.application.rules.RuleApplier;
+import com.tdd.engine.utility.RuleContext;
+import com.tdd.engine.application.rules.CrossRuleApplier;
+import com.tdd.engine.application.rules.DiscountRuleApplier;
+import com.tdd.engine.application.rules.utility.RuleApplication;
 import com.tdd.rules.cross.CrossSkuRule;
 import com.tdd.tracing.RuleTracer;
 import com.tdd.tracing.debug.PricingTraceCollector;
@@ -25,13 +26,12 @@ public class StepApplier {
 
     public RuleContext applyCrossSkuRules(RuleContext context, AtomicInteger stepIndex) {
         boolean alreadyApplied = false;
-        RuleApplier applier = new RuleApplier(rules, tracer, stepIndex);
+        CrossRuleApplier applier = new CrossRuleApplier(rules, tracer, stepIndex);
 
         for (var rule : getOrderedCrossSkuRules()) {
             RuleApplication result = applier.apply(context, rule, alreadyApplied);
 
-            if(collector != null)
-                collector.recordRule(result.rt());
+            recordRule(result);
 
             if(result.applied()) {
                 context = context.apply(result.delta());
@@ -44,10 +44,9 @@ public class StepApplier {
 
     public RuleContext applySkuDiscount(RuleContext context, AtomicInteger stepIndex) {
         for(var rule : rules.getSkuDiscounts()) {
-            RuleApplication result = new RuleApplier(rules, tracer, stepIndex).apply(context, rule);
+            RuleApplication result = new DiscountRuleApplier(rules, tracer, stepIndex).apply(context, rule);
 
-            if(collector != null)
-                collector.recordRule(result.rt());
+            recordRule(result);
 
             if(result.applied()){
                 context = context.apply(result.delta());
@@ -55,6 +54,12 @@ public class StepApplier {
         }
 
         return context;
+    }
+
+    private void recordRule(RuleApplication result) {
+        if(collector != null) {
+            collector.recordRule(result.rt());
+        }
     }
 
     private List<CrossSkuRule> getOrderedCrossSkuRules() {

@@ -1,4 +1,4 @@
-package com.tdd.engine;
+package com.tdd.engine.utility;
 
 import com.tdd.tracing.debug.CartItem;
 import com.tdd.tracing.debug.CartSnapshot;
@@ -6,7 +6,7 @@ import com.tdd.tracing.debug.CartSnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.tdd.engine.SkuMod.skuModRemapper;
+import static com.tdd.engine.utility.SkuMod.skuModRemapper;
 import static java.util.stream.Collectors.toMap;
 
 public record RuleContext(

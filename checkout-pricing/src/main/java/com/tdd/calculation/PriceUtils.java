@@ -1,8 +1,8 @@
 package com.tdd.calculation;
 
 import com.tdd.PricingRules;
-import com.tdd.engine.RuleContext;
-import com.tdd.engine.SkuMod;
+import com.tdd.engine.utility.RuleContext;
+import com.tdd.engine.utility.SkuMod;
 
 import java.util.Map;
 
