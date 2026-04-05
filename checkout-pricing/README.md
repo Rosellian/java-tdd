@@ -1809,8 +1809,16 @@ These should never be mixed up.
       ```
   - Evaluation
     ```java
+    public RuleEvaluator(PricingRules rules) {}
     
+    public RuleDelta apply(CrossSkuBuyXGetYFree rule, RuleContext context, RuleTrace rt) {}
+    
+    public RuleDelta apply(CrossSkuBuyXGetYDiscount rule, RuleContext context, RuleTrace rt) {}
+    
+    public RuleDelta apply(SkuDiscount rule, RuleContext context, RuleTrace rt) {}
     ```
+---
+### TODO
 
 ---
 ## Testing
