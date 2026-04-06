@@ -4,11 +4,6 @@ public class CustomerInfo {
     private String id;
     private String segment;
 
-    public CustomerInfo(String id, String segment) {
-        this.id = id;
-        this.segment = segment;
-    }
-
     public String getId() {
         return id;
     }
@@ -23,5 +18,13 @@ public class CustomerInfo {
 
     public void setSegment(String segment) {
         this.segment = segment;
+    }
+
+    public static CustomerInfo from(String id, String segment) {
+        CustomerInfo customerInfo = new CustomerInfo();
+        customerInfo.id = id;
+        customerInfo.segment = segment;
+
+        return customerInfo;
     }
 }

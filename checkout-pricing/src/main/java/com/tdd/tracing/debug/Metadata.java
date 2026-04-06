@@ -28,4 +28,13 @@ public class Metadata {
     public void setEngineVersion(String engineVersion) {
         this.engineVersion = engineVersion;
     }
+
+    public static Metadata from(String ruleSet, String timestamp, String engineVersion) {
+        Metadata metadata = new Metadata();
+        metadata.ruleSet = ruleSet;
+        metadata.timestamp = timestamp;
+        metadata.engineVersion = engineVersion;
+
+        return metadata;
+    }
 }

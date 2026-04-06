@@ -12,10 +12,9 @@ import com.tdd.tracing.inspector.RuleInspector;
 import com.tdd.tracing.RuleTrace;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
-import static java.util.stream.Collectors.toList;
+import static com.tdd.api.ServiceUtils.fromRequest;
 
 @Service
 public class PricingEngineService {
@@ -36,7 +35,7 @@ public class PricingEngineService {
 
     public PricingTrace getTrace(PricingRequest request) {
         PricingRules rules = RuleSetRegistry.get(request.getRuleSet());
-        CartSnapshot cartSnapshot = toCartSnapshot(request, rules);
+        CartSnapshot cartSnapshot = fromRequest(request, rules);
 
         PricingTraceCollector collector = new PricingTraceCollector(cartSnapshot,
                 request.getRuleSet(), ENGINE_VERSION);
@@ -51,22 +50,5 @@ public class PricingEngineService {
 
         collector.setFinalPrice(finalPrice);
         return collector.build();
-    }
-
-    private CartSnapshot toCartSnapshot(PricingRequest req, PricingRules rules) {
-        List<CartItem> items = req.getItems().stream()
-                .map(item ->
-                        new CartItem(item.getSku(), (int) item.getQuantity(),
-                                rules.getUnitPrice(item.getSku())))
-                .collect(toList());
-
-        CustomerInfo customerInfo = null;
-        if(req.getCustomer() != null) {
-            customerInfo = new CustomerInfo(req.getCustomer().getId(), req.getCustomer().getSegment());
-        }
-
-        Map<String, Object> context = req.getContext() != null ? req.getContext() : Map.of();
-
-        return new CartSnapshot(items, customerInfo, context);
     }
 }

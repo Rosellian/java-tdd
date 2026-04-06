@@ -8,12 +8,6 @@ public class CartSnapshot {
     private CustomerInfo customer;
     private Map<String, Object> context;
 
-    public CartSnapshot(List<CartItem> items, CustomerInfo customerInfo, Map<String, Object> context) {
-        this.items = items;
-        this.customer = customerInfo;
-        this.context = context;
-    }
-
     public List<CartItem> getItems() {
         return items;
     }
@@ -36,5 +30,14 @@ public class CartSnapshot {
 
     public void setContext(Map<String, Object> context) {
         this.context = context;
+    }
+
+    public static CartSnapshot from(List<CartItem> items, CustomerInfo customerInfo, Map<String, Object> context) {
+        CartSnapshot cartSnapshot = new CartSnapshot();
+        cartSnapshot.items = items;
+        cartSnapshot.customer = customerInfo;
+        cartSnapshot.context = context;
+
+        return cartSnapshot;
     }
 }

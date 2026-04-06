@@ -5,12 +5,6 @@ public class CartItem {
     private int quantity;
     private double unitPrice;
 
-    public CartItem(String sku, int quantity, double unitPrice) {
-        this.sku = sku;
-        this.quantity = quantity;
-        this.unitPrice = unitPrice;
-    }
-
     public String getSku() {
         return sku;
     }
@@ -33,5 +27,14 @@ public class CartItem {
 
     public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public static CartItem from(String sku, int quantity, double unitPrice) {
+        CartItem cartItem = new CartItem();
+        cartItem.sku = sku;
+        cartItem.quantity = quantity;
+        cartItem.unitPrice = unitPrice;
+
+        return cartItem;
     }
 }
