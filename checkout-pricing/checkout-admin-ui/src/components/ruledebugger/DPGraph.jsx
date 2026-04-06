@@ -3,7 +3,7 @@ import {DPDetails} from "./dpgraph/DPDetails";
 import {DPNodes} from "./dpgraph/DPNodes";
 
 export function DPGraph({ dp }) {
-    const { selectedStep, setSelectedStep } = useTraceSync();
+    const { selectedStep } = useTraceSync();
 
     if (!dp) {
         return (

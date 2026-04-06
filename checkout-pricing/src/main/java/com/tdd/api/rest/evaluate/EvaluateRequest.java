@@ -1,4 +1,4 @@
-package com.tdd.api.rest;
+package com.tdd.api.rest.evaluate;
 
 import java.util.Map;
 

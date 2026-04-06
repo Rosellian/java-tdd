@@ -1,4 +1,4 @@
-package com.tdd.api.rest;
+package com.tdd.api.rest.trace;
 
 import com.tdd.tracing.debug.PricingTrace;
 

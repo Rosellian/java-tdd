@@ -1,13 +1,10 @@
 package com.tdd.api.rest;
 
+import java.util.Map;
+
 public class CartItemRequest {
     private String sku;
     private long quantity;
-
-    public CartItemRequest(String sku, long quantity) {
-        this.sku = sku;
-        this.quantity = quantity;
-    }
 
     public String getSku() {
         return sku;
@@ -23,5 +20,13 @@ public class CartItemRequest {
 
     public void setQuantity(long quantity) {
         this.quantity = quantity;
+    }
+
+    public static CartItemRequest fromCartEntry(Map.Entry<String, Long> entry) {
+        CartItemRequest request = new CartItemRequest();
+        request.sku = entry.getKey();
+        request.quantity = entry.getValue();
+
+        return request;
     }
 }

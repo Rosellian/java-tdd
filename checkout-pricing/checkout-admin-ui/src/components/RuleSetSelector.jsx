@@ -10,6 +10,7 @@ export function RuleSetSelector({ value, onChange }) {
                 <option value="default">Default</option>
                 <option value="campaignA">Campaign A</option>
                 <option value="campaignB">Campaign B</option>
+                <option value="NoCrossNoSkuDiscount">No-Cross No-Sku-Discount</option>
             </select>
         </div>
     );

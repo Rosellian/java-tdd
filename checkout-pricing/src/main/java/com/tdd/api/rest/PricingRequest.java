@@ -1,7 +1,11 @@
 package com.tdd.api.rest;
 
+import com.tdd.api.rest.evaluate.EvaluateRequest;
+
 import java.util.List;
 import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 public class PricingRequest {
     private String ruleSet;
@@ -39,5 +43,19 @@ public class PricingRequest {
 
     public void setContext(Map<String, Object> context) {
         this.context = context;
+    }
+
+    public static PricingRequest fromEvaluateRequest(EvaluateRequest request) {
+        PricingRequest pricingRequest = new PricingRequest();
+        pricingRequest.ruleSet = request.ruleSet;
+        pricingRequest.items = fromRequest(request);
+
+        return pricingRequest;
+    }
+
+    private static List<CartItemRequest> fromRequest(EvaluateRequest req) {
+        return req.cart.entrySet().stream()
+                .map(CartItemRequest::fromCartEntry)
+                .collect(toList());
     }
 }
