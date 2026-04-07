@@ -22,33 +22,46 @@ public class PricingEngineService {
 
     public RuleTrace evaluate(Map<String, Long> cart, String ruleSetName) {
         PricingRules rules = RuleSetRegistry.get(ruleSetName);
-
         RuleTracer tracer = new RuleTracer();
-        RuleEngine engine = new RuleEngine(rules, tracer, null);
 
-        RuleContext ctx = new RuleContext(cart, Map.of());
-        ctx = engine.evaluate(ctx);
+        RuleContext ctx = runEngine(cart, rules, tracer);
 
-        RuleInspector inspector = new RuleInspector(rules, new BestPriceAlgorithm(rules, null));
-        return inspector.inspect(ctx, tracer.getEvents());
+        return runInspect(rules, ctx, tracer);
     }
 
     public PricingTrace getTrace(PricingRequest request) {
         PricingRules rules = RuleSetRegistry.get(request.getRuleSet());
         CartSnapshot cartSnapshot = fromRequest(request, rules);
 
-        PricingTraceCollector collector = new PricingTraceCollector(cartSnapshot,
-                request.getRuleSet(), ENGINE_VERSION);
-        RuleTracer tracer = new RuleTracer();
-        RuleEngine engine = new RuleEngine(rules, tracer, collector);
+        PricingTraceCollector collector = new PricingTraceCollector(cartSnapshot, request.getRuleSet(), ENGINE_VERSION);
 
-        RuleContext ctx = RuleContext.fromCart(cartSnapshot);
-        ctx = engine.evaluate(ctx);
+        RuleContext ctx = runEngine(rules, collector, cartSnapshot);
 
-        PriceCalculator calculator = new PriceCalculator(rules, collector);
-        int finalPrice = calculator.calculateTotal(ctx);
+        return buildResult(rules, collector, ctx);
+    }
+
+    private RuleContext runEngine(Map<String, Long> cart, PricingRules rules, RuleTracer tracer) {
+        RuleEngine engine = new RuleEngine(rules, tracer, null);
+
+        return engine.evaluate(new RuleContext(cart, Map.of()));
+    }
+
+    private RuleContext runEngine(PricingRules rules, PricingTraceCollector collector, CartSnapshot cartSnapshot) {
+        RuleEngine engine = new RuleEngine(rules, new RuleTracer(), collector);
+
+        return engine.evaluate(RuleContext.fromCart(cartSnapshot));
+    }
+
+    private RuleTrace runInspect(PricingRules rules, RuleContext ctx, RuleTracer tracer) {
+        RuleInspector inspector = new RuleInspector(rules, new BestPriceAlgorithm(rules, null));
+        return inspector.inspect(ctx, tracer.getEvents());
+    }
+
+    private PricingTrace buildResult(PricingRules rules, PricingTraceCollector collector, RuleContext ctx) {
+        int finalPrice = new PriceCalculator(rules, collector).calculateTotal(ctx);
 
         collector.setFinalPrice(finalPrice);
+
         return collector.build();
     }
 }

@@ -1817,6 +1817,13 @@ These should never be mixed up.
     
     public RuleDelta apply(SkuDiscount rule, RuleContext context, RuleTrace rt) {}
     ```
+- Keeping data format handling separated from logic
+  - `rest` package
+  - Internal format in `tracing.debug` package
+  - ServiceUtils
+  ```java
+  public static CartSnapshot fromRequest(PricingRequest req, PricingRules rules) {}
+  ```
 ---
 ### TODO
 
