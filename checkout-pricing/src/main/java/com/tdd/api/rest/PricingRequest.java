@@ -53,8 +53,8 @@ public class PricingRequest {
         return pricingRequest;
     }
 
-    private static List<CartItemRequest> fromRequest(EvaluateRequest req) {
-        return req.cart.entrySet().stream()
+    private static List<CartItemRequest> fromRequest(EvaluateRequest request) {
+        return request.cart.entrySet().stream()
                 .map(CartItemRequest::fromCartEntry)
                 .collect(toList());
     }

@@ -2218,6 +2218,9 @@ Changes in: `ButtonPanel.jsx`
 #### Normalize discount values in RuleTimeLine (Rule Inspector)
 Changes in server code.
 
+### Changes in API-layer
+- Refactor API-calls to avoid code duplication
+
 ### Current structure
 ```
 

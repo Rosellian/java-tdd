@@ -1825,7 +1825,10 @@ These should never be mixed up.
   public static CartSnapshot fromRequest(PricingRequest req, PricingRules rules) {}
   ```
 ---
-### TODO
+### Refactor to enable Rule Inspector and Debugger to use same data format
+- Use same input format
+- Merge endpoint logic
+- Combine Tracer and Collector logic
 
 ---
 ## Testing

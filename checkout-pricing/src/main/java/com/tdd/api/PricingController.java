@@ -21,7 +21,10 @@ public class PricingController {
 
     @PostMapping("/evaluate")
     public EvaluateResponse evaluate(@RequestBody EvaluateRequest req) {
-        RuleTrace trace = service.evaluate(req.cart, req.ruleSet);
+        PricingRequest request = fromEvaluateRequest(req);
+
+        RuleTrace trace = service.evaluate(request);
+
         return new EvaluateResponse(trace);
     }
 
@@ -30,6 +33,7 @@ public class PricingController {
         PricingRequest pricingRequest = fromEvaluateRequest(req);
 
         PricingTrace trace = service.getTrace(pricingRequest);
+
         return new TraceResponse(trace);
     }
 }
