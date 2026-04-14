@@ -5,7 +5,7 @@ import com.tdd.engine.utility.RuleContext;
 import com.tdd.engine.utility.RuleDelta;
 import com.tdd.engine.application.rules.utility.RuleApplication;
 import com.tdd.rules.SkuDiscount;
-import com.tdd.tracing.RuleTracer;
+import com.tdd.tracing.debug.PricingTraceCollector;
 import com.tdd.tracing.debug.RuleTrace;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -13,8 +13,8 @@ import java.util.function.Function;
 
 public class DiscountRuleApplier extends RuleApplier {
 
-    public DiscountRuleApplier(PricingRules rules, RuleTracer tracer, AtomicInteger stepIndex) {
-        super(rules, tracer, stepIndex);
+    public DiscountRuleApplier(PricingRules rules, PricingTraceCollector collector, AtomicInteger stepIndex) {
+        super(rules, collector, stepIndex);
     }
 
     public RuleApplication apply(RuleContext context, SkuDiscount rule) {

@@ -5,7 +5,6 @@ import com.tdd.engine.application.StepApplier;
 import com.tdd.engine.utility.Evaluation;
 import com.tdd.engine.utility.RuleContext;
 import com.tdd.engine.utility.StepRecorder;
-import com.tdd.tracing.RuleTracer;
 import com.tdd.tracing.debug.PricingTraceCollector;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,9 +16,9 @@ public class RuleEngine {
     private final StepApplier stepApplier;
     private final StepRecorder recorder;
 
-    public RuleEngine(PricingRules rules, RuleTracer tracer, PricingTraceCollector collector) {
+    public RuleEngine(PricingRules rules, PricingTraceCollector collector) {
         this.rules = rules;
-        this.stepApplier = new StepApplier(rules, tracer, collector);
+        this.stepApplier = new StepApplier(rules, collector);
         this.recorder = new StepRecorder(collector);
     }
 

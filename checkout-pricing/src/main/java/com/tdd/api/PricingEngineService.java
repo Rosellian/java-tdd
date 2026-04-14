@@ -6,7 +6,6 @@ import com.tdd.calculation.dp.BestPriceAlgorithm;
 import com.tdd.engine.RuleEngine;
 import com.tdd.api.rest.PricingRequest;
 import com.tdd.engine.utility.RuleContext;
-import com.tdd.tracing.RuleTracer;
 import com.tdd.tracing.debug.*;
 import com.tdd.tracing.inspector.RuleInspector;
 import com.tdd.tracing.RuleTrace;
@@ -30,26 +29,25 @@ public class PricingEngineService {
         PricingRules rules = RuleSetRegistry.get(request.getRuleSet());
         CartSnapshot cart = fromRequest(request, rules);
 
-        RuleTracer tracer = new RuleTracer();
         PricingTraceCollector collector = new PricingTraceCollector(cart, request.getRuleSet(), ENGINE_VERSION);
 
-        RuleEngine engine = new RuleEngine(rules, tracer, collector);
+        RuleEngine engine = new RuleEngine(rules, collector);
         RuleContext ctx = engine.evaluate(RuleContext.fromCart(cart));
 
-        return buildResult(rules, tracer, collector, ctx);
+        return buildResult(rules, collector, ctx);
     }
 
-    private record TraceResult(RuleTrace ruleTrace, PricingTrace  pricingTrace) {}
+    private record TraceResult(RuleTrace ruleTrace, PricingTrace pricingTrace) {}
 
-    private RuleTrace runInspect(PricingRules rules, RuleContext ctx, RuleTracer tracer) {
+    private RuleTrace runInspect(PricingRules rules, PricingTraceCollector collector, RuleContext ctx) {
         RuleInspector inspector = new RuleInspector(rules, new BestPriceAlgorithm(rules, null));
-        return inspector.inspect(ctx, tracer.getEvents());
+        return inspector.inspect(ctx, collector.getEvents());
     }
 
-    private TraceResult buildResult(PricingRules rules, RuleTracer tracer, PricingTraceCollector collector,
+    private TraceResult buildResult(PricingRules rules, PricingTraceCollector collector,
                                     RuleContext ctx) {
         PricingTrace pricingTrace = buildPricingTrace(rules, collector, ctx);
-        RuleTrace ruleTrace = runInspect(rules, ctx, tracer);
+        RuleTrace ruleTrace = runInspect(rules, collector, ctx);
 
         return new TraceResult(ruleTrace, pricingTrace);
     }

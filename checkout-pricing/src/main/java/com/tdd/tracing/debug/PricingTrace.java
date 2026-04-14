@@ -11,6 +11,7 @@ public class PricingTrace {
     private List<Double> priceEvolution = new ArrayList<>();
     private double finalPrice;
     private Metadata metadata;
+    //TODO Inspection result (tracing.RuleTrace)
 
     public CartSnapshot getCart() {
         return cart;

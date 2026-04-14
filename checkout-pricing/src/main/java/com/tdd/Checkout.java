@@ -4,7 +4,7 @@ import com.tdd.calculation.dp.BestPriceAlgorithm;
 import com.tdd.calculation.PriceCalculator;
 import com.tdd.engine.utility.RuleContext;
 import com.tdd.engine.RuleEngine;
-import com.tdd.tracing.RuleTracer;
+import com.tdd.tracing.debug.PricingTraceCollector;
 import com.tdd.tracing.inspector.RuleInspector;
 import com.tdd.tracing.inspector.RuleInspectorView;
 import com.tdd.tracing.RuleTrace;
@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Checkout {
-    private final RuleTracer tracer = new RuleTracer();
+    private final PricingTraceCollector collector;
     private final PricingRules rules;
     private final RuleEngine engine;
     private final PriceCalculator calculator;
@@ -22,8 +22,9 @@ public class Checkout {
 
     public Checkout(PricingRules rules) {
         this.rules = rules;
-        engine = new RuleEngine(rules, tracer, null);
-        calculator = new PriceCalculator(rules, null);
+        collector = new PricingTraceCollector();
+        engine = new RuleEngine(rules, collector);
+        calculator = new PriceCalculator(rules, collector);
     }
 
     public void scan(String unit) {
@@ -42,7 +43,7 @@ public class Checkout {
 
     private void inspect(RuleContext context) {
         RuleInspector inspector = new RuleInspector(rules, new BestPriceAlgorithm(rules, null));
-        RuleTrace trace = inspector.inspect(context, tracer.getEvents());
+        RuleTrace trace = inspector.inspect(context, collector.getEvents());
 
         RuleInspectorView.print(trace);
     }

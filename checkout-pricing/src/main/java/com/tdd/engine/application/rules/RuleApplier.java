@@ -8,7 +8,7 @@ import com.tdd.engine.application.rules.utility.Before;
 import com.tdd.engine.application.rules.utility.RuleApplication;
 import com.tdd.engine.evaluation.RuleEvaluator;
 import com.tdd.rules.*;
-import com.tdd.tracing.RuleTracer;
+import com.tdd.tracing.debug.PricingTraceCollector;
 import com.tdd.tracing.debug.RuleTrace;
 
 import java.util.Map;
@@ -20,13 +20,13 @@ import static com.tdd.calculation.PriceUtils.computeTotalPrice;
 public class RuleApplier {
     private final PricingRules rules;
     protected final RuleEvaluator evaluator;
-    private final RuleTracer tracer;
+    private final PricingTraceCollector collector;
     private final AtomicInteger stepIndex;
 
-    public RuleApplier(PricingRules rules, RuleTracer tracer, AtomicInteger stepIndex) {
+    public RuleApplier(PricingRules rules, PricingTraceCollector collector, AtomicInteger stepIndex) {
         this.rules = rules;
         this.evaluator = new RuleEvaluator(rules);
-        this.tracer = tracer;
+        this.collector = collector;
         this.stepIndex = stepIndex;
     }
 
@@ -72,7 +72,7 @@ public class RuleApplier {
     private After recordAfter(RuleContext context, Rule rule, RuleDelta delta) {
         boolean applied = delta.applied();
         RuleContext after = applied ? context.apply(delta) : context;
-        tracer.log(rule.toString(), applied, delta, context, after, stepIndex.get());
+        collector.addEvent(rule.toString(), applied, delta, context, after, stepIndex.get());
 
         return new After(applied, after);
     }

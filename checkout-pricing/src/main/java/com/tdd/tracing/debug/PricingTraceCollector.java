@@ -1,10 +1,20 @@
 package com.tdd.tracing.debug;
 
+import com.tdd.engine.utility.RuleContext;
+import com.tdd.engine.utility.RuleDelta;
+import com.tdd.tracing.RuleTraceEvent;
+
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PricingTraceCollector {
     private final PricingTrace trace = new PricingTrace();
+    private final List<RuleTraceEvent> events = new ArrayList<>();
+
+    public PricingTraceCollector() {
+        this(null, "DEFAULT_UNDEFINED", "Default_Test_Engine");
+    }
 
     public PricingTraceCollector(CartSnapshot cart, String ruleset, String engineVersion) {
         trace.setCart(cart);
@@ -20,11 +30,6 @@ public class PricingTraceCollector {
         trace.getPriceEvolution().add(rt.getAfter());
     }
 
-    public void recordStep(StepTrace st) {
-        trace.getSteps().add(st);
-        trace.getPriceEvolution().add(st.getPriceAfter());
-    }
-
     public void recordStep(String step, int stepIndex, String description, double before, double after) {
         StepTrace st = new StepTrace();
         st.setStep(step);
@@ -35,10 +40,6 @@ public class PricingTraceCollector {
 
         trace.getSteps().add(st);
         trace.getPriceEvolution().add(after);
-    }
-
-    public void recordDP(DPTrace dp) {
-        trace.getDp().add(dp);
     }
 
     public void recordDP(String stateLabel, int stepIndex, List<String> options, String chosen, double price,
@@ -58,6 +59,14 @@ public class PricingTraceCollector {
         trace.setFinalPrice(finalPrice);
         trace.getPriceEvolution().add(finalPrice);
     }
+
+    //TODO Separate from collector logic
+    public void addEvent(String ruleName, boolean applied, RuleDelta delta, RuleContext before, RuleContext after,
+                         int stepIndex) {
+        events.add(new RuleTraceEvent(ruleName, applied, delta, before, after, stepIndex));
+    }
+
+    public List<RuleTraceEvent> getEvents() { return events; }
 
     public PricingTrace build() {
         return trace;

@@ -7,15 +7,15 @@ import com.tdd.engine.application.rules.utility.RuleApplication;
 import com.tdd.rules.cross.CrossSkuBuyXGetYDiscount;
 import com.tdd.rules.cross.CrossSkuBuyXGetYFree;
 import com.tdd.rules.cross.CrossSkuRule;
-import com.tdd.tracing.RuleTracer;
+import com.tdd.tracing.debug.PricingTraceCollector;
 import com.tdd.tracing.debug.RuleTrace;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CrossRuleApplier extends RuleApplier {
 
-    public CrossRuleApplier(PricingRules rules, RuleTracer tracer, AtomicInteger stepIndex) {
-        super(rules, tracer, stepIndex);
+    public CrossRuleApplier(PricingRules rules, PricingTraceCollector collector, AtomicInteger stepIndex) {
+        super(rules, collector, stepIndex);
     }
 
     public RuleApplication apply(RuleContext context, CrossSkuRule rule, boolean skip) {
