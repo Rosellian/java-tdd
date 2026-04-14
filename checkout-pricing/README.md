@@ -1829,6 +1829,7 @@ These should never be mixed up.
 - Use same input format
 - Merge endpoint logic
 - Combine Tracer and Collector logic
+- TODO Reuse logic in Service and Checkout, encapsulate service-logic in Checkout
 
 ---
 ## Testing
