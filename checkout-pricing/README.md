@@ -1829,7 +1829,43 @@ These should never be mixed up.
 - Use same input format
 - Merge endpoint logic
 - Combine Tracer and Collector logic
-- Reuse logic in Service and Checkout, encapsulate service-logic in Checkout
+- #### Reuse logic in Service and Checkout, encapsulate service-logic in Checkout
+  New Checkout structure with utilities:
+  - `Checkout.java`
+  ```java
+  public Checkout(PricingRules rules) {}
+  public Checkout(PricingRules rules, CartSnapshot cart, String ruleSet) {}
+  
+  public void scan(String unit) {}
+  
+  public TraceResult run() {}
+  
+  public int total() {}
+  ```
+  Where `run()` will run engine and output result for both Rule Inspector and Debugger.
+  Both cart and scanned items are merged and used as input.
+  `total()` can still be used by tests run the same but isolate the final price.
+  - `Cart.java`
+  ```java
+  public Cart(PricingRules rules, CartSnapshot initialCart) {}
+  
+  public void add(String unit) {}
+  
+  public CartSnapshot getCart() {}
+  ```
+  Isolates the input handling.
+  - `ResultBuilder.java`
+  ```java
+  public ResultBuilder(PricingRules rules, PricingTraceCollector collector) {}
+  
+  public TraceResult buildResult(RuleContext ctx) {}
+  ```
+  Isolates output handling. Includes the price calculation algorithm.
+- #### TODO Avoid duplicated data
+---
+
+### Minor fixes
+- Avoid conversion between int and long
 
 ---
 ## Testing
