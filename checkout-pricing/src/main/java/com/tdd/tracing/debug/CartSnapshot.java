@@ -40,4 +40,8 @@ public class CartSnapshot {
 
         return cartSnapshot;
     }
+
+    public static CartSnapshot from(List<CartItem> items) {
+        return CartSnapshot.from(items, null, null);
+    }
 }

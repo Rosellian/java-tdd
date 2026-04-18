@@ -1743,7 +1743,7 @@ private RuleContext applyCrossSkuRules(RuleContext context,
 }
 ```
 ### Including PricingOptions in trace
-
+TODO
 
 ---
 ### Normalize discount values
@@ -1817,7 +1817,7 @@ These should never be mixed up.
     
     public RuleDelta apply(SkuDiscount rule, RuleContext context, RuleTrace rt) {}
     ```
-- Keeping data format handling separated from logic
+- #### Keeping data format handling separated from logic
   - `rest` package
   - Internal format in `tracing.debug` package
   - ServiceUtils
@@ -1829,7 +1829,7 @@ These should never be mixed up.
 - Use same input format
 - Merge endpoint logic
 - Combine Tracer and Collector logic
-- TODO Reuse logic in Service and Checkout, encapsulate service-logic in Checkout
+- Reuse logic in Service and Checkout, encapsulate service-logic in Checkout
 
 ---
 ## Testing

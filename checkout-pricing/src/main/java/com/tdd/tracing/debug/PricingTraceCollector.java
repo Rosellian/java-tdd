@@ -13,7 +13,7 @@ public class PricingTraceCollector {
     private final List<RuleTraceEvent> events = new ArrayList<>();
 
     public PricingTraceCollector() {
-        this(null, "DEFAULT_UNDEFINED", "Default_Test_Engine");
+        this(CartSnapshot.from(new ArrayList<>()), "DEFAULT_UNDEFINED", "Default_Test_Engine");
     }
 
     public PricingTraceCollector(CartSnapshot cart, String ruleset, String engineVersion) {
@@ -23,6 +23,10 @@ public class PricingTraceCollector {
         metadata.setEngineVersion(engineVersion);
         metadata.setTimestamp(Instant.now().toString());
         trace.setMetadata(metadata);
+    }
+
+    public void setCart(CartSnapshot cart) {
+        trace.setCart(cart);
     }
 
     public void recordRule(RuleTrace rt) {
@@ -65,7 +69,6 @@ public class PricingTraceCollector {
                          int stepIndex) {
         events.add(new RuleTraceEvent(ruleName, applied, delta, before, after, stepIndex));
     }
-
     public List<RuleTraceEvent> getEvents() { return events; }
 
     public PricingTrace build() {

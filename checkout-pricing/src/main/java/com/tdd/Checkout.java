@@ -4,52 +4,80 @@ import com.tdd.calculation.dp.BestPriceAlgorithm;
 import com.tdd.calculation.PriceCalculator;
 import com.tdd.engine.utility.RuleContext;
 import com.tdd.engine.RuleEngine;
+import com.tdd.tracing.debug.CartSnapshot;
+import com.tdd.tracing.debug.PricingTrace;
 import com.tdd.tracing.debug.PricingTraceCollector;
 import com.tdd.tracing.inspector.RuleInspector;
 import com.tdd.tracing.inspector.RuleInspectorView;
 import com.tdd.tracing.RuleTrace;
+import com.tdd.utils.Cart;
+import com.tdd.utils.TraceResult;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Checkout {
-    private final PricingTraceCollector collector;
+    public static final String ENGINE_VERSION = "v1";
+
     private final PricingRules rules;
+    private final PricingTraceCollector collector;
     private final RuleEngine engine;
     private final PriceCalculator calculator;
+    private final Cart cartHandler;
 
-    private final List<String> items = new ArrayList<>();
-
-    public Checkout(PricingRules rules) {
+    private Checkout(PricingRules rules, PricingTraceCollector collector, CartSnapshot cart) {
         this.rules = rules;
-        collector = new PricingTraceCollector();
+        this.collector = collector;
         engine = new RuleEngine(rules, collector);
         calculator = new PriceCalculator(rules, collector);
+        cartHandler = new Cart(rules, cart);
+    }
+
+    public Checkout(PricingRules rules) {
+        this(rules, new PricingTraceCollector(), CartSnapshot.from(new ArrayList<>()));
+    }
+
+    public Checkout(PricingRules rules, CartSnapshot cart, String ruleSet) {
+        this(rules, new PricingTraceCollector(cart, ruleSet, ENGINE_VERSION), cart);
     }
 
     public void scan(String unit) {
-        items.add(unit);
+        cartHandler.add(unit);
     }
 
     public int total() {
-        RuleContext context = new RuleContext(countItems(), new HashMap<>());
+        TraceResult result = run();
 
-        context = engine.evaluate(context);
-
-        inspect(context);
-
-        return calculator.calculateTotal(context);
+        return result.ruleTrace().finalTotal();
     }
 
-    private void inspect(RuleContext context) {
+    public TraceResult run() {
+        CartSnapshot cart = cartHandler.getCart();
+        collector.setCart(cart);
+
+        RuleContext ctx = engine.evaluate(RuleContext.fromCart(cart));
+
+        return buildResult(ctx);
+    }
+
+    private TraceResult buildResult(RuleContext ctx) {
+        PricingTrace pricingTrace = buildPricingTrace(ctx);
+        RuleTrace ruleTrace = runInspect(ctx);
+
+        return new TraceResult(ruleTrace, pricingTrace);
+    }
+
+    private RuleTrace runInspect(RuleContext ctx) {
         RuleInspector inspector = new RuleInspector(rules, new BestPriceAlgorithm(rules, null));
-        RuleTrace trace = inspector.inspect(context, collector.getEvents());
 
-        RuleInspectorView.print(trace);
+        RuleTrace ruleTrace = inspector.inspect(ctx, collector.getEvents());
+        RuleInspectorView.print(ruleTrace);
+
+        return ruleTrace;
     }
 
-    private Map<String, Long> countItems() {
-        return items.stream()
-                .collect(Collectors.groupingBy(sku -> sku, Collectors.counting()));
+    private PricingTrace buildPricingTrace(RuleContext ctx) {
+        int finalPrice = calculator.calculateTotal(ctx);
+        collector.setFinalPrice(finalPrice);
+        return collector.build();
     }
 }
