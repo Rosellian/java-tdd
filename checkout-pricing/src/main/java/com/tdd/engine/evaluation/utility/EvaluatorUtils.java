@@ -12,11 +12,11 @@ import java.util.Map;
 
 public class EvaluatorUtils {
 
-    static long getPacketsToBuy(CrossSkuRule rule, RuleContext context) {
+    static int getPacketsToBuy(CrossSkuRule rule, RuleContext context) {
         return context.countOf(rule.buySku()) / rule.buyQty();
     }
 
-    static long adjustTimesForNonStack(CrossSkuRule rule, long times) {
+    static int adjustTimesForNonStack(CrossSkuRule rule, int times) {
         return !rule.stackable() ? 1 : times;
     }
 

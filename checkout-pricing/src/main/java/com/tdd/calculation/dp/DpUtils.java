@@ -9,7 +9,7 @@ import java.util.List;
 public class DpUtils {
     static final String ITEMS_0_KR = "0 items -> 0 kr";
 
-    static DPTrace noResult(String sku, long remaining, PricingTraceCollector collector) {
+    static DPTrace noResult(String sku, int remaining, PricingTraceCollector collector) {
         if(collector != null)
             collector.recordDP("i=0", 0, List.of(), ITEMS_0_KR, 0, sku);
 

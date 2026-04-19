@@ -2,11 +2,11 @@ package com.tdd.tracing;
 
 public record SkuTrace(
         String sku,
-        long count,
-        long free,
-        long discounted,
+        int count,
+        int free,
+        int discounted,
         double rate,
-        long remaining,
+        int remaining,
         int unitPrice,
         int discountedPrice,
         int dpPrice,

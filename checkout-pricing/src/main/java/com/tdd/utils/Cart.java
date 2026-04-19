@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.tdd.utils.CartMerger.mergeCart;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.counting;
 
 public class Cart {
     private final CartSnapshot cart;
@@ -41,8 +43,8 @@ public class Cart {
         cart.setItems(cartItems);
     }
 
-    private Map<String, Long> countItems() {
+    private Map<String, Integer> countItems() {
         return items.stream()
-                .collect(Collectors.groupingBy(sku -> sku, Collectors.counting()));
+                .collect(Collectors.groupingBy(sku -> sku, collectingAndThen(counting(), Long::intValue)));
     }
 }

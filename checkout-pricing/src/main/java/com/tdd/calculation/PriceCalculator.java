@@ -30,11 +30,11 @@ public class PriceCalculator {
         return total;
     }
 
-    private SkuTotal calculateTotalFor(RuleContext context, Map.Entry<String, Long> entry) {
+    private SkuTotal calculateTotalFor(RuleContext context, Map.Entry<String, Integer> entry) {
         String sku = entry.getKey();
         SkuMod mod = context.modOf(sku);
 
-        long remaining = computeRemaining(entry, mod);
+        int remaining = computeRemaining(entry, mod);
         int discountedPrice = calculateDiscounted(mod, sku);
 
         DPTrace dpTrace = dpAlgorithm.bestPriceFor(sku, remaining);
@@ -46,8 +46,8 @@ public class PriceCalculator {
         return (int)(mod.discounted() * rules.getUnitPrice(sku) * mod.rate());
     }
 
-    private long computeRemaining(Map.Entry<String, Long> entry, SkuMod mod) {
-        long remaining = entry.getValue() - mod.free() - mod.discounted();
+    private int computeRemaining(Map.Entry<String, Integer> entry, SkuMod mod) {
+        int remaining = entry.getValue() - mod.free() - mod.discounted();
         if(remaining < 0) remaining = 0;
 
         return remaining;

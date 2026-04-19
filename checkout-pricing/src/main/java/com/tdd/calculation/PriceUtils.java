@@ -22,7 +22,8 @@ public final class PriceUtils {
         return total;
     }
 
-    private static PriceForSku calculatePrice(RuleContext context, PricingRules rules, Map.Entry<String, Long> entry) {
+    private static PriceForSku calculatePrice(RuleContext context, PricingRules rules,
+                                              Map.Entry<String, Integer> entry) {
         String sku = entry.getKey();
         SkuMod skuMod = context.modOf(sku);
         int unitPrice = rules.getUnitPrice(sku);
@@ -45,7 +46,7 @@ public final class PriceUtils {
         return Math.max(0, paid - discounted) * unitPrice;
     }
 
-    private static int calculatePaid(Map.Entry<String, Long> entry, SkuMod skuMod) {
-        return (int) Math.max(0, entry.getValue() - skuMod.free());
+    private static int calculatePaid(Map.Entry<String, Integer> entry, SkuMod skuMod) {
+        return Math.max(0, entry.getValue() - skuMod.free());
     }
 }

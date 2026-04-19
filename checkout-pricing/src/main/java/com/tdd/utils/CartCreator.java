@@ -15,17 +15,16 @@ public class CartCreator {
         this.rules = rules;
     }
 
-    public List<CartItem> createCart(Map<String, Long> numberPerSku) {
+    public List<CartItem> createCart(Map<String, Integer> numberPerSku) {
         return numberPerSku.entrySet().stream()
                 .map(this::toCartItem)
                 .collect(toList());
     }
 
-    private CartItem toCartItem(Map.Entry<String, Long> item) {
+    private CartItem toCartItem(Map.Entry<String, Integer> item) {
         String sku = item.getKey();
-        int quantity = item.getValue().intValue();
         int unitPrice = rules.getUnitPrice(sku);
 
-        return CartItem.from(sku, quantity, unitPrice);
+        return CartItem.from(sku, item.getValue(), unitPrice);
     }
 }

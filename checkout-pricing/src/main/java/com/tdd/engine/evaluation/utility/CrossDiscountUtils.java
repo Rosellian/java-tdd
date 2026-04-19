@@ -9,17 +9,17 @@ import static com.tdd.engine.evaluation.utility.EvaluatorUtils.*;
 
 public class CrossDiscountUtils {
 
-    public static long calculateTimesDiscounted(CrossSkuBuyXGetYDiscount rule, RuleContext context) {
-        long packetsToBuy = getPacketsToBuy(rule, context);
-        long discountedPacketsNeeded = context.countOf(rule.discountSku()) / rule.discountQty();
+    public static int calculateTimesDiscounted(CrossSkuBuyXGetYDiscount rule, RuleContext context) {
+        int packetsToBuy = getPacketsToBuy(rule, context);
+        int discountedPacketsNeeded = context.countOf(rule.discountSku()) / rule.discountQty();
 
         return Math.min(packetsToBuy, discountedPacketsNeeded);
     }
 
-    public static int calculateTotalDiscounted(CrossSkuBuyXGetYDiscount rule, long times) {
+    public static int calculateTotalDiscounted(CrossSkuBuyXGetYDiscount rule, int times) {
         times = adjustTimesForNonStack(rule, times);
 
-        return (int) (rule.discountQty() * times);
+        return rule.discountQty() * times;
     }
 
     public static RuleDelta createDelta(CrossSkuBuyXGetYDiscount rule, int totalDiscounted) {

@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class CartItemRequest {
     private String sku;
-    private long quantity;
+    private int quantity;
 
     public String getSku() {
         return sku;
@@ -14,15 +14,15 @@ public class CartItemRequest {
         this.sku = sku;
     }
 
-    public long getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(long quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public static CartItemRequest fromCartEntry(Map.Entry<String, Long> entry) {
+    public static CartItemRequest fromCartEntry(Map.Entry<String, Integer> entry) {
         CartItemRequest request = new CartItemRequest();
         request.sku = entry.getKey();
         request.quantity = entry.getValue();

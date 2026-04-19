@@ -1865,7 +1865,8 @@ These should never be mixed up.
 ---
 
 ### Minor fixes
-- Avoid conversion between int and long
+- Avoid conversion between int and long by changing all counts to use integer.
+- 
 
 ---
 ## Testing

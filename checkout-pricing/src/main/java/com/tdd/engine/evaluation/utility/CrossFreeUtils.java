@@ -9,17 +9,17 @@ import static com.tdd.engine.evaluation.utility.EvaluatorUtils.*;
 
 public class CrossFreeUtils {
 
-    public static long calculateTimesFree(CrossSkuBuyXGetYFree rule, RuleContext context) {
-        long packetsToBuy = getPacketsToBuy(rule, context);
-        long freePacketsNeeded = context.countOf(rule.freeSku()) / rule.freeQty();
+    public static int calculateTimesFree(CrossSkuBuyXGetYFree rule, RuleContext context) {
+        int packetsToBuy = getPacketsToBuy(rule, context);
+        int freePacketsNeeded = context.countOf(rule.freeSku()) / rule.freeQty();
 
         return Math.min(packetsToBuy, freePacketsNeeded);
     }
 
-    public static int calculateTotalFree(CrossSkuBuyXGetYFree rule, long times) {
+    public static int calculateTotalFree(CrossSkuBuyXGetYFree rule, int times) {
         times = adjustTimesForNonStack(rule, times);
 
-        return (int) (times * rule.freeQty());
+        return times * rule.freeQty();
     }
 
     public static RuleDelta createDelta(CrossSkuBuyXGetYFree rule, int totalFree) {

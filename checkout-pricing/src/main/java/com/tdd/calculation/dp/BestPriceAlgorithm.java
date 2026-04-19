@@ -19,22 +19,21 @@ public class BestPriceAlgorithm {
         this.collector = collector;
     }
 
-    public DPTrace bestPriceFor(String sku, long remaining) {
+    public DPTrace bestPriceFor(String sku, int remaining) {
         if(remaining <= 0) return noResult(sku, remaining, collector);
 
-        int n = (int) remaining;
-        int[] dp = initDp(n);
+        int[] dp = initDp(remaining);
         List<List<String>> path = createPath();
         List<DPNode> nodes = new ArrayList<>();
 
-        for(int i = 1; i <= n; i++) {
+        for(int i = 1; i <= remaining; i++) {
             CandidateCalculator calculator = new CandidateCalculator(rules, sku);
             Candidate candidate = calculator.candidateFor(dp, i, path);
 
             updateResults(candidate, path, nodes, i, dp);
         }
 
-        return new DPTrace(sku, remaining, nodes, dp[n], path.get(n));
+        return new DPTrace(sku, remaining, nodes, dp[remaining], path.get(remaining));
     }
 
     private void updateResults(Candidate candidate, List<List<String>> path, List<DPNode> nodes, int i, int[] dp) {

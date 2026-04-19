@@ -27,14 +27,14 @@ public class RuleInspector {
 
         for(var entry : finalContext.counts().entrySet()) {
             String sku = entry.getKey();
-            long count = entry.getValue();
+            int count = entry.getValue();
 
             SkuMod mod = finalContext.modOf(sku);
-            long free = mod.free();
-            long discounted  = mod.discounted();
+            int free = mod.free();
+            int discounted  = mod.discounted();
             double rate  = mod.rate();
 
-            long remaining = count - free - discounted;
+            int remaining = count - free - discounted;
 
             int unitPrice = rules.getUnitPrice(sku);
             int discountedPrice = (int) (discounted * unitPrice * rate);

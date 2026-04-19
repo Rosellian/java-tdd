@@ -10,19 +10,19 @@ import static com.tdd.engine.utility.SkuMod.skuModRemapper;
 import static java.util.stream.Collectors.toMap;
 
 public record RuleContext(
-        Map<String, Long> counts,
+        Map<String, Integer> counts,
         Map<String, SkuMod> mods
 ) {
 
     public static RuleContext fromCart(CartSnapshot cartSnapshot) {
-        Map<String, Long> counts = cartSnapshot.getItems().stream()
-                .collect(toMap(CartItem::getSku, i -> (long)i.getQuantity()));
+        Map<String, Integer> counts = cartSnapshot.getItems().stream()
+                .collect(toMap(CartItem::getSku, CartItem::getQuantity));
 
         return new RuleContext(counts, Map.of());
     }
 
     public RuleContext apply(RuleDelta delta) {
-        Map<String, Long> newCounts = new HashMap<>(counts);
+        Map<String, Integer> newCounts = new HashMap<>(counts);
         Map<String, SkuMod> newMods = new HashMap<>(mods);
 
         delta.modChanges().forEach((sku, mod) -> newMods.merge(sku, mod, skuModRemapper));
@@ -30,8 +30,8 @@ public record RuleContext(
         return new RuleContext(newCounts, newMods);
     }
 
-    public long countOf(String sku) {
-        return counts.getOrDefault(sku, 0L);
+    public int countOf(String sku) {
+        return counts.getOrDefault(sku, 0);
     }
 
     public SkuMod modOf(String sku) {

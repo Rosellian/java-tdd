@@ -29,7 +29,7 @@ public class RuleEvaluator implements IRuleEvaluator {
     public RuleDelta apply(CrossSkuBuyXGetYFree rule, RuleContext context, RuleTrace rt) {
         updateRuleTrace(rule, context, rt);
 
-        long times = calculateTimesFree(rule, context);
+        int times = calculateTimesFree(rule, context);
 
         if(times == 0) return RuleDelta.none();
 
@@ -42,7 +42,7 @@ public class RuleEvaluator implements IRuleEvaluator {
     public RuleDelta apply(CrossSkuBuyXGetYDiscount rule, RuleContext context, RuleTrace rt) {
         updateRuleTrace(rule, context, rt);
 
-        long times = calculateTimesDiscounted(rule, context);
+        int times = calculateTimesDiscounted(rule, context);
 
         if(skuDiscountHasHigherPriorityOrZeroTimes(rule, times)) return RuleDelta.none();
 
@@ -60,7 +60,7 @@ public class RuleEvaluator implements IRuleEvaluator {
         return SkuDiscountUtils.createDelta(rule);
     }
 
-    private boolean skuDiscountHasHigherPriorityOrZeroTimes(CrossSkuBuyXGetYDiscount rule, long times) {
+    private boolean skuDiscountHasHigherPriorityOrZeroTimes(CrossSkuBuyXGetYDiscount rule, int times) {
         return skuDiscountHasHigherPriorityFor(rules, rule.discountSku(), rule.priority()) || times == 0;
     }
 }

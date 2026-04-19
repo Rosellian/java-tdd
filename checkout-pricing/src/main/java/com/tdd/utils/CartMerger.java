@@ -10,7 +10,7 @@ import static java.util.stream.Collectors.toList;
 
 public class CartMerger {
 
-    public static List<CartItem> mergeCart(CartSnapshot cart, Map<String, Long> itemsPerSku) {
+    public static List<CartItem> mergeCart(CartSnapshot cart, Map<String, Integer> itemsPerSku) {
         //TODO complete merge, add SKUs missing in original list (supporting initial cart with additions)
 
         return cart.getItems().stream()
@@ -18,9 +18,9 @@ public class CartMerger {
                 .collect(toList());
     }
 
-    private static CartItem mergeSku(CartItem item, Map<String, Long> itemsPerSku) {
+    private static CartItem mergeSku(CartItem item, Map<String, Integer> itemsPerSku) {
         String sku = item.getSku();
-        int newQuantity = itemsPerSku.getOrDefault(sku, 0L).intValue();
+        int newQuantity = itemsPerSku.getOrDefault(sku, 0);
         int mergedQuantity = item.getQuantity() + newQuantity;
 
         return CartItem.from(sku, mergedQuantity, item.getUnitPrice());

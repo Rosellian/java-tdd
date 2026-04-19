@@ -4,7 +4,7 @@ import java.util.List;
 
 public record DPTrace(
         String sku,
-        long remaining,
+        int remaining,
         List<DPNode> nodes,
         int finalPrice,
         List<String> winningPath
