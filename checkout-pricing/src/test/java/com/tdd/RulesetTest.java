@@ -29,7 +29,7 @@ public class RulesetTest {
         runForStandardInput(NoCrossNoSkuDiscount.build(), createNoCrossNoSkuDiscountStandardExpected());
     }
 
-    private void runForStandardInput(PricingRules rules, int expectedPrice) {
+    private void runForStandardInput(PricingRules rules, double expectedPrice) {
         Checkout checkout = new Checkout(rules);
 
         scanStandardInput(checkout);
@@ -37,7 +37,7 @@ public class RulesetTest {
         assertEquals(expectedPrice, checkout.total());
     }
 
-    private int createNoCrossNoSkuDiscountStandardExpected() {
+    private double createNoCrossNoSkuDiscountStandardExpected() {
         return 100 + 2 * A.unitPrice //A: 3-for-100(1 free) + 2-for-unitPrice
                 + 40 + 70 //B: 2-for-40(1 free) + 2-for-70
                 + 75 //C: 2-for-unitPrice + 1-at-50%
@@ -46,7 +46,7 @@ public class RulesetTest {
                 // 435
     }
 
-    private int createDefaultStandardExpected() {
+    private double createDefaultStandardExpected() {
         return 130 + 2*50 //A: 3-for-130 + 2-for-unitPrice
                 + 40 + 2*40 //B: 2-for-40(1 free) + 2-for-unitPrice
                 + 3*25 //C: 3-for-unitPrice
@@ -55,16 +55,16 @@ public class RulesetTest {
                 // 475
     }
 
-    private int createCampaignAStandardExpected() {
+    private double createCampaignAStandardExpected() {
         return 180 //A: 5-for-180
                 + 40 + 2 * B.unitPrice //B: 2-for-40(1 free) + 2-for-unitPrice
-                + 22 + 2 * C.unitPrice //C: 1-at-10%-discount + 2-for-unitPrice
+                + 22.5 + 2 * C.unitPrice //C: 1-at-10%-discount + 2-for-unitPrice
                 + 10 + D.unitPrice //D: 1-at-50% + 1-for-unitPrice
                 + E.unitPrice; //E:
                 // 412
     }
 
-    private int createCampaignBExpected() {
+    private double createCampaignBExpected() {
         return 130 + 2 * A.unitPrice //A: 3-for-130 + 2-for-unitPrice
                 + 30 + 40 + B.unitPrice //B: 1-at-25%-discount + 2-for-40(1 free) + 1-for-unitPrice
                 + 3 * C.unitPrice //C: 3-for-unitPrice

@@ -19,15 +19,16 @@ public class StepRecorder {
         this.collector = collector;
     }
 
-    public void recordCrossSkuStep(AtomicInteger stepIndex, int beforeCrossPrice, int afterCrossPrice) {
+    public void recordCrossSkuStep(AtomicInteger stepIndex, double beforeCrossPrice, double afterCrossPrice) {
         recordStep(CROSS_SKU, CROSS_SKU_DESCRIPTION, stepIndex, beforeCrossPrice, afterCrossPrice);
     }
 
-    public void recordSkuDiscountStep(AtomicInteger stepIndex, int afterCrossPrice, int afterDiscountPrice) {
+    public void recordSkuDiscountStep(AtomicInteger stepIndex, double afterCrossPrice, double afterDiscountPrice) {
         recordStep(SKU_DISCOUNTS, SKU_DISCOUNT_DESCRIPTION, stepIndex, afterCrossPrice, afterDiscountPrice);
     }
 
-    private void recordStep(String step, String description, AtomicInteger stepIndex, int beforePrice, int afterPrice) {
+    private void recordStep(String step, String description, AtomicInteger stepIndex,
+                            double beforePrice, double afterPrice) {
         if(collector != null) {
             collector.recordStep(step, stepIndex.get()-1, description, beforePrice, afterPrice);
         }

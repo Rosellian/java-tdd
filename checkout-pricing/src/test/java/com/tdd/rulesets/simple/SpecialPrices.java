@@ -5,7 +5,7 @@ import com.tdd.api.samples.Ruleset;
 
 public class SpecialPrices implements Ruleset {
 
-    public static PricingRules specialPrice(String sku, int unitPrice, int quantity, int price) {
+    public static PricingRules specialPrice(String sku, double unitPrice, int quantity, double price) {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice(sku, unitPrice);
         rules.addSpecialPrice(sku, quantity, price, 1, true);

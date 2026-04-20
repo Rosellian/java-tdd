@@ -18,8 +18,8 @@ public class PriceCalculator {
         this.dpAlgorithm = new BestPriceAlgorithm(rules,  collector);
     }
 
-    public int calculateTotal(RuleContext context) {
-        int total = 0;
+    public double calculateTotal(RuleContext context) {
+        double total = 0;
 
         for(var entry : context.counts().entrySet()) {
             SkuTotal skuTotal = calculateTotalFor(context, entry);
@@ -35,15 +35,15 @@ public class PriceCalculator {
         SkuMod mod = context.modOf(sku);
 
         int remaining = computeRemaining(entry, mod);
-        int discountedPrice = calculateDiscounted(mod, sku);
+        double discountedPrice = calculateDiscounted(mod, sku);
 
         DPTrace dpTrace = dpAlgorithm.bestPriceFor(sku, remaining);
 
         return new SkuTotal(discountedPrice, dpTrace);
     }
 
-    private int calculateDiscounted(SkuMod mod, String sku) {
-        return (int)(mod.discounted() * rules.getUnitPrice(sku) * mod.rate());
+    private double calculateDiscounted(SkuMod mod, String sku) {
+        return mod.discounted() * rules.getUnitPrice(sku) * mod.rate();
     }
 
     private int computeRemaining(Map.Entry<String, Integer> entry, SkuMod mod) {
@@ -53,5 +53,5 @@ public class PriceCalculator {
         return remaining;
     }
 
-    private record SkuTotal(int discountedPrice, DPTrace dpTrace) {}
+    private record SkuTotal(double discountedPrice, DPTrace dpTrace) {}
 }

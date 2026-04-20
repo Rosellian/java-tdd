@@ -6,5 +6,5 @@ public record RuleTrace(
         List<RuleTraceEvent> events,
         List<SkuTrace> skuTraces,
         List<DPTrace> dpTraces,
-        int finalTotal
+        double finalTotal
 ) {}

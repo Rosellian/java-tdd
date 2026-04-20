@@ -7,9 +7,9 @@ public enum SKUs {
     D(20),
     E(10);
 
-    public final int unitPrice;
+    public final double unitPrice;
 
-    SKUs(int unitPrice) {
+    SKUs(double unitPrice) {
         this.unitPrice = unitPrice;
     }
 }

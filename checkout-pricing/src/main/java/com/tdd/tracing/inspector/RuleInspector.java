@@ -36,20 +36,20 @@ public class RuleInspector {
 
             int remaining = count - free - discounted;
 
-            int unitPrice = rules.getUnitPrice(sku);
-            int discountedPrice = (int) (discounted * unitPrice * rate);
+            double unitPrice = rules.getUnitPrice(sku);
+            double discountedPrice = discounted * unitPrice * rate;
 
             DPTrace dpTrace = algorithm.bestPriceFor(sku, remaining);
             dpTraces.add(dpTrace);
 
-            int dpPrice = dpTrace.finalPrice();
-            int total = discountedPrice + dpPrice;
+            double dpPrice = dpTrace.finalPrice();
+            double total = discountedPrice + dpPrice;
 
             skuTraces.add(new SkuTrace(sku, count, free, discounted, rate, remaining,
                     unitPrice, discountedPrice, dpPrice, total));
         }
 
-        int finalTotal = skuTraces.stream().mapToInt(SkuTrace::total).sum();
+        double finalTotal = skuTraces.stream().mapToDouble(SkuTrace::total).sum();
 
         return new RuleTrace(events, skuTraces, dpTraces, finalTotal);
     }

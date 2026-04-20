@@ -10,8 +10,8 @@ public final class PriceUtils {
 
     private PriceUtils() {}
 
-    public static int computeTotalPrice(RuleContext context, PricingRules rules) {
-        int total = 0;
+    public static double computeTotalPrice(RuleContext context, PricingRules rules) {
+        double total = 0;
 
         for(var entry : context.counts().entrySet()) {
             PriceForSku result = calculatePrice(context, rules, entry);
@@ -26,23 +26,23 @@ public final class PriceUtils {
                                               Map.Entry<String, Integer> entry) {
         String sku = entry.getKey();
         SkuMod skuMod = context.modOf(sku);
-        int unitPrice = rules.getUnitPrice(sku);
+        double unitPrice = rules.getUnitPrice(sku);
 
         int paid = calculatePaid(entry, skuMod);
 
-        int fullPricePart = calculateFullPricePart(paid, skuMod.discounted(), unitPrice);
-        int discountedPart = calculateDiscountedPart(unitPrice, skuMod);
+        double fullPricePart = calculateFullPricePart(paid, skuMod.discounted(), unitPrice);
+        double discountedPart = calculateDiscountedPart(unitPrice, skuMod);
 
         return new PriceForSku(fullPricePart, discountedPart);
     }
 
-    private record PriceForSku(int fullPricePart, int discountedPart) {}
+    private record PriceForSku(double fullPricePart, double discountedPart) {}
 
-    private static int calculateDiscountedPart(int unitPrice, SkuMod skuMod) {
-        return (int) (skuMod.discounted() * unitPrice * (1.0 - skuMod.rate()));
+    private static double calculateDiscountedPart(double unitPrice, SkuMod skuMod) {
+        return skuMod.discounted() * unitPrice * (1.0 - skuMod.rate());
     }
 
-    private static int calculateFullPricePart(int paid, int discounted, int unitPrice) {
+    private static double calculateFullPricePart(int paid, int discounted, double unitPrice) {
         return Math.max(0, paid - discounted) * unitPrice;
     }
 

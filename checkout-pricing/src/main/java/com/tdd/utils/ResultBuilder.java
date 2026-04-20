@@ -38,7 +38,7 @@ public class ResultBuilder {
     }
 
     private PricingTrace buildPricingTrace(RuleContext ctx) {
-        int finalPrice = calculator.calculateTotal(ctx);
+        double finalPrice = calculator.calculateTotal(ctx);
         collector.setFinalPrice(finalPrice);
         return collector.build();
     }

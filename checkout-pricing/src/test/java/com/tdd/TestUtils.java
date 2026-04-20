@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestUtils {
 
-    public static void testForA(PricingRules rules, int n, int expected) {
+    public static void testForA(PricingRules rules, int n, double expected) {
         Checkout checkout = new Checkout(rules);
         scanProduct(checkout, "A", n);
         assertEquals(expected, checkout.total());

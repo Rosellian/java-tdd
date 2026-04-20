@@ -14,7 +14,7 @@ import static com.tdd.rules.BuyXGetYDiscount.calculatePrice;
 public class NoCrossNoSkuDiscount implements Ruleset {
 
     public static PricingRules build() {
-        Map<String, Integer> unitPrices = defaultUnitPricesWithChange("C", 30);
+        Map<String, Double> unitPrices = defaultUnitPricesWithChange("C", 30);
 
         Map<String, List<PricingOption>> options = Map.of(
                 "A", List.of(

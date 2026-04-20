@@ -37,7 +37,7 @@ public class Checkout {
         cartHandler.add(unit);
     }
 
-    public int total() {
+    public double total() {
         TraceResult result = run();
 
         return result.ruleTrace().finalTotal();

@@ -8,14 +8,14 @@ import static com.tdd.rulesets.simple.FreeRules.buy1Get1Free;
 
 public class SimpleRulesets {
 
-    public static PricingRules buy1Get1FreeAndSpecial(boolean freeStackable, int specialPrice) {
+    public static PricingRules buy1Get1FreeAndSpecial(boolean freeStackable, double specialPrice) {
         PricingRules rules = buy1Get1Free("A", freeStackable);
         rules.addSpecialPrice("A", 3, specialPrice,1, true);
 
         return rules;
     }
 
-    public static PricingRules crossDiscountAndSpecialPrice(int specialQuantity, int specialPrice) {
+    public static PricingRules crossDiscountAndSpecialPrice(int specialQuantity, double specialPrice) {
         PricingRules rules = buy2AGet1BDiscount(0.5, 0, false);
         rules.addSpecialPrice("B", specialQuantity, specialPrice, 1, true);
 

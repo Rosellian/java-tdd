@@ -6,6 +6,6 @@ public record DPTrace(
         String sku,
         int remaining,
         List<DPNode> nodes,
-        int finalPrice,
+        double finalPrice,
         List<String> winningPath
 ) {}

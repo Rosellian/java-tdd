@@ -8,7 +8,7 @@ import java.util.List;
 import static com.tdd.calculation.dp.CandidateUtils.*;
 
 public class CandidateCalculator {
-    private final int unitPrice;
+    private final double unitPrice;
     private final List<PricingOption> pricingOptions;
     private final String sku;
 
@@ -19,14 +19,14 @@ public class CandidateCalculator {
     }
 
     //TODO dp is updated (side-effect)
-    public Candidate candidateFor(int[] dp, int i, List<List<String>> path) {
+    public Candidate candidateFor(double[] dp, int i, List<List<String>> path) {
         dp[i] = i * unitPrice;
         List<String> best = createUnitPriceEntry(i, unitPrice);
         List<String> optionsLabels = createOptionsLabels(i, dp);
 
         for(PricingOption opt: pricingOptions) {
             if(i >= opt.quantity()) {
-                int candidate = calculateCandidate(opt, dp, i);
+                double candidate = calculateCandidate(opt, dp, i);
                 optionsLabels.add(opt.quantity() + " for " + opt.price() + " -> " + candidate);
 
                 if(candidate < dp[i]) {
@@ -39,9 +39,9 @@ public class CandidateCalculator {
         return new Candidate(best, optionsLabels, sku);
     }
 
-    private int calculateCandidate(PricingOption opt, int[] dp, int i) {
+    private double calculateCandidate(PricingOption opt, double[] dp, int i) {
         int quantity = opt.quantity();
-        int price = opt.price();
+        double price = opt.price();
 
         if(opt.stackable()) {// chain
             return dp[i - quantity] + price;

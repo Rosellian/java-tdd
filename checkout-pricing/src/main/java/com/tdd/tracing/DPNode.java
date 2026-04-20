@@ -4,6 +4,6 @@ import java.util.List;
 
 public record DPNode(
         int stepIndex,
-        int price,
+        double price,
         List<String> explanation
 ) {}

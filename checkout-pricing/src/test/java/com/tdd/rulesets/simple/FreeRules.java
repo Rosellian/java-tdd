@@ -17,7 +17,7 @@ public class FreeRules implements Ruleset {
         return buy1Get1Free(sku, 50, stackable);
     }
 
-    public static PricingRules buy1Get1Free(String sku, int price, boolean stackable) {
+    public static PricingRules buy1Get1Free(String sku, double price, boolean stackable) {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice(sku, price);
 

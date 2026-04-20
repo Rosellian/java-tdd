@@ -13,7 +13,7 @@ import static com.tdd.api.samples.Ruleset.defaultUnitPricesWithChange;
 public class CampaignBRules implements Ruleset {
 
     public static PricingRules build() {
-        Map<String, Integer> unitPrices = defaultUnitPricesWithChange("E", 60);
+        Map<String, Double> unitPrices = defaultUnitPricesWithChange("E", 60);
 
         Map<String, List<PricingOption>> options = Map.of(
                 "A", List.of(

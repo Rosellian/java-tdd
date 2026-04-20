@@ -48,7 +48,7 @@ public class RuleApplier {
 
         rt.setMatched(after.applied());
 
-        int afterPrice = computeTotalPrice(after.context(), rules);
+        double afterPrice = computeTotalPrice(after.context(), rules);
         rt.setAfter(afterPrice);
         rt.setDelta(afterPrice - before.price());
 
@@ -63,7 +63,7 @@ public class RuleApplier {
 
     private Before recordBefore(RuleContext context, Rule rule) {
         RuleTrace rt = createRuleTrace(rule);
-        int beforePrice = computeTotalPrice(context, rules);
+        double beforePrice = computeTotalPrice(context, rules);
         rt.setBefore(beforePrice);
 
         return new Before(rt, beforePrice);

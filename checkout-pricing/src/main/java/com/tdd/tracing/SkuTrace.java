@@ -7,8 +7,8 @@ public record SkuTrace(
         int discounted,
         double rate,
         int remaining,
-        int unitPrice,
-        int discountedPrice,
-        int dpPrice,
-        int total
+        double unitPrice,
+        double discountedPrice,
+        double dpPrice,
+        double total
 ) {}

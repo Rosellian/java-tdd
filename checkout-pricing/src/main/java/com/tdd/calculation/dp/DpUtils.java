@@ -16,8 +16,8 @@ public class DpUtils {
         return new DPTrace(sku, remaining, List.of(), 0, List.of(ITEMS_0_KR));
     }
 
-    static int [] initDp(int n) {
-        int[] dp = new int[n + 1];
+    static double [] initDp(int n) {
+        double[] dp = new double[n + 1];
         dp[0] = 0;
         return dp;
     }

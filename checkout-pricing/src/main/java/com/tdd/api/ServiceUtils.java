@@ -39,8 +39,8 @@ public class ServiceUtils {
 
     private static CartItem fromRequest(CartItemRequest item, PricingRules rules) {
         String sku = item.getSku();
-        int quantity = (int) item.getQuantity();
-        int unitPrice = rules.getUnitPrice(sku);
+        int quantity = item.getQuantity();
+        double unitPrice = rules.getUnitPrice(sku);
 
         return CartItem.from(sku, quantity, unitPrice);
     }

@@ -23,7 +23,7 @@ public class CartCreator {
 
     private CartItem toCartItem(Map.Entry<String, Integer> item) {
         String sku = item.getKey();
-        int unitPrice = rules.getUnitPrice(sku);
+        double unitPrice = rules.getUnitPrice(sku);
 
         return CartItem.from(sku, item.getValue(), unitPrice);
     }
