@@ -1,6 +1,8 @@
 package com.tdd.engine.utility;
 
 import com.tdd.tracing.debug.PricingTraceCollector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -10,6 +12,7 @@ public class StepRecorder {
     public static final String CROSS_SKU = "Cross-SKU rules";
     public static final String CROSS_SKU_DESCRIPTION = "Evaluates cross-SKU promotions such as Buy X Get Y";
 
+    private static final Logger logger = LoggerFactory.getLogger(StepRecorder.class);
     private final PricingTraceCollector collector;
 
     public StepRecorder(PricingTraceCollector collector) {
@@ -28,5 +31,7 @@ public class StepRecorder {
         if(collector != null) {
             collector.recordStep(step, stepIndex.get()-1, description, beforePrice, afterPrice);
         }
+
+        logger.debug("Ran step: {}, {}, price before={}, price after={}", step, description, beforePrice, afterPrice);
     }
 }
