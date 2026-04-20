@@ -389,15 +389,9 @@ public class RuleDebugger {
 ```java
 public class RuleInspector {
 
-    private final List<RuleDebugEvent> events;
+    public RuleInspector(List<RuleDebugEvent> events) {}
 
-    public RuleInspector(List<RuleDebugEvent> events) {
-        this.events = events;
-    }
-
-    public List<RuleDebugEvent> events() {
-        return events;
-    }
+    public List<RuleDebugEvent> events() {}
 }
 ```
 `RuleInspectorView.java` - Textbased rendering
@@ -561,7 +555,8 @@ We accomplish this by adding DP-tracing to PriceCalculator:
 - Add log visualization:  
     `RuleInspectorView.java`
     ```java
-    public class RuleInspectorView {
+    import java.util.List;
+  public class RuleInspectorView {
 
         public static void printDP(DPTrace dp) {
             System.out.println("DP Path for SKU " + dp.sku() +
@@ -569,13 +564,13 @@ We accomplish this by adding DP-tracing to PriceCalculator:
 
             for (var node : dp.nodes()) {
                 System.out.println("[" + node.index() + "] → " + node.price() + " kr");
-                for (var line : node.explanation()) {
+                for (List<String> line : node.explanation()) {
                     System.out.println("     " + line);
                 }
             }
 
             System.out.println("Winning path:");
-            for (var step : dp.winningPath()) {
+            for (List<String> step : dp.winningPath()) {
                 System.out.println("  - " + step);
             }
 
@@ -692,6 +687,7 @@ Add any additional rulesets here.
 5. CORS (if React runs on localhost:3000)
     `CorsConfig.java`
     ```java
+    import org.jspecify.annotations.NonNull;
     import org.springframework.context.annotation.Bean;
     import org.springframework.context.annotation.Configuration;
     import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -704,10 +700,12 @@ Add any additional rulesets here.
         public WebMvcConfigurer corsConfigurer() {
             return new WebMvcConfigurer() {
                 @Override
-                public void addCorsMappings(CorsRegistry registry) {
+                public void addCorsMappings(@NonNull CorsRegistry registry) {
                     registry.addMapping("/api/**")
                             .allowedOrigins("http://localhost:3000")
-                            .allowedMethods("GET", "POST");
+                            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                            .allowedHeaders("*")
+                            .allowCredentials(true);
                 }
             };
         }
@@ -1246,23 +1244,9 @@ public class TraceResponse {
 ```java
 public static final String ENGINE_VERSION = "v1";
 //...
-public PricingTrace getTrace(PricingRequest request) {
-    PricingRules rules = RuleSetRegistry.get(request.getRuleSet());
-    CartSnapshot cartSnapshot = toCartSnapshot(request, rules);
+public PricingTrace getTrace(PricingRequest request) {}
 
-    PricingTraceCollector collector = new PricingTraceCollector(cartSnapshot,
-            request.getRuleSet(), ENGINE_VERSION);
-    RuleTracer tracer = new RuleTracer();
-    RuleEngine engine = new RuleEngine(rules, tracer);
-
-    RuleContext ctx = RuleContext.fromCart(cartSnapshot);
-    ctx = engine.evaluate(ctx, collector);
-    //...
-}
-//...
-private CartSnapshot toCartSnapshot(PricingRequest req, PricingRules rules) {
-    //...
-}
+private CartSnapshot toCartSnapshot(PricingRequest req, PricingRules rules) {}
 ```
 New request format used internally at this point:  
 `PricingRequest.java`
@@ -1479,11 +1463,7 @@ public final class PriceUtils {
 
     private PriceUtils() {}
 
-    public static int computeTotalPrice(RuleContext context, PricingRules rules) {
-        int total = 0;
-        //Implement calculation
-        return total;
-    }
+    public static int computeTotalPrice(RuleContext context, PricingRules rules) {}
 }
 ```
 **Step trace**  
@@ -1730,13 +1710,13 @@ public DPTrace bestPriceFor(String sku, long remaining, PricingTraceCollector co
 ```java
 private RuleContext applyCrossSkuRules(RuleContext context,
                                        PricingTraceCollector collector, AtomicInteger stepIndex) {
-    boolean alreadyApplied = false;
+    //boolean alreadyApplied = false;
     //...
     RuleDelta delta = alreadyApplied ? RuleDelta.none() : switch(rule) {
         //...
     };
     if(applied) {
-        context = context.apply(delta);
+    //    context = context.apply(delta);
         alreadyApplied = true;
     }
     //...
@@ -2476,7 +2456,7 @@ void crossSkuBuyXGetYAtDiscount() {
 
     Checkout checkout = new Checkout(rules);
 
-    // Basket: A A B
+    // Basket: A, A, B
     checkout.scan("A");
     checkout.scan("A");
     checkout.scan("B");
@@ -2740,9 +2720,9 @@ You should get:
 ```json
 {
   "trace": {
-    "events": [...],
-    "skuTraces": [...],
-    "dpTraces": [...],
+    "events": [],
+    "skuTraces": [],
+    "dpTraces": [],
     "finalTotal": 445
   }
 }

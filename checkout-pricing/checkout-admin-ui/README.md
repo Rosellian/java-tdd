@@ -689,7 +689,7 @@ ruledebugger
     );
    }
    ```
-6. ```css
+6. ```text
    .rule-debugger {
     background: #1a1a1a;
     padding: 16px;
@@ -1372,7 +1372,7 @@ const styles = {
 #### Interactive DPGraph
 Features:
 - Hover -> highlight node
-- Click -> set node as selected
+- Click → set node as selected
 - Selected node shows details
 
 `DPGraph.jsx`
@@ -1653,7 +1653,7 @@ This works like:
    - writes selectedStep
    - highlights when RuleTimeline is clicked
      `DPGraph.jsx`
-      ```jsx
+      ```text
       //...
       const {selectedStep, setSelectedStep, selectedRule } = useTraceSync();
 
@@ -1674,7 +1674,7 @@ This works like:
         },
       }
       ```
-4. RuleTimeline -> highlight rules that belongs to selectedStep  
+4. RuleTimeline → highlight rules that belongs to selectedStep  
    If every rule has a field like stepIndex or similar use that.  
    If not, you can connect rules to DP-step by the trace-structure.
    `RuleTimeline.jsx`
@@ -1698,7 +1698,7 @@ This works like:
     },
    }
    ```
-5. ChainOverview -> highlight the DP-step
+5. ChainOverview → highlight the DP-step
    `ChainOverview.jsx`
    ```jsx
    //...
