@@ -9,17 +9,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.tdd.utils.CartMerger.mergeCart;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.counting;
 
 public class Cart {
     private final CartSnapshot cart;
     private final List<String> items = new ArrayList<>();
-    private final CartCreator cartCreator;
+    private final CartCreator creator;
+    private final CartMerger merger;
 
     public Cart(PricingRules rules, CartSnapshot initialCart) {
-        cartCreator = new CartCreator(rules);
+        creator = new CartCreator(rules);
+        merger = new CartMerger(rules);
         cart = initialCart;
     }
 
@@ -32,7 +33,7 @@ public class Cart {
             addCart();
         }
         else {
-            List<CartItem> mergedItems = mergeCart(cart, countItems());
+            List<CartItem> mergedItems = merger.mergeCart(cart, countItems());
             cart.setItems(mergedItems);
         }
 
@@ -40,7 +41,7 @@ public class Cart {
     }
 
     private void addCart() {
-        List<CartItem> cartItems = cartCreator.createCart(countItems());
+        List<CartItem> cartItems = creator.createCart(countItems());
         cart.setItems(cartItems);
     }
 

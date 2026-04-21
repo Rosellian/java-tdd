@@ -1,28 +1,48 @@
 package com.tdd.utils;
 
+import com.tdd.PricingRules;
 import com.tdd.tracing.debug.CartItem;
 import com.tdd.tracing.debug.CartSnapshot;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.stream.Collectors.toList;
-
 public class CartMerger {
+    private final PricingRules rules;
 
-    public static List<CartItem> mergeCart(CartSnapshot cart, Map<String, Integer> itemsPerSku) {
-        //TODO complete merge, add SKUs missing in original list (supporting initial cart with additions)
-
-        return cart.getItems().stream()
-                .map(item -> mergeSku(item, itemsPerSku))
-                .collect(toList());
+    public CartMerger(PricingRules rules) {
+        this.rules = rules;
     }
 
-    private static CartItem mergeSku(CartItem item, Map<String, Integer> itemsPerSku) {
-        String sku = item.getSku();
-        int newQuantity = itemsPerSku.getOrDefault(sku, 0);
-        int mergedQuantity = item.getQuantity() + newQuantity;
+    public List<CartItem> mergeCart(CartSnapshot cart, Map<String, Integer> itemsPerSku) {
+        Map<String, Integer> merged = new LinkedHashMap<>();
 
-        return CartItem.from(sku, mergedQuantity, item.getUnitPrice());
+        addInitialCart(cart, itemsPerSku, merged);
+
+        addScannedItems(itemsPerSku, merged);
+
+        return merged.entrySet().stream()
+                .map(this::toCartItem)
+                .toList();
+    }
+
+    private void addScannedItems(Map<String, Integer> itemsPerSku, Map<String, Integer> merged) {
+        for (var e : itemsPerSku.entrySet()) {
+            merged.putIfAbsent(e.getKey(), e.getValue());
+        }
+    }
+
+    private void addInitialCart(CartSnapshot cart, Map<String, Integer> itemsPerSku, Map<String, Integer> merged) {
+        for (CartItem item : cart.getItems()) {
+            int newQuantity = item.getQuantity() + itemsPerSku.getOrDefault(item.getSku(), 0);
+            merged.put(item.getSku(), newQuantity);
+        }
+    }
+
+    private CartItem toCartItem(Map.Entry<String, Integer> entry) {
+        String sku = entry.getKey();
+
+        return CartItem.from(sku, entry.getValue(), rules.getUnitPrice(sku));
     }
 }
