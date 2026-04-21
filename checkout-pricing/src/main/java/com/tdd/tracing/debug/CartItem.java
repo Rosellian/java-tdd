@@ -1,5 +1,7 @@
 package com.tdd.tracing.debug;
 
+import com.tdd.api.samples.SKUs;
+
 public class CartItem {
     private String sku;
     private int quantity;
@@ -36,5 +38,9 @@ public class CartItem {
         cartItem.unitPrice = unitPrice;
 
         return cartItem;
+    }
+
+    public static CartItem from(SKUs sku, int quantity) {
+        return from(sku.name(),  quantity, sku.unitPrice);
     }
 }

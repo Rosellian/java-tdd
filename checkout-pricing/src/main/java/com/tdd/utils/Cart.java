@@ -32,7 +32,8 @@ public class Cart {
             addCart();
         }
         else {
-            mergeCart(cart, countItems());
+            List<CartItem> mergedItems = mergeCart(cart, countItems());
+            cart.setItems(mergedItems);
         }
 
         return cart;

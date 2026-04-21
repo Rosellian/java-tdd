@@ -1848,6 +1848,8 @@ These should never be mixed up.
 - Avoid conversion between int and long by changing all counts to use integer.
 - Using proper logger for `RuleInspectorView.java`
 - Always use decimals for price data
+- Adding complete support for initial cart plus added items. 
+  Using correct merge logic for different sets of SKUs between the inputs.
 
 ---
 ## Testing
