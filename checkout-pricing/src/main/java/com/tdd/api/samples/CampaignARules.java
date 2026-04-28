@@ -18,7 +18,8 @@ public class CampaignARules implements Ruleset {
                         new SpecialPrice(5, 180, 1, true)    // 5-for-180
                 ),
                 "B", List.of(
-                        new BuyXGetYFree(2, 40, 2, false)    // buy one, get one free
+                        // buy one, get one free
+                        BuyXGetYFree.from(1, 1, SKUs.B.unitPrice, 2, false)
                 ),
                 "C", List.of(
                         new SpecialPrice(4, 70, 1, true)     // 4-for-70

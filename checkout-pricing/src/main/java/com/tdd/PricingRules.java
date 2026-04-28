@@ -49,20 +49,13 @@ public class PricingRules {
     public List<SkuDiscount> getSkuDiscounts() {return skuDiscounts;}
 
     public void addBuyXGetYFree(String sku, int buy, int free, int priority, boolean stackable) {
-        int quantity = BuyXGetYFree.calculateQuantity(buy, free);
-        double price =  BuyXGetYFree.calculatePrice(buy, getUnitPrice(sku));
-
         options.computeIfAbsent(sku, _ -> new ArrayList<>())
-                .add(new BuyXGetYFree(quantity, price, priority, stackable));
+                .add(BuyXGetYFree.from(buy, free, getUnitPrice(sku), priority, stackable));
     }
 
     public void addBuyXGetYDiscount(String sku, int buy, int get, double discount, int priority, boolean stackable) {
-        double unitPrice = getUnitPrice(sku);
-        double price = BuyXGetYDiscount.calculatePrice(buy, unitPrice, get, discount);
-        int quantity = BuyXGetYDiscount.calculateQuantity(buy, get);
-
         options.computeIfAbsent(sku, _ -> new ArrayList<>())
-                .add(new BuyXGetYDiscount(quantity, price, priority, stackable));
+                .add(BuyXGetYDiscount.from(buy, get, getUnitPrice(sku), discount, priority, stackable));
     }
 
     public List<PricingOption> getPricingOptions(String sku) {

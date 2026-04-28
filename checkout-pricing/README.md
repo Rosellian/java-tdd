@@ -1851,6 +1851,10 @@ These should never be mixed up.
 - Always use decimals for price data
 - Adding complete support for initial cart plus added items. 
   Using correct merge logic for different sets of SKUs between the inputs.
+- Prepare SKU-rules (Pricing Options) to be added to Rule timeline
+  - Adding buy and get quantity to BuyXGetYFree-rules and BuyXGetYDiscount-rules
+  - Adding discount to BuyXGetYDiscount-rules
+  - Adding id and name to `PricingOption.java` by extending `Rule.java`
 
 ---
 ## Testing

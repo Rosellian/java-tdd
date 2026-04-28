@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.tdd.api.samples.Ruleset.defaultUnitPricesWithChange;
-import static com.tdd.rules.BuyXGetYDiscount.calculatePrice;
 
 public class NoCrossNoSkuDiscount implements Ruleset {
 
@@ -19,17 +18,17 @@ public class NoCrossNoSkuDiscount implements Ruleset {
         Map<String, List<PricingOption>> options = Map.of(
                 "A", List.of(
                         new SpecialPrice(3, 120, 1, true), // 3-for-120
-                        new BuyXGetYFree(3, 2 * unitPrices.get("A"), 2, true)
+                        BuyXGetYFree.from(2, 1, unitPrices.get("A"), 2, true)
                         // buy 2, get 1 free
                 ),
                 "B", List.of(
                         new SpecialPrice(2, 70, 1, true), // 2-for-70
-                        new BuyXGetYFree(2, unitPrices.get("B"), 2, false) // buy 1, get 1 free
+                        // buy 1, get 1 free
+                        BuyXGetYFree.from(1, 1, unitPrices.get("B"), 2, false)
                 ),
                 "C", List.of(
-                        new BuyXGetYDiscount(3,
-                                calculatePrice(2, unitPrices.get("C"), 1, 0.5),
-                                1, true) // buy 2, get 1 at 50%
+                        // buy 2, get 1 at 50%
+                        BuyXGetYDiscount.from(2, 1, unitPrices.get("C"), 0.5,1, true)
                 )
         );
 
