@@ -2221,6 +2221,10 @@ Changes in server code.
 Changes to `RuleTimeline.jsx`
 - Cross SKU rules and SKU discounts displayed at top as before
 - SKU-rules displayed per SKU in separate subcomponent `<SkuRules rules={rules} />`
+#### Add more data for rules in debugger timeline
+Adding fields:
+- before
+- after
 
 ### Changes in API-layer
 - Refactor API-calls to avoid code duplication
