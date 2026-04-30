@@ -1,4 +1,5 @@
 import {RuleItem} from "./ruletimeline/RuleItem";
+import {SkuRules} from "./ruletimeline/SkuRules";
 
 export function RuleTimeline({ rules }) {
     if (!rules) {
@@ -9,14 +10,18 @@ export function RuleTimeline({ rules }) {
         );
     }
 
+    const globalRules = rules.filter(r => !r.sku);
+
     return (
         <div style={styles.timelineWrapper}>
             <h3 style={styles.timelineHeader}>Rule Timeline</h3>
 
             <ul style={styles.timelineList}>
-                {rules.map((r, i) => (
+                {globalRules.map((r, i) => (
                     <RuleItem key={i} rule={r} />
                 ))}
+
+                <SkuRules rules={rules} />
             </ul>
         </div>
     );

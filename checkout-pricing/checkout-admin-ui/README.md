@@ -2217,6 +2217,10 @@ Changing styling to avoid buttons flexing along with Rule- and Cart-editor.
 Changes in: `ButtonPanel.jsx`
 #### Normalize discount values in RuleTimeLine (Rule Inspector)
 Changes in server code.
+#### Including SKU-rules in debugger timeline
+Changes to `RuleTimeline.jsx`
+- Cross SKU rules and SKU discounts displayed at top as before
+- SKU-rules displayed per SKU in separate subcomponent `<SkuRules rules={rules} />`
 
 ### Changes in API-layer
 - Refactor API-calls to avoid code duplication

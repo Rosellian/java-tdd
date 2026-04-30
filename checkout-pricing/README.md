@@ -1724,7 +1724,8 @@ private RuleContext applyCrossSkuRules(RuleContext context,
 }
 ```
 ### Including PricingOptions in trace
-TODO
+- SKU value added to trace
+- Pricing options logged as rule traces by collector in DP-algorithm (`CandidateCalculator.java` specifically)
 
 ---
 ### Normalize discount values

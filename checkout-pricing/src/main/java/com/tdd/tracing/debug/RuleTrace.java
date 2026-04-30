@@ -5,6 +5,7 @@ import java.util.Map;
 public class RuleTrace {
     private String id;
     private String name;
+    private String sku;
     private int stepIndex;
     private boolean matched;
     private String reason;
@@ -28,6 +29,14 @@ public class RuleTrace {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     public int getStepIndex() {

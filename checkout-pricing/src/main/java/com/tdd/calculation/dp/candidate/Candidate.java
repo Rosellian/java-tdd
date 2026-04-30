@@ -1,4 +1,4 @@
-package com.tdd.calculation.dp;
+package com.tdd.calculation.dp.candidate;
 
 import java.util.List;
 

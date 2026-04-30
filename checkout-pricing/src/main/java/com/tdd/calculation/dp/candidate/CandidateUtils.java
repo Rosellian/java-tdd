@@ -1,4 +1,4 @@
-package com.tdd.calculation.dp;
+package com.tdd.calculation.dp.candidate;
 
 import com.tdd.rules.PricingOption;
 
@@ -10,12 +10,18 @@ public class CandidateUtils {
     static List<String> createOptionsLabels(int i, double[] dp) {
         List<String> optionsLabels = new ArrayList<>();
         optionsLabels.add("unitPrice x" + i + " = " + dp[i]);
+
         return optionsLabels;
+    }
+
+    static String createOptionLabel(PricingOption opt, double candidate) {
+        return opt.quantity() + " for " + opt.price() + " -> " + candidate;
     }
 
     static List<String> createUnitPriceEntry(int i, double unitPrice) {
         List<String> best = new ArrayList<>();
         best.add(i + " x " + unitPrice + " = " + i*unitPrice + " kr");
+
         return best;
     }
 
@@ -31,6 +37,7 @@ public class CandidateUtils {
         }
 
         best.add(quantity + "-for-" + opt.price() + (opt.stackable() ? "" : " (non-stackable)"));
+
         return best;
     }
 }
