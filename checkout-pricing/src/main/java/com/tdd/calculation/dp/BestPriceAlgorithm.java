@@ -3,6 +3,7 @@ package com.tdd.calculation.dp;
 import com.tdd.PricingRules;
 import com.tdd.calculation.dp.candidate.Candidate;
 import com.tdd.calculation.dp.candidate.CandidateCalculator;
+import com.tdd.calculation.dp.utility.SkuRuleRecorder;
 import com.tdd.tracing.DPNode;
 import com.tdd.tracing.DPTrace;
 import com.tdd.tracing.debug.PricingTraceCollector;
@@ -28,12 +29,16 @@ public class BestPriceAlgorithm {
         List<List<String>> path = createPath();
         List<DPNode> nodes = new ArrayList<>();
 
+        SkuRuleRecorder skuRuleRecorder = new SkuRuleRecorder(sku, collector);
+
         for(int i = 1; i <= remaining; i++) {
-            CandidateCalculator calculator = new CandidateCalculator(rules, collector, sku);
+            CandidateCalculator calculator = new CandidateCalculator(rules, sku, skuRuleRecorder);
             Candidate candidate = calculator.candidateFor(dp, i, path);
 
             updateResults(candidate, path, nodes, i, dp);
         }
+
+        skuRuleRecorder.recordTrace(remaining, dp[remaining]);
 
         return new DPTrace(sku, remaining, nodes, dp[remaining], path.get(remaining));
     }

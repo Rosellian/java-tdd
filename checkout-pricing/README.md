@@ -1856,6 +1856,21 @@ These should never be mixed up.
   - Adding buy and get quantity to BuyXGetYFree-rules and BuyXGetYDiscount-rules
   - Adding discount to BuyXGetYDiscount-rules
   - Adding id and name to `PricingOption.java` by extending `Rule.java`
+---
+### Improve SKU-rule tracing
+Adding SKU-rules to trace only once and with actual effect.  
+Moving CandidateRecorder one level up:
+`CandidateRecorder` -> `SkuRuleRecorder`  
+```java
+public SkuRuleRecorder(String sku) {}
+
+public void addSkuRuleApplied(int stepIndex, PricingOption skuRule) {}
+
+public void recordTrace() {}
+```
+It records traces in 2 steps:
+1. Creates rule trace for applied rule
+2. Calculates effect and passes complete rule trace to collector
 
 ---
 ## Testing

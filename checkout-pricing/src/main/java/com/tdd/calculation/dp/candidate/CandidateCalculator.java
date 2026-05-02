@@ -1,8 +1,8 @@
 package com.tdd.calculation.dp.candidate;
 
 import com.tdd.PricingRules;
+import com.tdd.calculation.dp.utility.SkuRuleRecorder;
 import com.tdd.rules.PricingOption;
-import com.tdd.tracing.debug.PricingTraceCollector;
 
 import java.util.List;
 
@@ -12,12 +12,12 @@ public class CandidateCalculator {
     private final double unitPrice;
     private final List<PricingOption> pricingOptions;
     private final String sku;
-    private final CandidateRecorder recorder;
+    private final SkuRuleRecorder recorder;
 
-    public CandidateCalculator(PricingRules rules, PricingTraceCollector collector, String sku) {
+    public CandidateCalculator(PricingRules rules, String sku, SkuRuleRecorder recorder) {
         this.unitPrice = rules.getUnitPrice(sku);
         this.pricingOptions = rules.getPricingOptions(sku);
-        this.recorder = new CandidateRecorder(sku, collector);
+        this.recorder = recorder;
         this.sku = sku;
     }
 
@@ -31,15 +31,14 @@ public class CandidateCalculator {
             if(i >= opt.quantity()) {
                 double current = getCurrentCandidate(dp, i, opt);
                 double candidate = calculateCandidate(opt, current, i);
-                boolean isBetterCandidate = candidate < dp[i];
 
                 optionsLabels.add(createOptionLabel(opt, candidate));
 
-                if(isBetterCandidate) {
+                if(candidate < dp[i]) {
                     dp[i] = candidate;
                     best = createBestPriceList(opt, path, i);
 
-                    recorder.recordSkuRule(i, opt, current, candidate, isBetterCandidate);
+                    recorder.addAppliedSkuRule(i, opt, unitPrice);
                 }
             }
         }
