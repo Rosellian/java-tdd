@@ -2225,6 +2225,9 @@ Changes to `RuleTimeline.jsx`
 Adding fields:
 - before
 - after
+#### Mark rules as applied or not in debugger timeline
+- Adding mark as in inspector
+- Fixing graphical alignment
 
 ### Changes in API-layer
 - Refactor API-calls to avoid code duplication
