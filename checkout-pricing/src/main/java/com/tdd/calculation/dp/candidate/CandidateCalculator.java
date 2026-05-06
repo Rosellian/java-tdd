@@ -1,9 +1,11 @@
 package com.tdd.calculation.dp.candidate;
 
 import com.tdd.PricingRules;
+import com.tdd.calculation.dp.utility.PathEntry;
 import com.tdd.calculation.dp.utility.SkuRuleRecorder;
 import com.tdd.rules.PricingOption;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.tdd.calculation.dp.candidate.CandidateUtils.*;
@@ -22,28 +24,30 @@ public class CandidateCalculator {
     }
 
     //TODO dp is updated (side-effect)
-    public Candidate candidateFor(double[] dp, int i, List<List<String>> path) {
+    public Candidate candidateFor(double[] dp, int i, List<PathEntry> path) {
         dp[i] = i * unitPrice;
         List<String> best = createUnitPriceEntry(i, unitPrice);
+        List<PricingOption> appliedRules = new ArrayList<>();
         List<String> optionsLabels = createOptionsLabels(i, dp);
 
         for(PricingOption opt : pricingOptions) {
             if(i >= opt.quantity()) {
                 double current = getCurrentCandidate(dp, i, opt);
                 double candidate = calculateCandidate(opt, current, i);
+                boolean isBetterCandidate = candidate < dp[i];
 
                 optionsLabels.add(createOptionLabel(opt, candidate));
+                recorder.addSkuRule(i, opt);
 
-                if(candidate < dp[i]) {
+                if(isBetterCandidate) {
                     dp[i] = candidate;
-                    best = createBestPriceList(opt, path, i);
-
-                    recorder.addAppliedSkuRule(i, opt, unitPrice);
+                    best = createBestPriceList(path, opt, i);
+                    appliedRules = createAppliedRule(path, opt, i);
                 }
             }
         }
 
-        return new Candidate(best, optionsLabels, sku);
+        return new Candidate(new PathEntry(best, appliedRules), optionsLabels, sku);
     }
 
     private double getCurrentCandidate(double[] dp, int i, PricingOption opt) {

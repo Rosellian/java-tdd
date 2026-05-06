@@ -1,10 +1,13 @@
 package com.tdd.calculation.dp;
 
+import com.tdd.calculation.dp.utility.PathEntry;
 import com.tdd.tracing.DPTrace;
 import com.tdd.tracing.debug.PricingTraceCollector;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 public class DpUtils {
     static final String ITEMS_0_KR = "0 items -> 0 kr";
@@ -22,9 +25,10 @@ public class DpUtils {
         return dp;
     }
 
-    static List<List<String>> createPath() {
-        List<List<String>> path = new ArrayList<>();
-        path.add(List.of(ITEMS_0_KR));
+    static List<PathEntry> createPathStart() {
+        List<PathEntry> path = new ArrayList<>();
+        path.add(new PathEntry(List.of(ITEMS_0_KR), emptyList()));
+
         return path;
     }
 }

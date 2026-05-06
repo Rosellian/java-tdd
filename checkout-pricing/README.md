@@ -1872,6 +1872,12 @@ It records traces in 2 steps:
 1. Creates rule trace for applied rule
 2. Calculates effect and passes complete rule trace to collector
 
+#### Including skipped SKU-rules
+- Adding all SKU-rules to trace
+- Only setting matched as true for rules in chosen price path
+
+---
+
 ---
 ## Testing
 ### Test cases

@@ -5,23 +5,26 @@ import com.tdd.tracing.debug.PricingTraceCollector;
 import com.tdd.tracing.debug.RuleTrace;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class SkuRuleRecorder {
-    private final Set<AppliedSkuRule> appliedRules;
+    private final Set<IncludedSkuRule> skuRules;
     private final String sku;
+    private final double unitPrice;
     private final PricingTraceCollector collector;
 
-    public SkuRuleRecorder(String sku, PricingTraceCollector collector) {
-        this.appliedRules = new HashSet<>();
+    public SkuRuleRecorder(String sku, double unitPrice, PricingTraceCollector collector) {
+        this.skuRules = new HashSet<>();
         this.sku = sku;
+        this.unitPrice = unitPrice;
         this.collector = collector;
     }
 
-    public void addAppliedSkuRule(int stepIndex, PricingOption skuRule, double unitPrice) {
+    public void addSkuRule(int stepIndex, PricingOption skuRule) {
         RuleTrace rt = createTrace(stepIndex, skuRule);
 
-        appliedRules.add(new AppliedSkuRule(skuRule, rt, unitPrice));
+        skuRules.add(new IncludedSkuRule(skuRule, rt));
     }
 
     private RuleTrace createTrace(int stepIndex, PricingOption skuRule) {
@@ -30,18 +33,17 @@ public class SkuRuleRecorder {
         rt.setName(skuRule.name());
         rt.setSku(sku);
         rt.setStepIndex(stepIndex);
-        rt.setMatched(true);
 
         return rt;
     }
 
-    public void recordTrace(int count, double finalPrice) {
-        for (AppliedSkuRule appliedRule : appliedRules) {
-            RuleTrace trace = appliedRule.trace();
+    public void recordTrace(int count, double finalPrice, List<PricingOption> finalRules) {
+        for (IncludedSkuRule skuRule : skuRules) {
+            RuleTrace trace = skuRule.trace();
 
-            double before = appliedRule.unitPrice() * count;
+            setMatched(trace, finalRules);
 
-            addPrices(finalPrice, trace, before);
+            addPrices(finalPrice, trace, count);
 
             if(collector != null) {
                 collector.recordRule(trace);
@@ -49,9 +51,18 @@ public class SkuRuleRecorder {
         }
     }
 
-    private void addPrices(double finalPrice, RuleTrace trace, double before) {
-        trace.setBefore(before);
-        trace.setAfter(finalPrice);
-        trace.setDelta(finalPrice - before);
+    private void setMatched(RuleTrace rt, List<PricingOption> finalRules) {
+        boolean usedInFinalPath = finalRules.stream()
+                .anyMatch(rule -> rule.id().equals(rt.getId()));
+
+        rt.setMatched(usedInFinalPath);
+    }
+
+    private void addPrices(double finalPrice, RuleTrace rt, int count) {
+        double before = unitPrice * count;
+
+        rt.setBefore(before);
+        rt.setAfter(finalPrice);
+        rt.setDelta(finalPrice - before);
     }
 }

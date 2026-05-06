@@ -1,5 +1,6 @@
 package com.tdd.calculation.dp.candidate;
 
+import com.tdd.calculation.dp.utility.PathEntry;
 import com.tdd.rules.PricingOption;
 
 import java.util.ArrayList;
@@ -25,12 +26,12 @@ public class CandidateUtils {
         return best;
     }
 
-    static List<String> createBestPriceList(PricingOption opt, List<List<String>> path, int i) {
+    static List<String> createBestPriceList(List<PathEntry> path, PricingOption opt, int i) {
         List<String> best;
         int quantity = opt.quantity();
 
         if(opt.stackable()) {
-            best = new ArrayList<>(path.get(i - quantity));
+            best = new ArrayList<>(path.get(i - quantity).stringPath());
         }
         else {
             best = new ArrayList<>();
@@ -39,5 +40,22 @@ public class CandidateUtils {
         best.add(quantity + "-for-" + opt.price() + (opt.stackable() ? "" : " (non-stackable)"));
 
         return best;
+    }
+
+    static List<PricingOption> createAppliedRule(List<PathEntry> path, PricingOption opt, int i) {
+        List<PricingOption> newAppliedRules;
+        int quantity = opt.quantity();
+
+        if(i == quantity) {
+            newAppliedRules = new ArrayList<>();
+        }
+        else {
+            List<PricingOption> stillActiveRules = path.get(i - quantity).appliedRules();
+            newAppliedRules = new ArrayList<>(stillActiveRules);
+        }
+
+        newAppliedRules.add(opt);
+
+        return newAppliedRules;
     }
 }

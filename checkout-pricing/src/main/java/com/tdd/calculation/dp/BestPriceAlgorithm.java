@@ -3,6 +3,7 @@ package com.tdd.calculation.dp;
 import com.tdd.PricingRules;
 import com.tdd.calculation.dp.candidate.Candidate;
 import com.tdd.calculation.dp.candidate.CandidateCalculator;
+import com.tdd.calculation.dp.utility.PathEntry;
 import com.tdd.calculation.dp.utility.SkuRuleRecorder;
 import com.tdd.tracing.DPNode;
 import com.tdd.tracing.DPTrace;
@@ -26,10 +27,10 @@ public class BestPriceAlgorithm {
         if(remaining <= 0) return noResult(sku, remaining, collector);
 
         double[] dp = initDp(remaining);
-        List<List<String>> path = createPath();
+        List<PathEntry> path = createPathStart();
         List<DPNode> nodes = new ArrayList<>();
 
-        SkuRuleRecorder skuRuleRecorder = new SkuRuleRecorder(sku, collector);
+        SkuRuleRecorder skuRuleRecorder = new SkuRuleRecorder(sku, rules.getUnitPrice(sku), collector);
 
         for(int i = 1; i <= remaining; i++) {
             CandidateCalculator calculator = new CandidateCalculator(rules, sku, skuRuleRecorder);
@@ -38,15 +39,17 @@ public class BestPriceAlgorithm {
             updateResults(candidate, path, nodes, i, dp);
         }
 
-        skuRuleRecorder.recordTrace(remaining, dp[remaining]);
+        double finalPrice = dp[remaining];
+        PathEntry finalPath = path.get(remaining);
+        skuRuleRecorder.recordTrace(remaining, finalPrice, finalPath.appliedRules());
 
-        return new DPTrace(sku, remaining, nodes, dp[remaining], path.get(remaining));
+        return new DPTrace(sku, remaining, nodes, finalPrice, finalPath.stringPath());
     }
 
-    private void updateResults(Candidate candidate, List<List<String>> path, List<DPNode> nodes, int i, double[] dp) {
-        List<String> best = candidate.best();
+    private void updateResults(Candidate candidate, List<PathEntry> path, List<DPNode> nodes, int i, double[] dp) {
+        List<String> best = candidate.pathEntry().stringPath();
 
-        path.add(best);
+        path.add(candidate.pathEntry());
         nodes.add(new DPNode(i, dp[i], List.copyOf(best)));
 
         if(collector != null) {

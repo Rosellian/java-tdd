@@ -1,5 +1,7 @@
 package com.tdd.calculation.dp.candidate;
 
+import com.tdd.calculation.dp.utility.PathEntry;
+
 import java.util.List;
 
-public record Candidate(List<String> best, List<String> optionsLabels, String sku) {}
+public record Candidate(PathEntry pathEntry, List<String> optionsLabels, String sku) {}
