@@ -1,8 +1,9 @@
 import {useState} from "react";
 import {useTraceSync} from "../TraceSyncProvider";
-import {Section} from "./Section";
+import {Section} from "../../ui/Section";
 import {EventBody} from "./ruletimeline/EventBody";
 import {EventHeader} from "./ruletimeline/EventHeader";
+import {AnimatedBody} from "../../ui/AnimatedBody";
 
 export function RuleTimeline({ events }) {
     return (
@@ -33,7 +34,9 @@ function RuleEvent({ event, index }) {
         }}>
             <EventHeader event={event} index={index} onClick={openAndSelect} />
 
-            {open && <EventBody event={event}/>}
+            <AnimatedBody open={open}>
+                <EventBody event={event}/>
+            </AnimatedBody>
         </div>
     );
 }

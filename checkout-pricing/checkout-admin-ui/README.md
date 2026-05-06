@@ -2229,6 +2229,17 @@ Adding fields:
 - Adding mark as in inspector
 - Fixing graphical alignment
 
+### UI improvements
+#### Adding smooth expand/collapse animation
+Using framer-motion lib.  
+Creating reusable component `<AnimatedBody open={open} />` using children as body.
+- Debugger
+  - Rule timeline
+- Inspector
+  - Rule timeline
+  - SKU breakdown
+  - DP section
+
 ### Changes in API-layer
 - Refactor API-calls to avoid code duplication
 

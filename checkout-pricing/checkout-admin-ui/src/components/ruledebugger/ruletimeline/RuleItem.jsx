@@ -2,11 +2,11 @@ import {useState} from 'react'
 import {useTraceSync} from "../../TraceSyncProvider";
 import {RuleBody} from "./RuleBody";
 import {RuleEntry} from "./RuleEntry";
+import {AnimatedBody} from "../../../ui/AnimatedBody";
 
 export function RuleItem({ rule }) {
     const [open, setOpen] = useState(false);
     const {selectedStep, setSelectedStep} = useTraceSync();
-
     const isActive = rule.stepIndex === selectedStep;
 
     function selectOnClick() {
@@ -21,7 +21,9 @@ export function RuleItem({ rule }) {
         }}>
             <RuleEntry rule={rule} onClick={selectOnClick} open={open} />
 
-            {open && <RuleBody rule={rule} />}
+            <AnimatedBody open={open}>
+                <RuleBody rule={rule} />
+            </AnimatedBody>
         </li>
     );
 }

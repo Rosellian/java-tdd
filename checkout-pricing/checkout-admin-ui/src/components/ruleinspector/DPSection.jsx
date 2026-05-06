@@ -1,7 +1,8 @@
 import {useState} from "react";
-import {Section} from "./Section";
+import {Section} from "../../ui/Section";
 import {DPHeader} from "./dpsection/DPHeader";
 import {DPBody} from "./dpsection/DPBody";
+import {AnimatedBody} from "../../ui/AnimatedBody";
 
 export function DPSection({ dpTraces }) {
     return (
@@ -22,7 +23,9 @@ function DPTraceView({ dp }) {
         <div style={styles.dp}>
             <DPHeader dp={dp} onClick={() => setOpen(!open)} />
 
-            {open && <DPBody dp={dp} />}
+            <AnimatedBody open={open}>
+                <DPBody dp={dp} />
+            </AnimatedBody>
         </div>
     );
 }

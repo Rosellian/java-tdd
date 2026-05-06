@@ -1,7 +1,8 @@
 import {useState} from "react";
-import {Section} from "./Section";
+import {Section} from "../../ui/Section";
 import {SkuHeader} from "./skubreakdown/SkuHeader";
 import {SkuBody} from "./skubreakdown/SkuBody";
+import {AnimatedBody} from "../../ui/AnimatedBody";
 
 export function SkuBreakdown({ skuTraces }) {
     return (
@@ -22,7 +23,9 @@ function SkuItem({ sku }) {
         <div style={styles.sku}>
             <SkuHeader sku={sku} onClick={() => setOpen(!open)}/>
 
-            {open && <SkuBody sku={sku} />}
+            <AnimatedBody open={open}>
+                <SkuBody sku={sku} />
+            </AnimatedBody>
         </div>
     );
 }

@@ -1,4 +1,4 @@
-import {Section} from "./Section";
+import {Section} from "../../ui/Section";
 import {RuleTimeline} from "./RuleTimeLine";
 import {SkuBreakdown} from "./SkuBreakdown";
 import {DPSection} from "./DPSection";
