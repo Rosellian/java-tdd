@@ -2239,6 +2239,8 @@ Creating reusable component `<AnimatedBody open={open} />` using children as bod
   - Rule timeline
   - SKU breakdown
   - DP section
+#### Disabled state for button panel
+
 
 ### Changes in API-layer
 - Refactor API-calls to avoid code duplication

@@ -1,6 +1,7 @@
 import {runPricingEngine} from "../api/pricingEngine";
 
 export function ButtonPanel({ cart, ruleSet, getTrace, setTrace }) {
+    const isDisabled = Object.keys(cart).length === 0;
 
     async function evaluate() {
         const result = await runPricingEngine(cart, ruleSet);
@@ -9,14 +10,24 @@ export function ButtonPanel({ cart, ruleSet, getTrace, setTrace }) {
 
     return (
         <div style={styles.buttons}>
-            <button style={styles.button} onClick={evaluate}>
-                Evaluate
-            </button>
-            <button style={styles.button} onClick={() => getTrace(cart, ruleSet)}>
-                Get trace
-            </button>
+            <DisabledButton isDisabled={isDisabled} onClick={evaluate} name="Evaluate" />
+            <DisabledButton isDisabled={isDisabled} onClick={() => getTrace(cart, ruleSet)} name="Get trace" />
         </div>
     );
+}
+
+function DisabledButton({ isDisabled, onClick, name }) {
+    return (
+        <button
+            style={{
+                ...styles.button,
+                ...(isDisabled ? styles.buttonDisabled : {})
+            }}
+            disabled={isDisabled}
+            onClick={onClick}>
+            {name}
+        </button>
+    )
 }
 
 const styles = {
@@ -36,5 +47,10 @@ const styles = {
         fontSize: "1rem",
         marginBottom: 12,
         transition: "background 0.2s",
+    },
+    buttonDisabled: {
+        opacity: 0.4,
+        cursor: "not-allowed",
+        background: "#555",
     }
 }
