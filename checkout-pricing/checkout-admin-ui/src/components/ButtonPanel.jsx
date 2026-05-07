@@ -1,4 +1,6 @@
 import {runPricingEngine} from "../api/pricingEngine";
+import {ThemeToggleButton} from "../ui/ThemeToggleButton";
+import {useTheme} from "../ui/ThemeProvider";
 
 export function ButtonPanel({ cart, ruleSet, getTrace, setTrace }) {
     const isDisabled = Object.keys(cart).length === 0;
@@ -12,15 +14,19 @@ export function ButtonPanel({ cart, ruleSet, getTrace, setTrace }) {
         <div style={styles.buttons}>
             <DisabledButton isDisabled={isDisabled} onClick={evaluate} name="Evaluate" />
             <DisabledButton isDisabled={isDisabled} onClick={() => getTrace(cart, ruleSet)} name="Get trace" />
+            <ThemeToggleButton />
         </div>
     );
 }
 
 function DisabledButton({ isDisabled, onClick, name }) {
+    const { theme } = useTheme();
+
     return (
         <button
             style={{
                 ...styles.button,
+                ...(theme === "dark" ? styles.buttonDark : styles.buttonLight),
                 ...(isDisabled ? styles.buttonDisabled : {})
             }}
             disabled={isDisabled}
@@ -37,16 +43,22 @@ const styles = {
     button: {
         display: "block",
         width: "100%",
-        background: "#BB86FC",
         border: "none",
         padding: "14px 20px",
         borderRadius: 6,
         cursor: "pointer",
-        color: "#000",
         fontWeight: "bold",
         fontSize: "1rem",
         marginBottom: 12,
         transition: "background 0.2s",
+    },
+    buttonDark: {
+        background: "#BB86FC",
+        color: "#000",
+    },
+    buttonLight: {
+        background: "#5A2DA8",
+        color: "#fff",
     },
     buttonDisabled: {
         opacity: 0.4,

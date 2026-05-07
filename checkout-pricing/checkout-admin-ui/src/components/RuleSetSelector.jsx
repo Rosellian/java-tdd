@@ -1,11 +1,24 @@
+import {useTheme} from "../ui/ThemeProvider";
+
 export function RuleSetSelector({ value, onChange }) {
+    const { theme } = useTheme();
+
     return (
-        <div style={styles.box}>
-            <h3 style={styles.title}>Rule Set</h3>
+        <div style={{
+            ...styles.box,
+            ...(theme === "dark" ? styles.boxDark : styles.boxLight)
+        }}>
+            <h3 style={{
+                ...styles.title,
+                ...(theme === "dark" ? styles.titleDark : styles.titleLight)
+            }}>Rule Set</h3>
             <select
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                style={styles.select}
+                style={{
+                    ...styles.select,
+                    ...(theme === "dark" ? styles.selectDark : styles.selectLight)
+                }}
             >
                 <option value="default">Default</option>
                 <option value="campaignA">Campaign A</option>
@@ -18,19 +31,40 @@ export function RuleSetSelector({ value, onChange }) {
 
 const styles = {
     box: {
-        background: "#1E1E1E",
         padding: 15,
         borderRadius: 4,
+        transition: "background 0.3s ease, color 0.3s ease",
+    },
+    boxDark: {
+        background: "#1E1E1E",
+    },
+    boxLight: {
+        background: "#f2f2f2",
     },
     title: {
-        color: "#82B1FF",
         marginBottom: 10,
+        transition: "color 0.3s ease",
+    },
+    titleDark: {
+        color: "#82B1FF",
+    },
+    titleLight: {
+        color: "#5A2DA8",
     },
     select: {
-        background: "#2A2A2A",
-        border: "1px solid #333",
-        color: "#E0E0E0",
+        border: "1px solid",
         padding: 5,
         width: "100%",
+        transition: "background 0.3s ease, color 0.3s ease, border-color 0.3s ease",
+    },
+    selectDark: {
+        background: "#2A2A2A",
+        borderColor: "#333",
+        color: "#E0E0E0",
+    },
+    selectLight: {
+        background: "#ffffff",
+        borderColor: "#ccc",
+        color: "#000000",
     }
 }

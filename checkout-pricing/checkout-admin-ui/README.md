@@ -2240,7 +2240,17 @@ Creating reusable component `<AnimatedBody open={open} />` using children as bod
   - SKU breakdown
   - DP section
 #### Disabled state for button panel
-
+Making buttons disabled when cart is empty.
+#### Adding light and dark theme with toggle button
+- Theme provider
+- Toggle button
+- Applied to parts:
+  - AdminApp
+  - ButtonPanel
+  - RulesetSelector
+  - RuleInspector shell
+  - RuleDebugger shell
+  - CartEditor
 
 ### Changes in API-layer
 - Refactor API-calls to avoid code duplication

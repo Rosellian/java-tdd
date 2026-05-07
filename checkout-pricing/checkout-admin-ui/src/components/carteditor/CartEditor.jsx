@@ -1,8 +1,10 @@
 import {AddSkuForm} from "./AddSkuForm";
 import {CartLoader} from "./CartLoader";
 import {RecentCarts} from "./recentcarts/RecentCarts";
+import {useTheme} from "../../ui/ThemeProvider";
 
 export function CartEditor({ cart, onChange }) {
+    const { theme } = useTheme();
 
     function updateSku(sku, qty) {
         const next = { ...cart };
@@ -12,11 +14,17 @@ export function CartEditor({ cart, onChange }) {
     }
 
     return (
-        <div style={styles.box}>
-            <h3 style={styles.title}>Cart</h3>
+        <div style={{
+            ...styles.box,
+            ...(theme === "dark" ? styles.boxDark : styles.boxLight)
+        }}>
+            <h3 style={{
+                ...styles.title,
+                ...(theme === "dark" ? styles.titleDark : styles.titleLight)
+            }}>Cart</h3>
 
             {Object.entries(cart).map(([sku, qty]) => (
-                <SkuRow sku={sku} qty={qty} updateSku={updateSku} />
+                <SkuRow sku={sku} qty={qty} update={updateSku} />
             ))}
 
             <AddSkuForm onAdd={updateSku} />
@@ -26,7 +34,9 @@ export function CartEditor({ cart, onChange }) {
     );
 }
 
-function SkuRow({sku, qty}, update) {
+function SkuRow({sku, qty, update}) {
+    const { theme } = useTheme();
+
     return (
         <div key={sku} style={styles.row}>
             <span>{sku}</span>
@@ -34,7 +44,10 @@ function SkuRow({sku, qty}, update) {
                 type="number"
                 value={qty}
                 onChange={(e) => update(sku, Number(e.target.value))}
-                style={styles.input}
+                style={{
+                    ...styles.input,
+                    ...(theme === "dark" ? styles.inputDark : styles.inputLight)
+                }}
             />
         </div>
     );
@@ -42,14 +55,28 @@ function SkuRow({sku, qty}, update) {
 
 const styles = {
     box: {
-        background: "#1E1E1E",
         padding: 15,
         borderRadius: 4,
         minWidth: 200,
+        transition: "background 0.3s ease, color 0.3s ease",
+    },
+    boxDark: {
+        background: "#1E1E1E",
+        color: "#E0E0E0",
+    },
+    boxLight: {
+        background: "#f5f5f5",
+        color: "#000000",
     },
     title: {
-        color: "#80CBC4",
         marginBottom: 10,
+        transition: "color 0.3s ease",
+    },
+    titleDark: {
+        color: "#80CBC4",
+    },
+    titleLight: {
+        color: "#00796B",
     },
     row: {
         display: "flex",
@@ -57,10 +84,19 @@ const styles = {
         marginBottom: 8,
     },
     input: {
-        background: "#2A2A2A",
-        border: "1px solid #333",
-        color: "#E0E0E0",
+        border: "1px solid",
         padding: 5,
         width: 60,
+        transition: "background 0.3s ease, color 0.3s ease, border-color 0.3s ease",
+    },
+    inputDark: {
+        background: "#2A2A2A",
+        borderColor: "#333",
+        color: "#E0E0E0",
+    },
+    inputLight: {
+        background: "#ffffff",
+        borderColor: "#ccc",
+        color: "#000000",
     }
 }

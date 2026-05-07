@@ -2,26 +2,41 @@ import {Section} from "../../ui/Section";
 import {RuleTimeline} from "./RuleTimeLine";
 import {SkuBreakdown} from "./SkuBreakdown";
 import {DPSection} from "./DPSection";
+import {useTheme} from "../../ui/ThemeProvider";
 
 export function RuleInspector({ trace }) {
+    const { theme } = useTheme();
+
     if (!trace) {
         return (
-            <div style={styles.container}>
+            <div style={{
+                ...styles.container,
+                ...(theme === "dark" ? styles.dark : styles.light)
+            }}>
                 <p>No trace available. Run a pricing evaluation.</p>
             </div>
         );
     }
 
     return (
-        <div style={styles.container}>
-            <h1 style={styles.header}>Rule Inspector</h1>
+        <div style={{
+            ...styles.container,
+            ...(theme === "dark" ? styles.dark : styles.light)
+        }}>
+            <h1 style={{
+                ...styles.header,
+                ...(theme === "dark" ? styles.headerDark : styles.headerLight)
+            }}>Rule Inspector</h1>
 
             <RuleTimeline events={trace.events} />
             <SkuBreakdown skuTraces={trace.skuTraces} />
             <DPSection dpTraces={trace.dpTraces} />
 
             <Section title="Final Total">
-                <div style={styles.total}>{trace.finalTotal} kr</div>
+                <div style={{
+                    ...styles.total,
+                    ...(theme === "dark" ? styles.totalDark : styles.totalLight)
+                }}>{trace.finalTotal} kr</div>
             </Section>
         </div>
     );
@@ -33,17 +48,36 @@ const styles = {
         padding: 20,
         maxWidth: 900,
         margin: "0 auto",
+        transition: "background 0.3s ease, color 0.3s ease",
+    },
+    dark: {
         background: "#121212",
         color: "#E0E0E0",
+    },
+    light: {
+        background: "#ffffff",
+        color: "#000000",
     },
     header: {
         textAlign: "center",
         marginBottom: 30,
+        transition: "color 0.3s ease",
+    },
+    headerDark: {
         color: "#BB86FC",
+    },
+    headerLight: {
+        color: "#5A2DA8",
     },
     total: {
         fontSize: 24,
         fontWeight: "bold",
+        transition: "color 0.3s ease",
+    },
+    totalDark: {
         color: "#03DAC6",
+    },
+    totalLight: {
+        color: "#00897B",
     }
 }

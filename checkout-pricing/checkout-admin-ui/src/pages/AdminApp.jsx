@@ -6,8 +6,10 @@ import { RuleDebugger } from "../components/ruledebugger/RuleDebugger";
 import {usePricingTrace} from "../api/usePricingTrace";
 import {TraceSyncProvider} from "../components/TraceSyncProvider";
 import {ButtonPanel} from "../components/ButtonPanel";
+import {useTheme} from "../ui/ThemeProvider";
 
 export default function AdminApp() {
+    const { theme } = useTheme();
     const [cart, setCart] = useState({});
     const [ruleSet, setRuleSet] = useState("default");
     const [trace, setTrace] = useState(null);
@@ -15,7 +17,10 @@ export default function AdminApp() {
     const { traceNew, loading, error, getTrace } = usePricingTrace(cart, ruleSet);
 
     return (
-        <div style={styles.container}>
+        <div style={{
+            ...styles.container,
+            ...(theme === "dark" ? styles.dark : styles.light)
+        }}>
             <h1 style={styles.header}>Pricing Engine Admin</h1>
 
             <div style={styles.controls}>
@@ -37,11 +42,17 @@ export default function AdminApp() {
 
 const styles = {
     container: {
-        background: "#121212",
         minHeight: "100vh",
-        color: "#E0E0E0",
         padding: 20,
         fontFamily: "monospace",
+    },
+    dark: {
+        background: "#121212",
+        color: "#E0E0E0",
+    },
+    light: {
+        background: "#ffffff",
+        color: "#000000",
     },
     header: {
         textAlign: "center",
