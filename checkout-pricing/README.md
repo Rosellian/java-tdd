@@ -1121,6 +1121,8 @@ It records traces in 2 steps:
 - Only setting matched as true for rules in chosen price path
 
 ---
+### Logging and refactoring
+- RuleInspectorView using compact logger format
 
 ---
 ## Testing
