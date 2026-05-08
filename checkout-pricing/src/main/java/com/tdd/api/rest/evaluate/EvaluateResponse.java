@@ -8,4 +8,11 @@ public class EvaluateResponse {
     public EvaluateResponse(RuleTrace trace) {
         this.trace = trace;
     }
+
+    @Override
+    public String toString() {
+        return "EvaluateResponse{" +
+                "trace=" + trace +
+                '}';
+    }
 }

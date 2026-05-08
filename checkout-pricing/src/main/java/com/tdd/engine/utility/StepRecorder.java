@@ -19,6 +19,18 @@ public class StepRecorder {
         this.collector = collector;
     }
 
+    public void logCrossStepStart() {
+        logStepStart(CROSS_SKU, CROSS_SKU_DESCRIPTION);
+    }
+
+    public void logDiscountStepStart() {
+        logStepStart(SKU_DISCOUNTS, SKU_DISCOUNT_DESCRIPTION);
+    }
+
+    private void logStepStart(String step, String description) {
+        logger.info("Running step: {}, {}", step, description);
+    }
+
     public void recordCrossSkuStep(AtomicInteger stepIndex, double beforeCrossPrice, double afterCrossPrice) {
         recordStep(CROSS_SKU, CROSS_SKU_DESCRIPTION, stepIndex, beforeCrossPrice, afterCrossPrice);
     }
@@ -33,6 +45,6 @@ public class StepRecorder {
             collector.recordStep(step, stepIndex.get()-1, description, beforePrice, afterPrice);
         }
 
-        logger.debug("Ran step: {}, {}, price before={}, price after={}", step, description, beforePrice, afterPrice);
+        logger.info("Ran step: {}, {}, price before={}, price after={}", step, description, beforePrice, afterPrice);
     }
 }

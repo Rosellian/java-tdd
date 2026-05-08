@@ -43,4 +43,13 @@ public class CartItem {
     public static CartItem from(SKUs sku, int quantity) {
         return from(sku.name(),  quantity, sku.unitPrice);
     }
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "sku='" + sku + '\'' +
+                ", quantity=" + quantity +
+                ", unitPrice=" + unitPrice +
+                '}';
+    }
 }

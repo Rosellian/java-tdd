@@ -8,4 +8,11 @@ public class TraceResponse {
     public TraceResponse(PricingTrace trace) {
         this.trace = trace;
     }
+
+    @Override
+    public String toString() {
+        return "TraceResponse{" +
+                "trace=" + trace +
+                '}';
+    }
 }

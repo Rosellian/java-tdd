@@ -44,4 +44,13 @@ public class CartSnapshot {
     public static CartSnapshot from(List<CartItem> items) {
         return CartSnapshot.from(items, null, null);
     }
+
+    @Override
+    public String toString() {
+        return "CartSnapshot{" +
+                "items=" + items +
+                ", customer=" + customer +
+                ", context=" + context +
+                '}';
+    }
 }

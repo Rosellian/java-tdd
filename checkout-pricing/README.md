@@ -1123,6 +1123,13 @@ It records traces in 2 steps:
 ---
 ### Logging and refactoring
 - RuleInspectorView using compact logger format
+- Adding logging to evaluation steps
+  - API
+  - Rule Engine steps through:
+    - PricingEngineService
+    - StepRecorder
+  - Rule Evaluator
+  - DP-algorithm
 
 ---
 ## Testing

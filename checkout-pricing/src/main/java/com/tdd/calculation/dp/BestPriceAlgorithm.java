@@ -8,6 +8,8 @@ import com.tdd.calculation.dp.utility.SkuRuleRecorder;
 import com.tdd.tracing.DPNode;
 import com.tdd.tracing.DPTrace;
 import com.tdd.tracing.debug.PricingTraceCollector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 import static com.tdd.calculation.dp.DpUtils.*;
 
 public class BestPriceAlgorithm {
+    private static final Logger logger = LoggerFactory.getLogger(BestPriceAlgorithm.class);
     private final PricingRules rules;
     private final PricingTraceCollector collector;
 
@@ -24,6 +27,7 @@ public class BestPriceAlgorithm {
     }
 
     public DPTrace bestPriceFor(String sku, int remaining) {
+        log("Running DP-algorithm for SKU {}", sku);
         if(remaining <= 0) return noResult(sku, remaining, collector);
 
         double[] dp = initDp(remaining);
@@ -43,7 +47,16 @@ public class BestPriceAlgorithm {
         PathEntry finalPath = path.get(remaining);
         skuRuleRecorder.recordTrace(remaining, finalPrice, finalPath.appliedRules());
 
-        return new DPTrace(sku, remaining, nodes, finalPrice, finalPath.stringPath());
+        DPTrace dpTrace = new DPTrace(sku, remaining, nodes, finalPrice, finalPath.stringPath());
+        log("Finished DP-algorithm for SKU {} with result {}", sku, dpTrace);
+
+        return dpTrace;
+    }
+
+    private void log(String message, Object ... args) {
+        if (collector != null) {
+            logger.info(message, args);
+        }
     }
 
     private void updateResults(Candidate candidate, List<PathEntry> path, List<DPNode> nodes, int i, double[] dp) {

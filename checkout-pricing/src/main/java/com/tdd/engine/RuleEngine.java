@@ -33,6 +33,7 @@ public class RuleEngine {
     }
 
     private Evaluation evaluateCrossRules(RuleContext context, AtomicInteger stepIndex) {
+        recorder.logCrossStepStart();
         double beforeCrossPrice = computeTotalPrice(context, rules);
 
         RuleContext afterCross = stepApplier.applyCrossSkuRules(context, stepIndex);
@@ -44,6 +45,8 @@ public class RuleEngine {
     }
 
     private Evaluation evaluateDiscount(Evaluation result, AtomicInteger stepIndex) {
+        recorder.logDiscountStepStart();
+
         RuleContext afterDiscount = stepApplier.applySkuDiscount(result.context(), stepIndex);
 
         double afterDiscountPrice = computeTotalPrice(afterDiscount, rules);
