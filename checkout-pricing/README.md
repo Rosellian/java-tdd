@@ -1122,6 +1122,7 @@ It records traces in 2 steps:
 
 ---
 ### Logging and refactoring
+#### Logging
 - RuleInspectorView using compact logger format
 - Adding logging to evaluation steps
   - API
@@ -1130,6 +1131,8 @@ It records traces in 2 steps:
     - StepRecorder
   - Rule Evaluator
   - DP-algorithm
+#### Refactoring
+- Improve RuleApplier code by avoiding inheritance
 
 ---
 ## Testing

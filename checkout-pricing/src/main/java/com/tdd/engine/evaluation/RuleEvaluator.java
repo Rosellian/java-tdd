@@ -44,10 +44,6 @@ public class RuleEvaluator implements IRuleEvaluator {
         return CrossFreeUtils.createDelta(rule, totalFree);
     }
 
-    private void log(Rule rule) {
-        logger.info("Evaluating {}", rule);
-    }
-
     @Override
     public RuleDelta apply(CrossSkuBuyXGetYDiscount rule, RuleContext context, RuleTrace rt) {
         log(rule);
@@ -72,6 +68,10 @@ public class RuleEvaluator implements IRuleEvaluator {
         if(isFreeOrDiscounted(context, rule.sku())) return RuleDelta.none();
 
         return SkuDiscountUtils.createDelta(rule);
+    }
+
+    private void log(Rule rule) {
+        logger.info("Evaluating {}", rule);
     }
 
     private boolean skuDiscountHasHigherPriorityOrZeroTimes(CrossSkuBuyXGetYDiscount rule, int times) {

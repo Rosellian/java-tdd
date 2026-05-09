@@ -47,7 +47,7 @@ public class RuleEngine {
     private Evaluation evaluateDiscount(Evaluation result, AtomicInteger stepIndex) {
         recorder.logDiscountStepStart();
 
-        RuleContext afterDiscount = stepApplier.applySkuDiscount(result.context(), stepIndex);
+        RuleContext afterDiscount = stepApplier.applySkuDiscounts(result.context(), stepIndex);
 
         double afterDiscountPrice = computeTotalPrice(afterDiscount, rules);
         recorder.recordSkuDiscountStep(stepIndex, result.price(), afterDiscountPrice);

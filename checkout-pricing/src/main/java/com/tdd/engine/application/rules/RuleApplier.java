@@ -1,6 +1,7 @@
 package com.tdd.engine.application.rules;
 
 import com.tdd.PricingRules;
+import com.tdd.engine.application.rules.utility.RuleRecorder;
 import com.tdd.engine.utility.RuleContext;
 import com.tdd.engine.utility.RuleDelta;
 import com.tdd.engine.application.rules.utility.After;
@@ -8,81 +9,55 @@ import com.tdd.engine.application.rules.utility.Before;
 import com.tdd.engine.application.rules.utility.RuleApplication;
 import com.tdd.engine.evaluation.RuleEvaluator;
 import com.tdd.rules.*;
+import com.tdd.rules.cross.CrossSkuBuyXGetYDiscount;
+import com.tdd.rules.cross.CrossSkuBuyXGetYFree;
+import com.tdd.rules.cross.CrossSkuRule;
 import com.tdd.tracing.debug.PricingTraceCollector;
 import com.tdd.tracing.debug.RuleTrace;
 
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
-import static com.tdd.calculation.PriceUtils.computeTotalPrice;
+public class RuleApplier implements IRuleApplier {
+    private final RuleEvaluator evaluator;
+    private final RuleRecorder recorder;
 
-public class RuleApplier {
-    private final PricingRules rules;
-    protected final RuleEvaluator evaluator;
-    private final PricingTraceCollector collector;
-    private final AtomicInteger stepIndex;
-
-    public RuleApplier(PricingRules rules, PricingTraceCollector collector, AtomicInteger stepIndex) {
-        this.rules = rules;
+    public RuleApplier(PricingRules rules, PricingTraceCollector collector) {
         this.evaluator = new RuleEvaluator(rules);
-        this.collector = collector;
-        this.stepIndex = stepIndex;
+        this.recorder = new RuleRecorder(rules, collector);
     }
 
-    protected RuleApplication applyRule(RuleContext context, Rule rule, Function<RuleTrace, RuleDelta> eval) {
-        Before beforeResult = recordBefore(context, rule);
-        RuleTrace rt = beforeResult.rt();
-
-        RuleDelta delta = eval.apply(rt);
-
-        After afterResult = recordAfter(context, rule, delta);
-        boolean applied = afterResult.applied();
-        updateRuleTrace(beforeResult, afterResult, delta);
-
-        return new RuleApplication(rt, delta, applied);
-    }
-
-    private void updateRuleTrace(Before before, After after, RuleDelta delta) {
+    public RuleApplication apply(RuleContext context, CrossSkuRule rule, boolean skip, AtomicInteger stepIndex) {
+        Before before = recorder.recordBefore(context, rule, stepIndex);
         RuleTrace rt = before.rt();
 
-        rt.setMatched(after.applied());
+        RuleDelta delta = skip ? RuleDelta.none() : useEvaluator(context, rule, rt);
 
-        double afterPrice = computeTotalPrice(after.context(), rules);
-        rt.setAfter(afterPrice);
-        rt.setDelta(afterPrice - before.price());
-
-        if(!after.applied()) {
-            rt.setReason("Rule conditions not met");
-        }
-        else {
-            rt.setOutputs(Map.of("delta", delta,
-                    "newCounts", after.context().counts()));
-        }
+        return recordResult(context, rule, stepIndex, before, delta);
     }
 
-    private Before recordBefore(RuleContext context, Rule rule) {
-        RuleTrace rt = createRuleTrace(rule);
-        double beforePrice = computeTotalPrice(context, rules);
-        rt.setBefore(beforePrice);
+    public RuleApplication apply(RuleContext context, SkuDiscount rule, AtomicInteger stepIndex) {
+        Before before = recorder.recordBefore(context, rule, stepIndex);
+        RuleTrace rt = before.rt();
 
-        return new Before(rt, beforePrice);
+        RuleDelta delta = evaluator.apply(rule, context, rt);
+
+        return recordResult(context, rule, stepIndex, before, delta);
     }
 
-    private After recordAfter(RuleContext context, Rule rule, RuleDelta delta) {
-        boolean applied = delta.applied();
-        RuleContext after = applied ? context.apply(delta) : context;
-        collector.addEvent(rule.toString(), applied, delta, context, after, stepIndex.get());
-
-        return new After(applied, after);
+    private RuleDelta useEvaluator(RuleContext context, CrossSkuRule rule, RuleTrace rt) {
+        return switch (rule) {
+            case CrossSkuBuyXGetYFree free -> evaluator.apply(free, context, rt);
+            case CrossSkuBuyXGetYDiscount discount -> evaluator.apply(discount, context, rt);
+            default -> throw new IllegalStateException("Unexpected value: " + rule);
+        };
     }
 
-    private RuleTrace createRuleTrace(Rule rule) {
-        RuleTrace rt = new RuleTrace();
-        rt.setId(rule.id());
-        rt.setName(rule.name());
-        rt.setStepIndex(stepIndex.getAndIncrement());
+    //TODO Create better method signatures with new data carrier(s)
+    private RuleApplication recordResult(RuleContext context, Rule rule, AtomicInteger stepIndex, Before before, RuleDelta delta) {
+        After after = recorder.recordAfter(context, rule, delta, stepIndex);
+        boolean applied = after.applied();
+        recorder.updateRuleTrace(before, after, delta);
 
-        return rt;
+        return new RuleApplication(before.rt(), delta, applied);
     }
 }
