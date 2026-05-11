@@ -1134,6 +1134,19 @@ It records traces in 2 steps:
 #### Refactoring
 - Improve RuleApplier code by avoiding inheritance
 - Avoid reapplying delta in StepApplier
+- Reuse code for price calculation by:
+  - using new class PriceEngine in PriceCalculator and RuleInspector
+    ```java
+    public PriceEngine(PricingRules rules, BestPriceAlgorithm algorithm) {}
+    
+    public PriceResult calculate(String sku, int count, SkuMod mod) {}
+    ```
+  - refactoring PriceUtils and introducing StepPriceComputer for before and after price calculations
+    ```java
+    public StepPriceComputer(PricingRules rules) {}
+    
+    public double computeTotalPrice(RuleContext context) {}
+    ```
 
 ---
 ## Testing

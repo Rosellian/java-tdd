@@ -1,6 +1,7 @@
 package com.tdd.engine.application.rules.utility;
 
 import com.tdd.PricingRules;
+import com.tdd.calculation.StepPriceComputer;
 import com.tdd.engine.utility.RuleContext;
 import com.tdd.engine.utility.RuleDelta;
 import com.tdd.rules.Rule;
@@ -10,18 +11,16 @@ import com.tdd.tracing.debug.RuleTrace;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.tdd.calculation.PriceUtils.computeTotalPrice;
-
 public class RuleRecorder {
-    private final PricingRules rules;
+    private final StepPriceComputer priceComputer;
 
     public RuleRecorder(PricingRules rules) {
-        this.rules = rules;
+        this.priceComputer = new StepPriceComputer(rules);
     }
 
     public Before recordBefore(RuleContext context, Rule rule, AtomicInteger stepIndex) {
         RuleTrace rt = createRuleTrace(rule, stepIndex);
-        double beforePrice = computeTotalPrice(context, rules);
+        double beforePrice = priceComputer.computeTotalPrice(context);
         rt.setBefore(beforePrice);
 
         return Before.from(context, rule, beforePrice, rt);
@@ -41,7 +40,7 @@ public class RuleRecorder {
         boolean applied = delta.applied();
         rt.setMatched(applied);
 
-        double afterPrice = computeTotalPrice(after.context(), rules);
+        double afterPrice = priceComputer.computeTotalPrice(after.context());
         rt.setAfter(afterPrice);
         rt.setDelta(afterPrice - rt.getBefore());
 
