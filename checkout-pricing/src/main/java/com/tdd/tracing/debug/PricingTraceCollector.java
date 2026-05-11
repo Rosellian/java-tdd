@@ -1,7 +1,5 @@
 package com.tdd.tracing.debug;
 
-import com.tdd.engine.utility.RuleContext;
-import com.tdd.engine.utility.RuleDelta;
 import com.tdd.tracing.RuleTraceEvent;
 
 import java.time.Instant;
@@ -64,10 +62,9 @@ public class PricingTraceCollector {
         trace.getPriceEvolution().add(finalPrice);
     }
 
-    //TODO Separate from collector logic
-    public void addEvent(String ruleName, boolean applied, RuleDelta delta, RuleContext before, RuleContext after,
-                         int stepIndex) {
-        events.add(new RuleTraceEvent(ruleName, applied, delta, before, after, stepIndex));
+    //TODO Maybe separate from collector logic
+    public void addEvent(RuleTraceEvent event) {
+        events.add(event);
     }
     public List<RuleTraceEvent> getEvents() { return events; }
 

@@ -19,42 +19,46 @@ public class StepApplier {
     public StepApplier(PricingRules rules, PricingTraceCollector collector) {
         this.rules = rules;
         this.collector = collector;
-        ruleApplier = new RuleApplier(rules, collector);
+        ruleApplier = new RuleApplier(rules);
     }
 
     public RuleContext applyCrossSkuRules(RuleContext context, AtomicInteger stepIndex) {
         boolean alreadyApplied = false;
+        RuleContext resultContext = context;
 
         for (var rule : getOrderedCrossSkuRules()) {
-            RuleApplication result = ruleApplier.apply(context, rule, alreadyApplied, stepIndex);
+            RuleApplication result = ruleApplier.apply(resultContext, rule, alreadyApplied, stepIndex);
 
             recordRule(result);
 
             if(result.applied()) {
-                context = context.apply(result.delta());
+                resultContext = result.context();
                 alreadyApplied = true;
             }
         }
 
-        return context;
+        return resultContext;
     }
 
     public RuleContext applySkuDiscounts(RuleContext context, AtomicInteger stepIndex) {
+        RuleContext resultContext = context;
+
         for(var rule : rules.getSkuDiscounts()) {
-            RuleApplication result = ruleApplier.apply(context, rule, stepIndex);
+            RuleApplication result = ruleApplier.apply(resultContext, rule, stepIndex);
 
             recordRule(result);
 
-            if(result.applied()){
-                context = context.apply(result.delta());
+            if(result.applied()) {
+                resultContext = result.context();
             }
         }
 
-        return context;
+        return resultContext;
     }
 
     private void recordRule(RuleApplication result) {
         if(collector != null) {
+            collector.addEvent(result.event());
             collector.recordRule(result.rt());
         }
     }

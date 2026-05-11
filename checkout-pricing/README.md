@@ -1133,6 +1133,7 @@ It records traces in 2 steps:
   - DP-algorithm
 #### Refactoring
 - Improve RuleApplier code by avoiding inheritance
+- Avoid reapplying delta in StepApplier
 
 ---
 ## Testing

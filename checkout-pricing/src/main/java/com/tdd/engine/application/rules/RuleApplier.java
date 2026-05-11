@@ -1,18 +1,15 @@
 package com.tdd.engine.application.rules;
 
 import com.tdd.PricingRules;
-import com.tdd.engine.application.rules.utility.RuleRecorder;
+import com.tdd.engine.application.rules.utility.*;
 import com.tdd.engine.utility.RuleContext;
 import com.tdd.engine.utility.RuleDelta;
-import com.tdd.engine.application.rules.utility.After;
-import com.tdd.engine.application.rules.utility.Before;
-import com.tdd.engine.application.rules.utility.RuleApplication;
 import com.tdd.engine.evaluation.RuleEvaluator;
 import com.tdd.rules.*;
 import com.tdd.rules.cross.CrossSkuBuyXGetYDiscount;
 import com.tdd.rules.cross.CrossSkuBuyXGetYFree;
 import com.tdd.rules.cross.CrossSkuRule;
-import com.tdd.tracing.debug.PricingTraceCollector;
+import com.tdd.tracing.RuleTraceEvent;
 import com.tdd.tracing.debug.RuleTrace;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,9 +18,9 @@ public class RuleApplier implements IRuleApplier {
     private final RuleEvaluator evaluator;
     private final RuleRecorder recorder;
 
-    public RuleApplier(PricingRules rules, PricingTraceCollector collector) {
+    public RuleApplier(PricingRules rules) {
         this.evaluator = new RuleEvaluator(rules);
-        this.recorder = new RuleRecorder(rules, collector);
+        this.recorder = new RuleRecorder(rules);
     }
 
     public RuleApplication apply(RuleContext context, CrossSkuRule rule, boolean skip, AtomicInteger stepIndex) {
@@ -32,7 +29,7 @@ public class RuleApplier implements IRuleApplier {
 
         RuleDelta delta = skip ? RuleDelta.none() : useEvaluator(context, rule, rt);
 
-        return recordResult(context, rule, stepIndex, before, delta);
+        return recordResult(rt, before.input(), delta);
     }
 
     public RuleApplication apply(RuleContext context, SkuDiscount rule, AtomicInteger stepIndex) {
@@ -41,7 +38,7 @@ public class RuleApplier implements IRuleApplier {
 
         RuleDelta delta = evaluator.apply(rule, context, rt);
 
-        return recordResult(context, rule, stepIndex, before, delta);
+        return recordResult(rt, before.input(), delta);
     }
 
     private RuleDelta useEvaluator(RuleContext context, CrossSkuRule rule, RuleTrace rt) {
@@ -52,12 +49,19 @@ public class RuleApplier implements IRuleApplier {
         };
     }
 
-    //TODO Create better method signatures with new data carrier(s)
-    private RuleApplication recordResult(RuleContext context, Rule rule, AtomicInteger stepIndex, Before before, RuleDelta delta) {
-        After after = recorder.recordAfter(context, rule, delta, stepIndex);
-        boolean applied = after.applied();
-        recorder.updateRuleTrace(before, after, delta);
+    private RuleApplication recordResult(RuleTrace rt, RuleInput input, RuleDelta delta) {
+        After after = createAfter(input, delta);
 
-        return new RuleApplication(before.rt(), delta, applied);
+        RuleTraceEvent event = recorder.createEvent(rt, input, after);
+        RuleTrace rtNew = recorder.updateRuleTrace(rt, after);
+
+        return RuleApplication.from(after, rtNew, event);
+    }
+
+    private After createAfter(RuleInput input, RuleDelta delta) {
+        RuleContext context = input.context();
+        RuleContext contextAfter = delta.applied() ? context.apply(delta) : context;
+
+        return new After(delta, contextAfter);
     }
 }
