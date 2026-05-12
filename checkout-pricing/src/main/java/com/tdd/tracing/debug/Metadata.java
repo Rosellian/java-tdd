@@ -1,16 +1,16 @@
 package com.tdd.tracing.debug;
 
 public class Metadata {
-    private String ruleSet;
+    private String ruleset;
     private String timestamp;
     private String engineVersion;
 
-    public String getRuleSet() {
-        return ruleSet;
+    public String getRuleset() {
+        return ruleset;
     }
 
-    public void setRuleSet(String ruleSet) {
-        this.ruleSet = ruleSet;
+    public void setRuleset(String ruleset) {
+        this.ruleset = ruleset;
     }
 
     public String getTimestamp() {
@@ -29,9 +29,9 @@ public class Metadata {
         this.engineVersion = engineVersion;
     }
 
-    public static Metadata from(String ruleSet, String timestamp, String engineVersion) {
+    public static Metadata from(String ruleset, String timestamp, String engineVersion) {
         Metadata metadata = new Metadata();
-        metadata.ruleSet = ruleSet;
+        metadata.ruleset = ruleset;
         metadata.timestamp = timestamp;
         metadata.engineVersion = engineVersion;
 

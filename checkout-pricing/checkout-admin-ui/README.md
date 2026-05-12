@@ -476,6 +476,18 @@ Making buttons disabled when cart is empty.
   - RuleInspector shell
   - RuleDebugger shell
   - CartEditor
+---
+### New feature: Rule Editor
+Ability to create and edit rulesets, having the following functions:
+- display complete rulesets
+- create and add rules
+- edit rules
+- save and load rulesets
+- preview effects of changes
+#### Components
+1. RuleSetEditor - Main component holding subcomponents and controls.
+2. RuleList - List of rules in active ruleset.
+3. RuleForm - Interface to add a new rule.
 
 ### Changes in API-layer
 - Refactor API-calls to avoid code duplication

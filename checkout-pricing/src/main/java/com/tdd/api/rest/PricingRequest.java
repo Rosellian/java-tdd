@@ -8,17 +8,17 @@ import java.util.Map;
 import static java.util.stream.Collectors.toList;
 
 public class PricingRequest {
-    private String ruleSet;
+    private String ruleset;
     private List<CartItemRequest> items;
     private CustomerRequest customer;
     private Map<String, Object> context;
 
-    public String getRuleSet() {
-        return ruleSet;
+    public String getRuleset() {
+        return ruleset;
     }
 
-    public void setRuleSet(String ruleSet) {
-        this.ruleSet = ruleSet;
+    public void setRuleset(String ruleSet) {
+        this.ruleset = ruleset;
     }
 
     public List<CartItemRequest> getItems() {
@@ -47,7 +47,7 @@ public class PricingRequest {
 
     public static PricingRequest fromEvaluateRequest(EvaluateRequest request) {
         PricingRequest pricingRequest = new PricingRequest();
-        pricingRequest.ruleSet = request.ruleSet;
+        pricingRequest.ruleset = request.ruleset;
         pricingRequest.items = fromRequest(request);
 
         return pricingRequest;

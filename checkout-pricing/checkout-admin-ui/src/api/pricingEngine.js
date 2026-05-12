@@ -1,11 +1,11 @@
-export async function runPricingEngine(cart, ruleSet) {
-    const res = await callPricingEndpoint(cart, ruleSet, "evaluate");
+export async function runPricingEngine(cart, ruleset) {
+    const res = await callPricingEndpoint(cart, ruleset, "evaluate");
 
     return await res.json();
 }
 
-export async function runPricingTrace(cart, ruleSet) {
-    const res = await callPricingEndpoint(cart, ruleSet, "trace");
+export async function runPricingTrace(cart, ruleset) {
+    const res = await callPricingEndpoint(cart, ruleset, "trace");
 
     if (!res.ok) {
         const text = await res.text();
@@ -15,10 +15,10 @@ export async function runPricingTrace(cart, ruleSet) {
     return await res.json();
 }
 
-async function callPricingEndpoint(cart, ruleSet, endpoint) {
+async function callPricingEndpoint(cart, ruleset, endpoint) {
     return await fetch("/api/pricing/" + endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cart, ruleSet }),
+        body: JSON.stringify({ cart, ruleset }),
     });
 }

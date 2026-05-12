@@ -17,7 +17,7 @@ public class PricingTraceCollector {
     public PricingTraceCollector(CartSnapshot cart, String ruleset, String engineVersion) {
         trace.setCart(cart);
         Metadata metadata = new Metadata();
-        metadata.setRuleSet(ruleset);
+        metadata.setRuleset(ruleset);
         metadata.setEngineVersion(engineVersion);
         metadata.setTimestamp(Instant.now().toString());
         trace.setMetadata(metadata);

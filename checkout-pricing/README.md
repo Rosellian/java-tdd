@@ -1147,6 +1147,9 @@ It records traces in 2 steps:
     
     public double computeTotalPrice(RuleContext context) {}
     ```
+---
+### New feature: Rule Editor
+
 
 ---
 ## Testing

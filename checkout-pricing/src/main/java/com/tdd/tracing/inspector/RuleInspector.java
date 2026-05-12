@@ -25,7 +25,7 @@ public class RuleInspector {
 
     public RuleTrace inspect(RuleContext finalContext, List<RuleTraceEvent> events) {
         List<SkuTrace> skuTraces = new ArrayList<>();
-        List<DPTrace>  dpTraces = new ArrayList<>();
+        List<DPTrace> dpTraces = new ArrayList<>();
 
         for(var entry : finalContext.counts().entrySet()) {
             String sku = entry.getKey();
@@ -42,7 +42,7 @@ public class RuleInspector {
         return new RuleTrace(events, skuTraces, dpTraces, finalTotal);
     }
 
-    private SkuTrace createSkuTrace(String  sku, int count, SkuMod mod, PriceResult result) {
+    private SkuTrace createSkuTrace(String sku, int count, SkuMod mod, PriceResult result) {
         double unitPrice = rules.getUnitPrice(sku);
         int free = mod.free();
         int discounted = mod.discounted();

@@ -25,13 +25,13 @@ public class PricingEngineService {
     }
 
     private TraceResult runEngine(PricingRequest request) {
-        String ruleSet = request.getRuleSet();
-        PricingRules rules = RuleSetRegistry.get(ruleSet);
+        String ruleset = request.getRuleset();
+        PricingRules rules = RulesetRegistry.get(ruleset);
         CartSnapshot cart = fromRequest(request, rules);
 
-        logger.info("Running pricing engine for ruleset {} {} with cart {}", ruleSet, rules, cart);
+        logger.info("Running pricing engine for ruleset {} {} with cart {}", ruleset, rules, cart);
 
-        Checkout checkout = new Checkout(rules, cart, ruleSet);
+        Checkout checkout = new Checkout(rules, cart, ruleset);
 
         return checkout.run();
     }

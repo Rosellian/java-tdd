@@ -1,6 +1,6 @@
 import {useState} from "react";
 import { CartEditor } from "../components/carteditor/CartEditor";
-import { RuleSetSelector } from "../components/RuleSetSelector";
+import { RulesetSelector } from "../components/RulesetSelector";
 import { RuleInspector } from "../components/ruleinspector/RuleInspector";
 import { RuleDebugger } from "../components/ruledebugger/RuleDebugger";
 import {usePricingTrace} from "../api/usePricingTrace";
@@ -11,10 +11,10 @@ import {useTheme} from "../ui/ThemeProvider";
 export default function AdminApp() {
     const { theme } = useTheme();
     const [cart, setCart] = useState({});
-    const [ruleSet, setRuleSet] = useState("default");
+    const [ruleset, setRuleset] = useState("default");
     const [trace, setTrace] = useState(null);
 
-    const { traceNew, loading, error, getTrace } = usePricingTrace(cart, ruleSet);
+    const { traceNew, loading, error, getTrace } = usePricingTrace(cart, ruleset);
 
     return (
         <div style={{
@@ -24,9 +24,9 @@ export default function AdminApp() {
             <h1 style={styles.header}>Pricing Engine Admin</h1>
 
             <div style={styles.controls}>
-                <RuleSetSelector value={ruleSet} onChange={setRuleSet} />
+                <RulesetSelector value={ruleset} onChange={setRuleset} />
                 <CartEditor cart={cart} onChange={setCart} />
-                <ButtonPanel cart={cart} ruleSet={ruleSet} getTrace={getTrace} setTrace={setTrace} />
+                <ButtonPanel cart={cart} ruleset={ruleset} getTrace={getTrace} setTrace={setTrace} />
             </div>
 
             {loading && <p>Evaluating pricing…</p>}

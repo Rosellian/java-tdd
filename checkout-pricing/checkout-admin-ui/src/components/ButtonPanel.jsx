@@ -2,18 +2,18 @@ import {runPricingEngine} from "../api/pricingEngine";
 import {ThemeToggleButton} from "../ui/ThemeToggleButton";
 import {useTheme} from "../ui/ThemeProvider";
 
-export function ButtonPanel({ cart, ruleSet, getTrace, setTrace }) {
+export function ButtonPanel({ cart, ruleset, getTrace, setTrace }) {
     const isDisabled = Object.keys(cart).length === 0;
 
     async function evaluate() {
-        const result = await runPricingEngine(cart, ruleSet);
+        const result = await runPricingEngine(cart, ruleset);
         setTrace(result.trace);
     }
 
     return (
         <div style={styles.buttons}>
             <DisabledButton isDisabled={isDisabled} onClick={evaluate} name="Evaluate" />
-            <DisabledButton isDisabled={isDisabled} onClick={() => getTrace(cart, ruleSet)} name="Get trace" />
+            <DisabledButton isDisabled={isDisabled} onClick={() => getTrace(cart, ruleset)} name="Get trace" />
             <ThemeToggleButton />
         </div>
     );

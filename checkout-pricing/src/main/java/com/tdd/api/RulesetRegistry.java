@@ -6,7 +6,7 @@ import com.tdd.api.samples.CampaignBRules;
 import com.tdd.api.samples.DefaultRules;
 import com.tdd.api.samples.NoCrossNoSkuDiscount;
 
-public class RuleSetRegistry {
+public class RulesetRegistry {
 
     public static PricingRules get(String name) {
         return switch (name) {

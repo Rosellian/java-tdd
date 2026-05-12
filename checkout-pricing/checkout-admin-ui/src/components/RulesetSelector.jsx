@@ -1,6 +1,6 @@
 import {useTheme} from "../ui/ThemeProvider";
 
-export function RuleSetSelector({ value, onChange }) {
+export function RulesetSelector({ value, onChange }) {
     const { theme } = useTheme();
 
     return (
@@ -11,7 +11,7 @@ export function RuleSetSelector({ value, onChange }) {
             <h3 style={{
                 ...styles.title,
                 ...(theme === "dark" ? styles.titleDark : styles.titleLight)
-            }}>Rule Set</h3>
+            }}>Ruleset</h3>
             <select
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
