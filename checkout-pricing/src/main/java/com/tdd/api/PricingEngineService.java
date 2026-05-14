@@ -1,6 +1,7 @@
 package com.tdd.api;
 
 import com.tdd.Checkout;
+import com.tdd.api.rulesets.RulesetRegistry;
 import com.tdd.utils.TraceResult;
 import com.tdd.PricingRules;
 import com.tdd.api.rest.PricingRequest;

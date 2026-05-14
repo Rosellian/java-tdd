@@ -1,4 +1,4 @@
-package com.tdd.api.samples;
+package com.tdd.api.rulesets.samples;
 
 import com.tdd.PricingRules;
 import com.tdd.rules.*;

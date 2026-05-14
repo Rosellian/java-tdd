@@ -1,4 +1,4 @@
-package com.tdd.api.samples;
+package com.tdd.api.rulesets.samples;
 
 import com.tdd.PricingRules;
 import com.tdd.rules.*;
@@ -8,7 +8,7 @@ import com.tdd.rules.cross.CrossSkuBuyXGetYFree;
 import java.util.List;
 import java.util.Map;
 
-import static com.tdd.api.samples.Ruleset.defaultUnitPricesWithChange;
+import static com.tdd.api.rulesets.samples.Ruleset.defaultUnitPricesWithChange;
 
 public class CampaignBRules implements Ruleset {
 

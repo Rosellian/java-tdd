@@ -1,10 +1,10 @@
-package com.tdd.api;
+package com.tdd.api.rulesets;
 
 import com.tdd.PricingRules;
-import com.tdd.api.samples.CampaignARules;
-import com.tdd.api.samples.CampaignBRules;
-import com.tdd.api.samples.DefaultRules;
-import com.tdd.api.samples.NoCrossNoSkuDiscount;
+import com.tdd.api.rulesets.samples.CampaignARules;
+import com.tdd.api.rulesets.samples.CampaignBRules;
+import com.tdd.api.rulesets.samples.DefaultRules;
+import com.tdd.api.rulesets.samples.NoCrossNoSkuDiscount;
 
 public class RulesetRegistry {
 

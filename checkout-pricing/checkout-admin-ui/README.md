@@ -477,8 +477,8 @@ Making buttons disabled when the cart is empty.
   - RuleDebugger shell
   - CartEditor
 ---
-### New feature: Rule Editor
-Has the following functions:
+### New feature: Ruleset Editor
+Shall have the following functions:
 - display complete rulesets
 - create and add rules
 - edit rules
@@ -538,7 +538,7 @@ Has the following functions:
 4. RulePreview  
    TODO
 
-### Ruleset Editor
+### Ruleset loader
 Building upon the RulesetSelector to include persistence for rulesets.  
 Enabling:
 - Save changes to rulesets to backend

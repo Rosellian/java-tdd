@@ -1,6 +1,6 @@
 package com.tdd;
 
-import com.tdd.api.samples.SKUs;
+import com.tdd.api.rulesets.samples.SKUs;
 import com.tdd.rulesets.StandardUnitPrices;
 import com.tdd.tracing.debug.CartItem;
 import com.tdd.tracing.debug.CartSnapshot;

@@ -1,7 +1,7 @@
 package com.tdd.rulesets.simple;
 
 import com.tdd.PricingRules;
-import com.tdd.api.samples.Ruleset;
+import com.tdd.api.rulesets.samples.Ruleset;
 
 public class FreeRules implements Ruleset {
 

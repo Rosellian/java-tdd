@@ -1,10 +1,13 @@
 package com.tdd;
 
-import com.tdd.api.samples.*;
+import com.tdd.api.rulesets.samples.CampaignARules;
+import com.tdd.api.rulesets.samples.CampaignBRules;
+import com.tdd.api.rulesets.samples.DefaultRules;
+import com.tdd.api.rulesets.samples.NoCrossNoSkuDiscount;
 import org.junit.jupiter.api.Test;
 
 import static com.tdd.TestUtils.scanStandardInput;
-import static com.tdd.api.samples.SKUs.*;
+import static com.tdd.api.rulesets.samples.SKUs.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RulesetTest {
