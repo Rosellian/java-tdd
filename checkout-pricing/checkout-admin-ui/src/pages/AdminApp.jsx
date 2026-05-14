@@ -7,6 +7,8 @@ import {usePricingTrace} from "../api/usePricingTrace";
 import {TraceSyncProvider} from "../components/TraceSyncProvider";
 import {ButtonPanel} from "../components/ButtonPanel";
 import {useTheme} from "../ui/ThemeProvider";
+import {RulesetEditor} from "../components/ruleseteditor/RulesetEditor";
+import defaultRuleset from "../api/rulesets/samples/defaultRuleset.json";
 
 export default function AdminApp() {
     const { theme } = useTheme();
@@ -25,6 +27,7 @@ export default function AdminApp() {
 
             <div style={styles.controls}>
                 <RulesetSelector value={ruleset} onChange={setRuleset} />
+                <RulesetEditor ruleset={defaultRuleset} />
                 <CartEditor cart={cart} onChange={setCart} />
                 <ButtonPanel cart={cart} ruleset={ruleset} getTrace={getTrace} setTrace={setTrace} />
             </div>

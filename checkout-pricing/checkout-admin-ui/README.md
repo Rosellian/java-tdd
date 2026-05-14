@@ -1,6 +1,6 @@
 # Pricing Engine Admin Panel
 Admin tool using the RuleInspector UI in which you can:
-- Upload a basket (items + number of)
+- Upload a basket (items and number of)
 - View what rules applied
 - View Dp-graph
 - View totals
@@ -8,7 +8,7 @@ Admin tool using the RuleInspector UI in which you can:
 - Debug in real-time
 
 ## Architecture
-Starting with the main components built upon the RuleInspector tracing.
+Starting with the main parts built upon the RuleInspector tracing.
 
 **Main project structure**
 ```
@@ -24,7 +24,7 @@ Starting with the main components built upon the RuleInspector tracing.
 │   └── AdminApp.jsx
 ```
 
-### RuleInspector UI - Starting point
+### RuleInspector UI starting point
 JavaScript (React) component for displaying rule events.  
 `RuleInspector.jsx` - Initial version
 ```jsx
@@ -100,7 +100,7 @@ An interactive, collapsible timeline with:
 │   └── AdminApp.jsx
 ```
 #### Components
-- CartEditor – Input SKU + number and add button, holds cart
+- CartEditor – Input SKU plus number and add button, holds cart
 - RuleSetSelector – 
 - RuleInspector – Main evaluation result UI
 - AdminApp
@@ -117,14 +117,14 @@ export function CartEditor({ cart, onChange }) {}
 
 function AddSkuForm({ onAdd }) {}
 ```
-- Enter SKU and number, press add to add new product
-- Use up and down arrows to change current number
+- Enter SKU and number, press add to add a new product
+- Use up and down arrows to change the current number
 
 **Choose rule setup:** `RuleSetSelector.jsx`
 ```jsx
 export function RuleSetSelector({ value, onChange }) {}
 ```
-Choose what ruleset to use from dropdown list
+Choose what ruleset to use from a dropdown list
 
 **API call to backend (java-engine)**
 `pricingEngine.jsx`
@@ -154,7 +154,7 @@ ruledebugger
    ```jsx
    export function ChainOverview({ steps }) {}
    ```
-   Shows evaluation steps with price effect.
+   Shows evaluation steps with a price effect.
 3. `RuleTimeline.jsx`
    ```jsx
    export function RuleTimeline({ rules }) {}
@@ -187,7 +187,7 @@ Adding call run evaluation and get the new output when pressing `Get trace` butt
 ---
 #### Improvements
 **Rule Debugger**  
-Fixing styling of module by moving css-style to jsx-file of Rule Debugger.
+Fixing styling of the module by moving css-style to jsx-file of Rule Debugger.
 Styling separated and added in: 
 - `RuleDebugger.jsx`
 - `RuleTimeline.jsx`
@@ -202,14 +202,14 @@ Changes in:
 - `pricingEngine.js`
 ---
 ### Refactoring RuleInspector
-Fixing styling of module by separating Styles-file and moving parts to relevant module.  
+Fixing styling of the module by separating the Style-file and moving parts to the relevant module.  
 Changes done in:
 - `RuleInspector.jsx`
 - `Section.jsx`
 - `RuleTimeLine.jsx`
 - `SkuBreakdown.jsx`
 - `DPSection.jsx`
-### Improve graphical display - Rule Debugger:
+### Improve the graphical display of Rule Debugger:
 #### RuleTimeline
 - Better styling
 - Handle missing input
@@ -221,17 +221,17 @@ Changes done in:
 - Better styling
 - Handle missing input
 ---
-### Improve graphical display - RuleDebugger:
+### Improve the graphical display of RuleDebugger:
 #### Collapsible RuleTimeline
 Displaying rule name as entry and more info when expanding on click.
 #### Interactive DPGraph
 Features:
 - Hover -> highlight node
-- Click → set node as selected
+- Click → set the node as selected
 - Selected node shows details
 #### PriceEvolutionChart – interactive SVG Line Chart
 - The line is drawn with <polyline>
-- Nodes are <circle> with hover‑effect
+- Nodes are <circle> with a hover effect
 - Tooltip is shown under the graph
 - Scaling is automatic based on min/max‑price
 ---
@@ -247,8 +247,8 @@ Introducing **TraceSyncContext** that holds:
 
 This works like:
 - Click in DPGraph → highlight in RuleTimeline + ChainOverview
-- Click in RuleTimeline → highlight in DPGraph + ChainOverview
-- Click in ChainOverview → highlight in DPGraph + RuleTimeline
+- Click on RuleTimeline → highlight in DPGraph + ChainOverview
+- Click on ChainOverview → highlight in DPGraph + RuleTimeline
 
 #### Implementation steps:  
 1. Create TraceSyncContext
@@ -261,29 +261,29 @@ This works like:
 2. Wrap RuleDebugger within the provider in `RuleDebugger.jsx`
 3. DPGraph ->
    - writes selectedStep
-   - highlights when RuleTimeline is clicked
-4. RuleTimeline → highlight rules that belongs to selectedStep  
+   - it highlights when RuleTimeline is clicked
+4. RuleTimeline → highlight rules that belong to selectedStep  
    If every rule has a field like stepIndex or similar use that.  
-   If not, you can connect rules to DP-step by the trace-structure.
-5. ChainOverview → highlight the DP-step
+   If not, you can connect rules to a DP step by the trace-structure.
+5. ChainOverview → highlight the DP step
 ---
-### Improve graphical display - RuleInspector:
-#### Include in synchronization
+### Improve the graphical display of RuleInspector:
+#### Include it in synchronization
 1. Include RuleInspector within the provider
 2. Rule Execution
 3. SKU Breakdown
 4. DP Paths
 ---
-### Mark or divide DP-steps in DPGraph by SKU
+### Mark or divide DP steps in DPGraph by SKU
 Some ways to do this:
-- Show DP-nodes grouped by SKU, or
+- Show DP nodes grouped by SKU, or
 - Mark which SKU each step belongs to, or
 - Let the user click on a SKU and filter DPGraph, or
 - Color code by SKU, or
 - Show titles or sections per SKU.
 
 #### Group DP-nodes by SKU
-Chosen path is SKU-grouping with expandable details.
+The chosen path is SKU-grouping with expandable details.
 
 ---
 ### New feature: Export/Import of cart
@@ -316,7 +316,7 @@ Refactoring this component into its own separate part of the project structure.
 ---
 #### Recent carts
 Extra feature for Cart editor:  
-A list of the last 5 carts
+A list of the last five carts
 - Stored in `localStorage`
 - Updates every time the user updates the cart
 - Shown as a drop-down in UI
@@ -333,7 +333,7 @@ export function useRecentCarts(cart) {}
 #### Adding tooltip for drop-down
 Show cart details for dropdown choice on hover.
 1. Wrap every `<option>` in a custom dropdown row
-2. Build a custom dropdown with absolute-positioned list
+2. Build a custom dropdown with an absolute-positioned list
 3. Tooltip is shown when hovering on a row
 
 Also moving RecentCarts into separate folder.
@@ -442,15 +442,15 @@ Changing styling to avoid buttons flexing along with Rule- and Cart-editor.
 Changes in: `ButtonPanel.jsx`
 #### Normalize discount values in RuleTimeLine (Rule Inspector)
 Changes in server code.
-#### Including SKU-rules in debugger timeline
+#### Including SKU-rules in the debugger timeline
 Changes to `RuleTimeline.jsx`
-- Cross SKU rules and SKU discounts displayed at top as before
+- Cross-SKU rules and SKU discounts are displayed at the top as before
 - SKU-rules displayed per SKU in separate subcomponent `<SkuRules rules={rules} />`
-#### Add more data for rules in debugger timeline
+#### Add more data for rules in the debugger timeline
 Adding fields:
 - before
 - after
-#### Mark rules as applied or not in debugger timeline
+#### Mark rules as applied or not in the debugger timeline
 - Adding mark as in inspector
 - Fixing graphical alignment
 ---
@@ -464,9 +464,9 @@ Creating reusable component `<AnimatedBody open={open} />` using children as bod
   - Rule timeline
   - SKU breakdown
   - DP section
-#### Disabled state for button panel
-Making buttons disabled when cart is empty.
-#### Adding light and dark theme with toggle button
+#### Disabled state for the button panel
+Making buttons disabled when the cart is empty.
+#### Adding light and dark theme with a toggle button
 - Theme provider
 - Toggle button
 - Applied to parts:
@@ -478,19 +478,76 @@ Making buttons disabled when cart is empty.
   - CartEditor
 ---
 ### New feature: Rule Editor
-Ability to create and edit rulesets, having the following functions:
+Has the following functions:
 - display complete rulesets
 - create and add rules
 - edit rules
 - save and load rulesets
 - preview effects of changes
 #### Components
-1. RuleSetEditor - Main component holding subcomponents and controls.
-2. RuleList - List of rules in active ruleset.
-3. RuleForm - Interface to add a new rule.
+1. RuleSetEditor  
+   Main part holding subcomponents and controls.
+   ```jsx
+   <RulesetEditor ruleset={defaultRuleset} onSave={} />
+   ```
+2. RuleList  
+   List of rules in active ruleset.
+   ```jsx
+   <RuleList rules={draft.rules} selectedRule={selectedRule} onSelect={setSelectedRule} 
+   onAdd={addRule} onDelete={deleteRule}/>
+   ```
+   subcomponents:
+   - RuleItem, a selectable element for each rule.
+     ```jsx
+     <RuleItem i={i} rule={rule} isSelected={selectedRule} onSelect={onSelect} />
+     ```
+   - ButtonPanel, controls for adding and deleting rules.
+     ```jsx
+     <ButtonPanel onAdd={onAdd} onDelete={() => onDelete(selectedRule)} />
+     ```
+3. RuleForm  
+   Interface to add a new rule or edit a currently selected one.
+   ```jsx
+   <RuleForm rule={draft.rules[selectedRule]} onChange={(r) => updateRule(selectedRule, r)}/>
+   ```
+   subcomponents:
+   - RuleTypeSelector, a dropdown for selecting the type of rule.
+     ```jsx
+     <RuleTypeSelector value={rule.type} onChange={(newType) => update("type", newType)} />
+     ```
+   - A form for the currently selected rule type. These are created using the following:  
+     ```jsx
+     <SpecialPriceForm rule={rule} onChange={onChange} />
+     <BuyXGetYFreeForm rule={rule} onChange={onChange} />
+     <BuyXGetYDiscountForm rule={rule} onChange={onChange} />
+     <SkuDiscountForm rule={rule} onChange={onChange} />
+     <CrossSkuBuyXGetYFreeForm rule={rule} onChange={onChange} />
+     <CrossSkuBuyXGetYDiscountForm rule={rule} onChange={onChange} />
+     ```
+     Using the following template components:
+     - ```jsx
+       <FormTemplate title="RULE TYPE">
+       {children}
+       </FormTemplate>
+       ```
+     - ```jsx
+       <TextInput label="LABEL" field="FIELD" value={rule.FIELD} update={update} />
+       <NumberInput label="LABEL" field="FIELD" value={rule.FIELD} update={update} />
+       <StackableField rule={rule} update={update} />
+       ```
+4. RulePreview  
+   TODO
 
-### Changes in API-layer
-- Refactor API-calls to avoid code duplication
+### Ruleset Editor
+Building upon the RulesetSelector to include persistence for rulesets.  
+Enabling:
+- Save changes to rulesets to backend
+- Load rulesets from the backend
+- Create new rulesets
+
+---
+### Changes in the API layer
+- Refactor API calls to avoid code duplication
 
 ### Current structure
 ```
