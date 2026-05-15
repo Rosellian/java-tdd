@@ -1,6 +1,6 @@
 package com.tdd.tracing.debug;
 
-import com.tdd.api.rulesets.samples.SKUs;
+import com.tdd.api.samples.SKUs;
 
 public class CartItem {
     private String sku;

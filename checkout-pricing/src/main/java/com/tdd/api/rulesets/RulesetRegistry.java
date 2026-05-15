@@ -1,19 +1,39 @@
 package com.tdd.api.rulesets;
 
-import com.tdd.PricingRules;
-import com.tdd.api.rulesets.samples.CampaignARules;
-import com.tdd.api.rulesets.samples.CampaignBRules;
-import com.tdd.api.rulesets.samples.DefaultRules;
-import com.tdd.api.rulesets.samples.NoCrossNoSkuDiscount;
+import com.tdd.api.data.DataRegistry;
+import com.tdd.api.rest.ruleset.Ruleset;
+import org.springframework.stereotype.Component;
 
-public class RulesetRegistry {
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
-    public static PricingRules get(String name) {
-        return switch (name) {
-            case "campaignA" -> CampaignARules.build();
-            case "campaignB" -> CampaignBRules.build();
-            case "NoCrossNoSkuDiscount" -> NoCrossNoSkuDiscount.build();
-            default -> DefaultRules.build();
-        };
+@Component
+public class RulesetRegistry implements DataRegistry<Ruleset> {
+    private final RulesetRepository repository;
+    private final Map<String, Ruleset> cache = new ConcurrentHashMap<>();
+
+    public RulesetRegistry(RulesetRepository repository) {
+        this.repository = repository;
+        loadAll();
+    }
+
+    public Ruleset get(String name) {
+        return cache.get(name);
+    }
+
+    public void save(String name, Ruleset ruleset) {
+        cache.put(name, ruleset);
+        repository.save(name, ruleset);
+    }
+
+    public Set<String> listNames() {
+        return cache.keySet();
+    }
+
+    public void loadAll() {
+        for (String name : repository.list()) {
+            cache.put(name, repository.load(name));
+        }
     }
 }

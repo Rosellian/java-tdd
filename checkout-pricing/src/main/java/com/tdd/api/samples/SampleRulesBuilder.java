@@ -1,11 +1,11 @@
-package com.tdd.api.rulesets.samples;
+package com.tdd.api.samples;
 
 import java.util.Arrays;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;
 
-public interface Ruleset {
+public interface SampleRulesBuilder {
     Map<String, Double> DEFAULT_UNIT_PRICES = Arrays.stream(SKUs.values())
             .collect(toMap(Enum::name, sku -> sku.unitPrice));
 

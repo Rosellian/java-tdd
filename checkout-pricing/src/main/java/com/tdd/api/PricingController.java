@@ -1,8 +1,8 @@
 package com.tdd.api;
 
-import com.tdd.api.rest.*;
 import com.tdd.api.rest.evaluate.EvaluateRequest;
 import com.tdd.api.rest.evaluate.EvaluateResponse;
+import com.tdd.api.rest.trace.PricingRequest;
 import com.tdd.api.rest.trace.TraceResponse;
 import com.tdd.tracing.RuleTrace;
 import com.tdd.tracing.debug.PricingTrace;
@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-import static com.tdd.api.rest.PricingRequest.fromEvaluateRequest;
+import static com.tdd.api.rest.trace.PricingRequest.fromEvaluateRequest;
 
 @RestController
 @RequestMapping("/api/pricing")

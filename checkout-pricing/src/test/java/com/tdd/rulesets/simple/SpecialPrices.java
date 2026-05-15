@@ -1,9 +1,9 @@
 package com.tdd.rulesets.simple;
 
 import com.tdd.PricingRules;
-import com.tdd.api.rulesets.samples.Ruleset;
+import com.tdd.api.samples.SampleRulesBuilder;
 
-public class SpecialPrices implements Ruleset {
+public class SpecialPrices implements SampleRulesBuilder {
 
     public static PricingRules specialPrice(String sku, double unitPrice, int quantity, double price) {
         PricingRules rules = new PricingRules();

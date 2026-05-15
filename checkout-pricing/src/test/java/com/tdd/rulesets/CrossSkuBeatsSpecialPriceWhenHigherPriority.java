@@ -1,7 +1,7 @@
 package com.tdd.rulesets;
 
 import com.tdd.PricingRules;
-import com.tdd.api.rulesets.samples.Ruleset;
+import com.tdd.api.samples.SampleRulesBuilder;
 import com.tdd.rules.cross.CrossSkuBuyXGetYFree;
 import com.tdd.rules.PricingOption;
 import com.tdd.rules.SpecialPrice;
@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static java.util.Collections.emptyList;
 
-public class CrossSkuBeatsSpecialPriceWhenHigherPriority implements Ruleset {
+public class CrossSkuBeatsSpecialPriceWhenHigherPriority implements SampleRulesBuilder {
 
     public static PricingRules build() {
         Map<String, List<PricingOption>> options = Map.of(

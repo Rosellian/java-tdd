@@ -1,4 +1,4 @@
-package com.tdd.api.rulesets.samples;
+package com.tdd.api.samples;
 
 import com.tdd.PricingRules;
 import com.tdd.rules.*;
@@ -8,7 +8,7 @@ import com.tdd.rules.cross.CrossSkuBuyXGetYFree;
 import java.util.List;
 import java.util.Map;
 
-public class DefaultRules implements Ruleset {
+public class DefaultRules implements SampleRulesBuilder {
 
     public static PricingRules build() {
 

@@ -1,4 +1,4 @@
-package com.tdd.api.rulesets.samples;
+package com.tdd.api.samples;
 
 public enum SKUs {
     A(50),

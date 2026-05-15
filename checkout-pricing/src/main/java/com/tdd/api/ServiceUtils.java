@@ -1,9 +1,9 @@
 package com.tdd.api;
 
 import com.tdd.PricingRules;
-import com.tdd.api.rest.CartItemRequest;
-import com.tdd.api.rest.CustomerRequest;
-import com.tdd.api.rest.PricingRequest;
+import com.tdd.api.rest.trace.CartItemRequest;
+import com.tdd.api.rest.trace.CustomerRequest;
+import com.tdd.api.rest.trace.PricingRequest;
 import com.tdd.tracing.debug.CartItem;
 import com.tdd.tracing.debug.CartSnapshot;
 import com.tdd.tracing.debug.CustomerInfo;

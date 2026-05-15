@@ -1,9 +1,9 @@
 package com.tdd.rulesets.simple;
 
 import com.tdd.PricingRules;
-import com.tdd.api.rulesets.samples.Ruleset;
+import com.tdd.api.samples.SampleRulesBuilder;
 
-public class FreeRules implements Ruleset {
+public class FreeRules implements SampleRulesBuilder {
 
     public static PricingRules buy1Get1Free() {
         return buy1Get1Free(true);

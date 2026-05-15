@@ -1,6 +1,6 @@
 package com.tdd;
 
-import com.tdd.api.rulesets.samples.NoCrossNoSkuDiscount;
+import com.tdd.api.samples.NoCrossNoSkuDiscount;
 import com.tdd.rulesets.CrossSkuBeatsSpecialPriceWhenHigherPriority;
 import org.junit.jupiter.api.Test;
 

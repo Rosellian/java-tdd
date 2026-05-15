@@ -1,9 +1,9 @@
 package com.tdd.rulesets.simple;
 
 import com.tdd.PricingRules;
-import com.tdd.api.rulesets.samples.Ruleset;
+import com.tdd.api.samples.SampleRulesBuilder;
 
-public class DiscountRules implements Ruleset {
+public class DiscountRules implements SampleRulesBuilder {
 
     public static PricingRules buy1Get1Discount(double discount) {
         PricingRules rules = new PricingRules(DEFAULT_UNIT_PRICES);

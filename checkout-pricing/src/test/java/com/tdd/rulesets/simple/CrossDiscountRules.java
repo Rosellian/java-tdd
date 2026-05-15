@@ -1,9 +1,9 @@
 package com.tdd.rulesets.simple;
 
 import com.tdd.PricingRules;
-import com.tdd.api.rulesets.samples.Ruleset;
+import com.tdd.api.samples.SampleRulesBuilder;
 
-public class CrossDiscountRules implements Ruleset {
+public class CrossDiscountRules implements SampleRulesBuilder {
 
     public static PricingRules buy2AGet1BDiscount(double discount) {
         return buy2AGet1BDiscount(discount, 0, true);

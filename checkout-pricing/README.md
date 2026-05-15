@@ -1149,7 +1149,64 @@ It records traces in 2 steps:
     ```
 ---
 ### New feature: Ruleset Editor
-#### Database
+Using a common structure for data handling and API:
+#### Data
+Registry as interface with API:
+```java
+public interface DataRegistry<T> {
+    T get(String name);
+    void save(String name, T data);
+    Set<String> listNames();
+    void loadAll();
+}
+```
+Repository for database handling:
+```java
+public interface DataRepository<T> {
+    T load(String name);
+    void save(String name, T data);
+    List<String> list();
+}
+```
+#### API access
+Controller for endpoints:
+```java
+@RestController
+@RequestMapping("/api/rulesets")
+public class RulesetController {
+
+    public RulesetController(RulesetRegistry registry) {}
+
+    @GetMapping
+    public Set<String> list() {}
+
+    @GetMapping("/{name}")
+    public Ruleset load(@PathVariable String name) {}
+
+    @PostMapping("/{name}")
+    public void save(@PathVariable String name, @RequestBody Ruleset ruleset) {}
+}
+```
+### Rulesets
+Storing rulesets in a database for access through API.
+#### Data
+Registry and repository using Ruleset data type:
+```java
+Ruleset {
+    private String name;
+    private String version;
+    private List<Rule> rules;
+}
+```
+#### API access
+Main path: `"/api/rulesets"`
+- Get list of ruleset names
+- Get ruleset, uses path variable `"/{name}"`
+- Save ruleset, uses path variable `"/{name}"`
+### Price listing
+Separate database and endpoint for handling product unit prices.
+#### Data
+
 #### API access
 
 ---

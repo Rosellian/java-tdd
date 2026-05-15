@@ -1,4 +1,4 @@
-package com.tdd.api.rulesets.samples;
+package com.tdd.api.samples;
 
 import com.tdd.PricingRules;
 import com.tdd.rules.*;
@@ -8,9 +8,9 @@ import com.tdd.rules.cross.CrossSkuBuyXGetYFree;
 import java.util.List;
 import java.util.Map;
 
-import static com.tdd.api.rulesets.samples.Ruleset.defaultUnitPricesWithChange;
+import static com.tdd.api.samples.SampleRulesBuilder.defaultUnitPricesWithChange;
 
-public class CampaignBRules implements Ruleset {
+public class CampaignBRules implements SampleRulesBuilder {
 
     public static PricingRules build() {
         Map<String, Double> unitPrices = defaultUnitPricesWithChange("E", 60);
