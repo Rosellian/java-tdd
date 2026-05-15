@@ -1171,20 +1171,15 @@ public interface DataRepository<T> {
 #### API access
 Controller for endpoints:
 ```java
-@RestController
-@RequestMapping("/api/rulesets")
-public class RulesetController {
-
-    public RulesetController(RulesetRegistry registry) {}
-
+public interface DataController<T> {
     @GetMapping
-    public Set<String> list() {}
+    Set<String> list();
 
     @GetMapping("/{name}")
-    public Ruleset load(@PathVariable String name) {}
+    T load(@PathVariable String name);
 
     @PostMapping("/{name}")
-    public void save(@PathVariable String name, @RequestBody Ruleset ruleset) {}
+    void save(@PathVariable String name, @RequestBody T data);
 }
 ```
 ### Rulesets
@@ -1206,9 +1201,25 @@ Main path: `"/api/rulesets"`
 ### Price listing
 Separate database and endpoint for handling product unit prices.
 #### Data
-
+Registry and repository using PriceList data type:
+```java
+public class PriceList {
+    private String name;
+    private List<Price> unitPrices;
+}
+```
+Price list entry:
+```java
+public class Price {
+    private String sku;
+    private double price;
+}
+```
 #### API access
-
+Main path: `"/api/prices"`
+- Get list of price list names
+- Get price list, uses path variable `"/{name}"`
+- Save price list, uses path variable `"/{name}"`
 ---
 ## Testing
 ### Test cases

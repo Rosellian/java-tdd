@@ -1,5 +1,6 @@
 package com.tdd.api.rulesets;
 
+import com.tdd.api.data.DataController;
 import com.tdd.api.rest.ruleset.Ruleset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/rulesets")
-public class RulesetController {
+public class RulesetController implements DataController<Ruleset> {
     private static final Logger logger = LoggerFactory.getLogger(RulesetController.class);
     private final RulesetRegistry registry;
 
@@ -21,7 +22,7 @@ public class RulesetController {
     public Set<String> list() {
         logger.info("Incoming request for list of rulesets");
         Set<String> rulesets = registry.listNames();
-        logger.info("Returning list of rulesets {}", rulesets);
+        logger.info("Returning available rulesets {}", rulesets);
 
         return rulesets;
     }
