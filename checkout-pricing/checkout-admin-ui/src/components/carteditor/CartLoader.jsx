@@ -116,10 +116,10 @@ const styles = {
     },
     importButtonDark: {
         background: "#BB86FC",
-        color: "#000",
+        color: "#fff",
     },
     importButtonLight: {
         background: "#5A2DA8",
-        color: "#fff",
+        color: "#000",
     }
 }

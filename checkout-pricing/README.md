@@ -1182,6 +1182,7 @@ public interface DataController<T> {
     void save(@PathVariable String name, @RequestBody T data);
 }
 ```
+
 ### Rulesets
 Storing rulesets in a database for access through API.
 #### Data
@@ -1198,6 +1199,7 @@ Main path: `"/api/rulesets"`
 - Get list of ruleset names
 - Get ruleset, uses path variable `"/{name}"`
 - Save ruleset, uses path variable `"/{name}"`
+
 ### Price listing
 Separate database and endpoint for handling product unit prices.
 #### Data
@@ -1221,6 +1223,7 @@ Main path: `"/api/prices"`
 - Get price list, uses path variable `"/{name}"`
 - Save price list, uses path variable `"/{name}"`
 ---
+
 ## Testing
 ### Test cases
 #### Base tests

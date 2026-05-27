@@ -2,7 +2,7 @@ import {useTheme} from "../../../../ui/ThemeProvider";
 
 export function TextInput({ label, field, value, update }) {
     return (
-        <Field label={label} value={value} onChange={(e) => update(field, e.target.value)} />
+        <Field label={label} value={value ?? ""} onChange={(e) => update(field, e.target.value)} />
     )
 }
 

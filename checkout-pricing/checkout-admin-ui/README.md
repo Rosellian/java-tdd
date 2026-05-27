@@ -482,19 +482,19 @@ Shall have the following functions:
 - display complete rulesets
 - create and add rules
 - edit rules
-- save and load rulesets
-- preview effects of changes
+- save and load rulesets (moved to RulesetHandler)
+- preview effects of changes (TODO)
 #### Components
-1. RuleSetEditor  
+1. RulesetEditor  
    Main part holding subcomponents and controls.
    ```jsx
-   <RulesetEditor ruleset={defaultRuleset} onSave={} />
+   <RulesetEditor ruleset={ruleset} onChange={setRuleset} />
    ```
 2. RuleList  
    List of rules in active ruleset.
    ```jsx
-   <RuleList rules={draft.rules} selectedRule={selectedRule} onSelect={setSelectedRule} 
-   onAdd={addRule} onDelete={deleteRule}/>
+   <RuleList rules={draft.rules} selectedRule={safeIndex} onSelect={setSelectedRule}
+                      onAdd={addRule} onDelete={deleteRule}/>
    ```
    subcomponents:
    - RuleItem, a selectable element for each rule.
@@ -508,7 +508,7 @@ Shall have the following functions:
 3. RuleForm  
    Interface to add a new rule or edit a currently selected one.
    ```jsx
-   <RuleForm rule={draft.rules[selectedRule]} onChange={(r) => updateRule(selectedRule, r)}/>
+   <RuleForm rule={rule} onChange={(r) => updateRule(safeIndex, r)}/>
    ```
    subcomponents:
    - RuleTypeSelector, a dropdown for selecting the type of rule.
@@ -538,13 +538,43 @@ Shall have the following functions:
 4. RulePreview  
    TODO
 
-### Ruleset loader
+### Ruleset handler
 Building upon the RulesetSelector to include persistence for rulesets.  
 Enabling:
+- Create new rulesets
 - Save changes to rulesets to backend
 - Load rulesets from the backend
-- Create new rulesets
+#### Component setup
+1. RulesetHandler is added as a main component to the AdminApp to operate on the rulesets.
+   ```jsx
+   <RulesetHandler onRulesetChange={setRuleset} />
+   ```
+2. RulesetSelector to display and switch between rulesets.
+   ```jsx
+   <RulesetSelector value={selected} onChange={(v) => {
+                setMode("existing");
+                setSelected(v);
+            }} names={rulesetNames} />
+   ```
+3. RuleEditor to display and edit rules.
+   ```jsx
+   <RulesetEditor ruleset={ruleset} onChange={setRuleset} />
+   ```
 
+### API calls
+API calls to backend are contained in a separate js-file `rulesets.js`.
+Sample ruleset json-files are used as a fallback, mainly for testing.
+```js
+export async function getRulesetList() {}
+
+export async function getRulesetWithFallback(name) {}
+
+async function importRuleset(name) {}
+
+export async function getRuleset(name) {}
+
+export async function saveRuleset(name, ruleset) {}
+```
 ---
 ### Changes in the API layer
 - Refactor API calls to avoid code duplication

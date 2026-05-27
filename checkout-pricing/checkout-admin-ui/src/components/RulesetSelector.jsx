@@ -1,6 +1,6 @@
 import {useTheme} from "../ui/ThemeProvider";
 
-export function RulesetSelector({ value, onChange }) {
+export function RulesetSelector({ value, onChange, names }) {
     const { theme } = useTheme();
 
     return (
@@ -12,21 +12,28 @@ export function RulesetSelector({ value, onChange }) {
                 ...styles.title,
                 ...(theme === "dark" ? styles.titleDark : styles.titleLight)
             }}>Ruleset</h3>
-            <select
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                style={{
-                    ...styles.select,
-                    ...(theme === "dark" ? styles.selectDark : styles.selectLight)
-                }}
-            >
-                <option value="default">Default</option>
-                <option value="campaignA">Campaign A</option>
-                <option value="campaignB">Campaign B</option>
-                <option value="NoCrossNoSkuDiscount">No-Cross No-Sku-Discount</option>
-            </select>
+
+            <RulesetDropdown value={value} onChange={onChange} names={names} />
         </div>
     );
+}
+
+function RulesetDropdown({ value, onChange, names }) {
+    const { theme } = useTheme();
+
+    return (
+        <select
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            style={{
+                ...styles.select,
+                ...(theme === "dark" ? styles.selectDark : styles.selectLight)
+            }}>
+            {names.map(n => (
+            <option key={n} value={n}>{n}</option>
+            ))}
+        </select>
+    )
 }
 
 const styles = {

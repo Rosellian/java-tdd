@@ -7,7 +7,6 @@ import java.util.List;
 
 public class PriceRepository implements DataRepository<PriceList> {
 
-
     @Override
     public PriceList load(String name) {
         return null;
