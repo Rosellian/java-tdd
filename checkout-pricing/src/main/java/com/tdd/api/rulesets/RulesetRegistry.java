@@ -1,7 +1,7 @@
 package com.tdd.api.rulesets;
 
 import com.tdd.api.data.DataRegistry;
-import com.tdd.api.rest.ruleset.Ruleset;
+import com.tdd.api.rulesets.data.Ruleset;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;

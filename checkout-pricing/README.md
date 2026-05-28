@@ -1194,6 +1194,70 @@ Ruleset {
     private List<Rule> rules;
 }
 ```
+Rules use the following data types:
+```java
+public abstract class Rule {
+    private String type;
+    private String name;
+    private int priority;
+}
+
+public interface Stackable {
+    boolean isStackable();
+    void setStackable(boolean stackable);
+}
+```
+SKU rules:
+```java
+public abstract class SkuRule extends Rule {
+    private String sku;
+}
+
+public class StackableSkuRule extends SkuRule implements Stackable {
+    private boolean stackable;
+}
+```
+```java
+public class SpecialPrice extends StackableSkuRule {
+    private double price;
+    private int quantity;
+}
+
+public class BuyXGetYFree extends StackableSkuRule {
+    private int buy;
+    private int get;
+}
+
+public class BuyXGetYDiscount extends StackableSkuRule {
+    private int buy;
+    private int get;
+    private double discount;
+}
+
+public class SkuDiscount extends SkuRule {
+    private double discount;
+}
+```
+Cross-SKU rules:
+```java
+public class CrossSkuRule extends Rule implements Stackable {
+    private boolean stackable;
+    private String buySku;
+    private int buyQty;
+}
+```
+```java
+public class CrossSkuBuyXGetYFree extends CrossSkuRule {
+    private String freeSku;
+    private int freeQty;
+}
+
+public class CrossSkuBuyXGetYDiscount extends CrossSkuRule {
+    private String discountSku;
+    private int discountQty;
+    private double discount;
+}
+```
 #### API access
 Main path: `"/api/rulesets"`
 - Get list of ruleset names

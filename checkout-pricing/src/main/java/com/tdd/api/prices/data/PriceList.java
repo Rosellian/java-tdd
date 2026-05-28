@@ -1,4 +1,4 @@
-package com.tdd.api.rest.price;
+package com.tdd.api.prices.data;
 
 import java.util.List;
 

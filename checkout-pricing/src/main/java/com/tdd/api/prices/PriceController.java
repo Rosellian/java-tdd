@@ -1,7 +1,7 @@
 package com.tdd.api.prices;
 
 import com.tdd.api.data.DataController;
-import com.tdd.api.rest.price.PriceList;
+import com.tdd.api.prices.data.PriceList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;

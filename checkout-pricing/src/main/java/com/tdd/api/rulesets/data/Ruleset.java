@@ -1,6 +1,6 @@
-package com.tdd.api.rest.ruleset;
+package com.tdd.api.rulesets.data;
 
-import com.tdd.rules.Rule;
+import com.tdd.api.rulesets.data.rules.Rule;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ public class Ruleset {
     private String name;
     private String version;
     private List<Rule> rules;
-
 
     public String getName() {
         return name;

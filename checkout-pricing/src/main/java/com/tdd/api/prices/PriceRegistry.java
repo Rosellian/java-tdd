@@ -1,7 +1,7 @@
 package com.tdd.api.prices;
 
 import com.tdd.api.data.DataRegistry;
-import com.tdd.api.rest.price.PriceList;
+import com.tdd.api.prices.data.PriceList;
 
 import java.util.Map;
 import java.util.Set;

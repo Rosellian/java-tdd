@@ -1,7 +1,7 @@
 package com.tdd.api.rulesets;
 
 import com.tdd.api.data.DataRepository;
-import com.tdd.api.rest.ruleset.Ruleset;
+import com.tdd.api.rulesets.data.Ruleset;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
