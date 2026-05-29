@@ -4,6 +4,8 @@ public class BuyXGetYFree extends StackableSkuRule {
     private int buy;
     private int get;
 
+    public BuyXGetYFree() {}
+
     public int getBuy() {
         return buy;
     }

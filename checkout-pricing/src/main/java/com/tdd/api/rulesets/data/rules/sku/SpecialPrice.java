@@ -4,6 +4,8 @@ public class SpecialPrice extends StackableSkuRule {
     private double price;
     private int quantity;
 
+    public SpecialPrice() {}
+
     public double getPrice() {
         return price;
     }

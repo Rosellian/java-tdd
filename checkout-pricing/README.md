@@ -1632,3 +1632,7 @@ public class RulesetTest {
 }
 ```
 ---
+
+### Database
+#### Rulesets
+When h2 is used the database can be accessed at: `http://localhost:8080/h2-console`

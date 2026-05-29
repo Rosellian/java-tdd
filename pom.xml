@@ -21,6 +21,9 @@
         <maven.compiler.target>25</maven.compiler.target>
 
         <spring-boot.version>4.0.3</spring-boot.version>
+
+        <h2.version>2.4.240</h2.version>
+
         <junit.version>6.0.3</junit.version>
 
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
@@ -35,10 +38,27 @@
                 <artifactId>spring-boot-starter-web</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
-            <!-- DATABASE -->
+            <!-- Database -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-jdbc</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-h2console</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+            </dependency>
+
+            <!-- Security -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
 

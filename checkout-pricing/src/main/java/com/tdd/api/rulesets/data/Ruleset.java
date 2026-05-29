@@ -9,6 +9,8 @@ public class Ruleset {
     private String version;
     private List<Rule> rules;
 
+    public Ruleset() {}
+
     public String getName() {
         return name;
     }

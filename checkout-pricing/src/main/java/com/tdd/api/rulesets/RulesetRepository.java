@@ -9,6 +9,8 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
+import static com.tdd.api.rulesets.RepositoryUtils.*;
+
 @Repository
 public class RulesetRepository implements DataRepository<Ruleset> {
     private final JdbcTemplate jdbc;
@@ -21,8 +23,7 @@ public class RulesetRepository implements DataRepository<Ruleset> {
     @Override
     public Ruleset load(String name) {
         try {
-            String json = jdbc.queryForObject(
-                    "SELECT json FROM rulesets WHERE name = ?", String.class, name);
+            String json = jdbc.queryForObject(LOAD_RULESET, String.class, name);
 
             return mapper.readValue(json, Ruleset.class);
         } catch (EmptyResultDataAccessException e) {
@@ -38,14 +39,9 @@ public class RulesetRepository implements DataRepository<Ruleset> {
             String json = mapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(ruleset);
 
-            jdbc.update("""
-                INSERT INTO rulesets (name, version, json, updated_at, created_at)
-                VALUES (?, ?, ?, NOW(), NOW())
-                ON CONFLICT (name)
-                DO UPDATE SET version = EXCLUDED.version,
-                              json = EXCLUDED.json,
-                              updated_at = NOW()
-            """, name, ruleset.getVersion(), json);
+            String query = getSaveByDialect(jdbc);
+
+            jdbc.update(query, name, ruleset.getVersion(), json);
         } catch (Exception e) {
             throw new RuntimeException("Failed to save ruleset " + name, e);
         }
@@ -53,6 +49,6 @@ public class RulesetRepository implements DataRepository<Ruleset> {
 
     @Override
     public List<String> list() {
-        return jdbc.queryForList("SELECT name FROM rulesets ORDER BY name", String.class);
+        return jdbc.queryForList(LIST_RULESETS, String.class);
     }
 }

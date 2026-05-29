@@ -5,6 +5,8 @@ public class CrossSkuBuyXGetYDiscount extends CrossSkuRule {
     private int discountQty;
     private double discount;
 
+    public CrossSkuBuyXGetYDiscount() {}
+
     public String getDiscountSku() {
         return discountSku;
     }

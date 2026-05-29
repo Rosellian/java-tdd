@@ -5,6 +5,8 @@ public class BuyXGetYDiscount extends StackableSkuRule {
     private int get;
     private double discount;
 
+    public BuyXGetYDiscount() {}
+
     public int getBuy() {
         return buy;
     }

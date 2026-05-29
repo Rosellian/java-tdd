@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS rulesets (
+    name        VARCHAR(255) PRIMARY KEY,
+    version     INT NOT NULL,
+    json        TEXT NOT NULL,
+    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

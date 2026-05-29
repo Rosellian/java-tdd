@@ -4,6 +4,8 @@ public class CrossSkuBuyXGetYFree extends CrossSkuRule {
     private String freeSku;
     private int freeQty;
 
+    public CrossSkuBuyXGetYFree() {}
+
     public String getFreeSku() {
         return freeSku;
     }
