@@ -1269,17 +1269,11 @@ Separate database and endpoint for handling product unit prices.
 #### Data
 Registry and repository using PriceList data type:
 ```java
-public class PriceList {
-    private String name;
-    private List<Price> unitPrices;
-}
+public record PriceList(String name, String version, List<Price> unitPrices) {}
 ```
 Price list entry:
 ```java
-public class Price {
-    private String sku;
-    private double price;
-}
+public record Price(String sku, double price) {}
 ```
 #### API access
 Main path: `"/api/prices"`
@@ -1636,3 +1630,36 @@ public class RulesetTest {
 ### Database
 #### Rulesets
 When h2 is used the database can be accessed at: `http://localhost:8080/h2-console`
+#### Price lists
+**Running PostgreSQL locally**  
+Start the service:
+```bash
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+```
+Check status:
+```bash
+sudo systemctl status postgresql
+```
+Log in (peer auth)
+```bash
+sudo -u postgres psql
+```
+Set password:
+```bash
+ALTER USER postgres WITH PASSWORD 'postgres';
+```
+
+Create db:
+```bash
+sudo -u postgres createdb pricelists
+```
+Check connection:
+```bash
+psql -U postgres -d pricelists
+```
+
+**Scripts**  
+- Run `/scripts/reset-prices-db.sh` reset price list database to start from a clean slate.
+- Run `/scripts/verify-prices-db.sh` to check if price list database is empty or otherwise what tables it contains.
+- Run `/scripts/dump-prices-db.sh` to print the contents of price list database.

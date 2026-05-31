@@ -2,6 +2,7 @@ package com.tdd.api.prices;
 
 import com.tdd.api.data.DataRegistry;
 import com.tdd.api.prices.data.PriceList;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -15,6 +16,10 @@ public class PriceRegistry implements DataRegistry<PriceList> {
 
     public PriceRegistry(PriceRepository repository) {
         this.repository = repository;
+    }
+
+    @PostConstruct
+    public void init() {
         loadAll();
     }
 

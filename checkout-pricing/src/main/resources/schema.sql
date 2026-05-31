@@ -1,3 +1,4 @@
+-- Runs against primary data source (h2)
 CREATE TABLE IF NOT EXISTS rulesets (
     name        VARCHAR(255) PRIMARY KEY,
     version     INT NOT NULL,

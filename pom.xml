@@ -23,6 +23,9 @@
         <spring-boot.version>4.0.3</spring-boot.version>
 
         <h2.version>2.4.240</h2.version>
+        <postgresql.version>42.7.11</postgresql.version>
+        <spring-flyway.version>4.1.0-M4</spring-flyway.version>
+        <flyway.version>12.6.2</flyway.version>
 
         <junit.version>6.0.3</junit.version>
 
@@ -53,6 +56,27 @@
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-flyway</artifactId>
+                <version>${spring-flyway.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>${flyway.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-database-postgresql</artifactId>
+                <version>${flyway.version}</version>
             </dependency>
 
             <!-- Security -->

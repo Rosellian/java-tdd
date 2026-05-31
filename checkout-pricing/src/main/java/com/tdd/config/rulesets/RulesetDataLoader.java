@@ -1,4 +1,4 @@
-package com.tdd.api.config;
+package com.tdd.config.rulesets;
 
 import com.tdd.api.rulesets.RulesetRepository;
 import com.tdd.api.rulesets.data.Ruleset;
@@ -28,7 +28,7 @@ public class RulesetDataLoader implements CommandLineRunner {
 
     private void loadSample(String name) {
         if (repository.load(name) != null) {
-            return; // redan i DB
+            return;
         }
 
         try (InputStream is = getClass().getResourceAsStream("/samples/" + name + ".json")) {
