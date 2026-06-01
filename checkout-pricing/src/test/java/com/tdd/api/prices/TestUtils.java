@@ -14,6 +14,7 @@ public class TestUtils {
     public static final String PRICE_LIST_A_NAME = "PriceListA";
     public static final String NEW_LIST_NAME = "NewList";
     public static final String MISSING = "Missing";
+    public static final PriceList DEFAULT_LIST_1 = createDefaultPriceList(List.of(new Price("A", 50)));
 
     public static PriceList createEmptyDefaultPriceList() {
         return new PriceList(DEFAULT_NAME, V_1, List.of());
@@ -32,15 +33,19 @@ public class TestUtils {
     public static PriceList createDefaultPriceList() {
         return new PriceList(DEFAULT_NAME, V_1, createDefaultPrices());
     }
-    public static PriceList createDefaultPriceList(String name, String version, List<Price> prices) {
+    public static PriceList createNewList() {
+        return createPriceList(NEW_LIST_NAME, "v3", List.of(new Price("X", 99)));
+    }
+    public static PriceList createPriceList(String name, String version, List<Price> prices) {
         return new PriceList(name, version, prices);
     }
 
-    public static void assertDefaultPriceList(PriceList result) {
+    public static void assertPriceList(PriceList expected, PriceList result) {
         assertNotNull(result);
-        assertEquals(DEFAULT_NAME, result.name());
-        assertEquals(V_1, result.version());
-        assertEquals(2, result.unitPrices().size());
+        assertEquals(expected.name(), result.name());
+        assertEquals(expected.version(), result.version());
+        assertEquals(expected.unitPrices().size(), result.unitPrices().size());
+        //TODO assert prices too
     }
 
     public static void assertException(String expectedMessage, RuntimeException ex) {

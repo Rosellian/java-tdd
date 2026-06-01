@@ -13,6 +13,7 @@ public class TestUtils {
     public static final String CAMPAIGN_A_NAME = "campaignA";
     public static final String MISSING = "missing";
     public static final String NEW_RULESET_NAME = "newRuleset";
+    public static final Ruleset NEW_RULESET = createRuleset(NEW_RULESET_NAME, "99");
 
     public static Ruleset createDefaultRuleset(String version) {
         return createRuleset(DEFAULT_NAME, version);

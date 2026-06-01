@@ -39,9 +39,7 @@ class PriceRegistryTest {
     void get_returnsCachedPriceList() {
         PriceList pl = registry.get(DEFAULT_NAME);
 
-        assertNotNull(pl);
-        assertEquals(DEFAULT_NAME, pl.name());
-        assertEquals(V_1, pl.version());
+        assertPriceList(DEFAULT_LIST_1, pl);
     }
 
     @Test
@@ -51,7 +49,7 @@ class PriceRegistryTest {
 
     @Test
     void save_updatesCache_andDelegatesToRepository() {
-        PriceList newList = createDefaultPriceList(NEW_LIST_NAME,"v3", List.of(new Price("X", 99)));
+        PriceList newList = createNewList();
 
         registry.save(NEW_LIST_NAME, newList);
 
@@ -79,10 +77,9 @@ class PriceRegistryTest {
     private void mockRepoListAndLoad() {
         when(repository.list()).thenReturn(List.of(DEFAULT_NAME, PRICE_LIST_A_NAME));
 
-        PriceList defaultList = createDefaultPriceList(DEFAULT_NAME, V_1,List.of(new Price("A", 50)));
-        PriceList listA = createDefaultPriceList(PRICE_LIST_A_NAME, V_2, List.of(new Price("B", 40)));
+        PriceList listA = createPriceList(PRICE_LIST_A_NAME, V_2, List.of(new Price("B", 40)));
 
-        when(repository.load(DEFAULT_NAME)).thenReturn(defaultList);
+        when(repository.load(DEFAULT_NAME)).thenReturn(DEFAULT_LIST_1);
         when(repository.load(PRICE_LIST_A_NAME)).thenReturn(listA);
     }
 

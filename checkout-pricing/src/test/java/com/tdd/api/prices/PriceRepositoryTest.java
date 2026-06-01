@@ -42,7 +42,7 @@ class PriceRepositoryTest {
 
         PriceList result = repository.load(DEFAULT_NAME);
 
-        assertDefaultPriceList(result);
+        assertPriceList(createDefaultPriceList(), result);
     }
 
     @Test

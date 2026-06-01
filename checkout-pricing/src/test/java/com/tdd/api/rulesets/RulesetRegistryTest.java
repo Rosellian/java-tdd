@@ -45,13 +45,13 @@ class RulesetRegistryTest {
 
     @Test
     void save_updatesCache_andDelegatesToRepository() {
-        Ruleset newRuleset = createRuleset(NEW_RULESET_NAME, "99");
+        Ruleset newRuleset = NEW_RULESET;
 
         registry.save(NEW_RULESET_NAME, newRuleset);
 
         verify(repository).save(NEW_RULESET_NAME, newRuleset);
 
-        assertEquals(newRuleset, registry.get(NEW_RULESET_NAME));
+        assertRuleset(newRuleset, registry.get(NEW_RULESET_NAME));
     }
 
     @Test
