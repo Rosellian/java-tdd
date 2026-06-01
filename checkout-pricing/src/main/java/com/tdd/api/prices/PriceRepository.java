@@ -4,6 +4,7 @@ import com.tdd.api.data.DataRepository;
 import com.tdd.api.prices.data.Price;
 import com.tdd.api.prices.data.PriceList;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -21,35 +22,48 @@ public class PriceRepository implements DataRepository<PriceList> {
 
     @Override
     public PriceList load(String name) {
-        //TODO add exception handling
-        List<PriceList> results = jdbc.query(LOAD_PRICE_LIST, priceListRowMapper, name);
+        try {
+            List<PriceList> results = jdbc.query(LOAD_PRICE_LIST, priceListRowMapper, name);
 
-        return results.isEmpty() ? null : addPrices(results.getFirst());
+            return results.isEmpty() ? null : addPrices(results.getFirst());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load price list " + name, e);
+        }
     }
 
     private PriceList addPrices(PriceList priceList) {
         String name = priceList.name();
 
-        List<Price> prices = jdbc.query(LOAD_PRICES, priceRowMapper, name);
+        try {
+            List<Price> prices = jdbc.query(LOAD_PRICES, priceRowMapper, name);
 
-        return new PriceList(name, priceList.version(), prices);
+            return new PriceList(name, priceList.version(), prices);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Failed to load prices for list " + name, e);
+        }
     }
 
     @Override
     public void save(String name, PriceList priceList) {
-        //TODO add exception handling
-        jdbc.update(SAVE_PRICE_LIST, name, priceList.version());
+        try {
+            jdbc.update(SAVE_PRICE_LIST, name, priceList.version());
 
-        jdbc.update(DELETE_PRICES_FOR_LIST, name);
+            jdbc.update(DELETE_PRICES_FOR_LIST, name);
 
-        priceList.unitPrices().forEach(price ->
-                jdbc.update(SAVE_PRICE, name, price.sku(), price.price())
-        );
+            priceList.unitPrices().forEach(price ->
+                    jdbc.update(SAVE_PRICE, name, price.sku(), price.price())
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save price list " + name, e);
+        }
     }
 
     @Override
     public List<String> list() {
-        //TODO add exception handling
-        return jdbc.queryForList(LIST_PRICE_LISTS, String.class);
+        try {
+            return jdbc.queryForList(LIST_PRICE_LISTS, String.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load price list names", e);
+        }
     }
 }

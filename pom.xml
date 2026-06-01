@@ -28,6 +28,7 @@
         <flyway.version>12.6.2</flyway.version>
 
         <junit.version>6.0.3</junit.version>
+        <mockito.version>5.23.0</mockito.version>
 
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -104,6 +105,12 @@
                 <artifactId>junit-jupiter-params</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
             </dependency>
 
         </dependencies>

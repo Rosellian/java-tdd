@@ -1287,64 +1287,52 @@ Main path: `"/api/prices"`
 #### Base tests
 **Test 1:** one product, no special price
 ```java
-@Test
     void scanningSingleItemReturnsItsPrice() {}
 ```
 **Test 2:** Special price for A
 ```java
-@Test
 void appliesThreeFor130SpecialPrice() {}
 ```
 **Test 3:** 2 for 45 for B
 ```java
-@Test
 void appliesTwoFor45SpecialPrice() {}
 ```
 **Test 4:** Mixed products
 ```java
-@Test
 void calculatesTotalForMixedProductsWithSpecialPrices() {}
 ```
 **Test 5:** Order independence
 ```java
-@Test
 void scanningOrderDoesNotAffectTotal() {}
 ```
 **Test 6:** Mixed products with and without special prices.
 ```java
-@Test
 void calculatesTotalForMixedProductsWithAndWithoutSpecialPrices() {}
 ```
 **Test 7:** Multiple special prices for the same SKU.
 ```java
-@Test
 void appliesBestSpecialPriceWhenMultipleSpecialPricesExist() {}
 ```
 **Test 8:** Combined special prices
 ```java
-@Test
 void combinesMultipleSpecialPricesToGetBestTotal() {}
 ```
 **Test 9:** Priority between special prices
 ```java
-@Test
 void choosesBestCombinationWhenSpecialPricesConflict() {}
 ```
 ---
 #### Adding new rule type - Buy x get Y free
 **Test 10:** Buy X get Y free
 ```java
-@Test
 void appliesBuyOneGetOneFree() {}
 ```
 **Test 11:** Buy 1, get 1 free with more than two products.
 ```java
-@Test
 void appliesBuyOneGetOneFreeForMultiplePairs() {}
 ```
 **Test 12:** Buy X Get Y Free and special prices at the same time.
 ```java
-@Test
 void choosesBestPriceAcrossDifferentRuleTypes() {}
 ```
 ---
@@ -1364,7 +1352,6 @@ This expects you to use:
 - Priority between pricing rules
 - stackability rules
 ```java
-@Test
 void choosesOptimalCombinationBetweenBuyXGetYFreeAndSpecialPrices() {}
 ```
 Rules:
@@ -1388,24 +1375,20 @@ Other tests may also need modification for this to work after implementing.
 #### Design path 1 continues:
 **Test 14:** Buy‑1‑get‑1‑free is stackable for SKU A.
 ```java
-@Test
 void buyOneGetOneFreeIsStackableForA() {}
 ```
 **Test 15:** Buy‑1‑get‑1‑free is not stackable for SKU B
 ```java
-@Test
 void buyOneGetOneFreeIsNotStackableForB() {}
 ```
 **Test 16:** A stackable, B non‑stackable in same checkout.
 ```java
-@Test
 void stackabilityIsPerSku() {}
 ```
 ---
 #### Adding new rule type - Buy X, get y at discount
 **Test 17:** Buy 2, get 1 half price
 ```java
-@Test
 void appliesBuyTwoGetOneHalfPrice() {}
 ```
 **Test 18:** Full Combination Stress Test
@@ -1413,7 +1396,6 @@ void appliesBuyTwoGetOneHalfPrice() {}
 - B: has special price + non‑stackable buy‑X‑get‑Y‑free
 - C: has buy‑X‑get‑Y‑discount (stackable)
 ```java
-@Test
 void combinesAllRuleTypesWithPriorityAndStackability() {}
 ```
 Cart:
@@ -1440,19 +1422,16 @@ Rules:
 **Test 19:** Cross‑SKU: Buy X of A, get Y of B free. 
 Specific: Buy 2 of A, get 1 of B free
 ```java
-@Test
 void buyTwoAGetOneBFree() {}
 ```
 **Test 20:** Cross‑SKU + stackability.
 Buy 2 A → get 1 B free stackable
 ```java
-@Test
 void crossSkuStackable() {}
 ```
 **Test 21:** Cross‑SKU non‑stackable.
 Buy 2 A → get 1 B free non-stackable
 ```java
-@Test
 void crossSkuNonStackable() {}
 ```
 **Test 22:** Cross‑SKU + SpecialPrice (which rule wins?).
@@ -1461,7 +1440,6 @@ Rules:
 - Special A: 3‑for‑120
 - Special B: 2‑for‑70
 ```java
-@Test
 void crossSkuBeatsSpecialPriceWhenHigherPriority() {}
 ```
 Unit Prices: A=50, B=40  
@@ -1476,29 +1454,24 @@ Expected:
 **Test 23:**  Buy X of A, get Y of B at discount.
 Specific: Buy 2 of A → get 1 of B at 50% discount
 ```java
-@Test
 void crossSkuBuyXGetYAtDiscount() {}
 ```
 **Test 24:** Cross‑SKU discount + special price (which rule wins?).
 Cross‑SKU discount beats special price when it has higher priority.
 ```java
-@Test
 void crossSkuDiscountBeatsSpecialPriceWhenHigherPriority() {}
 ```
 **Cross‑SKU free + Cross‑SKU discount (priority decides):**  
 **Test 25:** Free rule wins over discount rule
 ```java
-@Test
 void crossSkuFreeBeatsDiscountWhenHigherPriority() {}
 ```
 **Test 26:** Discount wins over free
 ```java
-@Test
 void crossSkuDiscountBeatsFreeWhenHigherPriority() {}
 ```
 **Test 27:** Cross‑SKU DISCOUNT + Special price (combined optimization).
 ```java
-@Test
 void crossSkuDiscountAndSpecialPriceCombinedOptimization() {}
 ```
 Unit Prices: A=50, B=40  
@@ -1515,12 +1488,10 @@ Expected:
 **Test 28:** Cross‑SKU FREE + Cross‑SKU FREE (stackability + priority).
 Two FREE‑rules, both stackable, higher priority wins.
 ```java
-@Test
 void higherPriorityFreeRuleWinsWhenBothAreStackable() {}
 ```
 **Test 29:** Two FREE‑rules, both stackable, but lower priority is “stronger”.
 ```java
-@Test
 void higherPriorityFreeRuleWinsEvenIfLowerPriorityIsMoreGenerous() {}
 ```
 ---
@@ -1528,12 +1499,10 @@ void higherPriorityFreeRuleWinsEvenIfLowerPriorityIsMoreGenerous() {}
 **Test 30:** Cross‑SKU DISCOUNT + SKU‑specific discount (which wins?)
 Cross‑SKU DISCOUNT wins over SKU‑discount
 ```java
-@Test
 void crossSkuDiscountBeatsSkuDiscountWhenHigherPriority() {}
 ```
 **Test 31:** SKU‑discount wins over Cross‑SKU DISCOUNT
 ```java
-@Test
 void skuDiscountBeatsCrossSkuDiscountWhenHigherPriority() {}
 ```
 ---
@@ -1614,14 +1583,11 @@ against the sample rulesets:
 `RulesetTest.java`
 ```java
 public class RulesetTest {
-
-    @Test
+    
     public void defaultRulesetStandardInput() {}
-
-    @Test
+    
     public void CampaignARulesetStandardOutput() {}
-
-    @Test
+    
     public void CampaignBRulesetStandardInput() {}
 }
 ```
@@ -1630,7 +1596,85 @@ public class RulesetTest {
 ### Database
 #### Rulesets
 When h2 is used the database can be accessed at: `http://localhost:8080/h2-console`
+##### Unit tests
+`RulesetRepositoryTest.java`
+```java
+void load_returnsRuleset_whenJsonExists() {}
+
+void load_returnsNull_whenNoRowFound() {}
+
+void load_throwsRuntimeException_whenJsonIsInvalid() {}
+
+void load_throwsRuntimeException_whenJdbcFails() {}
+
+void save_serializesRuleset_andExecutesUpdate() throws SQLException {}
+
+void save_serializesRuleset_andExecutesUpdate_postgresql() throws SQLException {}
+
+void save_throwsRuntimeException_whenJsonSerializationFails() {}
+
+void save_throwsRuntimeException_whenJdbcFails() {}
+
+void list_returnsNames() {}
+
+void list_throwsRuntimeException_whenJdbcFails() {}
+```
+
+`RulesetRegistryTest.java`
+```java
+void constructor_loadsAllRulesetsIntoCache() {}
+
+void get_returnsCachedRuleset() {}
+
+void get_returnsNull_whenNotInCache() {}
+
+void save_updatesCache_andDelegatesToRepository() {}
+
+void listNames_returnsAllCachedNames() {}
+
+void loadAll_populatesCacheFromRepository() {}
+```
+
 #### Price lists
+##### Unit tests
+`PriceRepositoryTest.java`
+```java
+void load_returnsNull_whenNoPriceListFound() {}
+
+void load_returnsPriceListWithPrices_whenFound() {}
+
+void load_throwsRuntimeException_whenJdbcFailsOnPriceList() {}
+
+void load_throwsRuntimeException_whenJdbcFailsOnPrices() {}
+
+void save_updatesPriceList_andReplacesPrices() {}
+
+void save_throwsRuntimeException_whenJdbcFailsOnPriceList() {}
+
+void save_throwsRuntimeException_whenJdbcFailsOnDeletePrices() {}
+
+void save_throwsRuntimeException_whenJdbcFailsOnInsertPrice() {}
+
+void list_returnsAllPriceListNames() {}
+
+void list_throwsRuntimeException_whenJdbcFails() {}
+```
+
+`PriceRegistryTest.java`
+```java
+void init_loadsAllPriceListsIntoCache() {}
+
+void get_returnsCachedPriceList() {}
+
+void get_returnsNull_whenNotInCache() {}
+
+void save_updatesCache_andDelegatesToRepository() {}
+
+void listNames_returnsAllCachedNames() {}
+
+void loadAll_populatesCacheFromRepository() {}
+```
+
 **Running PostgreSQL locally**  
 Start the service:
 ```bash

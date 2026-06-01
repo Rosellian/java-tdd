@@ -23,7 +23,7 @@ public class RepositoryUtils {
         try {
             String dialect = jdbc.getDataSource().getConnection().getMetaData().getDatabaseProductName();
 
-            if (dialect.equalsIgnoreCase("PostgreSQL")) {
+            if (dialect.contains("PostgreSQL")) {
                 return SAVE_RULESET_POSTGRESQL;
             }
             else {

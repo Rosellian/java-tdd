@@ -2,6 +2,7 @@ package com.tdd.api.rulesets;
 
 import com.tdd.api.data.DataRepository;
 import com.tdd.api.rulesets.data.Ruleset;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -49,6 +50,10 @@ public class RulesetRepository implements DataRepository<Ruleset> {
 
     @Override
     public List<String> list() {
-        return jdbc.queryForList(LIST_RULESETS, String.class);
+        try {
+            return jdbc.queryForList(LIST_RULESETS, String.class);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Failed to load ruleset list names", e);
+        }
     }
 }
