@@ -25,7 +25,6 @@ public class PricingController {
     @PostMapping("/evaluate")
     public EvaluateResponse evaluate(@RequestBody EvaluateRequest req) {
         logger.info("Incoming evaluate request {}", req);
-
         PricingRequest request = fromEvaluateRequest(req);
 
         RuleTrace trace = service.evaluate(request);
@@ -39,7 +38,6 @@ public class PricingController {
     @PostMapping("/trace")
     public TraceResponse getTrace(@RequestBody EvaluateRequest req) {
         logger.info("Incoming trace request {}", req);
-
         PricingRequest pricingRequest = fromEvaluateRequest(req);
 
         PricingTrace trace = service.getTrace(pricingRequest);

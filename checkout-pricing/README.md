@@ -1287,7 +1287,7 @@ Main path: `"/api/prices"`
 #### Base tests
 **Test 1:** one product, no special price
 ```java
-    void scanningSingleItemReturnsItsPrice() {}
+void scanningSingleItemReturnsItsPrice() {}
 ```
 **Test 2:** Special price for A
 ```java

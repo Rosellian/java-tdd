@@ -13,4 +13,10 @@ public class StackableSkuRule extends SkuRule implements Stackable {
     public void setStackable(boolean stackable) {
         this.stackable = stackable;
     }
+
+    @Override
+    protected void appendBaseFields(StringBuilder sb) {
+        super.appendBaseFields(sb);
+        sb.append(", stackable=").append(stackable);
+    }
 }

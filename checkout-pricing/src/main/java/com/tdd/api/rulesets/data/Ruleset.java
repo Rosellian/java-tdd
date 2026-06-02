@@ -31,4 +31,13 @@ public class Ruleset {
     public void setRules(List<Rule> rules) {
         this.rules = rules;
     }
+
+    @Override
+    public String toString() {
+        return "Ruleset{" +
+                "name='" + name + '\'' +
+                ", version='" + version + '\'' +
+                ", rules=" + rules +
+                '}';
+    }
 }

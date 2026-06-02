@@ -11,4 +11,10 @@ public abstract class SkuRule extends Rule {
     public void setSku(String sku) {
         this.sku = sku;
     }
+
+    @Override
+    protected void appendBaseFields(StringBuilder sb) {
+        super.appendBaseFields(sb);
+        sb.append(", sku='").append(sku).append('\'');
+    }
 }

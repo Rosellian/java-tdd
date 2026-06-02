@@ -19,4 +19,14 @@ public class SpecialPrice extends StackableSkuRule {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("SpecialPrice{");
+        appendBaseFields(sb);
+        sb.append(", quantity=").append(quantity);
+        sb.append(", price=").append(price);
+        sb.append('}');
+        return sb.toString();
+    }
 }

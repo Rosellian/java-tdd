@@ -19,16 +19,8 @@ import com.tdd.api.rulesets.data.rules.sku.SpecialPrice;
         @JsonSubTypes.Type(value = SkuDiscount.class, name = "SkuDiscount"),
 })
 public abstract class Rule {
-    private String type;
     private String name;
     private int priority;
-
-    public String getType() {
-        return type;
-    }
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public String getName() {
         return name;
@@ -42,5 +34,10 @@ public abstract class Rule {
     }
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    protected void appendBaseFields(StringBuilder sb) {
+        sb.append("name='").append(name).append('\'');
+        sb.append(", priority=").append(priority);
     }
 }
