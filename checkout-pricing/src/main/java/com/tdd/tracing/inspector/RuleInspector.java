@@ -34,6 +34,7 @@ public class RuleInspector {
 
             PriceResult result = priceEngine.calculate(sku, count, mod);
 
+            dpTraces.add(result.dpTrace());
             skuTraces.add(createSkuTrace(sku, count, mod, result));
         }
 
