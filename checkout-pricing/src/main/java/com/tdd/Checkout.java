@@ -29,8 +29,8 @@ public class Checkout {
         this(rules, new PricingTraceCollector(), CartSnapshot.from(new ArrayList<>()));
     }
 
-    public Checkout(PricingRules rules, CartSnapshot cart, String ruleset) {
-        this(rules, new PricingTraceCollector(cart, ruleset, ENGINE_VERSION), cart);
+    public Checkout(PricingRules rules, CartSnapshot cart) {
+        this(rules, new PricingTraceCollector(cart, rules.getRuleset(), ENGINE_VERSION), cart);
     }
 
     public void scan(String unit) {

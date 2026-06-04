@@ -9,6 +9,7 @@ import static java.util.stream.Collectors.toList;
 
 public class PricingRequest {
     private String ruleset;
+    private String priceList;
     private List<CartItemRequest> items;
     private CustomerRequest customer;
     private Map<String, Object> context;
@@ -16,15 +17,20 @@ public class PricingRequest {
     public String getRuleset() {
         return ruleset;
     }
-
     public void setRuleset(String ruleSet) {
         this.ruleset = ruleset;
+    }
+
+    public String getPriceList() {
+        return priceList;
+    }
+    public void setPriceList(String priceList) {
+        this.priceList = priceList;
     }
 
     public List<CartItemRequest> getItems() {
         return items;
     }
-
     public void setItems(List<CartItemRequest> items) {
         this.items = items;
     }
@@ -32,7 +38,6 @@ public class PricingRequest {
     public CustomerRequest getCustomer() {
         return customer;
     }
-
     public void setCustomer(CustomerRequest customer) {
         this.customer = customer;
     }
@@ -40,7 +45,6 @@ public class PricingRequest {
     public Map<String, Object> getContext() {
         return context;
     }
-
     public void setContext(Map<String, Object> context) {
         this.context = context;
     }
@@ -48,6 +52,7 @@ public class PricingRequest {
     public static PricingRequest fromEvaluateRequest(EvaluateRequest request) {
         PricingRequest pricingRequest = new PricingRequest();
         pricingRequest.ruleset = request.ruleset;
+        pricingRequest.priceList = request.priceList;
         pricingRequest.items = fromRequest(request);
 
         return pricingRequest;

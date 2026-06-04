@@ -1280,6 +1280,12 @@ Main path: `"/api/prices"`
 - Get list of price list names
 - Get price list, uses path variable `"/{name}"`
 - Save price list, uses path variable `"/{name}"`
+
+### Update pricing API
+- Added price list name to request
+- Added ruleset and price list names to PricingRules
+- PricingRulesBuilder combines ruleset and price list from database to build internal PricingRules.
+- RuleGroup and converters handle specific rule translations.
 ---
 
 ## Testing

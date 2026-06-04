@@ -73,10 +73,10 @@ const styles = {
     },
     addButtonDark: {
         background: "#03DAC6",
-        color: "#000",
+        color: "#fff",
     },
     addButtonLight: {
         background: "#00897B",
-        color: "#fff",
+        color: "#000",
     }
 }

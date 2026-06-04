@@ -7,11 +7,13 @@ import {TraceSyncProvider} from "../components/TraceSyncProvider";
 import {ButtonPanel} from "../components/ButtonPanel";
 import {useTheme} from "../ui/ThemeProvider";
 import {RulesetHandler} from "../components/RulesetHandler";
+import {PriceListHandler} from "../components/prices/PriceListHandler";
 
 export default function AdminApp() {
     const { theme } = useTheme();
     const [cart, setCart] = useState({});
     const [ruleset, setRuleset] = useState("default");
+    const [priceList, setPriceList] = useState("default");
     const [trace, setTrace] = useState(null);
 
     const { traceNew, loading, error, getTrace } = usePricingTrace(cart, ruleset);
@@ -25,8 +27,9 @@ export default function AdminApp() {
 
             <div style={styles.controls}>
                 <RulesetHandler onRulesetChange={setRuleset} />
+                <PriceListHandler onPriceListChange={setPriceList} />
                 <CartEditor cart={cart} onChange={setCart} />
-                <ButtonPanel cart={cart} ruleset={ruleset} getTrace={getTrace} setTrace={setTrace} />
+                <ButtonPanel cart={cart} ruleset={ruleset} priceList={priceList} getTrace={getTrace} setTrace={setTrace} />
             </div>
 
             {loading && <p>Evaluating pricing…</p>}

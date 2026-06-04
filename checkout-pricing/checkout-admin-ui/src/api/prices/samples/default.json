@@ -1,0 +1,11 @@
+{
+  "name": "Default",
+  "version": "v1",
+  "unitPrices": [
+    {"sku": "A", "price": 50},
+    {"sku": "B", "price": 40},
+    {"sku": "C", "price": 25},
+    {"sku": "D", "price": 20},
+    {"sku": "E", "price": 10}
+  ]
+}

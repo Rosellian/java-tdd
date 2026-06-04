@@ -5,12 +5,14 @@ import java.util.Map;
 public class EvaluateRequest {
     public Map<String, Integer> cart;
     public String ruleset;
+    public String priceList;
 
     @Override
     public String toString() {
         return "EvaluateRequest{" +
                 "cart=" + cart +
                 ", ruleset='" + ruleset + '\'' +
+                ", priceList='" + priceList + '\'' +
                 '}';
     }
 }

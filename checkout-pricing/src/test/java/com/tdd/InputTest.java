@@ -16,7 +16,7 @@ public class InputTest {
     void sameSet() {
         PricingRules rules = StandardUnitPrices.build();
 
-        Checkout checkout = new Checkout(rules, createCart(), "StandardUnitPrices");
+        Checkout checkout = new Checkout(rules, createCart());
         checkout.scan("B");
         checkout.scan("A");
 
@@ -28,7 +28,7 @@ public class InputTest {
         PricingRules rules = StandardUnitPrices.build();
         CartSnapshot cart = CartSnapshot.from(createLargerCartItems());
 
-        Checkout checkout = new Checkout(rules, cart, "StandardUnitPrices");
+        Checkout checkout = new Checkout(rules, cart);
         checkout.scan("B");
         checkout.scan("A");
 
@@ -39,7 +39,7 @@ public class InputTest {
     void largerAddedSet() {
         PricingRules rules = StandardUnitPrices.build();
 
-        Checkout checkout = new Checkout(rules, createCart(), "StandardUnitPrices");
+        Checkout checkout = new Checkout(rules, createCart());
         checkout.scan("B");
         checkout.scan("A");
         checkout.scan("C");

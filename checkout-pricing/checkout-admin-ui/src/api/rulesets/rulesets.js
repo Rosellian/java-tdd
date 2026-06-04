@@ -1,4 +1,4 @@
-export async function getRulesetList() {
+export async function getRulesetNames() {
     try {
         const res = await fetch("/api/rulesets");
 

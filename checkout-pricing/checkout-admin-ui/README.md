@@ -576,6 +576,10 @@ export async function getRuleset(name) {}
 export async function saveRuleset(name, ruleset) {}
 ```
 ---
+### Price list handler
+Following the same structure and functionality as the Ruleset handler.
+
+---
 ### Changes in the API layer
 - Refactor API calls to avoid code duplication
 

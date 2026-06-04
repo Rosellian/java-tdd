@@ -1,26 +1,26 @@
 import {useEffect, useState} from "react";
-import {useTheme} from "../ui/ThemeProvider";
-import {getRulesetNames, getRulesetWithFallback, saveRuleset} from "../api/rulesets/rulesets";
-import {RulesetSelector} from "./RulesetSelector";
-import {RulesetEditor} from "./ruleseteditor/RulesetEditor";
-import {TextInput} from "./ruleseteditor/ruleform/templates/FormFields";
+import {useTheme} from "../../ui/ThemeProvider";
+import {getPriceListNames, getPriceListWithFallback, savePriceList} from "../../api/prices/prices";
+import {PriceListSelector} from "./PriceListSelector";
+import {TextInput} from "../ruleseteditor/ruleform/templates/FormFields";
+import {PriceListEditor} from "./PriceListEditor";
 
-export function RulesetHandler({ onRulesetChange }) {
+export function PriceListHandler({ onPriceListChange }) {
     const { theme } = useTheme();
 
-    const [rulesetNames, setRulesetNames] = useState([]);
+    const [priceListNames, setPriceListNames] = useState([]);
     const [fallbackUsed, setFallbackUsed] = useState(false);
     const [selected, setSelected] = useState("default");
-    const [ruleset, setRuleset] = useState(null);
+    const [priceList, setPriceList] = useState(null);
 
     const [mode, setMode] = useState("loading"); // loading, existing, new
     const [status, setStatus] = useState("idle"); // idle, saving, loading, error
 
     useEffect(() => {
-        getRulesetNames().then(list => {
-            const names = list ?? DEFAULT_RULESETS;
+        getPriceListNames().then(list => {
+            const names = list ?? DEFAULT_PRICE_LISTS;
 
-            setRulesetNames(names);
+            setPriceListNames(names);
             setFallbackUsed(!list);
 
             setSelected(names[0]);
@@ -33,78 +33,87 @@ export function RulesetHandler({ onRulesetChange }) {
 
         setStatus("loading");
 
-        getRulesetWithFallback(selected).then(({ ruleset, fallback }) => {
-            if (!ruleset) {
+        getPriceListWithFallback(selected).then(({ priceList, fallback }) => {
+            if (!priceList) {
                 setStatus("error");
                 return;
             }
 
-            if (!Array.isArray(ruleset.rules)) {
-                ruleset.rules = [];
+            if (!Array.isArray(priceList.unitPrices)) {
+                priceList.unitPrices = [];
             }
 
-            setRuleset(ruleset);
+            setPriceList(priceList);
             setFallbackUsed(fallback);
             setStatus("idle");
-            onRulesetChange(selected);
+            onPriceListChange(selected);
         });
     }, [selected, mode]);
 
-    function updateRulesetName(newName) {
-        if (!ruleset) return;
+    function updatePriceListName(newName) {
+        if (!priceList) return;
 
-        const updatedRuleset = {...ruleset, name: newName};
-        setRuleset(updatedRuleset);
+        const updated = { ...priceList, name: newName };
+        setPriceList(updated);
 
-        setRulesetNames(prev =>
-            prev.map(n => (n === ruleset.name ? newName : n))
+        setPriceListNames(prev =>
+            prev.map(n => (n === priceList.name ? newName : n))
         );
 
         setSelected(newName);
-        onRulesetChange(newName); //TODO needs to become full ruleset later
+        onPriceListChange(newName);
     }
 
-    function newRuleset() {
-        const draft = createNewRulesetDraft();
+    function newPriceList() {
+        const draft = createNewPriceListDraft();
 
         setMode("new");
-        setRuleset(draft);
+        setPriceList(draft);
 
-        setRulesetNames(prev => [...prev, draft.name]);
+        setPriceListNames(prev => [...prev, draft.name]);
         setSelected(draft.name);
-        onRulesetChange(draft.name); //TODO needs to become full ruleset later
+        onPriceListChange(draft.name);
     }
 
     async function handleSave() {
-        if (!ruleset) return;
+        if (!priceList) return;
 
         setStatus("saving");
 
-        const ok = await saveRuleset(ruleset.name, ruleset);
-        if(ok) {
+        const ok = await savePriceList(priceList.name, priceList);
+        if (ok) {
             setMode("existing");
         }
         setStatus(ok ? "idle" : "error");
     }
 
-    const isRulesetSet = ruleset !== null;
+    const isPriceListSet = priceList !== null;
 
     return (
         <div style={{
             ...styles.wrapper,
             ...(theme === "dark" ? styles.wrapperDark : styles.wrapperLight)
         }}>
-            <RulesetSelector value={selected} onChange={(v) => {
-                setMode("existing");
-                setSelected(v);
-            }} names={rulesetNames} />
+            <PriceListSelector
+                value={selected}
+                onChange={(v) => {
+                    setMode("existing");
+                    setSelected(v);
+                }}
+                names={priceListNames}
+            />
 
-            {isRulesetSet && (<TextInput label="Ruleset Name" field="name" value={ruleset.name} update={
-                (field, value) => updateRulesetName(value)}/>
+            {isPriceListSet && (
+                <TextInput
+                    label="Price List Name"
+                    field="name"
+                    value={priceList.name}
+                    update={(field, value) => updatePriceListName(value)}
+                />
             )}
 
             <button
-                onClick={() => handleSave(ruleset, setMode, setStatus)}
+                onClick={handleSave}
                 disabled={status === "saving"}
                 style={{
                     ...styles.button,
@@ -113,6 +122,7 @@ export function RulesetHandler({ onRulesetChange }) {
             >
                 {status === "saving" ? "Saving…" : "Save"}
             </button>
+
             <button
                 disabled={status === "loading"}
                 style={{
@@ -122,46 +132,39 @@ export function RulesetHandler({ onRulesetChange }) {
             >
                 {status === "loading" ? "Loading…" : "Load"}
             </button>
+
             <button
                 disabled={mode === "new"}
-                onClick={newRuleset}
+                onClick={newPriceList}
                 style={{
                     ...styles.button,
                     ...(theme === "dark" ? styles.newButtonDark : styles.newButtonLight)
                 }}
             >
-                + New Ruleset
+                + New Price List
             </button>
 
-            {status === "loading" && <div style={styles.loading}>Loading ruleset…</div>}
-            {status === "error" && <div style={styles.error}>Failed to load or save ruleset</div>}
+            {status === "loading" && <div style={styles.loading}>Loading price list…</div>}
+            {status === "error" && <div style={styles.error}>Failed to load or save price list</div>}
 
-            {isRulesetSet && (
-                <RulesetEditor ruleset={ruleset} onChange={setRuleset} />
+            {isPriceListSet && (
+                <PriceListEditor priceList={priceList} onChange={setPriceList} />
             )}
         </div>
-    )
+    );
 }
 
-function createNewRulesetDraft() {
+function createNewPriceListDraft() {
     return {
-        name: "NewRuleset",
-        version: 1,
-        rules: [
-            {
-                type: "SpecialPrice",
-                name: "New Rule",
-                sku: "",
-                quantity: 1,
-                price: 0,
-                priority: 1,
-                stackable: false
-            }
+        name: "NewPriceList",
+        version: "v1",
+        unitPrices: [
+            { sku: "", price: 0 }
         ]
     };
 }
 
-const DEFAULT_RULESETS = ["default", "campaignA", "campaignB", "noCrossNoSkuDiscount"];
+const DEFAULT_PRICE_LISTS = ["default"];
 
 const styles = {
     wrapper: {
