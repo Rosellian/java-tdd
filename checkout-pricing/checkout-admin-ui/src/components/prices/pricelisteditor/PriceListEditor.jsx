@@ -33,10 +33,7 @@ export function PriceListEditor({ priceList, onChange }) {
                 ...(theme === "dark" ? styles.titleDark : styles.titleLight)
             }}>Unit Prices</h3>
 
-            {priceList.unitPrices.map((p, i) => (
-                <PriceRow key={i} item={p} onChange={(field, value) => updateItem(i, field, value)}
-                    onDelete={() => deleteItem(i)}/>
-            ))}
+            <PriceRowList priceList={priceList} updateItem={updateItem} deleteItem={deleteItem} />
 
             <button onClick={addItem}
                 style={{
@@ -45,6 +42,17 @@ export function PriceListEditor({ priceList, onChange }) {
                 }}>+ Add SKU</button>
         </div>
     );
+}
+
+function PriceRowList({ priceList, updateItem, deleteItem }) {
+    return (
+        <div style={styles.listContainer}>
+            {priceList.unitPrices.map((p, i) => (
+                <PriceRow key={i} item={p} onChange={(field, value) => updateItem(i, field, value)}
+                          onDelete={() => deleteItem(i)}/>
+            ))}
+        </div>
+    )
 }
 
 const styles = {
@@ -73,6 +81,14 @@ const styles = {
     },
     titleLight: {
         color: "#5A2DA8",
+    },
+    listContainer: {
+        maxHeight: "250px",
+        overflowY: "auto",
+        paddingRight: 4,
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
     },
     addButton: {
         width: "100px",

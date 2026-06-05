@@ -611,6 +611,10 @@ export async function savePriceList(name, priceList) {}
 - Refactoring RulesetHandler using similar pattern as price lists
 - Make RulesetHandler more compact
 - Make PriceListHandler more compact
+- Add scrollbars
+  - Rules in RulesetEditor
+  - Prices in PriceListEditor
+  - Cart(SKU and quantity) in CartEditor
 
 ### Changes in the API layer
 - Refactor API calls to avoid code duplication

@@ -23,15 +23,23 @@ export function CartEditor({ cart, onChange }) {
                 ...(theme === "dark" ? styles.titleDark : styles.titleLight)
             }}>Cart</h3>
 
-            {Object.entries(cart).map(([sku, qty]) => (
-                <SkuRow sku={sku} qty={qty} update={updateSku} />
-            ))}
+            <SkuRowList cart={cart} updateSku={updateSku} />
 
             <AddSkuForm onAdd={updateSku} />
             <RecentCarts cart={cart} setCart={onChange}/>
             <CartLoader cart={cart} setCart={onChange} />
         </div>
     );
+}
+
+function SkuRowList({ cart, updateSku }) {
+    return (
+        <div style={styles.listContainer}>
+            {Object.entries(cart).map(([sku, qty]) => (
+                <SkuRow sku={sku} qty={qty} update={updateSku} />
+            ))}
+        </div>
+    )
 }
 
 function SkuRow({sku, qty, update}) {
@@ -41,8 +49,7 @@ function SkuRow({sku, qty, update}) {
         <div key={sku} style={styles.row}>
             <span>{sku}</span>
             <input
-                type="number"
-                value={qty}
+                type="number" value={qty}
                 onChange={(e) => update(sku, Number(e.target.value))}
                 style={{
                     ...styles.input,
@@ -77,6 +84,13 @@ const styles = {
     },
     titleLight: {
         color: "#00796B",
+    },
+    listContainer: {
+        maxHeight: "250px",
+        overflowY: "auto",
+        paddingRight: 4,
+        display: "flex",
+        flexDirection: "column",
     },
     row: {
         display: "flex",
