@@ -15,6 +15,7 @@ export function InputField({ type, placeholder, value, onChange }) {
 
 const styles = {
     input: {
+        width: "100px",
         padding: 6,
         borderRadius: 4,
         border: "1px solid",

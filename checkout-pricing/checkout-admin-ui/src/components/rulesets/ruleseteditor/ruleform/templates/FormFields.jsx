@@ -71,6 +71,7 @@ const styles = {
         opacity: 0.8
     },
     input: {
+        width: "200px",
         padding: "6px 8px",
         borderRadius: 4,
         border: "1px solid",

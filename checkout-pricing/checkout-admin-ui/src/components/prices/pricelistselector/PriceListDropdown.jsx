@@ -22,7 +22,7 @@ const styles = {
     select: {
         border: "1px solid",
         padding: 5,
-        width: "100%",
+        width: "auto",
         transition: "background 0.3s ease, color 0.3s ease, border-color 0.3s ease",
     },
     selectDark: {

@@ -95,23 +95,27 @@ export function RulesetHandler({ onRulesetChange }) {
             ...styles.wrapper,
             ...(theme === "dark" ? styles.wrapperDark : styles.wrapperLight)
         }}>
-            <RulesetSelector value={selected} onChange={(v) => {
-                setMode("existing");
-                setSelected(v);
-            }} names={rulesetNames} />
+            <div style={styles.handler}>
+                <RulesetSelector value={selected} onChange={(v) => {
+                    setMode("existing");
+                    setSelected(v);
+                }} names={rulesetNames} />
 
-            {isRulesetSet && (<TextInput label="Ruleset Name" field="name" value={ruleset.name} update={
-                (field, value) => updateRulesetName(value)}/>
-            )}
+                {isRulesetSet && (<TextInput label="Ruleset Name" field="name" value={ruleset.name} update={
+                        (field, value) => updateRulesetName(value)}/>
+                )}
 
-            <ButtonPanel mode={mode} status={status} handleSave={handleSave} newRuleset={newRuleset} />
+                <ButtonPanel mode={mode} status={status} handleSave={handleSave} newRuleset={newRuleset} />
+            </div>
 
             {status === "loading" && <div style={styles.loading}>Loading ruleset…</div>}
             {status === "error" && <div style={styles.error}>Failed to load or save ruleset</div>}
 
-            {isRulesetSet && (
-                <RulesetEditor ruleset={ruleset} onChange={setRuleset} />
-            )}
+            <div style={styles.editorWrapper}>
+                {isRulesetSet && (
+                    <RulesetEditor ruleset={ruleset} onChange={setRuleset} />
+                )}
+            </div>
         </div>
     )
 }
@@ -140,9 +144,11 @@ const styles = {
     wrapper: {
         display: "flex",
         flexDirection: "column",
+        width: "fit-content",
         gap: 16,
         padding: 16,
         borderRadius: 6,
+        alignSelf: "flex-start",
         transition: "background 0.3s ease",
     },
     wrapperDark: {
@@ -150,6 +156,19 @@ const styles = {
     },
     wrapperLight: {
         background: "#f5f5f5",
+    },
+    handler: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        width: "fit-content",
+        alignSelf: "flex-start",
+        gap: 16,
+    },
+    editorWrapper: {
+        width: "100%",
+        maxWidth: "755px",
+        alignSelf: "stretch",
     },
     loading: {
         opacity: 0.7,

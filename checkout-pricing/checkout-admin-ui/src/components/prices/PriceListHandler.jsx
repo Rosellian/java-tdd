@@ -95,24 +95,28 @@ export function PriceListHandler({ onPriceListChange }) {
             ...styles.wrapper,
             ...(theme === "dark" ? styles.wrapperDark : styles.wrapperLight)
         }}>
-            <PriceListSelector value={selected} onChange={(v) => {
-                setMode("existing");
-                setSelected(v);
-            }} names={priceListNames}/>
+            <div style={styles.handler}>
+                <PriceListSelector value={selected} onChange={(v) => {
+                    setMode("existing");
+                    setSelected(v);
+                }} names={priceListNames}/>
 
-            {isPriceListSet && (
-                <TextInput label="Price List Name" field="name" value={priceList.name}
-                           update={(field, value) => updatePriceListName(value)}/>
-            )}
+                {isPriceListSet && (
+                    <TextInput label="Price List Name" field="name" value={priceList.name}
+                               update={(field, value) => updatePriceListName(value)}/>
+                )}
 
-            <ButtonPanel status={status} handleSave={handleSave} newPriceList={newPriceList} />
+                <ButtonPanel status={status} handleSave={handleSave} newPriceList={newPriceList} />
+            </div>
 
             {status === "loading" && <div style={styles.loading}>Loading price list…</div>}
             {status === "error" && <div style={styles.error}>Failed to load or save price list</div>}
 
-            {isPriceListSet && (
-                <PriceListEditor priceList={priceList} onChange={setPriceList} />
-            )}
+            <div style={styles.editorWrapper}>
+                {isPriceListSet && (
+                    <PriceListEditor priceList={priceList} onChange={setPriceList} />
+                )}
+            </div>
         </div>
     );
 }
@@ -143,6 +147,19 @@ const styles = {
     },
     wrapperLight: {
         background: "#f5f5f5",
+    },
+    handler: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 16,
+        width: "fit-content",
+        alignSelf: "flex-start",
+    },
+    editorWrapper: {
+        width: "100%",
+        maxWidth: "1200px",
+        alignSelf: "stretch",
     },
     loading: {
         opacity: 0.7,

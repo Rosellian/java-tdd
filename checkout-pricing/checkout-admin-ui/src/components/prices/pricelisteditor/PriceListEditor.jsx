@@ -38,13 +38,11 @@ export function PriceListEditor({ priceList, onChange }) {
                     onDelete={() => deleteItem(i)}/>
             ))}
 
-            <button
-                onClick={addItem}
+            <button onClick={addItem}
                 style={{
                     ...styles.addButton,
                     ...(theme === "dark" ? styles.addButtonDark : styles.addButtonLight)
-                }}
-            >+ Add SKU</button>
+                }}>+ Add SKU</button>
         </div>
     );
 }
@@ -52,6 +50,7 @@ export function PriceListEditor({ priceList, onChange }) {
 const styles = {
     box: {
         background: "#1E1E1E",
+        width: "fit-content",
         padding: 15,
         borderRadius: 4,
         display: "flex",
@@ -76,6 +75,7 @@ const styles = {
         color: "#5A2DA8",
     },
     addButton: {
+        width: "100px",
         padding: "6px 12px",
         borderRadius: 4,
         border: "none",

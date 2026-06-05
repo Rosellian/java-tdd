@@ -4,43 +4,37 @@ export function ButtonPanel({ mode, status, handleSave, newRuleset }) {
     const { theme } = useTheme();
 
     return (
-        <div>
-            <button
-                onClick={handleSave}
-                disabled={status === "saving"}
+        <div style={styles.buttonPanel}>
+            <button onClick={handleSave} disabled={status === "saving"}
                 style={{
                     ...styles.button,
                     ...(theme === "dark" ? styles.buttonDark : styles.buttonLight)
-                }}
-            >
-                {status === "saving" ? "Saving…" : "Save"}
-            </button>
+                }}>{status === "saving" ? "Saving…" : "Save"}</button>
+
             <button
                 disabled={status === "loading"}
                 style={{
                     ...styles.button,
                     ...(theme === "dark" ? styles.buttonDark : styles.buttonLight)
-                }}
-            >
-                {status === "loading" ? "Loading…" : "Load"}
-            </button>
-            <button
-                disabled={mode === "new"}
-                onClick={newRuleset}
+                }}>{status === "loading" ? "Loading…" : "Load"}</button>
+
+            <button disabled={mode === "new"} onClick={newRuleset}
                 style={{
                     ...styles.button,
                     ...(theme === "dark" ? styles.newButtonDark : styles.newButtonLight)
-                }}
-            >
-                + New Ruleset
-            </button>
+                }}>+ New Ruleset</button>
         </div>
     )
 }
 
 const styles = {
+    buttonPanel: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 15,
+    },
     button: {
-        padding: "6px 12px",
+        padding: "6px 6px",
         borderRadius: 4,
         border: "none",
         cursor: "pointer",

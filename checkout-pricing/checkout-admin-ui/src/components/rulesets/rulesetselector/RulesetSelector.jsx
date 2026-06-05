@@ -21,6 +21,7 @@ export function RulesetSelector({ value, onChange, names }) {
 
 const styles = {
     box: {
+        width: "fit-content",
         padding: 15,
         borderRadius: 4,
         transition: "background 0.3s ease, color 0.3s ease",

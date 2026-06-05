@@ -4,26 +4,20 @@ export function ButtonPanel({ mode, status, handleSave, newPriceList }) {
     const { theme } = useTheme();
 
     return (
-        <div>
-            <button
-                onClick={handleSave}
-                disabled={status === "saving"}
+        <div style={styles.buttonPanel}>
+            <button onClick={handleSave} disabled={status === "saving"}
                 style={{
                     ...styles.button,
                     ...(theme === "dark" ? styles.buttonDark : styles.buttonLight)
                 }}>{status === "saving" ? "Saving…" : "Save"}</button>
 
-            <button
-                disabled={status === "loading"}
+            <button disabled={status === "loading"}
                 style={{
                     ...styles.button,
                     ...(theme === "dark" ? styles.buttonDark : styles.buttonLight)
-                }}
-            >{status === "loading" ? "Loading…" : "Load"}</button>
+                }}>{status === "loading" ? "Loading…" : "Load"}</button>
 
-            <button
-                disabled={mode === "new"}
-                onClick={newPriceList}
+            <button disabled={mode === "new"} onClick={newPriceList}
                 style={{
                     ...styles.button,
                     ...(theme === "dark" ? styles.newButtonDark : styles.newButtonLight)
@@ -33,8 +27,13 @@ export function ButtonPanel({ mode, status, handleSave, newPriceList }) {
 }
 
 const styles = {
+    buttonPanel: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 15,
+    },
     button: {
-        padding: "6px 12px",
+        padding: "6px 6px",
         borderRadius: 4,
         border: "none",
         cursor: "pointer",

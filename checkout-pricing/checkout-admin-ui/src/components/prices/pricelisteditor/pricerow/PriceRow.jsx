@@ -11,13 +11,11 @@ export function PriceRow({ item, onChange, onDelete }) {
             <InputField placeholder="Price" type="number" value={item.price}
                         onChange={(e) => onChange("price", parseFloat(e.target.value))}/>
 
-            <button
-                onClick={onDelete}
+            <button onClick={onDelete}
                 style={{
                     ...styles.deleteButton,
                     ...(theme === "dark" ? styles.deleteButtonDark : styles.deleteButtonLight)
-                }}
-            >✕</button>
+                }}>✕</button>
         </div>
     );
 }

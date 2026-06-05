@@ -64,7 +64,7 @@ const styles = {
     },
     controls: {
         display: "flex",
-        gap: 20,
-        marginBottom: 40,
+         gap: 20,
+         marginBottom: 40,
     }
 }
