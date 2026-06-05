@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
-import {useTheme} from "../ui/ThemeProvider";
-import {getRulesetNames, getRulesetWithFallback, saveRuleset} from "../api/rulesets/rulesets";
-import {RulesetSelector} from "./RulesetSelector";
+import {useTheme} from "../../ui/ThemeProvider";
+import {getRulesetNames, getRulesetWithFallback, saveRuleset} from "../../api/rulesets/rulesets";
+import {RulesetSelector} from "./rulesetselector/RulesetSelector";
 import {RulesetEditor} from "./ruleseteditor/RulesetEditor";
 import {TextInput} from "./ruleseteditor/ruleform/templates/FormFields";
+import {ButtonPanel} from "./ButtonPanel";
 
 export function RulesetHandler({ onRulesetChange }) {
     const { theme } = useTheme();
@@ -103,35 +104,7 @@ export function RulesetHandler({ onRulesetChange }) {
                 (field, value) => updateRulesetName(value)}/>
             )}
 
-            <button
-                onClick={() => handleSave(ruleset, setMode, setStatus)}
-                disabled={status === "saving"}
-                style={{
-                    ...styles.button,
-                    ...(theme === "dark" ? styles.buttonDark : styles.buttonLight)
-                }}
-            >
-                {status === "saving" ? "Saving…" : "Save"}
-            </button>
-            <button
-                disabled={status === "loading"}
-                style={{
-                    ...styles.button,
-                    ...(theme === "dark" ? styles.buttonDark : styles.buttonLight)
-                }}
-            >
-                {status === "loading" ? "Loading…" : "Load"}
-            </button>
-            <button
-                disabled={mode === "new"}
-                onClick={newRuleset}
-                style={{
-                    ...styles.button,
-                    ...(theme === "dark" ? styles.newButtonDark : styles.newButtonLight)
-                }}
-            >
-                + New Ruleset
-            </button>
+            <ButtonPanel mode={mode} status={status} handleSave={handleSave} newRuleset={newRuleset} />
 
             {status === "loading" && <div style={styles.loading}>Loading ruleset…</div>}
             {status === "error" && <div style={styles.error}>Failed to load or save ruleset</div>}
@@ -177,29 +150,6 @@ const styles = {
     },
     wrapperLight: {
         background: "#f5f5f5",
-    },
-    button: {
-        padding: "6px 12px",
-        borderRadius: 4,
-        border: "none",
-        cursor: "pointer",
-        width: "120px",
-    },
-    buttonDark: {
-        background: "#BB86FC",
-        color: "#fff",
-    },
-    buttonLight: {
-        background: "#5A2DA8",
-        color: "#000",
-    },
-    newButtonDark: {
-        background: "#4CAF50",
-        color: "#fff",
-    },
-    newButtonLight: {
-        background: "#4CAF50",
-        color: "#000",
     },
     loading: {
         opacity: 0.7,

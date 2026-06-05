@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useTheme} from "../../ui/ThemeProvider";
 import {getPriceListNames, getPriceListWithFallback, savePriceList} from "../../api/prices/prices";
 import {PriceListSelector} from "./pricelistselector/PriceListSelector";
-import {TextInput} from "../ruleseteditor/ruleform/templates/FormFields";
+import {TextInput} from "../rulesets/ruleseteditor/ruleform/templates/FormFields";
 import {PriceListEditor} from "./pricelisteditor/PriceListEditor";
 import {ButtonPanel} from "./ButtonPanel";
 

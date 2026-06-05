@@ -1,4 +1,4 @@
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../../ui/ThemeProvider";
 
 export function TextInput({ label, field, value, update }) {
     return (

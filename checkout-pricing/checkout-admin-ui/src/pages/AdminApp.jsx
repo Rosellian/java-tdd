@@ -6,7 +6,7 @@ import {usePricingTrace} from "../api/usePricingTrace";
 import {TraceSyncProvider} from "../components/TraceSyncProvider";
 import {ButtonPanel} from "../components/ButtonPanel";
 import {useTheme} from "../ui/ThemeProvider";
-import {RulesetHandler} from "../components/RulesetHandler";
+import {RulesetHandler} from "../components/rulesets/RulesetHandler";
 import {PriceListHandler} from "../components/prices/PriceListHandler";
 
 export default function AdminApp() {

@@ -607,7 +607,8 @@ export async function savePriceList(name, priceList) {}
 ```
 ---
 
-
+### Refactoring and improvements
+- Refactoring RulesetHandler using similar pattern as price lists
 
 ### Changes in the API layer
 - Refactor API calls to avoid code duplication
