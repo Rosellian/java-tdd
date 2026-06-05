@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
 import {useTheme} from "../../ui/ThemeProvider";
 import {getPriceListNames, getPriceListWithFallback, savePriceList} from "../../api/prices/prices";
-import {PriceListSelector} from "./PriceListSelector";
+import {PriceListSelector} from "./pricelistselector/PriceListSelector";
 import {TextInput} from "../ruleseteditor/ruleform/templates/FormFields";
-import {PriceListEditor} from "./PriceListEditor";
+import {PriceListEditor} from "./pricelisteditor/PriceListEditor";
+import {ButtonPanel} from "./ButtonPanel";
 
 export function PriceListHandler({ onPriceListChange }) {
     const { theme } = useTheme();
@@ -94,55 +95,17 @@ export function PriceListHandler({ onPriceListChange }) {
             ...styles.wrapper,
             ...(theme === "dark" ? styles.wrapperDark : styles.wrapperLight)
         }}>
-            <PriceListSelector
-                value={selected}
-                onChange={(v) => {
-                    setMode("existing");
-                    setSelected(v);
-                }}
-                names={priceListNames}
-            />
+            <PriceListSelector value={selected} onChange={(v) => {
+                setMode("existing");
+                setSelected(v);
+            }} names={priceListNames}/>
 
             {isPriceListSet && (
-                <TextInput
-                    label="Price List Name"
-                    field="name"
-                    value={priceList.name}
-                    update={(field, value) => updatePriceListName(value)}
-                />
+                <TextInput label="Price List Name" field="name" value={priceList.name}
+                           update={(field, value) => updatePriceListName(value)}/>
             )}
 
-            <button
-                onClick={handleSave}
-                disabled={status === "saving"}
-                style={{
-                    ...styles.button,
-                    ...(theme === "dark" ? styles.buttonDark : styles.buttonLight)
-                }}
-            >
-                {status === "saving" ? "Saving…" : "Save"}
-            </button>
-
-            <button
-                disabled={status === "loading"}
-                style={{
-                    ...styles.button,
-                    ...(theme === "dark" ? styles.buttonDark : styles.buttonLight)
-                }}
-            >
-                {status === "loading" ? "Loading…" : "Load"}
-            </button>
-
-            <button
-                disabled={mode === "new"}
-                onClick={newPriceList}
-                style={{
-                    ...styles.button,
-                    ...(theme === "dark" ? styles.newButtonDark : styles.newButtonLight)
-                }}
-            >
-                + New Price List
-            </button>
+            <ButtonPanel status={status} handleSave={handleSave} newPriceList={newPriceList} />
 
             {status === "loading" && <div style={styles.loading}>Loading price list…</div>}
             {status === "error" && <div style={styles.error}>Failed to load or save price list</div>}
@@ -180,29 +143,6 @@ const styles = {
     },
     wrapperLight: {
         background: "#f5f5f5",
-    },
-    button: {
-        padding: "6px 12px",
-        borderRadius: 4,
-        border: "none",
-        cursor: "pointer",
-        width: "120px",
-    },
-    buttonDark: {
-        background: "#BB86FC",
-        color: "#fff",
-    },
-    buttonLight: {
-        background: "#5A2DA8",
-        color: "#000",
-    },
-    newButtonDark: {
-        background: "#4CAF50",
-        color: "#fff",
-    },
-    newButtonLight: {
-        background: "#4CAF50",
-        color: "#000",
     },
     loading: {
         opacity: 0.7,

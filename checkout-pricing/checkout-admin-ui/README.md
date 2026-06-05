@@ -569,8 +569,6 @@ export async function getRulesetList() {}
 
 export async function getRulesetWithFallback(name) {}
 
-async function importRuleset(name) {}
-
 export async function getRuleset(name) {}
 
 export async function saveRuleset(name, ruleset) {}
@@ -578,8 +576,39 @@ export async function saveRuleset(name, ruleset) {}
 ---
 ### Price list handler
 Following the same structure and functionality as the Ruleset handler.
+#### Component setup
+1. PriceListHandler is added as a main component to the AdminApp to operate on the price lists.
+   ```jsx
+   <PriceListHandler onPriceListChange={setPriceList} />
+   ```
+2. PriceListSelector to display and switch between price lists.
+   ```jsx
+   <PriceListSelector value={selected} onChange={(v) => {
+                setMode("existing");
+                setSelected(v);
+            }} names={priceListNames}/>
+   ```
+3. PriceListEditor to display and edit price lists.
+   ```jsx
+   <PriceListEditor priceList={priceList} onChange={setPriceList} />
+   ```
 
+### API calls
+API calls to backend are contained in a separate js-file `prices.js`.
+Sample price list json-files are used as a fallback, mainly for testing.
+```js
+export async function getPriceListNames() {}
+
+export async function getPriceListWithFallback(name) {}
+
+export async function getPriceList(name) {}
+
+export async function savePriceList(name, priceList) {}
+```
 ---
+
+
+
 ### Changes in the API layer
 - Refactor API calls to avoid code duplication
 
