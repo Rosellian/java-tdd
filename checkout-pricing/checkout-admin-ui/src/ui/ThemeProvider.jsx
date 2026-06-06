@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 
 const ThemeContext = createContext();
 
@@ -8,6 +8,10 @@ export function ThemeProvider({ children }) {
     function toggleTheme() {
         setTheme(t => (t === "dark" ? "light" : "dark"));
     }
+
+    useEffect(() => {
+        document.body.setAttribute("data-theme", theme);
+    }, [theme]);
 
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>

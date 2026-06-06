@@ -615,6 +615,7 @@ export async function savePriceList(name, priceList) {}
   - Rules in RulesetEditor
   - Prices in PriceListEditor
   - Cart(SKU and quantity) in CartEditor
+  - Better dark theme scrollbar look
 
 ### Changes in the API layer
 - Refactor API calls to avoid code duplication
