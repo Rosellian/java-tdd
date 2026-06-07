@@ -119,7 +119,7 @@ const styles = {
         color: "#fff",
     },
     importButtonLight: {
-        background: "#5A2DA8",
-        color: "#000",
+        background: "#D9C4FF",
+        color: "#3A1F6B",
     }
 }

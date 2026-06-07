@@ -45,8 +45,8 @@ const styles = {
         color: "#fff",
     },
     buttonLight: {
-        background: "#5A2DA8",
-        color: "#000",
+        background: "#D9C4FF",
+        color: "#3A1F6B",
     },
     newButtonDark: {
         background: "#4CAF50",

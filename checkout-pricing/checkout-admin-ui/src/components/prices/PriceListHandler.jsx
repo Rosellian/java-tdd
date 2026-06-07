@@ -5,6 +5,7 @@ import {PriceListSelector} from "./pricelistselector/PriceListSelector";
 import {TextInput} from "../rulesets/ruleseteditor/ruleform/templates/FormFields";
 import {PriceListEditor} from "./pricelisteditor/PriceListEditor";
 import {ButtonPanel} from "./ButtonPanel";
+import {ConfirmModal} from "../../ui/ConfirmModal";
 
 export function PriceListHandler({ onPriceListChange }) {
     const { theme } = useTheme();
@@ -16,6 +17,7 @@ export function PriceListHandler({ onPriceListChange }) {
 
     const [mode, setMode] = useState("loading"); // loading, existing, new
     const [status, setStatus] = useState("idle"); // idle, saving, loading, error
+    const [showConfirm, setShowConfirm] = useState(false);
 
     useEffect(() => {
         getPriceListNames().then(list => {
@@ -79,6 +81,12 @@ export function PriceListHandler({ onPriceListChange }) {
     async function handleSave() {
         if (!priceList) return;
 
+        setShowConfirm(true);
+    }
+
+    async function confirmSave() {
+        setShowConfirm(false);
+
         setStatus("saving");
 
         const ok = await savePriceList(priceList.name, priceList);
@@ -111,6 +119,10 @@ export function PriceListHandler({ onPriceListChange }) {
 
             {status === "loading" && <div style={styles.loading}>Loading price list…</div>}
             {status === "error" && <div style={styles.error}>Failed to load or save price list</div>}
+            {showConfirm && (
+                <ConfirmModal theme={theme} message={`Are you sure you want to save changes to "${priceList.name}"?`}
+                              onConfirm={confirmSave} onCancel={() => setShowConfirm(false)}/>
+            )}
 
             <div style={styles.editorWrapper}>
                 {isPriceListSet && (

@@ -616,6 +616,10 @@ export async function savePriceList(name, priceList) {}
   - Prices in PriceListEditor
   - Cart(SKU and quantity) in CartEditor
   - Better dark theme scrollbar look
+- Adding confirmation prompt when saving changes to database
+  - Rulesets
+  - Price lists
+- Improved contrast for buttons in light mode
 
 ### Changes in the API layer
 - Refactor API calls to avoid code duplication

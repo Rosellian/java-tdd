@@ -5,6 +5,7 @@ import {RulesetSelector} from "./rulesetselector/RulesetSelector";
 import {RulesetEditor} from "./ruleseteditor/RulesetEditor";
 import {TextInput} from "./ruleseteditor/ruleform/templates/FormFields";
 import {ButtonPanel} from "./ButtonPanel";
+import {ConfirmModal} from "../../ui/ConfirmModal";
 
 export function RulesetHandler({ onRulesetChange }) {
     const { theme } = useTheme();
@@ -16,6 +17,7 @@ export function RulesetHandler({ onRulesetChange }) {
 
     const [mode, setMode] = useState("loading"); // loading, existing, new
     const [status, setStatus] = useState("idle"); // idle, saving, loading, error
+    const [showConfirm, setShowConfirm] = useState(false);
 
     useEffect(() => {
         getRulesetNames().then(list => {
@@ -79,6 +81,12 @@ export function RulesetHandler({ onRulesetChange }) {
     async function handleSave() {
         if (!ruleset) return;
 
+        setShowConfirm(true);
+    }
+
+    async function confirmSave() {
+        setShowConfirm(false);
+
         setStatus("saving");
 
         const ok = await saveRuleset(ruleset.name, ruleset);
@@ -110,6 +118,10 @@ export function RulesetHandler({ onRulesetChange }) {
 
             {status === "loading" && <div style={styles.loading}>Loading ruleset…</div>}
             {status === "error" && <div style={styles.error}>Failed to load or save ruleset</div>}
+            {showConfirm && (
+                <ConfirmModal theme={theme} message={`Are you sure you want to save changes to "${ruleset.name}"?`}
+                              onConfirm={confirmSave} onCancel={() => setShowConfirm(false)}/>
+            )}
 
             <div style={styles.editorWrapper}>
                 {isRulesetSet && (
