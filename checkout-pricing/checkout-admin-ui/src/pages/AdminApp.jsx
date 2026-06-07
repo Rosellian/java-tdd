@@ -14,9 +14,8 @@ export default function AdminApp() {
     const [cart, setCart] = useState({});
     const [ruleset, setRuleset] = useState("default");
     const [priceList, setPriceList] = useState("default");
-    const [trace, setTrace] = useState(null);
 
-    const { traceNew, loading, error, getTrace } = usePricingTrace(cart, ruleset);
+    const { trace, loading, error, getTrace } = usePricingTrace(cart, ruleset, priceList);
 
     return (
         <div style={{
@@ -29,7 +28,7 @@ export default function AdminApp() {
                 <RulesetHandler onRulesetChange={setRuleset} />
                 <PriceListHandler onPriceListChange={setPriceList} />
                 <CartEditor cart={cart} onChange={setCart} />
-                <ButtonPanel cart={cart} ruleset={ruleset} priceList={priceList} getTrace={getTrace} setTrace={setTrace} />
+                <ButtonPanel cart={cart} ruleset={ruleset} priceList={priceList} getTrace={getTrace} />
             </div>
 
             {loading && <p>Evaluating pricing…</p>}
@@ -37,7 +36,7 @@ export default function AdminApp() {
 
             <TraceSyncProvider>
                 <RuleInspector trace={trace} />
-                <RuleDebugger trace={traceNew} />
+                <RuleDebugger trace={trace} />
             </TraceSyncProvider>
         </div>
     );

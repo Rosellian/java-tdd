@@ -620,6 +620,7 @@ export async function savePriceList(name, priceList) {}
   - Rulesets
   - Price lists
 - Improved contrast for buttons in light mode
+- Adjust to merged pricing endpoints
 
 ### Changes in the API layer
 - Refactor API calls to avoid code duplication

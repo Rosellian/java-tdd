@@ -7,7 +7,7 @@ import {useTheme} from "../../ui/ThemeProvider";
 export function RuleInspector({ trace }) {
     const { theme } = useTheme();
 
-    if (!trace) {
+    if (!trace || !trace.inspectionTrace) {
         return (
             <div style={{
                 ...styles.container,
@@ -17,6 +17,8 @@ export function RuleInspector({ trace }) {
             </div>
         );
     }
+
+    const inspectionTrace = trace.inspectionTrace;
 
     return (
         <div style={{
@@ -28,15 +30,15 @@ export function RuleInspector({ trace }) {
                 ...(theme === "dark" ? styles.headerDark : styles.headerLight)
             }}>Rule Inspector</h1>
 
-            <RuleTimeline events={trace.events} />
-            <SkuBreakdown skuTraces={trace.skuTraces} />
-            <DPSection dpTraces={trace.dpTraces} />
+            <RuleTimeline events={inspectionTrace.events} />
+            <SkuBreakdown skuTraces={inspectionTrace.skuTraces} />
+            <DPSection dpTraces={inspectionTrace.dpTraces} />
 
             <Section title="Final Total">
                 <div style={{
                     ...styles.total,
                     ...(theme === "dark" ? styles.totalDark : styles.totalLight)
-                }}>{trace.finalTotal} kr</div>
+                }}>{inspectionTrace.finalTotal} kr</div>
             </Section>
         </div>
     );

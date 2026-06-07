@@ -8,7 +8,7 @@ export function usePricingTrace() {
 
     async function getTrace(cart, ruleset, priceList) {
         if (!cart || !ruleset || !priceList) {
-            setError("Missing cart or ruleset");
+            setError("Missing cart ruleset, or price list");
             return;
         }
 
@@ -17,7 +17,7 @@ export function usePricingTrace() {
 
         try {
             const result = await runPricingTrace(cart, ruleset, priceList);
-            setTrace(result.trace);
+            setTrace(result);
         } catch (err) {
             setError(err.message);
         } finally {
@@ -26,7 +26,7 @@ export function usePricingTrace() {
     }
 
     return {
-        traceNew: trace,
+        trace,
         loading,
         error,
         getTrace,

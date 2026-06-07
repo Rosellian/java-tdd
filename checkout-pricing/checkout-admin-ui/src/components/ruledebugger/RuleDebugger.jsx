@@ -8,7 +8,7 @@ import {useTheme} from "../../ui/ThemeProvider";
 export function RuleDebugger({ trace }) {
     const { theme } = useTheme();
 
-    if (!trace) {
+    if (!trace || !trace.debuggerTrace) {
         return (
             <div style={{
                 ...styles.ruleDebugger,
@@ -18,6 +18,8 @@ export function RuleDebugger({ trace }) {
             </div>
         );
     }
+
+    const debuggerTrace = trace.debuggerTrace;
 
     return (
         <div style={{
@@ -30,11 +32,11 @@ export function RuleDebugger({ trace }) {
 
             <div style={styles.debuggerGrid}>
                 <TraceSyncProvider>
-                    <ChainOverview steps={trace.steps} />
-                    <RuleTimeline rules={trace.rules} />
-                    <DPGraph dp={trace.dp} />
+                    <ChainOverview steps={debuggerTrace.steps} />
+                    <RuleTimeline rules={debuggerTrace.rules} />
+                    <DPGraph dp={debuggerTrace.dp} />
                 </TraceSyncProvider>
-                <PriceEvolutionChart prices={trace.priceEvolution} />
+                <PriceEvolutionChart prices={debuggerTrace.priceEvolution} />
             </div>
         </div>
     );

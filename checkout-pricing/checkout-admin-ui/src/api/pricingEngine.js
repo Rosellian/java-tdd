@@ -1,11 +1,5 @@
-export async function runPricingEngine(cart, ruleset, priceList) {
-    const res = await callPricingEndpoint(cart, ruleset, priceList, "evaluate");
-
-    return await res.json();
-}
-
 export async function runPricingTrace(cart, ruleset, priceList) {
-    const res = await callPricingEndpoint(cart, ruleset, priceList, "trace");
+    const res = await callPricingEndpoint(cart, ruleset, priceList, "evaluate");
 
     if (!res.ok) {
         const text = await res.text();
