@@ -25,7 +25,7 @@ public class RulesConverter {
         List<com.tdd.rules.SkuDiscount> skuDiscounts = new ArrayList<>();
         List<com.tdd.rules.cross.CrossSkuRule> crossSkuRules = new ArrayList<>();
 
-        Map<RuleGroup, List<Rule>> rulesByClass = ruleset.getRules().stream()
+        Map<RuleGroup, List<Rule>> rulesByClass = ruleset.rules().stream()
                 .collect(Collectors.groupingBy(RulesConverter::classify));
 
         for(var entry : rulesByClass.entrySet()) {

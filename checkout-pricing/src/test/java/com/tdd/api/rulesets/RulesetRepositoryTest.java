@@ -103,7 +103,7 @@ class RulesetRepositoryTest {
 
         RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(DEFAULT_NAME, ruleset));
 
-        assertException("Failed to save ruleset " + ruleset.getName(), ex);
+        assertException("Failed to save ruleset " + ruleset.name(), ex);
     }
 
     @Test
@@ -113,7 +113,7 @@ class RulesetRepositoryTest {
 
         RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(DEFAULT_NAME, ruleset));
 
-        assertException("Failed to save ruleset " + ruleset.getName(), ex);
+        assertException("Failed to save ruleset " + ruleset.name(), ex);
     }
 
     //list

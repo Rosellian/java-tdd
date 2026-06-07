@@ -2,6 +2,8 @@ package com.tdd.api.rulesets;
 
 import com.tdd.api.rulesets.data.Ruleset;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,17 +23,13 @@ public class TestUtils {
         return createRuleset(DEFAULT_NAME, version);
     }
     public static Ruleset createRuleset(String name, String version) {
-        Ruleset ruleset = new Ruleset();
-        ruleset.setName(name);
-        ruleset.setVersion(version);
-
-        return ruleset;
+        return new Ruleset(name, version, List.of());
     }
 
     public static void assertRuleset(Ruleset expected, Ruleset actual) {
         assertNotNull(actual);
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getVersion(), actual.getVersion());
+        assertEquals(expected.name(), actual.name());
+        assertEquals(expected.version(), actual.version());
     }
 
     public static void assertException(String expectedMessage, RuntimeException ex) {

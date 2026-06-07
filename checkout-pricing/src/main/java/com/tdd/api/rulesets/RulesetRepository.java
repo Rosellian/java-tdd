@@ -51,7 +51,7 @@ public class RulesetRepository implements DataRepository<Ruleset> {
             String query = getSaveByDialect(jdbc);
             logger.debug("using {}", query);
 
-            jdbc.update(query, name, ruleset.getVersion(), json);
+            jdbc.update(query, name, ruleset.version(), json);
         } catch (Exception e) {
             throw new RuntimeException("Failed to save ruleset " + name, e);
         }
