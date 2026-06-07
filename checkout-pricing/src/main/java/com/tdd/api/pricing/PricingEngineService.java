@@ -1,17 +1,16 @@
-package com.tdd.api;
+package com.tdd.api.pricing;
 
 import com.tdd.Checkout;
-import com.tdd.api.pricing.PricingRulesBuilder;
+import com.tdd.api.pricing.conversion.PricingRulesBuilder;
 import com.tdd.utils.TraceResult;
 import com.tdd.PricingRules;
-import com.tdd.api.rest.trace.PricingRequest;
+import com.tdd.api.pricing.rest.PricingRequest;
 import com.tdd.tracing.debug.*;
-import com.tdd.tracing.RuleTrace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import static com.tdd.api.ServiceUtils.fromRequest;
+import static com.tdd.api.pricing.ServiceUtils.fromRequest;
 
 @Service
 public class PricingEngineService {
@@ -23,12 +22,8 @@ public class PricingEngineService {
         this.pricingRulesBuilder = pricingRulesBuilder;
     }
 
-    public RuleTrace evaluate(PricingRequest request) {
-        return runEngine(request).ruleTrace();
-    }
-
-    public PricingTrace getTrace(PricingRequest request) {
-        return runEngine(request).pricingTrace();
+    public TraceResult evaluate(PricingRequest request) {
+        return runEngine(request);
     }
 
     private TraceResult runEngine(PricingRequest request) {

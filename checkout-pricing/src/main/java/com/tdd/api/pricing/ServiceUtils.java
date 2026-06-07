@@ -1,8 +1,8 @@
-package com.tdd.api;
+package com.tdd.api.pricing;
 
-import com.tdd.api.rest.trace.CartItemRequest;
-import com.tdd.api.rest.trace.CustomerRequest;
-import com.tdd.api.rest.trace.PricingRequest;
+import com.tdd.api.pricing.rest.data.CartItemRequest;
+import com.tdd.api.pricing.rest.data.CustomerRequest;
+import com.tdd.api.pricing.rest.PricingRequest;
 import com.tdd.tracing.debug.CartItem;
 import com.tdd.tracing.debug.CartSnapshot;
 import com.tdd.tracing.debug.CustomerInfo;
@@ -18,15 +18,15 @@ public class ServiceUtils {
     public static CartSnapshot fromRequest(PricingRequest req) {
         CartSnapshot cartSnapshot = new CartSnapshot();
 
-        List<CartItem> items = fromRequest(req.getItems());
+        List<CartItem> items = fromRequest(req.items());
         cartSnapshot.setItems(items);
 
-        if(req.getCustomer() != null) {
-            cartSnapshot.setCustomer(fromRequest(req.getCustomer()));
+        if(req.customer() != null) {
+            cartSnapshot.setCustomer(fromRequest(req.customer()));
         }
 
-        if(req.getContext() != null) {
-            cartSnapshot.setContext(req.getContext());
+        if(req.context() != null) {
+            cartSnapshot.setContext(req.context());
         }
 
         return cartSnapshot;
@@ -39,13 +39,13 @@ public class ServiceUtils {
     }
 
     private static CartItem fromRequest(CartItemRequest item) {
-        String sku = item.getSku();
-        int quantity = item.getQuantity();
+        String sku = item.sku();
+        int quantity = item.quantity();
 
         return CartItem.from(sku, quantity);
     }
 
     private static CustomerInfo fromRequest(CustomerRequest customer) {
-        return CustomerInfo.from(customer.getId(), customer.getSegment());
+        return CustomerInfo.from(customer.id(), customer.segment());
     }
 }

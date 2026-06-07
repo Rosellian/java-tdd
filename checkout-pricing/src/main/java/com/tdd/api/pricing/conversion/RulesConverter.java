@@ -1,6 +1,6 @@
-package com.tdd.api.pricing;
+package com.tdd.api.pricing.conversion;
 
-import com.tdd.api.pricing.converters.ConvertedRules;
+import com.tdd.api.pricing.conversion.converters.ConvertedRules;
 import com.tdd.api.rulesets.data.Ruleset;
 import com.tdd.api.rulesets.data.rules.Rule;
 import com.tdd.api.rulesets.data.rules.cross.CrossSkuRule;
@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.tdd.api.pricing.converters.CrossSkuRuleConverter.convert;
-import static com.tdd.api.pricing.converters.PricingOptionConverter.convertToPricingOptions;
-import static com.tdd.api.pricing.converters.SkuDiscounterConverter.convertSkuDiscounts;
+import static com.tdd.api.pricing.conversion.converters.CrossSkuRuleConverter.convert;
+import static com.tdd.api.pricing.conversion.converters.PricingOptionConverter.convertToPricingOptions;
+import static com.tdd.api.pricing.conversion.converters.SkuDiscounterConverter.convertSkuDiscounts;
 
 public class RulesConverter {
 

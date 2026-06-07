@@ -1297,7 +1297,13 @@ Main path: `"/api/prices"`
 - Using logger instead of sys-out
   - PriceDataLoader
   - RulesetDataLoader
-- Using record definitions for rulesets (Ruleset class only) in API/Database layer.
+- Using record definitions in API/Database layer
+  - Ruleset
+  - PricingRequest
+  - PricingResponse
+  - CartItemRequest
+  - CustomerRequest
+- Merge pricing endpoints
 ---
 
 ## Testing

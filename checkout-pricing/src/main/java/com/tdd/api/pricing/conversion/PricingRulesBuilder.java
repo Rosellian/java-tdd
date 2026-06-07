@@ -1,11 +1,11 @@
-package com.tdd.api.pricing;
+package com.tdd.api.pricing.conversion;
 
 import com.tdd.PricingRules;
 import com.tdd.api.prices.PriceRegistry;
 import com.tdd.api.prices.data.Price;
 import com.tdd.api.prices.data.PriceList;
-import com.tdd.api.pricing.converters.ConvertedRules;
-import com.tdd.api.rest.trace.PricingRequest;
+import com.tdd.api.pricing.conversion.converters.ConvertedRules;
+import com.tdd.api.pricing.rest.PricingRequest;
 import com.tdd.api.rulesets.RulesetRegistry;
 import com.tdd.api.rulesets.data.Ruleset;
 import com.tdd.api.samples.CampaignARules;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.tdd.api.pricing.RulesConverter.convertRules;
+import static com.tdd.api.pricing.conversion.RulesConverter.convertRules;
 
 @Service
 public class PricingRulesBuilder {
@@ -30,8 +30,8 @@ public class PricingRulesBuilder {
     }
 
     public PricingRules from(PricingRequest request) {
-        String priceListName = request.getPriceList();
-        String rulesetName = request.getRuleset();
+        String priceListName = request.priceList();
+        String rulesetName = request.ruleset();
         PricingRules pricingRules = new PricingRules(rulesetName, priceListName);
 
         Map<String, Double> prices = getPrices(priceListName);

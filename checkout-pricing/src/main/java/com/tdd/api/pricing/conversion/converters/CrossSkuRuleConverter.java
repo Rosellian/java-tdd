@@ -1,4 +1,4 @@
-package com.tdd.api.pricing.converters;
+package com.tdd.api.pricing.conversion.converters;
 
 import com.tdd.api.rulesets.data.rules.cross.CrossSkuBuyXGetYDiscount;
 import com.tdd.api.rulesets.data.rules.cross.CrossSkuBuyXGetYFree;
