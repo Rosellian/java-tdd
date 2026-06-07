@@ -13,6 +13,8 @@ import static java.util.stream.Collectors.*;
 
 public class PricingOptionConverter {
 
+    private PricingOptionConverter() {}
+
     public static Map<String, List<PricingOption>> convertToPricingOptions(List<SkuRule> rules,
                                                                            Map<String, Double> unitPrices) {
         return rules.stream()

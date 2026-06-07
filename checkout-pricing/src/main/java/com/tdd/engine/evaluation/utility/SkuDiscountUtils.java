@@ -11,6 +11,8 @@ import static com.tdd.engine.evaluation.utility.EvaluatorUtils.getRate;
 
 public class SkuDiscountUtils {
 
+    private SkuDiscountUtils() {}
+
     public static boolean isFreeOrDiscounted(RuleContext context, String sku) {
         SkuMod mod = context.modOf(sku);
 

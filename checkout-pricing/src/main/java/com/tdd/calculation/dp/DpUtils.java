@@ -12,6 +12,8 @@ import static java.util.Collections.emptyList;
 public class DpUtils {
     static final String ITEMS_0_KR = "0 items -> 0 kr";
 
+    private DpUtils() {}
+
     static DPTrace noResult(String sku, int remaining, PricingTraceCollector collector) {
         if(collector != null)
             collector.recordDP("i=0", 0, List.of(), ITEMS_0_KR, 0, sku);

@@ -12,6 +12,8 @@ import static com.tdd.api.samples.SampleRulesBuilder.defaultUnitPricesWithChange
 
 public class CampaignBRules implements SampleRulesBuilder {
 
+    private CampaignBRules() {}
+
     public static PricingRules build() {
         Map<String, Double> unitPrices = defaultUnitPricesWithChange("E", 60);
 

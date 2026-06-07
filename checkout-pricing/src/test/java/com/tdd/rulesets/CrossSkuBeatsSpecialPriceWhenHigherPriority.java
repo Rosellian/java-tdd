@@ -13,6 +13,8 @@ import static java.util.Collections.emptyList;
 
 public class CrossSkuBeatsSpecialPriceWhenHigherPriority implements SampleRulesBuilder {
 
+    private CrossSkuBeatsSpecialPriceWhenHigherPriority() {}
+
     public static PricingRules build() {
         Map<String, List<PricingOption>> options = Map.of(
                 "A", List.of(new SpecialPrice(3, 120, 1, true)),

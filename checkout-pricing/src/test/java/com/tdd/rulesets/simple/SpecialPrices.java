@@ -5,6 +5,8 @@ import com.tdd.api.samples.SampleRulesBuilder;
 
 public class SpecialPrices implements SampleRulesBuilder {
 
+    private SpecialPrices() {}
+
     public static PricingRules specialPrice(String sku, double unitPrice, int quantity, double price) {
         PricingRules rules = new PricingRules();
         rules.addUnitPrice(sku, unitPrice);

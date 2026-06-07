@@ -23,6 +23,7 @@ import static com.tdd.engine.evaluation.utility.Tracing.updateRuleTrace;
 
 public class RuleEvaluator implements IRuleEvaluator {
     private static final Logger logger = LoggerFactory.getLogger(RuleEvaluator.class);
+
     private final PricingRules rules;
 
     public RuleEvaluator(PricingRules rules) {

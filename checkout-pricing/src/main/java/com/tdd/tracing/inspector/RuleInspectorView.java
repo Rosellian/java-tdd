@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 public class RuleInspectorView {
     private static final Logger logger = LoggerFactory.getLogger(RuleInspectorView.class);
 
+    private RuleInspectorView() {}
+
     public static void print(RuleTrace trace) {
         for (var e : trace.events()) {
             logger.info("{\"type\":\"rule_event\",\"rule\":\"{}\",\"applied\":{},\"delta\":{},\"before\":{},\"after\":{}}",

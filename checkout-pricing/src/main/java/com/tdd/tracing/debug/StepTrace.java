@@ -10,7 +10,6 @@ public class StepTrace {
     public String getStep() {
         return step;
     }
-
     public void setStep(String step) {
         this.step = step;
     }
@@ -18,7 +17,6 @@ public class StepTrace {
     public int getStepIndex() {
         return stepIndex;
     }
-
     public void setStepIndex(int stepIndex) {
         this.stepIndex = stepIndex;
     }
@@ -26,7 +24,6 @@ public class StepTrace {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -34,7 +31,6 @@ public class StepTrace {
     public double getPriceBefore() {
         return priceBefore;
     }
-
     public void setPriceBefore(double priceBefore) {
         this.priceBefore = priceBefore;
     }
@@ -42,7 +38,6 @@ public class StepTrace {
     public double getPriceAfter() {
         return priceAfter;
     }
-
     public void setPriceAfter(double priceAfter) {
         this.priceAfter = priceAfter;
     }

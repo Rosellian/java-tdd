@@ -7,5 +7,8 @@ import com.tdd.rules.cross.CrossSkuRule;
 import java.util.List;
 import java.util.Map;
 
-public record ConvertedRules(Map<String, List<PricingOption>> options, List<SkuDiscount> skuDiscounts,
-                      List<CrossSkuRule> crossSkuRules) {}
+public record ConvertedRules(
+        Map<String, List<PricingOption>> options,
+        List<SkuDiscount> skuDiscounts,
+        List<CrossSkuRule> crossSkuRules
+) {}

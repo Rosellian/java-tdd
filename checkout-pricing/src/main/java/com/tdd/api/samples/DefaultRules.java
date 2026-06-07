@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class DefaultRules implements SampleRulesBuilder {
 
+    private DefaultRules () {}
+
     public static PricingRules build() {
 
         Map<String, List<PricingOption>> options = Map.of(

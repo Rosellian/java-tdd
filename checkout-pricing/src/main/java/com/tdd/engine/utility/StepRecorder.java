@@ -13,6 +13,7 @@ public class StepRecorder {
     public static final String CROSS_SKU_DESCRIPTION = "Evaluates cross-SKU promotions such as Buy X Get Y";
 
     private static final Logger logger = LoggerFactory.getLogger(StepRecorder.class);
+
     private final PricingTraceCollector collector;
 
     public StepRecorder(PricingTraceCollector collector) {

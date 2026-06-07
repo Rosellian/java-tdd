@@ -18,7 +18,6 @@ public class RuleTrace {
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -26,7 +25,6 @@ public class RuleTrace {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -34,7 +32,6 @@ public class RuleTrace {
     public String getSku() {
         return sku;
     }
-
     public void setSku(String sku) {
         this.sku = sku;
     }
@@ -42,7 +39,6 @@ public class RuleTrace {
     public int getStepIndex() {
         return stepIndex;
     }
-
     public void setStepIndex(int stepIndex) {
         this.stepIndex = stepIndex;
     }
@@ -50,7 +46,6 @@ public class RuleTrace {
     public boolean isMatched() {
         return matched;
     }
-
     public void setMatched(boolean matched) {
         this.matched = matched;
     }
@@ -58,7 +53,6 @@ public class RuleTrace {
     public String getReason() {
         return reason;
     }
-
     public void setReason(String reason) {
         this.reason = reason;
     }
@@ -66,7 +60,6 @@ public class RuleTrace {
     public double getAfter() {
         return after;
     }
-
     public void setAfter(double after) {
         this.after = after;
     }
@@ -74,7 +67,6 @@ public class RuleTrace {
     public double getBefore() {
         return before;
     }
-
     public void setBefore(double before) {
         this.before = before;
     }
@@ -82,7 +74,6 @@ public class RuleTrace {
     public double getDelta() {
         return delta;
     }
-
     public void setDelta(double delta) {
         this.delta = delta;
     }
@@ -90,7 +81,6 @@ public class RuleTrace {
     public Map<String, Object> getInputs() {
         return inputs;
     }
-
     public void setInputs(Map<String, Object> inputs) {
         this.inputs = inputs;
     }
@@ -98,7 +88,6 @@ public class RuleTrace {
     public Map<String, Object> getOutputs() {
         return outputs;
     }
-
     public void setOutputs(Map<String, Object> outputs) {
         this.outputs = outputs;
     }

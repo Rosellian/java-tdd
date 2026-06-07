@@ -5,6 +5,8 @@ import com.tdd.api.samples.SampleRulesBuilder;
 
 public class CrossDiscountRules implements SampleRulesBuilder {
 
+    private CrossDiscountRules() {}
+
     public static PricingRules buy2AGet1BDiscount(double discount) {
         return buy2AGet1BDiscount(discount, 0, true);
     }

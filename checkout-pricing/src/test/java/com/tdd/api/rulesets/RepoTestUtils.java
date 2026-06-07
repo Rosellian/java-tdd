@@ -16,6 +16,8 @@ public class RepoTestUtils {
     public static final String H_2 = "H2";
     public static final String BAD_JSON = "bad";
 
+    private RepoTestUtils() {}
+
     public static void assertSave(ArgumentCaptor<String> sqlCaptor, ArgumentCaptor<Object> argCaptor,
                                   String databaseType) {
         String sql = sqlCaptor.getValue();

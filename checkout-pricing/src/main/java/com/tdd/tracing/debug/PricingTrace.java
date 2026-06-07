@@ -16,7 +16,6 @@ public class PricingTrace {
     public CartSnapshot getCart() {
         return cart;
     }
-
     public void setCart(CartSnapshot cart) {
         this.cart = cart;
     }
@@ -24,7 +23,6 @@ public class PricingTrace {
     public List<RuleTrace> getRules() {
         return rules;
     }
-
     public void setRules(List<RuleTrace> rules) {
         this.rules = rules;
     }
@@ -32,7 +30,6 @@ public class PricingTrace {
     public List<StepTrace> getSteps() {
         return steps;
     }
-
     public void setSteps(List<StepTrace> steps) {
         this.steps = steps;
     }
@@ -40,7 +37,6 @@ public class PricingTrace {
     public List<DPTrace> getDp() {
         return dp;
     }
-
     public void setDp(List<DPTrace> dp) {
         this.dp = dp;
     }
@@ -48,7 +44,6 @@ public class PricingTrace {
     public List<Double> getPriceEvolution() {
         return priceEvolution;
     }
-
     public void setPriceEvolution(List<Double> priceEvolution) {
         this.priceEvolution = priceEvolution;
     }
@@ -56,7 +51,6 @@ public class PricingTrace {
     public double getFinalPrice() {
         return finalPrice;
     }
-
     public void setFinalPrice(double finalPrice) {
         this.finalPrice = finalPrice;
     }
@@ -64,7 +58,6 @@ public class PricingTrace {
     public Metadata getMetadata() {
         return metadata;
     }
-
     public void setMetadata(Metadata metadata) {
         this.metadata = metadata;
     }

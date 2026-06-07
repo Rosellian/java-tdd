@@ -7,7 +7,6 @@ public class CustomerInfo {
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -15,7 +14,6 @@ public class CustomerInfo {
     public String getSegment() {
         return segment;
     }
-
     public void setSegment(String segment) {
         this.segment = segment;
     }

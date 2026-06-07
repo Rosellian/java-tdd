@@ -43,4 +43,6 @@ public class RepositoryUtils {
                 INSERT INTO prices (list_name, sku, price)
                 VALUES (?, ?, ?)
             """;
+
+    private RepositoryUtils() {}
 }

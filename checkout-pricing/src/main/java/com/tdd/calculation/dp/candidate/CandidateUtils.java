@@ -8,6 +8,8 @@ import java.util.List;
 
 public class CandidateUtils {
 
+    private CandidateUtils() {}
+
     static List<String> createOptionsLabels(int i, double[] dp) {
         List<String> optionsLabels = new ArrayList<>();
         optionsLabels.add("unitPrice x" + i + " = " + dp[i]);

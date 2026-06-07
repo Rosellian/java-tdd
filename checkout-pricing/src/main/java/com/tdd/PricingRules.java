@@ -42,14 +42,14 @@ public class PricingRules {
         return ruleset;
     }
     public void setRuleset(String name) {
-        this.ruleset = ruleset;
+        this.ruleset = name;
     }
 
     public String getPriceList() {
         return priceList;
     }
     public void setPriceList(String name) {
-        this.priceList = priceList;
+        this.priceList = name;
     }
 
     public Map<String, Double> getUnitPrices() {

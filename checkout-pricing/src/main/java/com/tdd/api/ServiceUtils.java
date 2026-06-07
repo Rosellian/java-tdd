@@ -1,6 +1,5 @@
 package com.tdd.api;
 
-import com.tdd.PricingRules;
 import com.tdd.api.rest.trace.CartItemRequest;
 import com.tdd.api.rest.trace.CustomerRequest;
 import com.tdd.api.rest.trace.PricingRequest;
@@ -14,10 +13,12 @@ import static java.util.stream.Collectors.toList;
 
 public class ServiceUtils {
 
-    public static CartSnapshot fromRequest(PricingRequest req, PricingRules rules) {
+    private ServiceUtils() {}
+
+    public static CartSnapshot fromRequest(PricingRequest req) {
         CartSnapshot cartSnapshot = new CartSnapshot();
 
-        List<CartItem> items = fromRequest(req.getItems(), rules);
+        List<CartItem> items = fromRequest(req.getItems());
         cartSnapshot.setItems(items);
 
         if(req.getCustomer() != null) {
@@ -31,18 +32,17 @@ public class ServiceUtils {
         return cartSnapshot;
     }
 
-    private static List<CartItem> fromRequest(List<CartItemRequest> items, PricingRules rules) {
+    private static List<CartItem> fromRequest(List<CartItemRequest> items) {
         return items.stream()
-                .map(item -> fromRequest(item, rules))
+                .map(ServiceUtils::fromRequest)
                 .collect(toList());
     }
 
-    private static CartItem fromRequest(CartItemRequest item, PricingRules rules) {
+    private static CartItem fromRequest(CartItemRequest item) {
         String sku = item.getSku();
         int quantity = item.getQuantity();
-        double unitPrice = rules.getUnitPrice(sku);
 
-        return CartItem.from(sku, quantity, unitPrice);
+        return CartItem.from(sku, quantity);
     }
 
     private static CustomerInfo fromRequest(CustomerRequest customer) {

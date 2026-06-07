@@ -12,6 +12,8 @@ public class Tracing {
     public static final String CONTEXT_COUNTS = "contextCounts";
     public static final String BUY_SKU = "buySku";
 
+    private Tracing() {}
+
     public static void updateRuleTrace(CrossSkuBuyXGetYDiscount rule, RuleContext context, RuleTrace rt) {
         rt.setInputs(Map.of(BUY_SKU, rule.buySku(),
                 "discountSku", rule.discountSku(),

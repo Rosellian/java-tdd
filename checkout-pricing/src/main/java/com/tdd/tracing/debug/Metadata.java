@@ -8,7 +8,6 @@ public class Metadata {
     public String getRuleset() {
         return ruleset;
     }
-
     public void setRuleset(String ruleset) {
         this.ruleset = ruleset;
     }
@@ -16,7 +15,6 @@ public class Metadata {
     public String getTimestamp() {
         return timestamp;
     }
-
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
@@ -24,7 +22,6 @@ public class Metadata {
     public String getEngineVersion() {
         return engineVersion;
     }
-
     public void setEngineVersion(String engineVersion) {
         this.engineVersion = engineVersion;
     }

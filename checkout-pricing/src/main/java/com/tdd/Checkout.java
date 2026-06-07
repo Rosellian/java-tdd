@@ -21,7 +21,7 @@ public class Checkout {
     private Checkout(PricingRules rules, PricingTraceCollector collector, CartSnapshot cart) {
         this.collector = collector;
         engine = new RuleEngine(rules, collector);
-        cartHandler = new Cart(rules, cart);
+        cartHandler = new Cart(cart);
         resultBuilder = new ResultBuilder(rules, collector);
     }
 

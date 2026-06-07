@@ -16,6 +16,7 @@ import static com.tdd.api.ServiceUtils.fromRequest;
 @Service
 public class PricingEngineService {
     private static final Logger logger = LoggerFactory.getLogger(PricingEngineService.class);
+
     private final PricingRulesBuilder pricingRulesBuilder;
 
     public PricingEngineService(PricingRulesBuilder pricingRulesBuilder) {
@@ -32,7 +33,7 @@ public class PricingEngineService {
 
     private TraceResult runEngine(PricingRequest request) {
         PricingRules rules = pricingRulesBuilder.from(request);
-        CartSnapshot cart = fromRequest(request, rules);
+        CartSnapshot cart = fromRequest(request);
 
         logger.info("Running pricing engine for pricing rules: {} and with cart {}", rules, cart);
 

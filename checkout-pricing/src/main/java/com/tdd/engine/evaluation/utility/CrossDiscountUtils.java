@@ -9,6 +9,8 @@ import static com.tdd.engine.evaluation.utility.EvaluatorUtils.*;
 
 public class CrossDiscountUtils {
 
+    private CrossDiscountUtils() {}
+
     public static int calculateTimesDiscounted(CrossSkuBuyXGetYDiscount rule, RuleContext context) {
         int packetsToBuy = getPacketsToBuy(rule, context);
         int discountedPacketsNeeded = context.countOf(rule.discountSku()) / rule.discountQty();

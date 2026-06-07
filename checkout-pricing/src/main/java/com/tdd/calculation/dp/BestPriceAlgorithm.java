@@ -18,6 +18,7 @@ import static com.tdd.calculation.dp.DpUtils.*;
 
 public class BestPriceAlgorithm {
     private static final Logger logger = LoggerFactory.getLogger(BestPriceAlgorithm.class);
+
     private final PricingRules rules;
     private final PricingTraceCollector collector;
 

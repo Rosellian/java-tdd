@@ -5,6 +5,8 @@ import com.tdd.api.samples.SampleRulesBuilder;
 
 public class FreeRules implements SampleRulesBuilder {
 
+    private FreeRules() {}
+
     public static PricingRules buy1Get1Free() {
         return buy1Get1Free(true);
     }

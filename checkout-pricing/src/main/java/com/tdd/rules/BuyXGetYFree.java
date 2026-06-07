@@ -1,7 +1,13 @@
 package com.tdd.rules;
 
-public record BuyXGetYFree(int buy, int get, int quantity, double price, int priority, boolean stackable)
-        implements PricingOption {
+public record BuyXGetYFree(
+        int buy,
+        int get,
+        int quantity,
+        double price,
+        int priority,
+        boolean stackable
+) implements PricingOption {
 
     @Override
     public String id() {

@@ -1288,6 +1288,17 @@ Main path: `"/api/prices"`
 - RuleGroup and converters handle specific rule translations.
 ---
 
+### Refactoring and improvements
+- Removed unit price from CartItem (API)
+- Fixed parameter typo bug
+  - PricingRequest
+  - PricingRules
+- Fixed code styling
+- Using logger instead of sys-out
+  - PriceDataLoader
+  - RulesetDataLoader
+---
+
 ## Testing
 ### Test cases
 #### Base tests

@@ -12,6 +12,8 @@ import static com.tdd.api.samples.SampleRulesBuilder.defaultUnitPricesWithChange
 
 public class NoCrossNoSkuDiscount implements SampleRulesBuilder {
 
+    private NoCrossNoSkuDiscount() {}
+
     public static PricingRules build() {
         Map<String, Double> unitPrices = defaultUnitPricesWithChange("C", 30);
 

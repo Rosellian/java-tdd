@@ -12,6 +12,7 @@ import java.util.Set;
 
 public class SkuRuleRecorder {
     private static final Logger logger = LoggerFactory.getLogger(SkuRuleRecorder.class);
+
     private final Set<IncludedSkuRule> skuRules;
     private final String sku;
     private final double unitPrice;

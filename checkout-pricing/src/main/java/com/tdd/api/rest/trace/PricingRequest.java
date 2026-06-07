@@ -17,7 +17,7 @@ public class PricingRequest {
     public String getRuleset() {
         return ruleset;
     }
-    public void setRuleset(String ruleSet) {
+    public void setRuleset(String ruleset) {
         this.ruleset = ruleset;
     }
 

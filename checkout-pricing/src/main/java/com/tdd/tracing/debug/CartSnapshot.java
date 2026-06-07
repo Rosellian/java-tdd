@@ -11,7 +11,6 @@ public class CartSnapshot {
     public List<CartItem> getItems() {
         return items;
     }
-
     public void setItems(List<CartItem> items) {
         this.items = items;
     }
@@ -19,7 +18,6 @@ public class CartSnapshot {
     public CustomerInfo getCustomer() {
         return customer;
     }
-
     public void setCustomer(CustomerInfo customer) {
         this.customer = customer;
     }
@@ -27,7 +25,6 @@ public class CartSnapshot {
     public Map<String, Object> getContext() {
         return context;
     }
-
     public void setContext(Map<String, Object> context) {
         this.context = context;
     }

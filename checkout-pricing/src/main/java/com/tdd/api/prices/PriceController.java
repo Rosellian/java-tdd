@@ -13,6 +13,7 @@ import java.util.Set;
 @RequestMapping("/api/prices")
 public class PriceController implements DataController<PriceList> {
     private static final Logger logger = LoggerFactory.getLogger(PriceController.class);
+
     private final PriceRegistry registry;
 
     public PriceController(PriceRegistry registry) {

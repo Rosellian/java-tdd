@@ -1,6 +1,5 @@
 package com.tdd.utils;
 
-import com.tdd.PricingRules;
 import com.tdd.tracing.debug.CartItem;
 import com.tdd.tracing.debug.CartSnapshot;
 
@@ -9,18 +8,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.tdd.utils.CartCreator.createCart;
+import static com.tdd.utils.CartMerger.mergeCart;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.counting;
 
 public class Cart {
     private final CartSnapshot cart;
     private final List<String> items = new ArrayList<>();
-    private final CartCreator creator;
-    private final CartMerger merger;
 
-    public Cart(PricingRules rules, CartSnapshot initialCart) {
-        creator = new CartCreator(rules);
-        merger = new CartMerger(rules);
+    public Cart(CartSnapshot initialCart) {
         cart = initialCart;
     }
 
@@ -33,7 +30,7 @@ public class Cart {
             addCart();
         }
         else {
-            List<CartItem> mergedItems = merger.mergeCart(cart, countItems());
+            List<CartItem> mergedItems = mergeCart(cart, countItems());
             cart.setItems(mergedItems);
         }
 
@@ -41,7 +38,7 @@ public class Cart {
     }
 
     private void addCart() {
-        List<CartItem> cartItems = creator.createCart(countItems());
+        List<CartItem> cartItems = createCart(countItems());
         cart.setItems(cartItems);
     }
 

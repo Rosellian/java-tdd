@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class CampaignARules implements SampleRulesBuilder {
 
+    private CampaignARules () {}
+
     public static PricingRules build() {
 
         Map<String, List<PricingOption>> options = Map.of(

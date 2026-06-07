@@ -12,6 +12,8 @@ import java.util.Map;
 
 public class EvaluatorUtils {
 
+    private EvaluatorUtils() {}
+
     static int getPacketsToBuy(CrossSkuRule rule, RuleContext context) {
         return context.countOf(rule.buySku()) / rule.buyQty();
     }

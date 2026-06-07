@@ -4,6 +4,8 @@ import com.tdd.api.prices.PriceRepository;
 import com.tdd.api.prices.data.Price;
 import com.tdd.api.prices.data.PriceList;
 import com.tdd.api.samples.SKUs;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -12,6 +14,8 @@ import java.util.Arrays;
 
 @Component
 public class PriceDataLoader {
+    private static final Logger logger = LoggerFactory.getLogger(PriceDataLoader.class);
+
     private final PriceRepository repository;
 
     public PriceDataLoader(PriceRepository repository) {
@@ -23,10 +27,11 @@ public class PriceDataLoader {
         String name = "Default";
 
         if(repository.load(name) != null) {
-            System.out.println("Price list '" + name + "' already exists.");
+            logger.info("Price list '{}' already exists. Skipping import.", name);
+            return;
         }
 
-        System.out.println("Creating default price list: " + name);
+        logger.info("Creating default price list: {}", name);
 
         var prices = Arrays.stream(SKUs.values())
                 .map(sku -> new Price(sku.name(), sku.unitPrice))
@@ -35,6 +40,6 @@ public class PriceDataLoader {
 
         repository.save(name, priceList);
 
-        System.out.println("Imported default price list with SKUs A–E.");
+        logger.info("Imported default price list with SKUs A–E.");
     }
 }

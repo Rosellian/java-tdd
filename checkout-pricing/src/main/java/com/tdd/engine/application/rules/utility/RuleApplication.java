@@ -5,8 +5,13 @@ import com.tdd.engine.utility.RuleDelta;
 import com.tdd.tracing.RuleTraceEvent;
 import com.tdd.tracing.debug.RuleTrace;
 
-public record RuleApplication(boolean applied, RuleDelta delta, RuleContext context,
-                              RuleTrace rt, RuleTraceEvent event) {
+public record RuleApplication(
+        boolean applied,
+        RuleDelta delta,
+        RuleContext context,
+        RuleTrace rt,
+        RuleTraceEvent event
+) {
 
     public static RuleApplication from(After after, RuleTrace rt, RuleTraceEvent event) {
         RuleDelta delta = after.delta();

@@ -13,7 +13,6 @@ public class DPTrace {
     public String getState() {
         return state;
     }
-
     public void setState(String state) {
         this.state = state;
     }
@@ -21,7 +20,6 @@ public class DPTrace {
     public int getStepIndex() {
         return stepIndex;
     }
-
     public void setStepIndex(int stepIndex) {
         this.stepIndex = stepIndex;
     }
@@ -29,7 +27,6 @@ public class DPTrace {
     public List<String> getOptions() {
         return options;
     }
-
     public void setOptions(List<String> options) {
         this.options = options;
     }
@@ -37,7 +34,6 @@ public class DPTrace {
     public String getChosen() {
         return chosen;
     }
-
     public void setChosen(String chosen) {
         this.chosen = chosen;
     }
@@ -45,7 +41,6 @@ public class DPTrace {
     public double getPrice() {
         return price;
     }
-
     public void setPrice(double price) {
         this.price = price;
     }
@@ -53,7 +48,6 @@ public class DPTrace {
     public String getSku() {
         return sku;
     }
-
     public void setSku(String sku) {
         this.sku = sku;
     }

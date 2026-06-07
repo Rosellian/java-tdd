@@ -9,6 +9,8 @@ import static com.tdd.engine.evaluation.utility.EvaluatorUtils.*;
 
 public class CrossFreeUtils {
 
+    private CrossFreeUtils() {}
+
     public static int calculateTimesFree(CrossSkuBuyXGetYFree rule, RuleContext context) {
         int packetsToBuy = getPacketsToBuy(rule, context);
         int freePacketsNeeded = context.countOf(rule.freeSku()) / rule.freeQty();

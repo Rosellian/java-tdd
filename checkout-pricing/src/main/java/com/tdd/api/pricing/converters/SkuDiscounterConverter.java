@@ -9,6 +9,8 @@ import static java.util.stream.Collectors.toList;
 
 public class SkuDiscounterConverter {
 
+    private SkuDiscounterConverter() {}
+
     public static List<SkuDiscount> convertSkuDiscounts(List<Rule> rules) {
         return rules.stream().map(ruleData -> {
                     var skuDiscountData = (com.tdd.api.rulesets.data.rules.sku.SkuDiscount) ruleData;

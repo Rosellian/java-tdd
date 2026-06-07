@@ -10,6 +10,8 @@ import static java.util.stream.Collectors.toList;
 
 public class CrossSkuRuleConverter {
 
+    private CrossSkuRuleConverter() {}
+
     public static List<com.tdd.rules.cross.CrossSkuRule> convert(List<CrossSkuRule> rules) {
         return rules.stream()
                 .map(ruleData -> ruleData instanceof CrossSkuBuyXGetYFree ?

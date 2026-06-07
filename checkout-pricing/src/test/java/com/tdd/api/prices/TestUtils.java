@@ -16,6 +16,8 @@ public class TestUtils {
     public static final String MISSING = "Missing";
     public static final PriceList DEFAULT_LIST_1 = createDefaultPriceList(List.of(new Price("A", 50)));
 
+    private TestUtils() {}
+
     public static PriceList createEmptyDefaultPriceList() {
         return new PriceList(DEFAULT_NAME, V_1, List.of());
     }
