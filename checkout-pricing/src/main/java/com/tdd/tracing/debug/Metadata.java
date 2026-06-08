@@ -1,37 +1,16 @@
 package com.tdd.tracing.debug;
 
-public class Metadata {
-    private String ruleset;
-    private String timestamp;
-    private String engineVersion;
+import java.time.Instant;
 
-    public String getRuleset() {
-        return ruleset;
-    }
-    public void setRuleset(String ruleset) {
-        this.ruleset = ruleset;
-    }
+public record Metadata(
+        String ruleset,
+        String timestamp,
+        String engineVersion
+) {
 
-    public String getTimestamp() {
-        return timestamp;
-    }
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
+    public static Metadata from(String ruleset, String engineVersion) {
+        String timestamp = Instant.now().toString();
 
-    public String getEngineVersion() {
-        return engineVersion;
-    }
-    public void setEngineVersion(String engineVersion) {
-        this.engineVersion = engineVersion;
-    }
-
-    public static Metadata from(String ruleset, String timestamp, String engineVersion) {
-        Metadata metadata = new Metadata();
-        metadata.ruleset = ruleset;
-        metadata.timestamp = timestamp;
-        metadata.engineVersion = engineVersion;
-
-        return metadata;
+        return new Metadata(ruleset, engineVersion, timestamp);
     }
 }

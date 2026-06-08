@@ -15,8 +15,8 @@ public record RuleContext(
 ) {
 
     public static RuleContext fromCart(CartSnapshot cartSnapshot) {
-        Map<String, Integer> counts = cartSnapshot.getItems().stream()
-                .collect(toMap(CartItem::getSku, CartItem::getQuantity));
+        Map<String, Integer> counts = cartSnapshot.items().stream()
+                .collect(toMap(CartItem::sku, CartItem::quantity));
 
         return new RuleContext(counts, Map.of());
     }

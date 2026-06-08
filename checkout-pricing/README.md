@@ -1303,6 +1303,13 @@ Main path: `"/api/prices"`
   - PricingResponse
   - CartItemRequest
   - CustomerRequest
+- Using record definitions for tracing data
+  - CartItem
+  - CartSnapshot
+  - CustomerInfo
+  - Metadata
+  - debug/DPTrace
+  - StepTrace
 - Merge pricing endpoints
 ---
 

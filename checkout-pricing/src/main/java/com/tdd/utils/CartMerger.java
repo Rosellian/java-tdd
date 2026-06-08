@@ -30,10 +30,10 @@ public class CartMerger {
     }
 
     private static void addInitialCart(CartSnapshot cart, Map<String, Integer> itemsPerSku, Map<String, Integer> merged) {
-        for (CartItem item : cart.getItems()) {
-            String sku = item.getSku();
+        for (CartItem item : cart.items()) {
+            String sku = item.sku();
 
-            int newQuantity = item.getQuantity() + itemsPerSku.getOrDefault(sku, 0);
+            int newQuantity = item.quantity() + itemsPerSku.getOrDefault(sku, 0);
 
             merged.put(sku, newQuantity);
         }

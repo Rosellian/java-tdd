@@ -16,20 +16,10 @@ public class ServiceUtils {
     private ServiceUtils() {}
 
     public static CartSnapshot fromRequest(PricingRequest req) {
-        CartSnapshot cartSnapshot = new CartSnapshot();
-
         List<CartItem> items = fromRequest(req.items());
-        cartSnapshot.setItems(items);
+        CustomerInfo customerInfo = req.customer() != null ? fromRequest(req.customer()) : null;
 
-        if(req.customer() != null) {
-            cartSnapshot.setCustomer(fromRequest(req.customer()));
-        }
-
-        if(req.context() != null) {
-            cartSnapshot.setContext(req.context());
-        }
-
-        return cartSnapshot;
+        return new CartSnapshot(items, customerInfo, req.context());
     }
 
     private static List<CartItem> fromRequest(List<CartItemRequest> items) {

@@ -2,7 +2,6 @@ package com.tdd.tracing.debug;
 
 import com.tdd.tracing.RuleTraceEvent;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +15,7 @@ public class PricingTraceCollector {
 
     public PricingTraceCollector(CartSnapshot cart, String ruleset, String engineVersion) {
         trace.setCart(cart);
-        Metadata metadata = new Metadata();
-        metadata.setRuleset(ruleset);
-        metadata.setEngineVersion(engineVersion);
-        metadata.setTimestamp(Instant.now().toString());
-        trace.setMetadata(metadata);
+        trace.setMetadata(Metadata.from(ruleset, engineVersion));
     }
 
     public void setCart(CartSnapshot cart) {
@@ -33,12 +28,7 @@ public class PricingTraceCollector {
     }
 
     public void recordStep(String step, int stepIndex, String description, double before, double after) {
-        StepTrace st = new StepTrace();
-        st.setStep(step);
-        st.setStepIndex(stepIndex);
-        st.setDescription(description);
-        st.setPriceBefore(before);
-        st.setPriceAfter(after);
+        StepTrace st = new StepTrace(step, stepIndex, description, before, after);
 
         trace.getSteps().add(st);
         trace.getPriceEvolution().add(after);
@@ -46,13 +36,7 @@ public class PricingTraceCollector {
 
     public void recordDP(String stateLabel, int stepIndex, List<String> options, String chosen, double price,
                          String sku) {
-        DPTrace dp = new DPTrace();
-        dp.setState(stateLabel);
-        dp.setStepIndex(stepIndex);
-        dp.setOptions(options);
-        dp.setChosen(chosen);
-        dp.setPrice(price);
-        dp.setSku(sku);
+        DPTrace dp = new DPTrace(stateLabel, stepIndex, options, chosen, price, sku);
 
         trace.getDp().add(dp);
     }

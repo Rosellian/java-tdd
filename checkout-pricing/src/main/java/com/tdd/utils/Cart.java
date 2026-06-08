@@ -8,13 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.tdd.tracing.debug.CartSnapshot.from;
 import static com.tdd.utils.CartCreator.createCart;
 import static com.tdd.utils.CartMerger.mergeCart;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.counting;
 
 public class Cart {
-    private final CartSnapshot cart;
+    private CartSnapshot cart;
     private final List<String> items = new ArrayList<>();
 
     public Cart(CartSnapshot initialCart) {
@@ -26,20 +27,24 @@ public class Cart {
     }
 
     public CartSnapshot getCart() {
-        if(cart.getItems().isEmpty()) {
-            addCart();
+        if(cart.items().isEmpty()) {
+            newCart();
         }
         else {
-            List<CartItem> mergedItems = mergeCart(cart, countItems());
-            cart.setItems(mergedItems);
+            updateCart();
         }
 
         return cart;
     }
 
-    private void addCart() {
+    private void newCart() {
         List<CartItem> cartItems = createCart(countItems());
-        cart.setItems(cartItems);
+        cart = from(cart, cartItems);
+    }
+
+    private void updateCart() {
+        List<CartItem> mergedItems = mergeCart(cart, countItems());
+        cart = from(cart, mergedItems);
     }
 
     private Map<String, Integer> countItems() {
