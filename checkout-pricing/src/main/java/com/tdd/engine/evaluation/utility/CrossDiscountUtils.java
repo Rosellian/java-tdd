@@ -13,7 +13,8 @@ public class CrossDiscountUtils {
 
     public static int calculateTimesDiscounted(CrossSkuBuyXGetYDiscount rule, RuleContext context) {
         int packetsToBuy = getPacketsToBuy(rule, context);
-        int discountedPacketsNeeded = context.countOf(rule.discountSku()) / rule.discountQty();
+        int discountCount = context.countOf(rule.discountSku());
+        int discountedPacketsNeeded = discountCount / rule.discountQty();
 
         return Math.min(packetsToBuy, discountedPacketsNeeded);
     }
@@ -25,7 +26,8 @@ public class CrossDiscountUtils {
     }
 
     public static RuleDelta createDelta(CrossSkuBuyXGetYDiscount rule, int totalDiscounted) {
-        SkuMod mod = new SkuMod(0, totalDiscounted, getRate(rule));
+        double rate = getRate(rule);
+        SkuMod mod = new SkuMod(0, totalDiscounted, rate);
 
         return getDelta(rule.discountSku(), mod);
     }

@@ -16,26 +16,20 @@ public class DefaultRules implements SampleRulesBuilder {
 
         Map<String, List<PricingOption>> options = Map.of(
                 "A", List.of(
-                        new SpecialPrice(3, 130, 1, true)   // 3-for-130
+                        new SpecialPrice(3, 130, 1, true)
                 ),
                 "B", List.of(
-                        new SpecialPrice(2, 40, 1,false)   // 2-for-40 (non-stackable)
+                        new SpecialPrice(2, 40, 1,false)
                 ),
                 "C", List.of(),
                 "D", List.of()
         );
 
-        List<CrossSkuBuyXGetYFree> freeRules = List.of(
-                // no cross-SKU in default
-        );
+        List<CrossSkuBuyXGetYFree> freeRules = List.of();
 
-        List<CrossSkuBuyXGetYDiscount> discountRules = List.of(
-                // no cross-SKU in default
-        );
+        List<CrossSkuBuyXGetYDiscount> discountRules = List.of();
 
-        List<SkuDiscount> skuDiscounts = List.of(
-                // no per-SKU discounts in default
-        );
+        List<SkuDiscount> skuDiscounts = List.of();
 
         return new PricingRules(DEFAULT_UNIT_PRICES, options, freeRules, discountRules, skuDiscounts);
     }

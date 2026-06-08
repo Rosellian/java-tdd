@@ -7,7 +7,9 @@ public final class PriceUtils {
     private PriceUtils() {}
 
     public static int calculateRemaining(int count, SkuMod mod) {
-        return Math.max(0, count - mod.free() - mod.discounted());
+        int remaining = count - mod.free() - mod.discounted();
+
+        return Math.max(0, remaining);
     }
 
     public static double calculateDiscountedPart(double unitPrice, SkuMod skuMod) {
@@ -16,11 +18,14 @@ public final class PriceUtils {
 
     public static double calculateFullPricePart(int count, SkuMod skuMod, double unitPrice) {
         int paid = calculatePaid(count, skuMod.free());
+        int notDiscounted = paid - skuMod.discounted();
 
-        return Math.max(0, paid - skuMod.discounted()) * unitPrice;
+        return Math.max(0, notDiscounted) * unitPrice;
     }
 
     private static int calculatePaid(int count, int free) {
-        return Math.max(0, count - free);
+        int paid = count - free;
+
+        return Math.max(0, paid);
     }
 }

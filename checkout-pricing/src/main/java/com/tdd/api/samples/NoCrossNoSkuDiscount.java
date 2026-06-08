@@ -19,17 +19,14 @@ public class NoCrossNoSkuDiscount implements SampleRulesBuilder {
 
         Map<String, List<PricingOption>> options = Map.of(
                 "A", List.of(
-                        new SpecialPrice(3, 120, 1, true), // 3-for-120
+                        new SpecialPrice(3, 120, 1, true),
                         BuyXGetYFree.from(2, 1, unitPrices.get("A"), 2, true)
-                        // buy 2, get 1 free
                 ),
                 "B", List.of(
-                        new SpecialPrice(2, 70, 1, true), // 2-for-70
-                        // buy 1, get 1 free
+                        new SpecialPrice(2, 70, 1, true),
                         BuyXGetYFree.from(1, 1, unitPrices.get("B"), 2, false)
                 ),
                 "C", List.of(
-                        // buy 2, get 1 at 50%
                         BuyXGetYDiscount.from(2, 1, unitPrices.get("C"), 0.5,1, true)
                 )
         );

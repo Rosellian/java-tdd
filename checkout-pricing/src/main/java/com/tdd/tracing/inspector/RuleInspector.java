@@ -35,24 +35,25 @@ public class RuleInspector {
             PriceResult result = priceEngine.calculate(sku, count, mod);
 
             dpTraces.add(result.dpTrace());
-            skuTraces.add(createSkuTrace(sku, count, mod, result));
+
+            SkuTrace skuTrace = createSkuTrace(sku, count, mod, result);
+            skuTraces.add(skuTrace);
         }
 
-        double finalTotal = skuTraces.stream().mapToDouble(SkuTrace::total).sum();
+        double finalTotal = sumTotal(skuTraces);
 
         return new RuleTrace(events, skuTraces, dpTraces, finalTotal);
     }
 
+    private static double sumTotal(List<SkuTrace> skuTraces) {
+        return skuTraces.stream()
+                .mapToDouble(SkuTrace::total)
+                .sum();
+    }
+
     private SkuTrace createSkuTrace(String sku, int count, SkuMod mod, PriceResult result) {
         double unitPrice = rules.getUnitPrice(sku);
-        int free = mod.free();
-        int discounted = mod.discounted();
-        double rate = mod.rate();
-        int remaining = result.remaining();
-        double discountedPrice = result.discountedPrice();
-        double dpPrice = result.dpPrice();
-        double total = result.total();
 
-        return new SkuTrace(sku, count, free, discounted, rate, remaining, unitPrice, discountedPrice, dpPrice, total);
+        return SkuTrace.from(sku, count, mod, result, unitPrice);
     }
 }

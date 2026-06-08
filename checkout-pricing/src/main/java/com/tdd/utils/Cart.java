@@ -6,13 +6,11 @@ import com.tdd.tracing.debug.CartSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.tdd.tracing.debug.CartSnapshot.from;
 import static com.tdd.utils.CartCreator.createCart;
 import static com.tdd.utils.CartMerger.mergeCart;
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.*;
 
 public class Cart {
     private CartSnapshot cart;
@@ -49,6 +47,6 @@ public class Cart {
 
     private Map<String, Integer> countItems() {
         return items.stream()
-                .collect(Collectors.groupingBy(sku -> sku, collectingAndThen(counting(), Long::intValue)));
+                .collect(groupingBy(sku -> sku, collectingAndThen(counting(), Long::intValue)));
     }
 }

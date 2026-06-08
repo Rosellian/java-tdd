@@ -76,6 +76,8 @@ public class RuleEvaluator implements IRuleEvaluator {
     }
 
     private boolean skuDiscountHasHigherPriorityOrZeroTimes(CrossSkuBuyXGetYDiscount rule, int times) {
-        return skuDiscountHasHigherPriorityFor(rules, rule.discountSku(), rule.priority()) || times == 0;
+        boolean hasHigherPriority = skuDiscountHasHigherPriorityFor(rules, rule.discountSku(), rule.priority());
+
+        return hasHigherPriority || times == 0;
     }
 }

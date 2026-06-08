@@ -19,43 +19,33 @@ public class CampaignBRules implements SampleRulesBuilder {
 
         Map<String, List<PricingOption>> options = Map.of(
                 "A", List.of(
-                        new SpecialPrice(3, 130, 1, true),  //3-for-130
-                        new SpecialPrice(6, 240, 1, true)   //6-for-240
+                        new SpecialPrice(3, 130, 1, true),
+                        new SpecialPrice(6, 240, 1, true)
                 ),
                 "B", List.of(
-                        new SpecialPrice(2, 40, 1,false)    // 2-for-40
+                        new SpecialPrice(2, 40, 1,false)
                 ),
                 "C", List.of(
-                        new SpecialPrice(5, 100, 1, true)   // 5-for-100
+                        new SpecialPrice(5, 100, 1, true)
                 ),
                 "D", List.of(),
                 "E", List.of(
-                        new SpecialPrice(2, 90, 1, true)   // 2-for-90
+                        new SpecialPrice(2, 90, 1, true)
                 )
         );
 
         List<CrossSkuBuyXGetYFree> freeRules = List.of(
-                new CrossSkuBuyXGetYFree(
-                        "E", 2,
-                        "A", 1,
-                        20,
-                        false
-                )
+                new CrossSkuBuyXGetYFree("E", 2,"A", 1,20,false)
         );
 
         List<CrossSkuBuyXGetYDiscount> discountRules = List.of(
-                new CrossSkuBuyXGetYDiscount(
-                        "A", 3,
-                        "B", 1,
-                        0.25, // 25% off B
-                        15,
-                        true
-                )
+                new CrossSkuBuyXGetYDiscount("A", 3,"B", 1,0.25,
+                        15,true)
         );
 
         List<SkuDiscount> skuDiscounts = List.of(
-                new SkuDiscount("D", 0.20, 1), // 20% off D
-                new SkuDiscount("E", 0.10, 2)  // 10% off E
+                new SkuDiscount("D", 0.20, 1),
+                new SkuDiscount("E", 0.10, 2)
         );
 
         return new PricingRules(unitPrices, options, freeRules, discountRules, skuDiscounts);

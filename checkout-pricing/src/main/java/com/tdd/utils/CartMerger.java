@@ -29,7 +29,8 @@ public class CartMerger {
         }
     }
 
-    private static void addInitialCart(CartSnapshot cart, Map<String, Integer> itemsPerSku, Map<String, Integer> merged) {
+    private static void addInitialCart(CartSnapshot cart, Map<String, Integer> itemsPerSku,
+                                       Map<String, Integer> merged) {
         for (CartItem item : cart.items()) {
             String sku = item.sku();
 

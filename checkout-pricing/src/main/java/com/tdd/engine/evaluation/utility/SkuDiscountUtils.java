@@ -6,6 +6,8 @@ import com.tdd.engine.utility.RuleDelta;
 import com.tdd.engine.utility.SkuMod;
 import com.tdd.rules.SkuDiscount;
 
+import java.util.function.Predicate;
+
 import static com.tdd.engine.evaluation.utility.EvaluatorUtils.getDelta;
 import static com.tdd.engine.evaluation.utility.EvaluatorUtils.getRate;
 
@@ -21,11 +23,16 @@ public class SkuDiscountUtils {
 
     public static boolean skuDiscountHasHigherPriorityFor(PricingRules rules, String sku, int crossSkuRulePriority) {
         return rules.getSkuDiscounts().stream()
-                .anyMatch(r -> r.sku().equals(sku) && r.priority() < crossSkuRulePriority);
+                .anyMatch(sameSkuAndHigherPriority(sku, crossSkuRulePriority));
+    }
+
+    private static Predicate<SkuDiscount> sameSkuAndHigherPriority(String sku, int crossSkuRulePriority) {
+        return r -> r.sku().equals(sku) && r.priority() < crossSkuRulePriority;
     }
 
     public static RuleDelta createDelta(SkuDiscount rule) {
-        SkuMod mod = new SkuMod(0, 1, getRate(rule));
+        double rate = getRate(rule);
+        SkuMod mod = new SkuMod(0, 1, rate);
 
         return getDelta(rule.sku(), mod);
     }

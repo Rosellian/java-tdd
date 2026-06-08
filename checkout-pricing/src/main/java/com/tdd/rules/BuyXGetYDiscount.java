@@ -25,7 +25,10 @@ public record BuyXGetYDiscount(
     }
 
     public static double calculatePrice(int buy, double unitPrice, int get, double discount) {
-        return buy * unitPrice + get * unitPrice * (1-discount);
+        double buyPrice = buy * unitPrice;
+        double discountedPrice = get * unitPrice * (1 - discount);
+
+        return buyPrice + discountedPrice;
     }
 
     public static BuyXGetYDiscount from(int buy, int get, double unitPrice, double discount,

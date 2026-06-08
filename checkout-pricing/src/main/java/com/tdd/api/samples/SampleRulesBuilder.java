@@ -12,6 +12,7 @@ public interface SampleRulesBuilder {
     static Map<String, Double> defaultUnitPricesWithChange(String sku, double unitPrice) {
         Map<String, Double> unitPrices = DEFAULT_UNIT_PRICES.entrySet().stream()
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+
         unitPrices.put(sku, unitPrice);
 
         return unitPrices;

@@ -26,11 +26,13 @@ public class Checkout {
     }
 
     public Checkout(PricingRules rules) {
-        this(rules, new PricingTraceCollector(), CartSnapshot.from(new ArrayList<>()));
+        CartSnapshot emptyCart = CartSnapshot.from(new ArrayList<>());
+        this(rules, new PricingTraceCollector(), emptyCart);
     }
 
     public Checkout(PricingRules rules, CartSnapshot cart) {
-        this(rules, new PricingTraceCollector(cart, rules.getRuleset(), ENGINE_VERSION), cart);
+        PricingTraceCollector collector = new PricingTraceCollector(cart, rules.getRuleset(), ENGINE_VERSION);
+        this(rules, collector, cart);
     }
 
     public void scan(String unit) {
@@ -47,7 +49,8 @@ public class Checkout {
         CartSnapshot cart = cartHandler.getCart();
         collector.setCart(cart);
 
-        RuleContext ctx = engine.evaluate(RuleContext.fromCart(cart));
+        RuleContext inputContext = RuleContext.fromCart(cart);
+        RuleContext ctx = engine.evaluate(inputContext);
 
         return resultBuilder.buildResult(ctx);
     }

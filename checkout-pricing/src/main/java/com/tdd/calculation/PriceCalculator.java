@@ -12,18 +12,18 @@ public class PriceCalculator {
     private final PriceEngine priceEngine;
 
     public PriceCalculator(PricingRules rules, PricingTraceCollector collector) {
-        priceEngine = new PriceEngine(rules, new BestPriceAlgorithm(rules, collector));
+        BestPriceAlgorithm algorithm = new BestPriceAlgorithm(rules, collector);
+        priceEngine = new PriceEngine(rules, algorithm);
     }
 
     public double calculateTotal(RuleContext context) {
         double total = 0;
 
-        for(var entry : context.counts().entrySet()) {
-            String sku = entry.getKey();
-            int count = entry.getValue();
+        for(var count : context.counts().entrySet()) {
+            String sku = count.getKey();
             SkuMod mod = context.modOf(sku);
 
-            PriceResult result = priceEngine.calculate(sku, count, mod);
+            PriceResult result = priceEngine.calculate(sku, count.getValue(), mod);
             total += result.total();
         }
 

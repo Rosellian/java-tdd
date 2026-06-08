@@ -40,7 +40,8 @@ public class RuleRecorder {
         boolean applied = delta.applied();
         rt.setMatched(applied);
 
-        double afterPrice = priceComputer.computeTotalPrice(after.context());
+        RuleContext afterContext = after.context();
+        double afterPrice = priceComputer.computeTotalPrice(afterContext);
         rt.setAfter(afterPrice);
         rt.setDelta(afterPrice - rt.getBefore());
 
@@ -49,7 +50,7 @@ public class RuleRecorder {
         }
         else {
             rt.setOutputs(Map.of("delta", delta,
-                    "newCounts", after.context().counts()));
+                    "newCounts", afterContext.counts()));
         }
 
         return rt;

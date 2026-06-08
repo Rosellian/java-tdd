@@ -6,8 +6,6 @@ public class RepositoryUtils {
     public static final String LIST_RULESETS = "SELECT name FROM rulesets ORDER BY name";
     public static final String LOAD_RULESET = "SELECT json FROM rulesets WHERE name = ?";
 
-    private RepositoryUtils() {}
-
     private static final String SAVE_RULESET_POSTGRESQL = """
                 INSERT INTO rulesets (name, version, json, updated_at, created_at)
                 VALUES (?, ?, ?, NOW(), NOW())
@@ -20,6 +18,8 @@ public class RepositoryUtils {
                 MERGE INTO rulesets KEY(name)
                 VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
             """;
+
+    private RepositoryUtils() {}
 
     public static String getSaveByDialect(JdbcTemplate jdbc) {
         try {

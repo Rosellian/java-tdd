@@ -29,7 +29,8 @@ public class ResultBuilder {
     }
 
     private RuleTrace runInspect(RuleContext ctx) {
-        RuleInspector inspector = new RuleInspector(rules, new BestPriceAlgorithm(rules, null));
+        BestPriceAlgorithm algorithm = new BestPriceAlgorithm(rules, null);
+        RuleInspector inspector = new RuleInspector(rules, algorithm);
 
         RuleTrace ruleTrace = inspector.inspect(ctx, collector.getEvents());
         RuleInspectorView.print(ruleTrace);
@@ -40,6 +41,7 @@ public class ResultBuilder {
     private PricingTrace buildPricingTrace(RuleContext ctx) {
         double finalPrice = calculator.calculateTotal(ctx);
         collector.setFinalPrice(finalPrice);
+
         return collector.build();
     }
 }

@@ -13,7 +13,8 @@ public class CrossFreeUtils {
 
     public static int calculateTimesFree(CrossSkuBuyXGetYFree rule, RuleContext context) {
         int packetsToBuy = getPacketsToBuy(rule, context);
-        int freePacketsNeeded = context.countOf(rule.freeSku()) / rule.freeQty();
+        int freeCount = context.countOf(rule.freeSku());
+        int freePacketsNeeded = freeCount / rule.freeQty();
 
         return Math.min(packetsToBuy, freePacketsNeeded);
     }

@@ -17,7 +17,9 @@ public class ServiceUtils {
 
     public static CartSnapshot fromRequest(PricingRequest req) {
         List<CartItem> items = fromRequest(req.items());
-        CustomerInfo customerInfo = req.customer() != null ? fromRequest(req.customer()) : null;
+
+        CustomerRequest customer = req.customer();
+        CustomerInfo customerInfo = customer != null ? fromRequest(customer) : null;
 
         return new CartSnapshot(items, customerInfo, req.context());
     }
@@ -29,10 +31,7 @@ public class ServiceUtils {
     }
 
     private static CartItem fromRequest(CartItemRequest item) {
-        String sku = item.sku();
-        int quantity = item.quantity();
-
-        return CartItem.from(sku, quantity);
+        return CartItem.from(item.sku(), item.quantity());
     }
 
     private static CustomerInfo fromRequest(CustomerRequest customer) {

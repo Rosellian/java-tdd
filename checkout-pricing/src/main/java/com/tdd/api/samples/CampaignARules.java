@@ -16,40 +16,30 @@ public class CampaignARules implements SampleRulesBuilder {
 
         Map<String, List<PricingOption>> options = Map.of(
                 "A", List.of(
-                        new SpecialPrice(3, 120, 1, true),   // better deal than default
-                        new SpecialPrice(5, 180, 1, true)    // 5-for-180
+                        new SpecialPrice(3, 120, 1, true),
+                        new SpecialPrice(5, 180, 1, true)
                 ),
                 "B", List.of(
                         // buy one, get one free
                         BuyXGetYFree.from(1, 1, SKUs.B.unitPrice, 2, false)
                 ),
                 "C", List.of(
-                        new SpecialPrice(4, 70, 1, true)     // 4-for-70
+                        new SpecialPrice(4, 70, 1, true)
                 ),
                 "D", List.of()
         );
 
         List<CrossSkuBuyXGetYFree> freeRules = List.of(
-                new CrossSkuBuyXGetYFree(
-                        "A", 2,
-                        "C", 1,
-                        10,   // priority
-                        true  // stackable
-                )
+                new CrossSkuBuyXGetYFree("A", 2,"C", 1,10, true)
         );
 
         List<CrossSkuBuyXGetYDiscount> discountRules = List.of(
-                new CrossSkuBuyXGetYDiscount(
-                        "B", 2,
-                        "D", 1,
-                        0.50, // 50% off D
-                        5,
-                        false
-                )
+                new CrossSkuBuyXGetYDiscount("B", 2,"D", 1,0.50,
+                        5,false)
         );
 
         List<SkuDiscount> skuDiscounts = List.of(
-                new SkuDiscount("C", 0.10, 1)  // 10% off C
+                new SkuDiscount("C", 0.10, 1)
         );
 
         return new PricingRules(DEFAULT_UNIT_PRICES, options, freeRules, discountRules, skuDiscounts);

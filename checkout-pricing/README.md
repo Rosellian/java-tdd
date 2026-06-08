@@ -1312,6 +1312,8 @@ Main path: `"/api/prices"`
   - StepTrace
 - Merge pricing endpoints
 - Using PricingRequest in API
+- Major refactoring session and specific (new code):
+  - PricingRules conversion code
 ---
 
 ## Testing

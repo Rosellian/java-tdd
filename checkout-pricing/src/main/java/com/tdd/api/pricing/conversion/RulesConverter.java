@@ -4,77 +4,55 @@ import com.tdd.api.pricing.conversion.converters.ConvertedRules;
 import com.tdd.api.rulesets.data.Ruleset;
 import com.tdd.api.rulesets.data.rules.Rule;
 import com.tdd.api.rulesets.data.rules.cross.CrossSkuRule;
-import com.tdd.api.rulesets.data.rules.sku.SkuDiscount;
 import com.tdd.api.rulesets.data.rules.sku.SkuRule;
 import com.tdd.rules.PricingOption;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+import static com.tdd.api.pricing.conversion.RuleGroup.*;
 import static com.tdd.api.pricing.conversion.converters.CrossSkuRuleConverter.convert;
 import static com.tdd.api.pricing.conversion.converters.PricingOptionConverter.convertToPricingOptions;
 import static com.tdd.api.pricing.conversion.converters.SkuDiscounterConverter.convertSkuDiscounts;
+import static java.util.stream.Collectors.groupingBy;
 
 public class RulesConverter {
+    private final Map<String, Double> prices;
 
-    public static ConvertedRules convertRules(Ruleset ruleset, Map<String, Double> prices) {
-        Map<String, List<PricingOption>> options = new HashMap<>();
-        List<com.tdd.rules.SkuDiscount> skuDiscounts = new ArrayList<>();
-        List<com.tdd.rules.cross.CrossSkuRule> crossSkuRules = new ArrayList<>();
+    public RulesConverter(Map<String, Double> prices) {
+        this.prices = prices;
+    }
 
-        Map<RuleGroup, List<Rule>> rulesByClass = ruleset.rules().stream()
-                .collect(Collectors.groupingBy(RulesConverter::classify));
+    public ConvertedRules convertRules(Ruleset ruleset) {
+        Map<RuleGroup, List<Rule>> rulesByGroup = ruleset.rules().stream()
+                .collect(groupingBy(RuleGroup::classify));
 
-        for(var entry : rulesByClass.entrySet()) {
-            List<Rule> rules = entry.getValue();
+        Map<String, List<PricingOption>> options = convertSkuRules(rulesByGroup);
 
-            switch (entry.getKey()) {
-                case SKU_DISCOUNT:
-                    skuDiscounts = convertSkuDiscounts(rules);
-                    break;
-                case CROSS_SKU_RULE:
-                    crossSkuRules = convertCrossSkuRules(rules);
-                    break;
-                default:
-                    options = convertSkuRules(rules, prices);
-            }
-        }
+        List<com.tdd.rules.SkuDiscount> skuDiscounts = convertSkuDiscounts(rulesByGroup);
+
+        List<com.tdd.rules.cross.CrossSkuRule> crossSkuRules = convertCrossSkuRules(rulesByGroup);
 
         return new ConvertedRules(options, skuDiscounts, crossSkuRules);
     }
 
-    private static List<com.tdd.rules.cross.CrossSkuRule> convertCrossSkuRules(List<Rule> rules) {
-        List<CrossSkuRule> crossSkuRules = rules.stream()
+    private Map<String, List<PricingOption>> convertSkuRules(Map<RuleGroup, List<Rule>> rulesByGroup) {
+        List<Rule> pricingOptionGroup = rulesByGroup.getOrDefault(TO_PRICING_OPTION, List.of());
+
+        List<SkuRule> skuRules = pricingOptionGroup.stream()
+                .map(rule -> (SkuRule) rule)
+                .toList();
+
+        return skuRules.isEmpty() ? Map.of() : convertToPricingOptions(skuRules, prices);
+    }
+
+    private List<com.tdd.rules.cross.CrossSkuRule> convertCrossSkuRules(Map<RuleGroup, List<Rule>> rulesByGroup) {
+        List<Rule> crossSkuGroup = rulesByGroup.getOrDefault(CROSS_SKU_RULE, List.of());
+
+        List<CrossSkuRule> crossSkuRules = crossSkuGroup.stream()
                 .map(rule -> (CrossSkuRule) rule)
                 .toList();
 
         return convert(crossSkuRules);
-    }
-
-    private static Map<String, List<PricingOption>> convertSkuRules(List<Rule> rules, Map<String, Double> unitPrices) {
-        List<SkuRule> skuRules = rules.stream()
-                .map(rule -> (SkuRule) rule)
-                .toList();
-
-        return convertToPricingOptions(skuRules, unitPrices);
-    }
-
-    public enum RuleGroup {
-        SKU_DISCOUNT,
-        TO_PRICING_OPTION,
-        CROSS_SKU_RULE
-    }
-
-    private static RuleGroup classify(Rule rule) {
-        if (rule instanceof SkuDiscount) {
-            return RuleGroup.SKU_DISCOUNT;
-        }
-        if (rule instanceof CrossSkuRule) {
-            return RuleGroup.CROSS_SKU_RULE;
-        }
-        return RuleGroup.TO_PRICING_OPTION;
     }
 }

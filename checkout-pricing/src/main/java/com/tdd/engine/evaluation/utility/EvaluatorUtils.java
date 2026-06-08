@@ -15,7 +15,9 @@ public class EvaluatorUtils {
     private EvaluatorUtils() {}
 
     static int getPacketsToBuy(CrossSkuRule rule, RuleContext context) {
-        return context.countOf(rule.buySku()) / rule.buyQty();
+        int buyCount = context.countOf(rule.buySku());
+
+        return buyCount / rule.buyQty();
     }
 
     static int adjustTimesForNonStack(CrossSkuRule rule, int times) {

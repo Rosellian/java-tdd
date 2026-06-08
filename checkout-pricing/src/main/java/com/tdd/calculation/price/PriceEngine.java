@@ -19,7 +19,8 @@ public class PriceEngine {
 
     public PriceResult calculate(String sku, int count, SkuMod mod) {
         int remaining = calculateRemaining(count, mod);
-        double discountedPrice = calculateDiscountedPart(rules.getUnitPrice(sku), mod);
+        double unitPrice = rules.getUnitPrice(sku);
+        double discountedPrice = calculateDiscountedPart(unitPrice, mod);
 
         DPTrace dpTrace = algorithm.bestPriceFor(sku, remaining);
         double dpPrice = dpTrace.finalPrice();

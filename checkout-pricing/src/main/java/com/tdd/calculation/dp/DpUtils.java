@@ -24,12 +24,15 @@ public class DpUtils {
     static double [] initDp(int n) {
         double[] dp = new double[n + 1];
         dp[0] = 0;
+
         return dp;
     }
 
     static List<PathEntry> createPathStart() {
         List<PathEntry> path = new ArrayList<>();
-        path.add(new PathEntry(List.of(ITEMS_0_KR), emptyList()));
+
+        PathEntry firstEntry = new PathEntry(List.of(ITEMS_0_KR), emptyList());
+        path.add(firstEntry);
 
         return path;
     }

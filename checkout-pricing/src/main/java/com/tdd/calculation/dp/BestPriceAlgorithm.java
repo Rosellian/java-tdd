@@ -35,7 +35,8 @@ public class BestPriceAlgorithm {
         List<PathEntry> path = createPathStart();
         List<DPNode> nodes = new ArrayList<>();
 
-        SkuRuleRecorder skuRuleRecorder = new SkuRuleRecorder(sku, rules.getUnitPrice(sku), collector);
+        double unitPrice = rules.getUnitPrice(sku);
+        SkuRuleRecorder skuRuleRecorder = new SkuRuleRecorder(sku, unitPrice, collector);
 
         for(int i = 1; i <= remaining; i++) {
             CandidateCalculator calculator = new CandidateCalculator(rules, sku, skuRuleRecorder);
@@ -61,10 +62,11 @@ public class BestPriceAlgorithm {
     }
 
     private void updateResults(Candidate candidate, List<PathEntry> path, List<DPNode> nodes, int i, double[] dp) {
-        List<String> best = candidate.pathEntry().stringPath();
-
         path.add(candidate.pathEntry());
-        nodes.add(new DPNode(i, dp[i], List.copyOf(best)));
+
+        List<String> best = candidate.pathEntry().stringPath();
+        DPNode dpNode = new DPNode(i, dp[i], List.copyOf(best));
+        nodes.add(dpNode);
 
         if(collector != null) {
             collector.recordDP("i=" + i, i, candidate.optionsLabels(), String.join(" + ", best),
