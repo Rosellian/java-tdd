@@ -1311,6 +1311,7 @@ Main path: `"/api/prices"`
   - debug/DPTrace
   - StepTrace
 - Merge pricing endpoints
+- Using PricingRequest in API
 ---
 
 ## Testing

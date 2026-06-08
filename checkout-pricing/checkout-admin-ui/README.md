@@ -621,6 +621,7 @@ export async function savePriceList(name, priceList) {}
   - Price lists
 - Improved contrast for buttons in light mode
 - Adjust to merged pricing endpoints
+- Using PricingRequest with metadata
 
 ### Changes in the API layer
 - Refactor API calls to avoid code duplication

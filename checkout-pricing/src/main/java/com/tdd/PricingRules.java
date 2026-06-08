@@ -120,4 +120,16 @@ public class PricingRules {
         crossSku.add(new CrossSkuBuyXGetYDiscount(buySku, buyQty, discountSku, discountQty, discount,
                 priority, stackable));
     }
+
+    @Override
+    public String toString() {
+        return "PricingRules{" +
+                "ruleset='" + ruleset + '\'' +
+                ", priceList='" + priceList + '\'' +
+                ", unitPrices=" + unitPrices +
+                ", options=" + options +
+                ", skuDiscounts=" + skuDiscounts +
+                ", crossSku=" + crossSku +
+                '}';
+    }
 }
