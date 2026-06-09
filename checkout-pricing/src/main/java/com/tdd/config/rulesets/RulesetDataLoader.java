@@ -30,7 +30,7 @@ public class RulesetDataLoader {
         loadSample("Default");
         loadSample("CampaignA");
         loadSample("CampaignB");
-        loadSample("NoCrossNoSkuDiscount");
+        loadSample("NoCrossNoSku-Discount");
 
         registry.loadAll();
     }

@@ -1,6 +1,6 @@
 import {useTheme} from "../../ui/ThemeProvider";
 
-export function ButtonPanel({ mode, status, handleSave, newPriceList }) {
+export function ButtonPanel({ mode, status, handleSave, newPriceList, handleDelete }) {
     const { theme } = useTheme();
 
     return (
@@ -22,6 +22,12 @@ export function ButtonPanel({ mode, status, handleSave, newPriceList }) {
                     ...styles.button,
                     ...(theme === "dark" ? styles.newButtonDark : styles.newButtonLight)
                 }}>+ New Price List</button>
+
+            <button disabled={mode === "deleting"} onClick={handleDelete}
+                    style={{
+                        ...styles.button,
+                        ...(theme === "dark" ? styles.deleteButtonDark : styles.deleteButtonLight)
+                    }}>{status === "deleting" ? "Deleting…" : "Delete"}</button>
         </div>
     )
 }
@@ -54,5 +60,13 @@ const styles = {
     newButtonLight: {
         background: "#4CAF50",
         color: "#000",
+    },
+    deleteButtonDark: {
+        background: "#8B0000",
+        color: "#fff",
+    },
+    deleteButtonLight: {
+        background: "#FFCCCC",
+        color: "#660000",
     }
 }

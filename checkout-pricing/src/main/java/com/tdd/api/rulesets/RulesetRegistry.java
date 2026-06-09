@@ -32,6 +32,13 @@ public class RulesetRegistry implements DataRegistry<Ruleset> {
         repository.save(name, ruleset);
     }
 
+    @Override
+    public void delete(String name) {
+        logger.debug("Deleting ruleset {}", name);
+        cache.remove(name);
+        repository.delete(name);
+    }
+
     public Set<String> listNames() {
         Set<String> names = cache.keySet();
         logger.debug("Ruleset names {}", names);

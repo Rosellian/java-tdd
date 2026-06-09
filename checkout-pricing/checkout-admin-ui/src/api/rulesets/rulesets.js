@@ -59,3 +59,17 @@ export async function saveRuleset(name, ruleset) {
         return false;
     }
 }
+
+export async function deleteRuleset(name) {
+    try {
+        //TODO not needed when switching to id as primary key
+        const encodedName = encodeURIComponent(name.replaceAll(" ", ""));
+
+        const res = await fetch(`/api/rulesets/${encodedName}`, { method: "DELETE" });
+
+        return res.ok;
+    } catch (err) {
+        console.error("Failed to delete ruleset:", err);
+        return false;
+    }
+}

@@ -68,6 +68,13 @@ class RulesetControllerTest {
         verify(registry).save(MISSING, null);
     }
 
+    @Test
+    void delete_callsRegistryAndReturns204() {
+        controller.delete(DEFAULT_NAME);
+
+        verify(registry).delete(DEFAULT_NAME);
+    }
+
     private void mockListNames() {
         when(registry.listNames()).thenReturn(Set.of(DEFAULT_NAME, CAMPAIGN_A_NAME));
     }

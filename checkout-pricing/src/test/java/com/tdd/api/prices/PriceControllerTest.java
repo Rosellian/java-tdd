@@ -62,6 +62,13 @@ class PriceControllerTest {
         verify(registry).save(NEW_LIST_NAME, pl);
     }
 
+    @Test
+    void delete_callsRegistryAndReturns204() {
+        controller.delete(DEFAULT_NAME);
+
+        verify(registry).delete(DEFAULT_NAME);
+    }
+
     private void mockListNames() {
         when(registry.listNames()).thenReturn(Set.of(DEFAULT_NAME, PRICE_LIST_A_NAME));
     }

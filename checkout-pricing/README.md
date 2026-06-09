@@ -1188,11 +1188,7 @@ Storing rulesets in a database for access through API.
 #### Data
 Registry and repository using Ruleset data type:
 ```java
-Ruleset {
-    private String name;
-    private String version;
-    private List<Rule> rules;
-}
+record Ruleset(String name, String version, List<Rule> rules) {}
 ```
 Rules use the following data types:
 ```java
@@ -1315,6 +1311,25 @@ Main path: `"/api/prices"`
 - Major refactoring session and specific (new code):
   - PricingRules conversion code
 ---
+
+### Adding delete functionality to databases
+Delete method added to template interfaces:
+```java
+public interface DataRepository<T> {
+    void delete(String name);
+}
+
+public interface DataRegistry<T> {
+    void delete(String name);
+}
+
+public interface DataController<T> {
+    @DeleteMapping("/{name}")
+    void delete(@PathVariable String name);
+}
+```
+---
+
 
 ## Testing
 ### Test cases
@@ -1649,6 +1664,8 @@ void save_throwsRuntimeException_whenJsonSerializationFails() {}
 
 void save_throwsRuntimeException_whenJdbcFails() {}
 
+void delete_executesCorrectSql() {}
+
 void list_returnsNames() {}
 
 void list_throwsRuntimeException_whenJdbcFails() {}
@@ -1663,6 +1680,8 @@ void get_returnsCachedRuleset() {}
 void get_returnsNull_whenNotInCache() {}
 
 void save_updatesCache_andDelegatesToRepository() {}
+
+void delete_removesFromCacheAndDelegatesToRepository() {}
 
 void listNames_returnsAllCachedNames() {}
 
@@ -1689,6 +1708,8 @@ void save_throwsRuntimeException_whenJdbcFailsOnDeletePrices() {}
 
 void save_throwsRuntimeException_whenJdbcFailsOnInsertPrice() {}
 
+void delete_executesCorrectSql() {}
+
 void list_returnsAllPriceListNames() {}
 
 void list_throwsRuntimeException_whenJdbcFails() {}
@@ -1703,6 +1724,8 @@ void get_returnsCachedPriceList() {}
 void get_returnsNull_whenNotInCache() {}
 
 void save_updatesCache_andDelegatesToRepository() {}
+
+void delete_removesFromCacheAndDelegatesToRepository() {}
 
 void listNames_returnsAllCachedNames() {}
 

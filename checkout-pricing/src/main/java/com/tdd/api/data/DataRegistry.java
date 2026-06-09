@@ -7,6 +7,8 @@ public interface DataRegistry<T> {
 
     void save(String name, T data);
 
+    void delete(String name);
+
     Set<String> listNames();
 
     void loadAll();

@@ -13,4 +13,7 @@ public interface DataController<T> {
 
     @PostMapping("/{name}")
     void save(@PathVariable String name, @RequestBody T data);
+
+    @DeleteMapping("/{name}")
+    void delete(@PathVariable String name);
 }

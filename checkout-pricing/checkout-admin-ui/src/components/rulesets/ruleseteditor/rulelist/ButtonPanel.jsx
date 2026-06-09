@@ -58,12 +58,12 @@ const styles = {
         cursor: "pointer",
         transition: "background 0.3s ease, color 0.3s ease",
     },
-    deleteButtonLight: {
-        background: "#E53935",
-        color: "#000",
-    },
     deleteButtonDark: {
-        background: "#D32F2F",
+        background: "#8B0000",
         color: "#fff",
     },
+    deleteButtonLight: {
+        background: "#FFCCCC",
+        color: "#660000",
+    }
 }

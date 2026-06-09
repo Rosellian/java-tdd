@@ -1,4 +1,6 @@
 export function ConfirmModal({ message, onConfirm, onCancel, theme }) {
+    const confirmLabel = onConfirm.name.replace("confirm", ""); //TODO a bit hacky solution?
+
     return (
         <div style={styles.overlay}>
             <div style={{
@@ -9,7 +11,7 @@ export function ConfirmModal({ message, onConfirm, onCancel, theme }) {
 
                 <div style={styles.buttons}>
                     <button style={styles.cancel} onClick={onCancel}>Cancel</button>
-                    <button style={styles.confirm} onClick={onConfirm}>Save</button>
+                    <button style={styles.confirm} onClick={onConfirm}>{confirmLabel}</button>
                 </div>
             </div>
         </div>

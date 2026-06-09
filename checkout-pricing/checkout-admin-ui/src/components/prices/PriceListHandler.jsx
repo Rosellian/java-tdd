@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useTheme} from "../../ui/ThemeProvider";
-import {getPriceListNames, getPriceListWithFallback, savePriceList} from "../../api/prices/prices";
+import {deletePriceList, getPriceListNames, getPriceListWithFallback, savePriceList} from "../../api/prices/prices";
 import {PriceListSelector} from "./pricelistselector/PriceListSelector";
 import {TextInput} from "../rulesets/ruleseteditor/ruleform/templates/FormFields";
 import {PriceListEditor} from "./pricelisteditor/PriceListEditor";
@@ -15,9 +15,10 @@ export function PriceListHandler({ onPriceListChange }) {
     const [selected, setSelected] = useState("default");
     const [priceList, setPriceList] = useState(null);
 
-    const [mode, setMode] = useState("loading"); // loading, existing, new
-    const [status, setStatus] = useState("idle"); // idle, saving, loading, error
+    const [mode, setMode] = useState("loading"); // loading, existing, new, deleting
+    const [status, setStatus] = useState("idle"); // idle, saving, loading, deleting, error
     const [showConfirm, setShowConfirm] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     useEffect(() => {
         getPriceListNames().then(list => {
@@ -96,6 +97,34 @@ export function PriceListHandler({ onPriceListChange }) {
         setStatus(ok ? "idle" : "error");
     }
 
+    function handleDelete() {
+        if (!priceList) return;
+
+        setShowDeleteConfirm(true);
+    }
+
+    async function confirmDelete() {
+        setShowDeleteConfirm(false);
+        setStatus("loading");
+
+        const ok = await deletePriceList(priceList.name);
+        if (ok) {
+            setPriceListNames(prev => prev.filter(n => n !== priceList.name));
+
+            const next = priceListNames.filter(n => n !== priceList.name)[0] ?? null;
+
+            if (next) {
+                setSelected(next);
+                setMode("existing");
+            } else {
+                setPriceList(null);
+                setMode("loading");
+            }
+        }
+
+        setStatus(ok ? "idle" : "error");
+    }
+
     const isPriceListSet = priceList !== null;
 
     return (
@@ -114,7 +143,8 @@ export function PriceListHandler({ onPriceListChange }) {
                                update={(field, value) => updatePriceListName(value)}/>
                 )}
 
-                <ButtonPanel status={status} handleSave={handleSave} newPriceList={newPriceList} />
+                <ButtonPanel status={status} handleSave={handleSave} newPriceList={newPriceList}
+                             handleDelete={handleDelete} />
             </div>
 
             {status === "loading" && <div style={styles.loading}>Loading price list…</div>}
@@ -122,6 +152,10 @@ export function PriceListHandler({ onPriceListChange }) {
             {showConfirm && (
                 <ConfirmModal theme={theme} message={`Are you sure you want to save changes to "${priceList.name}"?`}
                               onConfirm={confirmSave} onCancel={() => setShowConfirm(false)}/>
+            )}
+            {showDeleteConfirm && (
+                <ConfirmModal theme={theme} message={`Are you sure you want to delete price list "${priceList.name}"?`}
+                              onConfirm={confirmDelete} onCancel={() => setShowDeleteConfirm(false)}/>
             )}
 
             <div style={styles.editorWrapper}>

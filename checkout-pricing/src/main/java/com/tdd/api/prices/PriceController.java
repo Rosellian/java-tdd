@@ -43,4 +43,10 @@ public class PriceController implements DataController<PriceList> {
         logger.info("Incoming request to save priceList {}: {}", name, priceList);
         registry.save(name, priceList);
     }
+
+    @Override
+    public void delete(String name) {
+        logger.info("Incoming request to delete priceList {}", name);
+        registry.delete(name);
+    }
 }

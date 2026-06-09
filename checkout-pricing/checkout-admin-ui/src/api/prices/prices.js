@@ -59,3 +59,14 @@ export async function savePriceList(name, priceList) {
         return false;
     }
 }
+
+export async function deletePriceList(name) {
+    try {
+        const res = await fetch(`/api/prices/${name}`, { method: "DELETE" });
+
+        return res.ok;
+    } catch (err) {
+        console.error("Failed to delete price list:", err);
+        return false;
+    }
+}

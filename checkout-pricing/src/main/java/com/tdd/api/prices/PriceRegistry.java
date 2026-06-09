@@ -35,6 +35,12 @@ public class PriceRegistry implements DataRegistry<PriceList> {
     }
 
     @Override
+    public void delete(String name) {
+        cache.remove(name);
+        repository.delete(name);
+    }
+
+    @Override
     public Set<String> listNames() {
         return cache.keySet();
     }

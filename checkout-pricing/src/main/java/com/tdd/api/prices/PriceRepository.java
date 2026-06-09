@@ -59,6 +59,15 @@ public class PriceRepository implements DataRepository<PriceList> {
     }
 
     @Override
+    public void delete(String name) {
+        try {
+            jdbc.update(DELETE_PRICE_LIST, name);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete price list " + name, e);
+        }
+    }
+
+    @Override
     public List<String> list() {
         try {
             return jdbc.queryForList(LIST_PRICE_LISTS, String.class);

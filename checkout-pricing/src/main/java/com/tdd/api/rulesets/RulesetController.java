@@ -18,7 +18,7 @@ public class RulesetController implements DataController<Ruleset> {
         this.registry = registry;
     }
 
-    @GetMapping
+    @Override
     public Set<String> list() {
         logger.info("Incoming request for list of rulesets");
         Set<String> rulesets = registry.listNames();
@@ -27,8 +27,8 @@ public class RulesetController implements DataController<Ruleset> {
         return rulesets;
     }
 
-    @GetMapping("/{name}")
-    public Ruleset load(@PathVariable String name) {
+    @Override
+    public Ruleset load(String name) {
         logger.info("Incoming request for ruleset {}", name);
         Ruleset ruleset = registry.get(name);
         logger.info("Response {}", ruleset);
@@ -36,9 +36,15 @@ public class RulesetController implements DataController<Ruleset> {
         return ruleset;
     }
 
-    @PostMapping("/{name}")
-    public void save(@PathVariable String name, @RequestBody Ruleset ruleset) {
+    @Override
+    public void save(String name, Ruleset ruleset) {
         logger.info("Incoming request to save ruleset {}: {}", name, ruleset);
         registry.save(name, ruleset);
+    }
+
+    @Override
+    public void delete(String name) {
+        logger.info("Incoming request to delete ruleset {}", name);
+        registry.delete(name);
     }
 }

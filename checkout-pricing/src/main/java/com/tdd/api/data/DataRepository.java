@@ -7,5 +7,7 @@ public interface DataRepository<T> {
 
     void save(String name, T data);
 
+    void delete(String name);
+
     List<String> list();
 }

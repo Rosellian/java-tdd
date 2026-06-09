@@ -72,11 +72,11 @@ const styles = {
         transition: "background 0.3s ease, color 0.3s ease",
     },
     addButtonDark: {
-        background: "#03DAC6",
+        background: "#4CAF50",
         color: "#fff",
     },
     addButtonLight: {
-        background: "#00897B",
+        background: "#4CAF50",
         color: "#000",
     }
 }

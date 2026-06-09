@@ -33,6 +33,7 @@ public class RulesetRepository implements DataRepository<Ruleset> {
 
             Ruleset ruleset = mapper.readValue(json, Ruleset.class);
             logger.debug("Loaded ruleset {}", ruleset);
+
             return ruleset;
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -49,7 +50,7 @@ public class RulesetRepository implements DataRepository<Ruleset> {
             logger.debug("Saving ruleset json {}", json);
 
             String query = getSaveByDialect(jdbc);
-            logger.debug("using {}", query);
+            logger.debug("using save query {}", query);
 
             jdbc.update(query, name, ruleset.version(), json);
         } catch (Exception e) {
@@ -58,10 +59,21 @@ public class RulesetRepository implements DataRepository<Ruleset> {
     }
 
     @Override
+    public void delete(String name) {
+        try {
+            logger.info("Deleting ruleset {}", name);
+            jdbc.update(DELETE_RULESET, name);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete ruleset " + name, e);
+        }
+    }
+
+    @Override
     public List<String> list() {
         try {
             List<String> names = jdbc.queryForList(LIST_RULESETS, String.class);
             logger.debug("Loaded list of ruleset names {}", names);
+
             return names;
         } catch (DataAccessException e) {
             throw new RuntimeException("Failed to load ruleset list names", e);

@@ -55,6 +55,15 @@ class RulesetRegistryTest {
     }
 
     @Test
+    void delete_removesFromCacheAndDelegatesToRepository() {
+        registry.delete(DEFAULT_NAME);
+
+        verify(repository).delete(DEFAULT_NAME);
+
+        assertCacheDelete();
+    }
+
+    @Test
     void listNames_returnsAllCachedNames() {
         Set<String> names = registry.listNames();
 
@@ -94,6 +103,12 @@ class RulesetRegistryTest {
     private void assertCache() {
         assertEquals(2, registry.listNames().size());
         assertTrue(registry.listNames().contains(DEFAULT_NAME));
+        assertTrue(registry.listNames().contains(CAMPAIGN_A_NAME));
+    }
+
+    private void assertCacheDelete() {
+        assertEquals(1, registry.listNames().size());
+        assertFalse(registry.listNames().contains(DEFAULT_NAME));
         assertTrue(registry.listNames().contains(CAMPAIGN_A_NAME));
     }
 }

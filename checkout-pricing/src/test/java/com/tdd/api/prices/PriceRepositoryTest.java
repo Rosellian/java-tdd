@@ -4,6 +4,7 @@ import com.tdd.api.prices.data.Price;
 import com.tdd.api.prices.data.PriceList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
@@ -105,6 +106,20 @@ class PriceRepositoryTest {
         RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(DEFAULT_NAME, pl));
 
         assertException("Failed to save price list " + DEFAULT_NAME, ex);
+    }
+
+    //delete
+    @Test
+    void delete_executesCorrectSql() {
+        ArgumentCaptor<String> sql = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Object> arg = ArgumentCaptor.forClass(Object.class);
+
+        repository.delete(DEFAULT_NAME);
+
+        verify(jdbc).update(sql.capture(), arg.capture());
+
+        assertEquals(DELETE_PRICE_LIST, sql.getValue());
+        assertEquals(DEFAULT_NAME, arg.getValue());
     }
 
     //list

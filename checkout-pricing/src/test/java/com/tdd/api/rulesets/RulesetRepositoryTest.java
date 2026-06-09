@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static com.tdd.api.rulesets.RepoTestUtils.*;
+import static com.tdd.api.rulesets.RepositoryUtils.DELETE_RULESET;
 import static com.tdd.api.rulesets.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -114,6 +115,20 @@ class RulesetRepositoryTest {
         RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(DEFAULT_NAME, ruleset));
 
         assertException("Failed to save ruleset " + ruleset.name(), ex);
+    }
+
+    //delete
+    @Test
+    void delete_executesCorrectSql() {
+        ArgumentCaptor<String> sql = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Object> arg = ArgumentCaptor.forClass(Object.class);
+
+        repository.delete(DEFAULT_NAME);
+
+        verify(jdbc).update(sql.capture(), arg.capture());
+
+        assertEquals(DELETE_RULESET, sql.getValue());
+        assertEquals(DEFAULT_NAME, arg.getValue());
     }
 
     //list

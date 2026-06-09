@@ -44,5 +44,7 @@ public class RepositoryUtils {
                 VALUES (?, ?, ?)
             """;
 
+    public static final String DELETE_PRICE_LIST = "DELETE FROM price_lists WHERE name = ?";
+
     private RepositoryUtils() {}
 }
