@@ -3,6 +3,8 @@ package com.tdd.api.prices;
 import com.tdd.api.prices.data.PriceList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Set;
 
@@ -64,9 +66,20 @@ class PriceControllerTest {
 
     @Test
     void delete_callsRegistryAndReturns204() {
-        controller.delete(DEFAULT_NAME);
+        ResponseEntity<Void> response = controller.delete(PRICE_LIST_A_NAME);
 
-        verify(registry).delete(DEFAULT_NAME);
+        verify(registry).delete(PRICE_LIST_A_NAME);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
+    @Test
+    void deleteDefault_Returns403Forbidden() {
+        ResponseEntity<Void> response = controller.delete(DEFAULT_NAME);
+
+        verifyNoInteractions(registry);
+
+        assertEquals(403, response.getStatusCode().value());
     }
 
     private void mockListNames() {

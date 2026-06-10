@@ -6,6 +6,7 @@ import {RulesetEditor} from "./ruleseteditor/RulesetEditor";
 import {TextInput} from "./ruleseteditor/ruleform/templates/FormFields";
 import {ButtonPanel} from "./ButtonPanel";
 import {ConfirmModal} from "../../ui/ConfirmModal";
+import {isProtectedRuleset} from "../../functions/protectedNames";
 
 export function RulesetHandler({ onRulesetChange }) {
     const { theme } = useTheme();
@@ -100,6 +101,11 @@ export function RulesetHandler({ onRulesetChange }) {
     function handleDelete() {
         if (!ruleset) return;
 
+        if (isProtectedRuleset(ruleset.name)) {
+            alert(`Ruleset ${ruleset.name} cannot be deleted.`);
+            return;
+        }
+
         setShowDeleteConfirm(true);
     }
 
@@ -146,8 +152,8 @@ export function RulesetHandler({ onRulesetChange }) {
                         (field, value) => updateRulesetName(value)}/>
                 )}
 
-                <ButtonPanel mode={mode} status={status} handleSave={handleSave} newRuleset={newRuleset}
-                             handleDelete={handleDelete} />
+                <ButtonPanel mode={mode} status={status} selected={selected} handleSave={handleSave}
+                             newRuleset={newRuleset} handleDelete={handleDelete} />
             </div>
 
             {status === "loading" && <div style={styles.loading}>Loading ruleset…</div>}

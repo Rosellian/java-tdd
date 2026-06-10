@@ -4,6 +4,8 @@ import com.tdd.api.data.DataController;
 import com.tdd.api.rulesets.data.Ruleset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -11,6 +13,9 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/rulesets")
 public class RulesetController implements DataController<Ruleset> {
+    private static final Set<String> PROTECTED = Set.of(
+            "default", "campaigna", "campaignb", "nocrossnoskudiscount"
+    );
     private static final Logger logger = LoggerFactory.getLogger(RulesetController.class);
     private final RulesetRegistry registry;
 
@@ -43,8 +48,16 @@ public class RulesetController implements DataController<Ruleset> {
     }
 
     @Override
-    public void delete(String name) {
+    public ResponseEntity<Void> delete(String name) {
         logger.info("Incoming request to delete ruleset {}", name);
+
+        String normalizedName = name.replace(" ", "").toLowerCase();
+        if(PROTECTED.contains(normalizedName)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         registry.delete(name);
+
+        return ResponseEntity.noContent().build();
     }
 }

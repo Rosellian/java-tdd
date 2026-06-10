@@ -1,5 +1,6 @@
 package com.tdd.api.data;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -15,5 +16,5 @@ public interface DataController<T> {
     void save(@PathVariable String name, @RequestBody T data);
 
     @DeleteMapping("/{name}")
-    void delete(@PathVariable String name);
+    ResponseEntity<Void> delete(@PathVariable String name);
 }

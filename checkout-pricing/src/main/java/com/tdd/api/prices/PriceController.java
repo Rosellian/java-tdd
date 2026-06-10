@@ -4,6 +4,8 @@ import com.tdd.api.data.DataController;
 import com.tdd.api.prices.data.PriceList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,6 +14,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/prices")
 public class PriceController implements DataController<PriceList> {
+    private static final Set<String> PROTECTED = Set.of("default");
     private static final Logger logger = LoggerFactory.getLogger(PriceController.class);
 
     private final PriceRegistry registry;
@@ -45,8 +48,15 @@ public class PriceController implements DataController<PriceList> {
     }
 
     @Override
-    public void delete(String name) {
+    public ResponseEntity<Void> delete(String name) {
         logger.info("Incoming request to delete priceList {}", name);
+
+        String normalizedName = name.replace(" ", "").toLowerCase();
+        if (PROTECTED.contains(normalizedName)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         registry.delete(name);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -6,6 +6,7 @@ import {TextInput} from "../rulesets/ruleseteditor/ruleform/templates/FormFields
 import {PriceListEditor} from "./pricelisteditor/PriceListEditor";
 import {ButtonPanel} from "./ButtonPanel";
 import {ConfirmModal} from "../../ui/ConfirmModal";
+import {isProtectedPriceList} from "../../functions/protectedNames";
 
 export function PriceListHandler({ onPriceListChange }) {
     const { theme } = useTheme();
@@ -100,6 +101,11 @@ export function PriceListHandler({ onPriceListChange }) {
     function handleDelete() {
         if (!priceList) return;
 
+        if (isProtectedPriceList(priceList.name)) {
+            alert(`Price list ${priceList.name} cannot be deleted.`);
+            return;
+        }
+
         setShowDeleteConfirm(true);
     }
 
@@ -143,7 +149,7 @@ export function PriceListHandler({ onPriceListChange }) {
                                update={(field, value) => updatePriceListName(value)}/>
                 )}
 
-                <ButtonPanel status={status} handleSave={handleSave} newPriceList={newPriceList}
+                <ButtonPanel mode={mode} status={status} selected={selected} handleSave={handleSave} newPriceList={newPriceList}
                              handleDelete={handleDelete} />
             </div>
 

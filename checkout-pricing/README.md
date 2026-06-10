@@ -1325,9 +1325,12 @@ public interface DataRegistry<T> {
 
 public interface DataController<T> {
     @DeleteMapping("/{name}")
-    void delete(@PathVariable String name);
+    ResponseEntity<Void> delete(@PathVariable String name);
 }
 ```
+#### Extras
+Adding delete protection for default rulesets and price lists.
+
 ---
 
 

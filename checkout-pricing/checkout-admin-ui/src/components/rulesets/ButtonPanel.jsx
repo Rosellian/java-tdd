@@ -1,7 +1,10 @@
 import {useTheme} from "../../ui/ThemeProvider";
+import {isProtectedRuleset} from "../../functions/protectedNames";
 
-export function ButtonPanel({ mode, status, handleSave, newRuleset, handleDelete }) {
+export function ButtonPanel({ mode, status, selected, handleSave, newRuleset, handleDelete }) {
     const { theme } = useTheme();
+
+    const isProtectedSelected = theme === "light" && isProtectedRuleset(selected);
 
     return (
         <div style={styles.buttonPanel}>
@@ -23,10 +26,12 @@ export function ButtonPanel({ mode, status, handleSave, newRuleset, handleDelete
                     ...(theme === "dark" ? styles.newButtonDark : styles.newButtonLight)
                 }}>+ New Ruleset</button>
 
-            <button disabled={mode === "deleting"} onClick={handleDelete}
+            <button disabled={isProtectedSelected} onClick={handleDelete}
+                    title={isProtectedSelected ? "This ruleset cannot be deleted" : ""}
                     style={{
                         ...styles.button,
-                        ...(theme === "dark" ? styles.deleteButtonDark : styles.deleteButtonLight)
+                        ...(theme === "dark" ? styles.deleteButtonDark : styles.deleteButtonLight),
+                        ...(isProtectedSelected ? styles.buttonDisabled : {})
                     }}>{status === "deleting" ? "Deleting…" : "Delete"}</button>
         </div>
     )
@@ -44,6 +49,10 @@ const styles = {
         border: "none",
         cursor: "pointer",
         width: "120px",
+    },
+    buttonDisabled: {
+        opacity: 0.5,
+        cursor: "not-allowed",
     },
     buttonDark: {
         background: "#BB86FC",

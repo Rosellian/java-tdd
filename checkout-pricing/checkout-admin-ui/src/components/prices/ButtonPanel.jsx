@@ -1,7 +1,10 @@
 import {useTheme} from "../../ui/ThemeProvider";
+import {isProtectedPriceList} from "../../functions/protectedNames";
 
-export function ButtonPanel({ mode, status, handleSave, newPriceList, handleDelete }) {
+export function ButtonPanel({ mode, status, selected, handleSave, newPriceList, handleDelete }) {
     const { theme } = useTheme();
+
+    const isProtectedSelected = theme === "light" && isProtectedPriceList(selected);
 
     return (
         <div style={styles.buttonPanel}>
@@ -23,10 +26,12 @@ export function ButtonPanel({ mode, status, handleSave, newPriceList, handleDele
                     ...(theme === "dark" ? styles.newButtonDark : styles.newButtonLight)
                 }}>+ New Price List</button>
 
-            <button disabled={mode === "deleting"} onClick={handleDelete}
+            <button disabled={mode === "deleting" || isProtectedSelected} onClick={handleDelete}
+                    title={isProtectedSelected ? "This price list cannot be deleted" : ""}
                     style={{
                         ...styles.button,
-                        ...(theme === "dark" ? styles.deleteButtonDark : styles.deleteButtonLight)
+                        ...(theme === "dark" ? styles.deleteButtonDark : styles.deleteButtonLight),
+                        ...(isProtectedSelected ? styles.buttonDisabled : {})
                     }}>{status === "deleting" ? "Deleting…" : "Delete"}</button>
         </div>
     )
@@ -44,6 +49,10 @@ const styles = {
         border: "none",
         cursor: "pointer",
         width: "120px",
+    },
+    buttonDisabled: {
+        opacity: 0.5,
+        cursor: "not-allowed",
     },
     buttonDark: {
         background: "#BB86FC",

@@ -3,6 +3,8 @@ package com.tdd.api.rulesets;
 import com.tdd.api.rulesets.data.Ruleset;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Set;
 
@@ -70,9 +72,18 @@ class RulesetControllerTest {
 
     @Test
     void delete_callsRegistryAndReturns204() {
-        controller.delete(DEFAULT_NAME);
+        ResponseEntity<Void> response = controller.delete(NEW_RULESET_NAME);
 
-        verify(registry).delete(DEFAULT_NAME);
+        verify(registry).delete(NEW_RULESET_NAME);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
+    @Test
+    void deleteDefault_Returns403Forbidden() {
+        ResponseEntity<Void> response = controller.delete(DEFAULT_NAME);
+
+        verifyNoInteractions(registry);
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
 
     private void mockListNames() {
