@@ -1,13 +1,18 @@
 import {RuleItem} from "./RuleItem";
+import {useTheme} from "../../../ui/ThemeProvider";
 
 export function SkuRules({ rules }) {
+    const { theme } = useTheme();
     const groupedBySku = groupBySku(rules);
     const sortedSkuKeys = Object.keys(groupedBySku).sort();
 
     return (
         sortedSkuKeys.map(sku => (
             <li key={sku}>
-                <div style={styles.skuHeader}>{sku}</div>
+                <div style={{
+                    ...styles.skuHeader,
+                    ...(theme === "dark" ? styles.headerDark : styles.headerLight)
+                }}>{sku}</div>
 
                 {groupedBySku[sku].map((r, i) => (
                     <RuleItem key={`${sku}-${i}`} rule={r} />
@@ -32,6 +37,12 @@ const styles = {
         marginBottom: 6,
         fontWeight: "bold",
         fontSize: "0.9rem",
-        color: "#fff",
+        transition: "color 0.25s ease",
+    },
+    headerDark: {
+        color: "#BB86FC",
+    },
+    headerLight: {
+        color: "#5A2DA8",
     }
 }

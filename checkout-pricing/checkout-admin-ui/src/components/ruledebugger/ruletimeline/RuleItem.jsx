@@ -3,8 +3,10 @@ import {useTraceSync} from "../../TraceSyncProvider";
 import {RuleBody} from "./RuleBody";
 import {RuleEntry} from "./RuleEntry";
 import {AnimatedBody} from "../../../ui/AnimatedBody";
+import {useTheme} from "../../../ui/ThemeProvider";
 
 export function RuleItem({ rule }) {
+    const { theme } = useTheme();
     const [open, setOpen] = useState(false);
     const {selectedStep, setSelectedStep} = useTraceSync();
     const isActive = rule.stepIndex === selectedStep;
@@ -17,7 +19,10 @@ export function RuleItem({ rule }) {
     return (
         <li style={{
             ...styles.timelineItem,
-            ...(isActive ? styles.ruleActive : {})
+            ...(theme === "dark" ? styles.itemDark : styles.itemLight),
+            ...(isActive ?
+                theme === "dark" ? styles.activeDark : styles.activeLight
+                : {})
         }}>
             <RuleEntry rule={rule} onClick={selectOnClick} open={open} />
 
@@ -31,10 +36,25 @@ export function RuleItem({ rule }) {
 const styles = {
     timelineItem: {
         padding: "10px 0",
-        borderBottom: "1px solid #333",
+        borderBottom: "1px solid",
+        transition: "background 0.25s ease, border-color 0.25s ease",
     },
-    ruleActive: {
+    itemDark: {
+        borderColor: "#333",
+        background: "#1a1a1a",
+        color: "#eee",
+    },
+    itemLight: {
+        borderColor: "#ddd",
+        background: "#fafafa",
+        color: "#222",
+    },
+    activeDark: {
         background: "#222",
         borderLeft: "3px solid #BB86FC",
+    },
+    activeLight: {
+        background: "#e8e0ff",
+        borderLeft: "3px solid #5A2DA8",
     }
 }

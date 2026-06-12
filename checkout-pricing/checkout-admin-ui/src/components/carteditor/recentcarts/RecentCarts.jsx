@@ -1,5 +1,5 @@
 import {useRecentCarts} from "./useRecentCarts";
-import {RecentCartsDropdown} from "./RecentCartsDropdown";
+import {RecentCartsDropdown} from "./dropdown/RecentCartsDropdown";
 import {useTheme} from "../../../ui/ThemeProvider";
 
 export function RecentCarts({ cart, setCart}) {
@@ -17,10 +17,7 @@ export function RecentCarts({ cart, setCart}) {
                 ...styles.recentTitle,
                 ...(theme === "dark" ? styles.recentTitleDark : styles.recentTitleLight)
             }}>Recent carts</h4>
-            <RecentCartsDropdown
-                recent={recent}
-                onSelect={setCart}
-            />
+            <RecentCartsDropdown recent={recent} onSelect={setCart}/>
         </div>
     );
 }

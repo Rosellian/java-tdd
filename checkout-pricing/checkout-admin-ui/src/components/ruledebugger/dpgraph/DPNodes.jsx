@@ -1,7 +1,9 @@
 import {useState} from "react";
 import {useTraceSync} from "../../TraceSyncProvider";
+import {useTheme} from "../../../ui/ThemeProvider";
 
 export function DPNodes({ nodes }) {
+    const { theme } = useTheme();
     const [hoverIndex, setHoverIndex] = useState(null);
     const { selectedStep, setSelectedStep } = useTraceSync();
 
@@ -11,8 +13,13 @@ export function DPNodes({ nodes }) {
                 key={i}
                 style={{
                     ...styles.dpNode,
-                    ...(isHovered ? styles.dpNodeHover : {}),
-                    ...(isSelected ? styles.dpNodeSelected : {}),
+                    ...(theme === "dark" ? styles.nodeDark : styles.nodeLight),
+                    ...(isHovered ?
+                        theme === "dark" ? styles.nodeHoverDark : styles.nodeHoverLight
+                        : {}),
+                    ...(isSelected ?
+                        theme === "dark" ? styles.nodeSelectedDark : styles.nodeSelectedLight
+                        : {})
                 }}
                 onMouseEnter={() => setHoverIndex(i)}
                 onMouseLeave={() => setHoverIndex(null)}
@@ -46,21 +53,42 @@ const styles = {
     dpNode: {
         padding: "10px 14px",
         borderRadius: 6,
-        background: "#333",
         cursor: "pointer",
-        transition: "all 0.15s ease",
-        color: "#ccc",
-        border: "1px solid #444",
+        transition: "all 0.2s ease",
+        fontSize: "0.9rem",
+        fontWeight: 500,
+        border: "1px solid",
     },
-    dpNodeHover: {
-        background: "#444",
+    nodeDark: {
+        background: "#2a2a2a",
+        borderColor: "#444",
+        color: "#ccc",
+    },
+    nodeLight: {
+        background: "#f0f0f0",
+        borderColor: "#ccc",
+        color: "#333",
+    },
+    nodeHoverDark: {
+        background: "#3a3a3a",
         borderColor: "#666",
         color: "#fff",
     },
-    dpNodeSelected: {
+    nodeHoverLight: {
+        background: "#e4d7ff",
+        borderColor: "#bba3ff",
+        color: "#3A1F6B",
+    },
+    nodeSelectedDark: {
         background: "#BB86FC",
         borderColor: "#BB86FC",
         color: "#000",
+        fontWeight: 600,
+    },
+    nodeSelectedLight: {
+        background: "#D9C4FF",
+        borderColor: "#B48CFF",
+        color: "#3A1F6B",
         fontWeight: 600,
     }
 }

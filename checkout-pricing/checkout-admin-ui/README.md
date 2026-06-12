@@ -622,10 +622,28 @@ export async function savePriceList(name, priceList) {}
 - Improved contrast for buttons in light mode
 - Adjust to merged pricing endpoints
 - Using PricingRequest with metadata
-- Adding delete button
-  - RulesetHandler
-  - PriceListHandler
-  - Adding delete protection for defaults
+
+#### Adding delete button
+- RulesetHandler
+- PriceListHandler
+- Adding delete protection for defaults
+
+#### Major refactoring and code styling
+Going through the code and fixing minor bugs, refactoring and keeping code clean.
+- API
+- CartEditor
+- Prices (PriceListHandler etc.)
+
+#### Applying dark/light theme to rest of application
+- RuleDebugger
+  - ChainOverview
+  - DPGraph
+  - PriceEvolutionChart
+  - RuleTimeline
+- RuleInspector
+  - RuleTimeLine
+  - SkuBreakdown
+  - DPSection
 
 ### Changes in the API layer
 - Refactor API calls to avoid code duplication

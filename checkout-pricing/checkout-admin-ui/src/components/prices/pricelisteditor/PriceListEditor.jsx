@@ -1,27 +1,11 @@
 import {useTheme} from "../../../ui/ThemeProvider";
-import {PriceRow} from "./pricerow/PriceRow";
+import {PriceRowList} from "./pricerowlist/PriceRowList";
+import {addItem} from "./editorOps";
 
 export function PriceListEditor({ priceList, onChange }) {
     const { theme } = useTheme();
 
     if (!priceList || !Array.isArray(priceList.unitPrices)) return null;
-
-    function updateItem(index, field, value) {
-        const updated = [...priceList.unitPrices];
-        updated[index] = { ...updated[index], [field]: value };
-
-        onChange({ ...priceList, unitPrices: updated });
-    }
-
-    function deleteItem(index) {
-        const updated = priceList.unitPrices.filter((_, i) => i !== index);
-        onChange({ ...priceList, unitPrices: updated });
-    }
-
-    function addItem() {
-        const updated = [...priceList.unitPrices, { sku: "", price: 0 }];
-        onChange({ ...priceList, unitPrices: updated });
-    }
 
     return (
         <div style={{
@@ -33,26 +17,15 @@ export function PriceListEditor({ priceList, onChange }) {
                 ...(theme === "dark" ? styles.titleDark : styles.titleLight)
             }}>Unit Prices</h3>
 
-            <PriceRowList priceList={priceList} updateItem={updateItem} deleteItem={deleteItem} />
+            <PriceRowList priceList={priceList} onChange={onChange} />
 
-            <button onClick={addItem}
+            <button onClick={() => addItem(priceList, onChange)}
                 style={{
                     ...styles.addButton,
                     ...(theme === "dark" ? styles.addButtonDark : styles.addButtonLight)
                 }}>+ Add SKU</button>
         </div>
     );
-}
-
-function PriceRowList({ priceList, updateItem, deleteItem }) {
-    return (
-        <div style={styles.listContainer}>
-            {priceList.unitPrices.map((p, i) => (
-                <PriceRow key={i} item={p} onChange={(field, value) => updateItem(i, field, value)}
-                          onDelete={() => deleteItem(i)}/>
-            ))}
-        </div>
-    )
 }
 
 const styles = {
@@ -81,14 +54,6 @@ const styles = {
     },
     titleLight: {
         color: "#5A2DA8",
-    },
-    listContainer: {
-        maxHeight: "250px",
-        overflowY: "auto",
-        paddingRight: 4,
-        display: "flex",
-        flexDirection: "column",
-        gap: 8,
     },
     addButton: {
         width: "100px",

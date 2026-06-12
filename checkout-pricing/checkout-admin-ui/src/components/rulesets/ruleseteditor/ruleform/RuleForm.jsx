@@ -15,10 +15,7 @@ export function RuleForm({ rule, onChange }) {
 
     return (
         <div>
-            <RuleTypeSelector
-                value={rule.type}
-                onChange={(newType) => update("type", newType)}
-            />
+            <RuleTypeSelector value={rule.type} onChange={(newType) => update("type", newType)} />
 
             {rule.type === "SpecialPrice" && (
                 <SpecialPriceForm rule={rule} onChange={onChange} />

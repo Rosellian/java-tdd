@@ -1,13 +1,18 @@
 import {useTraceSync} from "../TraceSyncProvider";
 import {DPDetails} from "./dpgraph/DPDetails";
 import {DPNodes} from "./dpgraph/DPNodes";
+import {useTheme} from "../../ui/ThemeProvider";
 
 export function DPGraph({ dp }) {
+    const { theme } = useTheme();
     const { selectedStep } = useTraceSync();
 
     if (!dp) {
         return (
-            <div style={styles.dpEmpty}>
+            <div style={{
+                ...styles.dpEmpty,
+                ...(theme === "dark" ? styles.emptyDark : styles.emptyLight)
+            }}>
                 No dynamic programming steps recorded.
             </div>
         );
@@ -17,13 +22,25 @@ export function DPGraph({ dp }) {
     const grouped = groupBySku(indexedDP);
 
     return (
-        <div style={styles.dpWrapper}>
-            <h3 style={styles.dpHeader}>DP Graph</h3>
+        <div style={{
+            ...styles.dpWrapper,
+            ...(theme === "dark" ? styles.wrapperDark : styles.wrapperLight)
+        }}>
+            <h3 style={{
+                ...styles.dpHeader,
+                ...(theme === "dark" ? styles.headerDark : styles.headerLight)
+            }}>DP Graph</h3>
 
             {Object.entries(grouped).map(([sku, nodes]) => (
-                <div key={sku} style={styles.skuBlock}>
-                    <h3 style={styles.skuHeader}>{sku}</h3>
-                    <DPNodes nodes={nodes}></DPNodes>
+                <div key={sku} style={{
+                    ...styles.skuBlock,
+                    ...(theme === "dark" ? styles.skuDark : styles.skuLight)
+                }}>
+                    <h3 style={{
+                        ...styles.skuHeader,
+                        ...(theme === "dark" ? styles.skuHeaderDark : styles.skuHeaderLight)
+                    }}>{sku}</h3>
+                    <DPNodes nodes={nodes} />
                 </div>
             ))}
 
@@ -51,34 +68,63 @@ function groupBySku(indexedDP) {
 
 const styles = {
     dpWrapper: {
-        background: "#1a1a1a",
         padding: 16,
         borderRadius: 8,
-        color: "#eee",
+        transition: "background 0.25s ease, color 0.25s ease",
+    },
+    wrapperLight: {
+        background: "#f5f5f5",
+        color: "#000",
     },
     dpHeader: {
         marginBottom: 12,
         fontSize: "1.1rem",
         fontWeight: 600,
+        transition: "color 0.25s ease",
+    },
+    headerDark: {
         color: "#fff",
+    },
+    headerLight: {
+        color: "#3A1F6B",
     },
     skuBlock: {
         marginBottom: 24,
         padding: 12,
-        background: "#1a1a1a",
         borderRadius: 8,
+        transition: "background 0.25s ease, color 0.25s ease",
+    },
+    skuDark: {
+        background: "#222",
+    },
+    skuLight: {
+        background: "#fff",
+        border: "1px solid #ddd",
     },
     skuHeader: {
-        color: "#BB86FC",
         marginBottom: 12,
         fontSize: "1.1rem",
         fontWeight: 600,
+        transition: "color 0.25s ease",
+    },
+    skuHeaderDark: {
+        color: "#BB86FC",
+    },
+    skuHeaderLight: {
+        color: "#5A2DA8",
     },
     dpEmpty: {
-        background: "#1a1a1a",
         padding: 16,
         borderRadius: 8,
-        color: "#777",
         fontStyle: "italic",
+        transition: "background 0.25s ease, color 0.25s ease",
+    },
+    emptyDark: {
+        background: "#1a1a1a",
+        color: "#777",
+    },
+    emptyLight: {
+        background: "#fafafa",
+        color: "#666",
     }
 }

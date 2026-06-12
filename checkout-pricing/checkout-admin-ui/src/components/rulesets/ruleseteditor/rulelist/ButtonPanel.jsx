@@ -11,9 +11,7 @@ export function ButtonPanel({ onAdd, onDelete }) {
                     ...(theme === "dark" ? styles.addButtonDark : styles.addButtonLight)
                 }}
                 onClick={onAdd}
-            >
-                + Add Rule
-            </button>
+            >+ Add Rule</button>
 
             <button
                 style={{
@@ -21,9 +19,7 @@ export function ButtonPanel({ onAdd, onDelete }) {
                     ...(theme === "dark" ? styles.deleteButtonDark : styles.deleteButtonLight)
                 }}
                 onClick={onDelete}
-            >
-                Delete
-            </button>
+            >Delete</button>
         </div>
     );
 }

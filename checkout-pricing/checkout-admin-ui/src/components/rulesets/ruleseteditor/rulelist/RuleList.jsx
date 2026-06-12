@@ -16,8 +16,8 @@ export function RuleList({ rules, selectedRule, onSelect, onAdd, onDelete }) {
 function RuleItemList({ rules, selectedRule, onSelect }) {
     return (
         <div style={styles.listContainer}>
-            {rules.map((rule, i) => (
-                <RuleItem i={i} rule={rule} isSelected={selectedRule} onSelect={onSelect} />
+            {rules.map((rule, i) => ( //TODO add id to rules to supply a unique key
+                <RuleItem key={i} i={i} rule={rule} isSelected={selectedRule} onSelect={onSelect} />
             ))}
         </div>
     )

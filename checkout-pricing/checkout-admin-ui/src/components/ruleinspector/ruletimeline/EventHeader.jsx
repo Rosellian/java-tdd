@@ -1,10 +1,22 @@
+import {useTheme} from "../../../ui/ThemeProvider";
+
 export function EventHeader({event, index, onClick}) {
+    const { theme } = useTheme();
+
     return (
-        <div style={styles.eventHeader} onClick={onClick}>
-            <strong>{index + 1}. {event.ruleName}</strong>
-            <span style={{ color: event.applied ? "#7CFC7C" : "#FF6B6B" }}>
-                {event.applied ? "✔ Applied" : "✖ Skipped"}
-            </span>
+        <div style={{
+            ...styles.eventHeader,
+            ...(theme === "dark" ? styles.headerDark : styles.headerLight)
+        }} onClick={onClick}>
+            <strong style={{
+                ...(theme === "dark" ? styles.titleDark : styles.titleLight)
+            }}>{index + 1}. {event.ruleName}</strong>
+            <span style={{
+                ...styles.status,
+                ...(event.applied ?
+                    theme === "dark" ? styles.appliedDark : styles.appliedLight
+                    : theme === "dark" ? styles.skippedDark : styles.skippedLight)
+            }}>{event.applied ? "✔ Applied" : "✖ Skipped"}</span>
         </div>
     )
 }
@@ -12,9 +24,43 @@ export function EventHeader({event, index, onClick}) {
 const styles = {
     eventHeader: {
         padding: 10,
-        background: "#2A2A2A",
         cursor: "pointer",
         display: "flex",
         justifyContent: "space-between",
+        alignItems: "center",
+        transition: "background 0.25s ease, color 0.25s ease",
+        borderBottom: "1px solid",
+    },
+    headerDark: {
+        background: "#2A2A2A",
+        borderColor: "#333",
+        color: "#eee",
+    },
+    headerLight: {
+        background: "#f0f0f0",
+        borderColor: "#ccc",
+        color: "#222",
+    },
+    titleDark: {
+        color: "#BB86FC",
+    },
+    titleLight: {
+        color: "#5A2DA8",
+    },
+    status: {
+        fontWeight: 500,
+        transition: "color 0.25s ease",
+    },
+    appliedDark: {
+        color: "#7CFC7C",
+    },
+    appliedLight: {
+        color: "#2e7d32",
+    },
+    skippedDark: {
+        color: "#FF6B6B",
+    },
+    skippedLight: {
+        color: "#d32f2f",
     }
 }

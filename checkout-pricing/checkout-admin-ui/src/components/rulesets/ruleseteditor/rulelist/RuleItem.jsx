@@ -9,9 +9,7 @@ export function RuleItem({ i, rule, isSelected, onSelect }) {
             ...(i === isSelected
                 ? (theme === "dark" ? styles.itemSelectedDark : styles.itemSelectedLight)
                 : theme === "dark" ? styles.itemDark : styles.itemLight)
-        }}>
-            {rule.name}
-        </div>
+        }}>{rule.name}</div>
     )
 }
 

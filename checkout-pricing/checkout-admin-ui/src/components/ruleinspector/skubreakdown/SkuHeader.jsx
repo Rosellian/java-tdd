@@ -1,6 +1,13 @@
+import {useTheme} from "../../../ui/ThemeProvider";
+
 export function SkuHeader({ sku, onClick }) {
+    const { theme } = useTheme();
+
     return (
-        <div style={styles.skuHeader} onClick={onClick}>
+        <div style={{
+            ...styles.skuHeader,
+            ...(theme === "dark" ? styles.headerDark : styles.headerLight)
+        }} onClick={onClick}>
             <strong>{sku.sku}</strong>
             <span>{sku.total} kr</span>
         </div>
@@ -10,10 +17,20 @@ export function SkuHeader({ sku, onClick }) {
 const styles = {
     skuHeader: {
         padding: 10,
-        background: "#263238",
         cursor: "pointer",
         display: "flex",
         justifyContent: "space-between",
+        transition: "background 0.25s ease, color 0.25s ease",
+        borderBottom: "1px solid",
+    },
+    headerDark: {
+        background: "#263238",
         color: "#80CBC4",
+        borderColor: "#333",
+    },
+    headerLight: {
+        background: "#e8f1f3",
+        color: "#00695c",
+        borderColor: "#ccc",
     }
 }

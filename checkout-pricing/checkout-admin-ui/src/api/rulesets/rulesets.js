@@ -1,6 +1,8 @@
+const BASE_PATH = "/api/rulesets";
+
 export async function getRulesetNames() {
     try {
-        const res = await fetch("/api/rulesets");
+        const res = await fetch(BASE_PATH);
 
         if (!res.ok) {
             console.error("Failed to load ruleset names:", res.status);
@@ -14,40 +16,20 @@ export async function getRulesetNames() {
     }
 }
 
-export async function getRulesetWithFallback(name) {
-    const ruleset = await getRuleset(name);
-
-    if(!ruleset) {
-        return {ruleset: await importRuleset(name), fallback: true};
-    }
-
-    return {ruleset: ruleset, fallback: false};
-}
-
-async function importRuleset(name) {
-    try {
-        const sample = await import(`./samples/${name}.json`);
-        return sample.default;
-    } catch (err) {
-        console.error("Sample ruleset load failed:", err);
-        return null;
-    }
-}
-
 export async function getRuleset(name) {
     try {
-        const res = await fetch(`/api/rulesets/${name}`);
+        const res = await fetch(`${BASE_PATH}/${name}`);
         if (!res.ok) return null;
         return await res.json();
     } catch (err) {
-        console.error("Failed to load ruleset:", err);
+        logError("load", err);
         return null;
     }
 }
 
 export async function saveRuleset(name, ruleset) {
     try {
-        const res = await fetch(`/api/rulesets/${name}`, {
+        const res = await fetch(`${BASE_PATH}/${name}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(ruleset)
@@ -55,7 +37,7 @@ export async function saveRuleset(name, ruleset) {
 
         return res.ok;
     } catch (err) {
-        console.error("Failed to save ruleset:", err);
+        logError("save", err)
         return false;
     }
 }
@@ -65,11 +47,15 @@ export async function deleteRuleset(name) {
         //TODO not needed when switching to id as primary key
         const encodedName = encodeURIComponent(name.replaceAll(" ", ""));
 
-        const res = await fetch(`/api/rulesets/${encodedName}`, { method: "DELETE" });
+        const res = await fetch(`${BASE_PATH}/${encodedName}`, { method: "DELETE" });
 
         return res.ok;
     } catch (err) {
-        console.error("Failed to delete ruleset:", err);
+        logError("delete", err);
         return false;
     }
+}
+
+function logError(operation, err) {
+    console.error(`Failed to ${operation} ruleset:`, err);
 }

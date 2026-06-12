@@ -7,9 +7,7 @@ export function RuleTypeSelector({ value, onChange }) {
         <div style={styles.box}>
             <label style={styles.label}>Rule Type</label>
 
-            <select
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
+            <select value={value} onChange={(e) => onChange(e.target.value)}
                 style={{
                     ...styles.select,
                     ...(theme === "dark" ? styles.selectDark : styles.selectLight)
