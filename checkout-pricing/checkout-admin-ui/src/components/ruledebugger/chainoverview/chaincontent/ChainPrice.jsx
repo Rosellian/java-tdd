@@ -1,4 +1,4 @@
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/ThemeProvider";
 
 export function ChainPrice({ step }) {
     const { theme } = useTheme();
@@ -9,7 +9,7 @@ export function ChainPrice({ step }) {
             ...(theme === "dark" ? styles.priceDark : styles.priceLight)
         }}>
             <span style={{
-                ...styles.priceBefore,
+                ...styles.price,
                 ...(theme === "dark" ? styles.beforeDark : styles.beforeLight)
             }}>{step.priceBefore}</span>
             <span  style={{
@@ -17,7 +17,7 @@ export function ChainPrice({ step }) {
                 ...(theme === "dark" ? styles.arrowDark : styles.arrowLight)
             }}>→</span>
             <span style={{
-                ...styles.priceAfter,
+                ...styles.price,
                 ...(theme === "dark" ? styles.afterDark : styles.afterLight)
             }}>{step.priceAfter}</span>
         </div>
@@ -36,7 +36,7 @@ const styles = {
     priceLight: {
         color: "#444",
     },
-    priceBefore: {
+    price: {
         fontWeight: 600,
         transition: "color 0.25s ease",
     },
@@ -45,10 +45,6 @@ const styles = {
     },
     beforeLight: {
         color: "#d32f2f",
-    },
-    priceAfter: {
-        fontWeight: 600,
-        transition: "color 0.25s ease",
     },
     afterDark: {
         color: "#66ff99",

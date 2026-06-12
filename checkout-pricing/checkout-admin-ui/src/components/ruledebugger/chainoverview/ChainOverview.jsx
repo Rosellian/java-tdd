@@ -1,6 +1,6 @@
-import {useTraceSync} from "../TraceSyncProvider";
-import {ChainStep} from "./chainoverview/ChainStep";
-import {useTheme} from "../../ui/ThemeProvider";
+import {useTraceSync} from "../../TraceSyncProvider";
+import {ChainStep} from "./ChainStep";
+import {useTheme} from "../../../ui/ThemeProvider";
 
 export function ChainOverview({ steps }) {
     const { theme } = useTheme();

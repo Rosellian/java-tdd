@@ -1,7 +1,7 @@
-import {ChainOverview} from "./ChainOverview";
-import {RuleTimeline} from "./RuleTimeline";
-import {DPGraph} from "./DPGraph";
-import {PriceEvolutionChart} from "./PriceEvolutionChart";
+import {ChainOverview} from "./chainoverview/ChainOverview";
+import {RuleTimeline} from "./ruletimeline/RuleTimeline";
+import {DPGraph} from "./dpgraph/DPGraph";
+import {PriceEvolutionChart} from "./priceevolutionchart/PriceEvolutionChart";
 import {TraceSyncProvider} from "../TraceSyncProvider";
 import {useTheme} from "../../ui/ThemeProvider";
 

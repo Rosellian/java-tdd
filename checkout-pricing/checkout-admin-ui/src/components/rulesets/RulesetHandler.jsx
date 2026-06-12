@@ -5,7 +5,7 @@ import {RulesetEditor} from "./ruleseteditor/RulesetEditor";
 import {TextInput} from "./ruleseteditor/ruleform/templates/FormFields";
 import {ButtonPanel} from "./operations/ButtonPanel";
 import {handlerStyles} from "./handlerStyles";
-import {getInitialState, updateRulesetNames, updateState} from "./handlerOps";
+import {getInitialState, updateRulesetNames, updateState} from "./handlerFuncs";
 import {Save} from "./operations/Save";
 import {Delete} from "./operations/Delete";
 import {New} from "./operations/New";

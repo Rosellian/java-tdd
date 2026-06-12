@@ -633,6 +633,9 @@ Going through the code and fixing minor bugs, refactoring and keeping code clean
 - API
 - CartEditor
 - Prices (PriceListHandler etc.)
+- Rulesets (RulesetHandler etc.)
+- RuleDebugger
+- RuleInspector
 
 #### Applying dark/light theme to rest of application
 - RuleDebugger

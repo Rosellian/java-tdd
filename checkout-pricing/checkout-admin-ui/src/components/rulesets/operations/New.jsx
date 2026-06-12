@@ -1,4 +1,4 @@
-import {createNewRulesetDraft} from "../handlerOps";
+import {createNewRulesetDraft} from "../handlerFuncs";
 import {buttonStyles} from "./buttonStyles";
 import {useTheme} from "../../../ui/ThemeProvider";
 

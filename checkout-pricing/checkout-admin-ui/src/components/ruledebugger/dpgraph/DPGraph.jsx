@@ -1,57 +1,57 @@
-import {RuleItem} from "./ruletimeline/RuleItem";
-import {SkuRules} from "./ruletimeline/SkuRules";
-import {useTheme} from "../../ui/ThemeProvider";
+import {useTraceSync} from "../../TraceSyncProvider";
+import {DPDetails} from "./dpdetails/DPDetails";
+import {useTheme} from "../../../ui/ThemeProvider";
+import {addGlobalIndex, groupBySku} from "./dpFuncs";
+import {SkuNodes} from "./SkuNodes";
 
-export function RuleTimeline({ rules }) {
-    const { theme } = useTheme()
+export function DPGraph({ dp }) {
+    const { theme } = useTheme();
+    const { selectedStep } = useTraceSync();
 
-    if (!rules) {
+    if (!dp) {
         return (
             <div style={{
-                ...styles.timelineEmpty,
+                ...styles.dpEmpty,
                 ...(theme === "dark" ? styles.emptyDark : styles.emptyLight)
-            }}>No rules matched in this step.</div>
-        );
+            }}>No dynamic programming steps recorded.</div>
+        )
     }
 
-    const globalRules = rules.filter(r => !r.sku);
+    const indexedDP = addGlobalIndex(dp);
+    const grouped = groupBySku(indexedDP);
 
     return (
         <div style={{
-            ...styles.timelineWrapper,
+            ...styles.dpWrapper,
             ...(theme === "dark" ? styles.wrapperDark : styles.wrapperLight)
         }}>
             <h3 style={{
-                ...styles.timelineHeader,
+                ...styles.dpHeader,
                 ...(theme === "dark" ? styles.headerDark : styles.headerLight)
-            }}>Rule Timeline</h3>
+            }}>DP Graph</h3>
 
-            <ul style={styles.timelineList}>
-                {globalRules.map((r, i) => (
-                    <RuleItem key={i} rule={r} />
-                ))}
+            {Object.entries(grouped).map(([sku, nodes]) =>
+                <SkuNodes key={sku} sku={sku} nodes={nodes} />
+            )}
 
-                <SkuRules rules={rules} />
-            </ul>
+            {selectedStep !== null && (
+                <DPDetails node={dp[selectedStep]} index={selectedStep} />
+            )}
         </div>
-    );
+    )
 }
 
 const styles = {
-    timelineWrapper: {
+    dpWrapper: {
         padding: 16,
         borderRadius: 8,
         transition: "background 0.25s ease, color 0.25s ease",
     },
-    wrapperDark: {
-        background: "#1a1a1a",
-        color: "#eee",
-    },
     wrapperLight: {
         background: "#f5f5f5",
-        color: "#222",
+        color: "#000",
     },
-    timelineHeader: {
+    dpHeader: {
         marginBottom: 12,
         fontSize: "1.1rem",
         fontWeight: 600,
@@ -63,12 +63,7 @@ const styles = {
     headerLight: {
         color: "#3A1F6B",
     },
-    timelineList: {
-        listStyle: "none",
-        padding: 0,
-        margin: 0,
-    },
-    timelineEmpty: {
+    dpEmpty: {
         padding: 16,
         borderRadius: 8,
         fontStyle: "italic",

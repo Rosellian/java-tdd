@@ -1,4 +1,5 @@
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../../../ui/ThemeProvider";
+import {StatusMark} from "./StatusMark";
 
 export function RuleEntry({ rule, onClick, open }) {
     const { theme } = useTheme();
@@ -12,26 +13,14 @@ export function RuleEntry({ rule, onClick, open }) {
                 ...styles.ruleName,
                 ...(theme === "dark" ? styles.nameDark : styles.nameLight)
             }}>{rule.name}</span>
+
             <StatusMark matched={rule.matched} />
+
             <span style={{
                 ...styles.ruleToggle,
                 ...(theme === "dark" ? styles.toggleDark : styles.toggleLight)
             }}>{open ? "▲" : "▼"}</span>
         </div>
-    )
-}
-
-function StatusMark({matched}) {
-    const { theme } = useTheme();
-
-    const color = matched ?
-        theme === "dark" ? "#7CFC7C" : "#2e7d32"
-        : theme === "dark" ? "#FF6B6B" : "#d32f2f";
-
-    return (
-        <span style={{ color, fontWeight: 500, transition: "color 0.25s ease" }}>
-            {matched ? "✔ Applied" : "✖ Skipped"}
-        </span>
     )
 }
 

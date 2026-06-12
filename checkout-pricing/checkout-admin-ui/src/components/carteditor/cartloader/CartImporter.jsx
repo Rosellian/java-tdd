@@ -1,6 +1,6 @@
 import {useTheme} from "../../../ui/ThemeProvider";
 import {useState} from "react";
-import {importCart} from "./cartLoading";
+import {importCart} from "./loadingOps";
 
 export function CartImporter({ setCart }) {
     const { theme } = useTheme();

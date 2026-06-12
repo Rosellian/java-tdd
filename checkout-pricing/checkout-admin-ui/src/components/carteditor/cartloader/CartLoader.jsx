@@ -1,6 +1,6 @@
 import {useTheme} from "../../../ui/ThemeProvider";
 import {CartImporter} from "./CartImporter";
-import {copyCart, loadStandardCart} from "./cartLoading";
+import {copyCart, loadStandardCart} from "./loadingOps";
 
 export function CartLoader({cart, setCart}) {
     const { theme } = useTheme();

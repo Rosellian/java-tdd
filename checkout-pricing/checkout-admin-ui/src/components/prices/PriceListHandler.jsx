@@ -4,7 +4,7 @@ import {PriceListSelector} from "./pricelistselector/PriceListSelector";
 import {TextInput} from "../rulesets/ruleseteditor/ruleform/templates/FormFields";
 import {PriceListEditor} from "./pricelisteditor/PriceListEditor";
 import {ButtonPanel} from "./operations/ButtonPanel";
-import {getInitialState, updatePriceListName, updateState} from "./handlerOps";
+import {getInitialState, updatePriceListName, updateState} from "./handlerFuncs";
 import {Delete} from "./operations/Delete";
 import {Save} from "./operations/Save";
 import {New} from "./operations/New";

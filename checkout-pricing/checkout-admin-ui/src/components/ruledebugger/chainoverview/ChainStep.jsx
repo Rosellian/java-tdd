@@ -1,4 +1,4 @@
-import {ChainContent} from "./ChainContent";
+import {ChainContent} from "./chaincontent/ChainContent";
 import {useTheme} from "../../../ui/ThemeProvider";
 
 export function ChainStep({ step, index, selectedStep, setSelectedStep }) {
@@ -27,22 +27,29 @@ export function ChainStep({ step, index, selectedStep, setSelectedStep }) {
     );
 }
 
+const baseBorderDark = "1px solid #333";
+const baseBorderLight = "1px solid #ddd";
 const styles = {
     chainItem: {
         display: "flex",
         gap: 12,
-        padding: "12px 0",
-        borderBottom: "1px solid",
+        padding: "10px 10px",
         cursor: "pointer",
         transition: "background 0.25s ease, border-left 0.25s ease",
     },
     dark: {
-        borderColor: "#333",
+        borderTop: baseBorderDark,
+        borderRight: baseBorderDark,
+        borderBottom: baseBorderDark,
+        borderLeft: baseBorderDark,
         background: "#1a1a1a",
         color: "#eee",
     },
     light: {
-        borderColor: "#ddd",
+        borderTop: baseBorderLight,
+        borderRight: baseBorderLight,
+        borderBottom: baseBorderLight,
+        borderLeft: baseBorderLight,
         background: "#fafafa",
         color: "#000",
     },

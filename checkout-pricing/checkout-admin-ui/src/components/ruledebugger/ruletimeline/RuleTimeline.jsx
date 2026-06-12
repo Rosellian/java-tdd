@@ -1,59 +1,46 @@
-import {PriceGraph} from "./priceevolutionchart/PriceGraph";
-import {useTheme} from "../../ui/ThemeProvider";
+import {RuleItem} from "./ruleitem/RuleItem";
+import {SkuRules} from "./SkuRules";
+import {useTheme} from "../../../ui/ThemeProvider";
 
-const width = 500;
-const height = 200;
+export function RuleTimeline({ rules }) {
+    const { theme } = useTheme()
 
-export function PriceEvolutionChart({ prices }) {
-    const { theme } = useTheme();
-
-    if (!prices) {
+    if (!rules) {
         return (
             <div style={{
-                ...styles.priceEmpty,
+                ...styles.timelineEmpty,
                 ...(theme === "dark" ? styles.emptyDark : styles.emptyLight)
-            }}>
-                No price evolution data available.
-            </div>
+            }}>No rules matched in this step.</div>
         );
     }
 
-    const points = calculatePoints(prices);
-
-    const path = points.map((p) => `${p.x},${p.y}`).join(" ");
+    const globalRules = rules.filter(r => !r.sku);
 
     return (
         <div style={{
-            ...styles.priceWrapper,
+            ...styles.timelineWrapper,
             ...(theme === "dark" ? styles.wrapperDark : styles.wrapperLight)
         }}>
             <h3 style={{
-                ...styles.priceHeader,
+                ...styles.timelineHeader,
                 ...(theme === "dark" ? styles.headerDark : styles.headerLight)
-            }}>Price Evolution</h3>
+            }}>Rule Timeline</h3>
 
-            <PriceGraph prices={prices} path={path} points={points} />
+            <ul style={styles.timelineList}>
+                {globalRules.map((r, i) => (
+                    <RuleItem key={i} rule={r} />
+                ))}
+
+                <SkuRules rules={rules} />
+            </ul>
         </div>
     );
 }
 
-function calculatePoints(prices) {
-    const padding = 30;
-    const max = Math.max(...prices);
-    const min = Math.min(...prices);
-
-    return prices.map((p, i) => {
-        const x = padding + (i / (prices.length - 1)) * (width - padding * 2);
-        const y = height - padding - ((p - min) / (max - min)) * (height - padding * 2);
-        return {x, y, value: p};
-    });
-}
-
 const styles = {
-    priceWrapper: {
+    timelineWrapper: {
         padding: 16,
         borderRadius: 8,
-        position: "relative",
         transition: "background 0.25s ease, color 0.25s ease",
     },
     wrapperDark: {
@@ -64,7 +51,7 @@ const styles = {
         background: "#f5f5f5",
         color: "#222",
     },
-    priceHeader: {
+    timelineHeader: {
         marginBottom: 12,
         fontSize: "1.1rem",
         fontWeight: 600,
@@ -76,7 +63,12 @@ const styles = {
     headerLight: {
         color: "#3A1F6B",
     },
-    priceEmpty: {
+    timelineList: {
+        listStyle: "none",
+        padding: 0,
+        margin: 0,
+    },
+    timelineEmpty: {
         padding: 16,
         borderRadius: 8,
         fontStyle: "italic",

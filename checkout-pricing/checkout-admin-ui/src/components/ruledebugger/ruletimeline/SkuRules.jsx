@@ -1,4 +1,4 @@
-import {RuleItem} from "./RuleItem";
+import {RuleItem} from "./ruleitem/RuleItem";
 import {useTheme} from "../../../ui/ThemeProvider";
 
 export function SkuRules({ rules }) {
@@ -14,9 +14,11 @@ export function SkuRules({ rules }) {
                     ...(theme === "dark" ? styles.headerDark : styles.headerLight)
                 }}>{sku}</div>
 
-                {groupedBySku[sku].map((r, i) => (
-                    <RuleItem key={`${sku}-${i}`} rule={r} />
-                ))}
+                <ul style={styles.list}>
+                    {groupedBySku[sku].map((r, i) => (
+                        <RuleItem key={`${sku}-${i}`} rule={r} />
+                    ))}
+                </ul>
             </li>
         ))
     );
@@ -38,6 +40,11 @@ const styles = {
         fontWeight: "bold",
         fontSize: "0.9rem",
         transition: "color 0.25s ease",
+    },
+    list: {
+        paddingLeft: 0,
+        margin: 0,
+        listStyle: "none"
     },
     headerDark: {
         color: "#BB86FC",

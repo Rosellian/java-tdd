@@ -10,7 +10,7 @@ export function DPBody({ dp }) {
             ...(theme === "dark" ? styles.bodyDark : styles.bodyLight)
         }}>
             {dp.nodes.map((node) => (
-                <DPNode node={node} />
+                <DPNode key={node.stepIndex} node={node} />
             ))}
 
             <DPResult dp={dp} />

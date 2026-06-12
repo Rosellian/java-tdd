@@ -1,18 +1,14 @@
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../../../ui/ThemeProvider";
+import {RuleValue} from "./RuleValue";
 
 export function RuleBody({ rule }) {
     const { theme } = useTheme();
 
     return (
         <div style={styles.ruleBody}>
-            <div style={{
-                ...styles.ruleValue,
-                ...(theme === "dark" ? styles.valueDark : styles.valueLight)
-            }}>Before: {rule.before}</div>
-            <div style={{
-                ...styles.ruleValue,
-                ...(theme === "dark" ? styles.valueDark : styles.valueLight)
-            }}>After: {rule.after}</div>
+            <RuleValue label="Before" value={rule.before} />
+            <RuleValue label="After" value={rule.after} />
+
             <div style={{
                 ...styles.ruleEffect,
                 ...(theme === "dark" ? styles.effectDark : styles.effectLight)
@@ -25,17 +21,6 @@ const styles = {
     ruleBody: {
         marginTop: 8,
         paddingLeft: 4,
-    },
-    ruleValue: {
-        fontSize: "0.85rem",
-        marginTop: 4,
-        transition: "color 0.25s ease",
-    },
-    valueDark: {
-        color: "#bbb",
-    },
-    valueLight: {
-        color: "#555",
     },
     ruleEffect: {
         marginTop: 4,

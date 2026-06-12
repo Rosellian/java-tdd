@@ -1,20 +1,15 @@
 import {useState} from 'react'
-import {useTraceSync} from "../../TraceSyncProvider";
-import {RuleBody} from "./RuleBody";
-import {RuleEntry} from "./RuleEntry";
-import {AnimatedBody} from "../../../ui/AnimatedBody";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTraceSync} from "../../../TraceSyncProvider";
+import {RuleBody} from "./rulebody/RuleBody";
+import {RuleEntry} from "./ruleentry/RuleEntry";
+import {AnimatedBody} from "../../../../ui/AnimatedBody";
+import {useTheme} from "../../../../ui/ThemeProvider";
 
 export function RuleItem({ rule }) {
     const { theme } = useTheme();
     const [open, setOpen] = useState(false);
     const {selectedStep, setSelectedStep} = useTraceSync();
     const isActive = rule.stepIndex === selectedStep;
-
-    function selectOnClick() {
-        setOpen(!open)
-        setSelectedStep(selectedStep);
-    }
 
     return (
         <li style={{
@@ -24,7 +19,8 @@ export function RuleItem({ rule }) {
                 theme === "dark" ? styles.activeDark : styles.activeLight
                 : {})
         }}>
-            <RuleEntry rule={rule} onClick={selectOnClick} open={open} />
+            <RuleEntry rule={rule} onClick={() => selectOnClick(open, setOpen, selectedStep, setSelectedStep)}
+                       open={open} />
 
             <AnimatedBody open={open}>
                 <RuleBody rule={rule} />
@@ -33,19 +29,31 @@ export function RuleItem({ rule }) {
     );
 }
 
+function selectOnClick(open, setOpen, selectedStep, setSelectedStep) {
+    setOpen(!open)
+    setSelectedStep(selectedStep);
+}
+
+const baseBorderDark = "1px solid #333";
+const baseBorderLight = "1px solid #ddd";
 const styles = {
     timelineItem: {
-        padding: "10px 0",
-        borderBottom: "1px solid",
+        padding: "10px 10px",
         transition: "background 0.25s ease, border-color 0.25s ease",
     },
     itemDark: {
-        borderColor: "#333",
+        borderTop: baseBorderDark,
+        borderRight: baseBorderDark,
+        borderBottom: baseBorderDark,
+        borderLeft: baseBorderDark,
         background: "#1a1a1a",
         color: "#eee",
     },
     itemLight: {
-        borderColor: "#ddd",
+        borderTop: baseBorderLight,
+        borderRight: baseBorderLight,
+        borderBottom: baseBorderLight,
+        borderLeft: baseBorderLight,
         background: "#fafafa",
         color: "#222",
     },
