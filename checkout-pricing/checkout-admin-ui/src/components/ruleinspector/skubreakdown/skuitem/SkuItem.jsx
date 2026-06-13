@@ -1,24 +1,12 @@
+import {SkuBody} from "./skubody/SkuBody";
+import {AnimatedBody} from "../../../../ui/AnimatedBody";
+import {SkuHeader} from "./SkuHeader";
+import {useTheme} from "../../../../ui/ThemeProvider";
 import {useState} from "react";
-import {Section} from "../../ui/Section";
-import {SkuHeader} from "./skubreakdown/SkuHeader";
-import {SkuBody} from "./skubreakdown/SkuBody";
-import {AnimatedBody} from "../../ui/AnimatedBody";
-import {useTheme} from "../../ui/ThemeProvider";
 
-export function SkuBreakdown({ skuTraces }) {
-    return (
-        <Section title="SKU Breakdown">
-            <div>
-                {skuTraces.map((s, i) => (
-                    <SkuItem key={i} sku={s} />
-                ))}
-            </div>
-        </Section>
-    );
-}
-
-function SkuItem({ sku }) {
+export function SkuItem({ skuData }) {
     const { theme } = useTheme();
+
     const [open, setOpen] = useState(false);
 
     return (
@@ -26,10 +14,10 @@ function SkuItem({ sku }) {
             ...styles.sku,
             ...(theme === "dark" ? styles.skuDark : styles.skuLight)
         }}>
-            <SkuHeader sku={sku} onClick={() => setOpen(!open)}/>
+            <SkuHeader skuData={skuData} onClick={() => setOpen(!open)}/>
 
             <AnimatedBody open={open}>
-                <SkuBody sku={sku} />
+                <SkuBody skuData={skuData} />
             </AnimatedBody>
         </div>
     );

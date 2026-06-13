@@ -1,4 +1,4 @@
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/ThemeProvider";
 
 export function DPNode({ node }) {
     const { theme } = useTheme();

@@ -1,4 +1,5 @@
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/ThemeProvider";
+import {EventStatus} from "./EventStatus";
 
 export function EventHeader({event, index, onClick}) {
     const { theme } = useTheme();
@@ -11,12 +12,8 @@ export function EventHeader({event, index, onClick}) {
             <strong style={{
                 ...(theme === "dark" ? styles.titleDark : styles.titleLight)
             }}>{index + 1}. {event.ruleName}</strong>
-            <span style={{
-                ...styles.status,
-                ...(event.applied ?
-                    theme === "dark" ? styles.appliedDark : styles.appliedLight
-                    : theme === "dark" ? styles.skippedDark : styles.skippedLight)
-            }}>{event.applied ? "✔ Applied" : "✖ Skipped"}</span>
+
+            <EventStatus event={event} />
         </div>
     )
 }
@@ -46,21 +43,5 @@ const styles = {
     },
     titleLight: {
         color: "#5A2DA8",
-    },
-    status: {
-        fontWeight: 500,
-        transition: "color 0.25s ease",
-    },
-    appliedDark: {
-        color: "#7CFC7C",
-    },
-    appliedLight: {
-        color: "#2e7d32",
-    },
-    skippedDark: {
-        color: "#FF6B6B",
-    },
-    skippedLight: {
-        color: "#d32f2f",
     }
 }

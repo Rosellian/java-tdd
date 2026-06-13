@@ -1,8 +1,8 @@
-import {Section} from "../../ui/Section";
-import {RuleTimeline} from "./RuleTimeLine";
-import {SkuBreakdown} from "./SkuBreakdown";
-import {DPSection} from "./DPSection";
+import {RuleTimeline} from "./ruletimeline/RuleTimeLine";
+import {SkuBreakdown} from "./skubreakdown/SkuBreakdown";
+import {DPSection} from "./dpsection/DPSection";
 import {useTheme} from "../../ui/ThemeProvider";
+import {TotalSection} from "./TotalSection";
 
 export function RuleInspector({ trace }) {
     const { theme } = useTheme();
@@ -33,13 +33,7 @@ export function RuleInspector({ trace }) {
             <RuleTimeline events={inspectionTrace.events} />
             <SkuBreakdown skuTraces={inspectionTrace.skuTraces} />
             <DPSection dpTraces={inspectionTrace.dpTraces} />
-
-            <Section title="Final Total">
-                <div style={{
-                    ...styles.total,
-                    ...(theme === "dark" ? styles.totalDark : styles.totalLight)
-                }}>{inspectionTrace.finalTotal} kr</div>
-            </Section>
+            <TotalSection finalTotal={inspectionTrace.finalTotal} />
         </div>
     );
 }
@@ -70,16 +64,5 @@ const styles = {
     },
     headerLight: {
         color: "#5A2DA8",
-    },
-    total: {
-        fontSize: 24,
-        fontWeight: "bold",
-        transition: "color 0.3s ease",
-    },
-    totalDark: {
-        color: "#03DAC6",
-    },
-    totalLight: {
-        color: "#00897B",
     }
 }

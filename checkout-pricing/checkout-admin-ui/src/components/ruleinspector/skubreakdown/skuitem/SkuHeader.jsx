@@ -1,6 +1,6 @@
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/ThemeProvider";
 
-export function SkuHeader({ sku, onClick }) {
+export function SkuHeader({ skuData, onClick }) {
     const { theme } = useTheme();
 
     return (
@@ -8,8 +8,8 @@ export function SkuHeader({ sku, onClick }) {
             ...styles.skuHeader,
             ...(theme === "dark" ? styles.headerDark : styles.headerLight)
         }} onClick={onClick}>
-            <strong>{sku.sku}</strong>
-            <span>{sku.total} kr</span>
+            <strong>{skuData.sku}</strong>
+            <span>{skuData.total} kr</span>
         </div>
     )
 }

@@ -11,6 +11,7 @@ import {PriceListHandler} from "../components/prices/PriceListHandler";
 
 export default function AdminApp() {
     const { theme } = useTheme();
+
     const [cart, setCart] = useState({});
     const [ruleset, setRuleset] = useState("default");
     const [priceList, setPriceList] = useState("default");

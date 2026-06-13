@@ -1,23 +1,10 @@
+import {DPBody} from "./dpbody/DPBody";
+import {AnimatedBody} from "../../../ui/AnimatedBody";
+import {DPHeader} from "./DPHeader";
+import {useTheme} from "../../../ui/ThemeProvider";
 import {useState} from "react";
-import {Section} from "../../ui/Section";
-import {DPHeader} from "./dpsection/DPHeader";
-import {DPBody} from "./dpsection/DPBody";
-import {AnimatedBody} from "../../ui/AnimatedBody";
-import {useTheme} from "../../ui/ThemeProvider";
 
-export function DPSection({ dpTraces }) {
-    return (
-        <Section title="Dynamic Programming Paths">
-            <div>
-                {dpTraces.map((dp, i) => (
-                    <DPTraceView key={i} dp={dp} />
-                ))}
-            </div>
-        </Section>
-    );
-}
-
-function DPTraceView({ dp }) {
+export function DPTraceView({ dp }) {
     const { theme } = useTheme();
     const [open, setOpen] = useState(false);
 
