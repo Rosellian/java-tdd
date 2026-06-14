@@ -8,6 +8,9 @@ import {ButtonPanel} from "../components/ButtonPanel";
 import {useTheme} from "../ui/ThemeProvider";
 import {RulesetHandler} from "../components/rulesets/RulesetHandler";
 import {PriceListHandler} from "../components/prices/PriceListHandler";
+import {CustomerPanel} from "../components/customer/CustomerPanel";
+import {examplePrivateCustomer} from "../components/customer/sample/samplePrivate";
+import {CustomerPanelV2} from "../components/customer/CustomerPanelV2";
 
 export default function AdminApp() {
     const { theme } = useTheme();
@@ -16,7 +19,10 @@ export default function AdminApp() {
     const [ruleset, setRuleset] = useState("default");
     const [priceList, setPriceList] = useState("default");
 
-    const { trace, loading, error, getTrace } = usePricingTrace(cart, ruleset, priceList);
+    const [customer, setCustomer] = useState(examplePrivateCustomer);
+    const [originalCustomer] = useState(examplePrivateCustomer);
+
+    const { trace, loading, error, getTrace } = usePricingTrace();
 
     return (
         <div style={{
@@ -29,7 +35,11 @@ export default function AdminApp() {
                 <RulesetHandler onRulesetChange={setRuleset} />
                 <PriceListHandler onPriceListChange={setPriceList} />
                 <CartEditor cart={cart} onChange={setCart} />
-                <ButtonPanel cart={cart} ruleset={ruleset} priceList={priceList} getTrace={getTrace} />
+                <CustomerPanel customer={customer} />
+                <CustomerPanelV2 customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
+
+                <ButtonPanel cart={cart} ruleset={ruleset} priceList={priceList} customer={customer}
+                             getTrace={getTrace} />
             </div>
 
             {loading && <p>Evaluating pricing…</p>}
@@ -40,7 +50,7 @@ export default function AdminApp() {
                 <RuleDebugger trace={trace} />
             </TraceSyncProvider>
         </div>
-    );
+    )
 }
 
 const styles = {
@@ -59,12 +69,11 @@ const styles = {
     },
     header: {
         textAlign: "center",
-        marginBottom: 30,
+        marginBottom: 10,
         color: "#BB86FC",
     },
     controls: {
         display: "flex",
-         gap: 20,
-         marginBottom: 40,
+        gap: 20,
     }
 }

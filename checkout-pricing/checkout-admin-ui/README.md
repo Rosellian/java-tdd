@@ -647,9 +647,18 @@ Going through the code and fixing minor bugs, refactoring and keeping code clean
   - RuleTimeLine
   - SkuBreakdown
   - DPSection
+---
 
-### Changes in the API layer
-- Refactor API calls to avoid code duplication
+### Customer panel
+Being able to view and edit customer data included in pricing evaluation requests.
+#### Components
+Two versions created as prototypes:
+```jsx
+<CustomerPanel customer={customer} />
+<CustomerPanelV2 customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
+```
+1. Minimalistic, collapsible design(similar to Rule inspector) with JSON fields.
+2. Design like Cart editor with a combination of input fields and collapsible JSON fields.
 
 ### Current structure
 ```

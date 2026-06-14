@@ -6,7 +6,7 @@ export function usePricingTrace() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    async function getTrace(cart, ruleset, priceList) {
+    async function getTrace(cart, ruleset, priceList, customer) {
         if (!cart || !ruleset || !priceList) {
             setError("Missing cart, ruleset, or price list");
             return;
@@ -16,7 +16,7 @@ export function usePricingTrace() {
         setError(null);
 
         try {
-            const result = await runPricingTrace(cart, ruleset, priceList);
+            const result = await runPricingTrace(cart, ruleset, priceList, customer);
             setTrace(result);
         } catch (err) {
             setError(err.message);

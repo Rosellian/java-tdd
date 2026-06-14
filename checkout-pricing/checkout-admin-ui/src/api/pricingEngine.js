@@ -1,5 +1,5 @@
-export async function runPricingTrace(cart, ruleset, priceList) {
-    const res = await callPricingEndpoint(cart, ruleset, priceList, "evaluate");
+export async function runPricingTrace(cart, ruleset, priceList, customer) {
+    const res = await callPricingEndpoint(cart, ruleset, priceList, customer, "evaluate");
 
     if (!res.ok) {
         const text = await res.text();
@@ -9,8 +9,10 @@ export async function runPricingTrace(cart, ruleset, priceList) {
     return await res.json();
 }
 
-async function callPricingEndpoint(cart, ruleset, priceList, endpoint) {
-    const body = createDefaultBody(cart, ruleset, priceList);
+async function callPricingEndpoint(cart, ruleset, priceList, customer, endpoint) {
+    console.log(customer)
+    const body = createBody(cart, ruleset, priceList, customer);
+    console.log(body);
 
     return await fetch("/api/pricing/" + endpoint, {
         method: "POST",
@@ -19,7 +21,7 @@ async function callPricingEndpoint(cart, ruleset, priceList, endpoint) {
     });
 }
 
-function createDefaultBody(cart, ruleset, priceList) {
+function createBody(cart, ruleset, priceList, customer) {
     const items = Object.entries(cart).map(([sku, quantity]) => ({
         sku,
         quantity
@@ -29,10 +31,7 @@ function createDefaultBody(cart, ruleset, priceList) {
         ruleset,
         priceList,
         items,
-        customer: {
-            id: "anonymous",
-            segment: "default"
-        },
+        customer,
         context: {}
     }
 }
