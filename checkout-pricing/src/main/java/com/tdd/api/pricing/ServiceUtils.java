@@ -8,7 +8,10 @@ import com.tdd.tracing.debug.CartSnapshot;
 import com.tdd.tracing.debug.CustomerInfo;
 
 import java.util.List;
+import java.util.Map;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.toList;
 
 public class ServiceUtils {
@@ -35,6 +38,11 @@ public class ServiceUtils {
     }
 
     private static CustomerInfo fromRequest(CustomerRequest customer) {
-        return CustomerInfo.from(customer.id(), customer.segment());
+        Map<String, Object> basicInfo = customer.basicInfo() != null ? customer.basicInfo() : emptyMap();
+        Map<String, Object> metadata = customer.metadata() != null ? customer.metadata() : emptyMap();
+        List<Map<String, Object>> recentOrders = customer.recentOrders() != null ? customer.recentOrders() : emptyList();
+        Map<String, Object> preferences = customer.preferences() != null ? customer.preferences() : emptyMap();
+
+        return new CustomerInfo(customer.id(), customer.segment(), basicInfo, metadata, recentOrders, preferences);
     }
 }

@@ -1333,6 +1333,8 @@ Adding delete protection for default rulesets and price lists.
 
 ---
 
+### Customer data
+Adding support for more customer information.
 
 ## Testing
 ### Test cases
