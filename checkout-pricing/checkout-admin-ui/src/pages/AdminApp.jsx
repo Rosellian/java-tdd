@@ -35,7 +35,7 @@ export default function AdminApp() {
                 <RulesetHandler onRulesetChange={setRuleset} />
                 <PriceListHandler onPriceListChange={setPriceList} />
                 <CartEditor cart={cart} onChange={setCart} />
-                <CustomerPanel customer={customer} />
+                <CustomerPanel customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
                 <CustomerPanelV2 customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
 
                 <ButtonPanel cart={cart} ruleset={ruleset} priceList={priceList} customer={customer}

@@ -1,3 +1,14 @@
+export const customerSchema = {
+    basicInfo: {
+        name: "string",
+        email: "string",
+        phone: "string",
+        address: "object"
+    },
+    metadata: "object",
+    recentOrders: "array"
+}
+
 export function validateSchema(value, schema) {
     if (typeof schema === "string") {
         return typeof value === schema;

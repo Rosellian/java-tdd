@@ -654,7 +654,7 @@ Being able to view and edit customer data included in pricing evaluation request
 #### Components
 Two versions created as prototypes:
 ```jsx
-<CustomerPanel customer={customer} />
+<CustomerPanel customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
 <CustomerPanelV2 customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
 ```
 1. Minimalistic, collapsible design(similar to Rule inspector) with JSON fields.

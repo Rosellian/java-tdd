@@ -2,17 +2,23 @@ import {Section} from "../../ui/Section";
 import {useTheme} from "../../ui/ThemeProvider";
 import {useState} from "react";
 import {AnimatedBody} from "../../ui/AnimatedBody";
-import {CollapsibleJsonItem} from "./CollapsibleJsonItem";
+import {EditableJsonItem} from "./EditableJsonItem";
+import {generateSchema} from "./jsonFunc";
 
-export function CustomerPanel({ customer }) {
+export function CustomerPanel({ customer, setCustomer, originalCustomer }) {
+    function updateField(key, value) {
+        setCustomer(prev => ({ ...prev, [key]: value }));
+    }
+
     return (
         <Section title="Customer">
-            <CustomerItem customer={customer} />
+            <CustomerItem customer={customer} updateField={updateField}
+                          originalCustomer={originalCustomer} />
         </Section>
     )
 }
 
-function CustomerItem({ customer }) {
+function CustomerItem({ customer, updateField, originalCustomer }) {
     const { theme } = useTheme();
 
     const [open, setOpen] = useState(false);
@@ -31,7 +37,7 @@ function CustomerItem({ customer }) {
                     ...(theme === "dark" ? styles.scrollDark : styles.scrollLight)
             }}>
                 <AnimatedBody open={open}>
-                    <CustomerBody customer={customer} />
+                    <CustomerBody customer={customer} updateField={updateField} originalCustomer={originalCustomer} />
                 </AnimatedBody>
             </div>
         </div>
@@ -52,23 +58,19 @@ function CustomerHeader({ customer, onClick }) {
     )
 }
 
-// function CustomerBody({ customer }) {
-//     const { theme } = useTheme();
-//
-//     return (
-//         <div style={{
-//             ...styles.body,
-//             ...(theme === "dark" ? styles.bodyDark : styles.bodyLight)
-//         }}>
-//             <pre style={{
-//                 ...styles.pre,
-//                 ...(theme === "dark" ? styles.preDark : styles.preLight)
-//             }}>{JSON.stringify(customer, null, 2)}</pre>
-//         </div>
-//     )
-// }
-function CustomerBody({ customer }) {
+function CustomerBody({ customer, updateField, originalCustomer }) {
     const { theme } = useTheme();
+
+    const schema = generateSchema(customer);
+    const fields = Object.keys(customer).map(key => ({
+        key,
+        label: key,
+        value: customer[key],
+        originalValue: originalCustomer[key],
+        schema: schema[key],
+        isPrimitive: typeof customer[key] !== "object" || customer[key] === null,
+        changed: JSON.stringify(customer[key]) !== JSON.stringify(originalCustomer[key])
+    }));
 
     return (
         <div
@@ -77,13 +79,21 @@ function CustomerBody({ customer }) {
                 ...(theme === "dark" ? styles.bodyDark : styles.bodyLight)
             }}
         >
-            {Object.entries(customer).map(([key, value]) => (
-                <CollapsibleJsonItem key={key} label={key} value={value} />
+            {fields.map(field => (
+                <EditableJsonItem
+                    key={field.key}
+                    label={field.label}
+                    value={field.value}
+                    originalValue={field.originalValue}
+                    schema={field.schema}
+                    isPrimitive={field.isPrimitive}
+                    changed={field.changed}
+                    onChange={(v) => updateField(field.key, v)}
+                />
             ))}
         </div>
     );
 }
-
 
 const styles = {
     container: {
@@ -135,7 +145,7 @@ const styles = {
     scrollArea: {
         overflowY: "auto",
         maxHeight: 300,
-        paddingRight: 6,
+        paddingRight: 20,
         flex: "1 1 auto",
     },
     scrollDark: {

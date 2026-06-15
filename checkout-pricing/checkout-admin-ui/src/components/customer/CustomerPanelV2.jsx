@@ -1,6 +1,7 @@
 import { useTheme } from "../../ui/ThemeProvider";
 import {useState} from "react";
 import {JsonEditor} from "./JsonEditor";
+import {customerSchema} from "./jsonValidation";
 
 export function CustomerPanelV2({ customer, setCustomer, originalCustomer }) {
     const { theme } = useTheme();
@@ -113,15 +114,6 @@ export function CustomerPanelV2({ customer, setCustomer, originalCustomer }) {
     )
 }
 
-function CustomerRow({ label, value }) {
-    return (
-        <div style={styles.row}>
-            <strong style={{ width: 120 }}>{label}</strong>
-            <span>{value}</span>
-        </div>
-    )
-}
-
 function EditableRow({ label, value, onChange }) {
     const { theme } = useTheme();
 
@@ -138,17 +130,6 @@ function EditableRow({ label, value, onChange }) {
             />
         </div>
     )
-}
-
-const customerSchema = {
-    basicInfo: {
-        name: "string",
-        email: "string",
-        phone: "string",
-        address: "object"
-    },
-    metadata: "object",
-    recentOrders: "array"
 }
 
 const styles = {
