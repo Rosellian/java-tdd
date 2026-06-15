@@ -1,7 +1,7 @@
 import {SkuBody} from "./skubody/SkuBody";
 import {AnimatedBody} from "../../../../ui/AnimatedBody";
 import {SkuHeader} from "./SkuHeader";
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {useState} from "react";
 
 export function SkuItem({ skuData }) {

@@ -1,5 +1,5 @@
 import {ChainContent} from "./chaincontent/ChainContent";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function ChainStep({ step, index, selectedStep, setSelectedStep }) {
     const { theme } = useTheme();

@@ -1,4 +1,4 @@
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {BodyPart} from "./BodyPart";
 
 export function EventBody({ event }) {

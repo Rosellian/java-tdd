@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {CartTooltip} from "./CartTooltip";
 
 export function RecentCartRow({ index, cart, onSelect }) {

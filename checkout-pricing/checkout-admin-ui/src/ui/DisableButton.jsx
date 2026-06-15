@@ -1,4 +1,4 @@
-import {useTheme} from "./ThemeProvider";
+import {useTheme} from "./theme/ThemeProvider";
 
 export function DisabledButton({ isDisabled, onClick, name }) {
     const { theme } = useTheme();

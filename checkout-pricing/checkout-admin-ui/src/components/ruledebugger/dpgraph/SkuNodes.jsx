@@ -1,5 +1,5 @@
 import {DPNodes} from "./dpnodes/DPNodes";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function SkuNodes({ sku, nodes }) {
     const { theme } = useTheme();

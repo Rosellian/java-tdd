@@ -1,4 +1,4 @@
-import {useTheme} from "../../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 import {InputField} from "./InputField";
 
 export function PriceRow({ item, onChange, onDelete }) {

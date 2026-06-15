@@ -657,8 +657,34 @@ Two versions created as prototypes:
 <CustomerPanel customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
 <CustomerPanelV2 customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
 ```
-1. Minimalistic, collapsible design(similar to Rule inspector) with JSON fields.
-2. Design like Cart editor with a combination of input fields and collapsible JSON fields.
+1. Minimalistic, collapsible design(similar to Rule inspector) with JSON fields.  
+   Subcomponents:
+   - ```jsx
+     <CustomerItem customer={customer} updateField={updateField} originalCustomer={originalCustomer} />
+     
+     <CustomerHeader customer={customer} onClick={() => setOpen(!open)} />
+     
+     <CustomerBody customer={customer} updateField={updateField} originalCustomer={originalCustomer} />
+     
+     <EditableJsonItem key={field.key} label={field.label} value={field.value} originalValue={field.originalValue} 
+     schema={field.schema} isPrimitive={field.isPrimitive} changed={field.changed} 
+     onChange={(v) => updateField(field.key, v)} />
+     ```
+2. Design like Cart editor with a combination of input fields and collapsible JSON fields.  
+   Subcomponents:
+   - ```jsx
+     <EditableRow label="ID" value={customer.id} onChange={value => updateField("id", value)} />
+     
+     <CustomerSections customer={customer} originalCustomer={originalCustomer} updateField={updateField} />
+     
+     <CustomerSection label="Basic Info" updateField={updateField} open={basicOpen} setOpen={setBasicOpen} 
+     field="basicInfo" changed={changedBasicInfo} customer={customer} originalCustomer={originalCustomer} />
+     
+     <JsonEditor value={customer[field]} originalValue={originalCustomer[field]} schema={customerSchema[field]} 
+     onChange={(obj) => updateField(field, obj)} />
+     ```
+---
+
 
 ### Current structure
 ```

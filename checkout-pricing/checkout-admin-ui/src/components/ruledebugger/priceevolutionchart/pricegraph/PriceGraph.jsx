@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {PriceTooltip} from "./PriceTooltip";
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import * as chartOps from "../chartFuncs";
 import {DrawGraph, DrawPoint} from "./graphFuncs";
 

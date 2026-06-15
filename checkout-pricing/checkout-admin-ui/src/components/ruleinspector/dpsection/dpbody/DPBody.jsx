@@ -1,5 +1,5 @@
 import {DPNode} from "./DPNode";
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {DPResult} from "./DPResult";
 
 export function DPBody({ dp }) {

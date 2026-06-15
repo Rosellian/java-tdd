@@ -1,4 +1,4 @@
-import {ThemeToggleButton} from "../ui/ThemeToggleButton";
+import {ThemeToggleButton} from "../ui/theme/ThemeToggleButton";
 import {DisabledButton} from "../ui/DisableButton";
 
 export function ButtonPanel({ cart, ruleset, priceList, customer, getTrace }) {

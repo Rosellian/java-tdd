@@ -1,6 +1,6 @@
 import {RuleItem} from "./ruleitem/RuleItem";
 import {SkuRules} from "./SkuRules";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function RuleTimeline({ rules }) {
     const { theme } = useTheme()

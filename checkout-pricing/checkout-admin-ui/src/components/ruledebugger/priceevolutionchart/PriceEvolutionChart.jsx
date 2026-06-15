@@ -1,5 +1,5 @@
 import {PriceGraph} from "./pricegraph/PriceGraph";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {calculatePoints, createPath} from "./chartFuncs";
 import {chartStyles} from "./chartStyles";
 

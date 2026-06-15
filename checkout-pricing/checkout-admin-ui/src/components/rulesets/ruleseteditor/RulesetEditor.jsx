@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {RuleList} from "./rulelist/RuleList";
 import {RuleForm} from "./ruleform/RuleForm";
 import {addRule, deleteRule, getSafeIndex, updateRule} from "./editorOps";

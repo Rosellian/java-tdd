@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useTheme} from "../../ui/ThemeProvider";
+import {useTheme} from "../../ui/theme/ThemeProvider";
 import {PriceListSelector} from "./pricelistselector/PriceListSelector";
 import {TextInput} from "../rulesets/ruleseteditor/ruleform/templates/FormFields";
 import {PriceListEditor} from "./pricelisteditor/PriceListEditor";

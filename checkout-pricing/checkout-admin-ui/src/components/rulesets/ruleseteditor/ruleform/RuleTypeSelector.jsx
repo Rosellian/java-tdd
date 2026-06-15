@@ -1,4 +1,4 @@
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
 export function RuleTypeSelector({ value, onChange }) {
     const { theme } = useTheme();

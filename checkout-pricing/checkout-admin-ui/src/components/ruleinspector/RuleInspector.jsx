@@ -1,7 +1,7 @@
 import {RuleTimeline} from "./ruletimeline/RuleTimeLine";
 import {SkuBreakdown} from "./skubreakdown/SkuBreakdown";
 import {DPSection} from "./dpsection/DPSection";
-import {useTheme} from "../../ui/ThemeProvider";
+import {useTheme} from "../../ui/theme/ThemeProvider";
 import {TotalSection} from "./TotalSection";
 
 export function RuleInspector({ trace }) {

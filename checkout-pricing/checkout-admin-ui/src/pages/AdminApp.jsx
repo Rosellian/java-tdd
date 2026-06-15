@@ -5,12 +5,12 @@ import { RuleDebugger } from "../components/ruledebugger/RuleDebugger";
 import {usePricingTrace} from "../api/usePricingTrace";
 import {TraceSyncProvider} from "../components/TraceSyncProvider";
 import {ButtonPanel} from "../components/ButtonPanel";
-import {useTheme} from "../ui/ThemeProvider";
+import {useTheme} from "../ui/theme/ThemeProvider";
 import {RulesetHandler} from "../components/rulesets/RulesetHandler";
 import {PriceListHandler} from "../components/prices/PriceListHandler";
 import {CustomerPanel} from "../components/customer/CustomerPanel";
 import {examplePrivateCustomer} from "../components/customer/sample/samplePrivate";
-import {CustomerPanelV2} from "../components/customer/CustomerPanelV2";
+import {CustomerPanelV2} from "../components/customer/v2/CustomerPanelV2";
 
 export default function AdminApp() {
     const { theme } = useTheme();

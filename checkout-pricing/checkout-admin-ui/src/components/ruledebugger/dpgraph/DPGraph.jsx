@@ -1,6 +1,6 @@
 import {useTraceSync} from "../../TraceSyncProvider";
 import {DPDetails} from "./dpdetails/DPDetails";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {addGlobalIndex, groupBySku} from "./dpFuncs";
 import {SkuNodes} from "./SkuNodes";
 

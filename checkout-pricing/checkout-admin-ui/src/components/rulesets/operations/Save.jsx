@@ -1,5 +1,5 @@
 import {ConfirmModal} from "../../../ui/ConfirmModal";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {saveRuleset} from "../../../api/rulesets/rulesets";
 import {buttonStyles} from "./buttonStyles";
 import {useState} from "react";

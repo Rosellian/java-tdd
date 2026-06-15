@@ -1,4 +1,4 @@
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {buttonStyles} from "./buttonStyles";
 
 export function ButtonPanel({ children, status }) {

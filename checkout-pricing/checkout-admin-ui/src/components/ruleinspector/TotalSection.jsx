@@ -1,5 +1,5 @@
 import {Section} from "../../ui/Section";
-import {useTheme} from "../../ui/ThemeProvider";
+import {useTheme} from "../../ui/theme/ThemeProvider";
 
 export function TotalSection({ finalTotal }) {
     const { theme } = useTheme();

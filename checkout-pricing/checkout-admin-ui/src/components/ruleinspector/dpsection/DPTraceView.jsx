@@ -1,7 +1,7 @@
 import {DPBody} from "./dpbody/DPBody";
 import {AnimatedBody} from "../../../ui/AnimatedBody";
 import {DPHeader} from "./DPHeader";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {useState} from "react";
 
 export function DPTraceView({ dp }) {

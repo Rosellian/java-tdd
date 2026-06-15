@@ -1,5 +1,5 @@
 import {buttonStyles} from "./buttonStyles";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {createNewPriceListDraft} from "../handlerFuncs";
 
 export function New({ mode, setMode, setSelected, setPriceListNames, setPriceList, onPriceListChange }) {

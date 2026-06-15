@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {isProtectedRuleset} from "../../../functions/protectedNames";
 import {buttonStyles} from "./buttonStyles";
 import {deleteRuleset} from "../../../api/rulesets/rulesets";

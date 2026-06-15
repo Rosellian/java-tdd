@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {RecentCartList} from "./RecentCartList";
 
 export function RecentCartsDropdown({recent, onSelect}) {

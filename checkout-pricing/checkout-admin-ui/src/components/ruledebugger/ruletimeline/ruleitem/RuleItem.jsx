@@ -3,7 +3,7 @@ import {useTraceSync} from "../../../TraceSyncProvider";
 import {RuleBody} from "./rulebody/RuleBody";
 import {RuleEntry} from "./ruleentry/RuleEntry";
 import {AnimatedBody} from "../../../../ui/AnimatedBody";
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
 export function RuleItem({ rule }) {
     const { theme } = useTheme();

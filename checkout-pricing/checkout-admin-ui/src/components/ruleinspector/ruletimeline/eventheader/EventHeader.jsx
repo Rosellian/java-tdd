@@ -1,4 +1,4 @@
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {EventStatus} from "./EventStatus";
 
 export function EventHeader({event, index, onClick}) {

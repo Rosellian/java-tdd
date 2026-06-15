@@ -1,4 +1,4 @@
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {detailsStyles} from "./detailsStyles";
 
 export function DPDetail({ label, value }) {

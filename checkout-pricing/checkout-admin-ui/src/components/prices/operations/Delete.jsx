@@ -1,5 +1,5 @@
 import {ConfirmModal} from "../../../ui/ConfirmModal";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {isProtectedPriceList} from "../../../functions/protectedNames";
 import {deletePriceList} from "../../../api/prices/prices";
 import {useState} from "react";

@@ -1,4 +1,4 @@
-import {useTheme} from "../../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 import {StatusMark} from "./StatusMark";
 
 export function RuleEntry({ rule, onClick, open }) {

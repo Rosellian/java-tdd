@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useTheme} from "../../ui/ThemeProvider";
+import {useTheme} from "../../ui/theme/ThemeProvider";
 import {RulesetSelector} from "./rulesetselector/RulesetSelector";
 import {RulesetEditor} from "./ruleseteditor/RulesetEditor";
 import {TextInput} from "./ruleseteditor/ruleform/templates/FormFields";

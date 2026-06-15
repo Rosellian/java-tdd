@@ -1,4 +1,4 @@
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {RecentCartRow} from "../row/RecentCartRow";
 
 export function RecentCartList({recent, onSelect, setOpen}) {

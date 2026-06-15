@@ -1,4 +1,4 @@
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {DPDetail} from "./DPDetail";
 import {DPOptions} from "./DPOptions";
 

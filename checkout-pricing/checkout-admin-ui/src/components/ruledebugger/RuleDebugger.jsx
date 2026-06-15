@@ -3,7 +3,7 @@ import {RuleTimeline} from "./ruletimeline/RuleTimeline";
 import {DPGraph} from "./dpgraph/DPGraph";
 import {PriceEvolutionChart} from "./priceevolutionchart/PriceEvolutionChart";
 import {TraceSyncProvider} from "../TraceSyncProvider";
-import {useTheme} from "../../ui/ThemeProvider";
+import {useTheme} from "../../ui/theme/ThemeProvider";
 
 export function RuleDebugger({ trace }) {
     const { theme } = useTheme();

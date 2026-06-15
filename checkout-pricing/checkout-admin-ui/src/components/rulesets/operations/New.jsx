@@ -1,6 +1,6 @@
 import {createNewRulesetDraft} from "../handlerFuncs";
 import {buttonStyles} from "./buttonStyles";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function New({ mode, setMode, setSelected, setRuleset, setRulesetNames, onRulesetChange }) {
     const { theme } = useTheme();

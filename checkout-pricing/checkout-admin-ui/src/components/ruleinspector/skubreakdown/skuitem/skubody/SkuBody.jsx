@@ -1,4 +1,4 @@
-import {useTheme} from "../../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 import {SkuData} from "./SkuData";
 
 export function SkuBody({ skuData }) {

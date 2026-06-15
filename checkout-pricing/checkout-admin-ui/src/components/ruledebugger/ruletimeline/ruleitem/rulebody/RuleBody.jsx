@@ -1,4 +1,4 @@
-import {useTheme} from "../../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 import {RuleValue} from "./RuleValue";
 
 export function RuleBody({ rule }) {

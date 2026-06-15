@@ -1,6 +1,6 @@
 import {useRecentCarts} from "./useRecentCarts";
 import {RecentCartsDropdown} from "./dropdown/RecentCartsDropdown";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function RecentCarts({ cart, setCart}) {
     const { theme } = useTheme();

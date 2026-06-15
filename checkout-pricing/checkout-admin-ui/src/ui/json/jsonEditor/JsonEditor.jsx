@@ -1,6 +1,6 @@
 import {useState} from "react";
-import {useTheme} from "../../ui/ThemeProvider";
-import {validateSchema} from "./jsonValidation";
+import {useTheme} from "../../theme/ThemeProvider";
+import {applyChange} from "./funcs";
 
 export function JsonEditor({ value, originalValue, schema, onChange }) {
     const { theme } = useTheme();
@@ -11,39 +11,20 @@ export function JsonEditor({ value, originalValue, schema, onChange }) {
     const changed = JSON.stringify(value) !== JSON.stringify(originalValue);
 
     const handleChange = (e) => {
-        const newText = e.target.value;
-        setText(newText);
-
-        try {
-            const parsed = JSON.parse(newText);
-
-            if (!validateSchema(parsed, schema)) {
-                setError("JSON does not match schema");
-                return;
-            }
-
-            setError(null);
-            onChange(parsed);
-        } catch (err) {
-            setError("Invalid JSON");
-        }
+        applyChange(e, setText, schema, setError, onChange);
     }
 
     return (
-        <div style={{ marginBottom: 10 }}>
-
-            <textarea
-                value={text}
-                onChange={handleChange}
+        <div style={styles.container}>
+            <textarea value={text} onChange={handleChange}
                 style={{
                     ...styles.jsonInput,
                     ...(theme === "dark" ? styles.jsonInputDark : styles.jsonInputLight),
                     borderColor: error ? "#ff4444" : changed ? "#FFB300" : undefined
-                }}
-            />
+                }}/>
 
             {error && (
-                <div style={{ color: "#ff4444", fontSize: "0.8rem", marginTop: 4 }}>
+                <div style={styles.error}>
                     {error}
                 </div>
             )}
@@ -52,6 +33,9 @@ export function JsonEditor({ value, originalValue, schema, onChange }) {
 }
 
 const styles = {
+    container: {
+        marginBottom: 10
+    },
     jsonInput: {
         width: "100%",
         maxWidth: "100%",
@@ -79,5 +63,10 @@ const styles = {
         background: "#ffffff",
         color: "#222",
         borderColor: "#ccc",
+    },
+    error: {
+        color: "#ff4444",
+        fontSize: "0.8rem",
+        marginTop: 4
     }
 }

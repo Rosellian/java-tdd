@@ -1,4 +1,4 @@
-import {useTheme} from "../../../../ui/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
 export function ButtonPanel({ onAdd, onDelete }) {
     const { theme } = useTheme();

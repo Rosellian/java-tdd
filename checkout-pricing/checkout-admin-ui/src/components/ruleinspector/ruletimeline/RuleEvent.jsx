@@ -2,7 +2,7 @@ import {EventBody} from "./eventbody/EventBody";
 import {EventHeader} from "./eventheader/EventHeader";
 import {AnimatedBody} from "../../../ui/AnimatedBody";
 import {useTraceSync} from "../../TraceSyncProvider";
-import {useTheme} from "../../../ui/ThemeProvider";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {useState} from "react";
 
 export function RuleEvent({ event, index }) {

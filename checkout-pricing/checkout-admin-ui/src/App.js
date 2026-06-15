@@ -1,7 +1,7 @@
 import './App.css';
 import AdminApp from "./pages/AdminApp";
-import {ThemeProvider} from "./ui/ThemeProvider";
-import "./ui/scrollbar.css";
+import {ThemeProvider} from "./ui/theme/ThemeProvider";
+import "./ui/theme/scrollbar.css";
 
 function App() {
   return <ThemeProvider>

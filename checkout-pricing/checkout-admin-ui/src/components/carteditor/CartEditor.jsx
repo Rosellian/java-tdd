@@ -1,7 +1,7 @@
 import {AddSkuForm} from "./addskuform/AddSkuForm";
 import {CartLoader} from "./cartloader/CartLoader";
 import {RecentCarts} from "./recentcarts/RecentCarts";
-import {useTheme} from "../../ui/ThemeProvider";
+import {useTheme} from "../../ui/theme/ThemeProvider";
 import {SkuRowList} from "./skurowlist/SkuRowList";
 
 export function CartEditor({ cart, onChange }) {
