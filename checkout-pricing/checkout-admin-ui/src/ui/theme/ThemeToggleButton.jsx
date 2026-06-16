@@ -28,6 +28,6 @@ const styles = {
         fontWeight: "bold",
         fontSize: "1rem",
         marginBottom: 12,
-        transition: "background 0.2s",
+        transition: "background 0.2s"
     }
 }

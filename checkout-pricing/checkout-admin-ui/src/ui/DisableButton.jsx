@@ -24,19 +24,19 @@ const styles = {
         fontWeight: "bold",
         fontSize: "1rem",
         marginBottom: 12,
-        transition: "background 0.2s",
+        transition: "background 0.2s"
     },
     buttonDark: {
         background: "#BB86FC",
-        color: "#000",
+        color: "#000"
     },
     buttonLight: {
         background: "#5A2DA8",
-        color: "#fff",
+        color: "#fff"
     },
     buttonDisabled: {
         opacity: 0.4,
         cursor: "not-allowed",
-        background: "#555",
+        background: "#555"
     }
 }

@@ -39,14 +39,14 @@ const styles = {
         marginTop: 10,
         borderRadius: 4,
         fontWeight: 600,
-        transition: "background 0.25s ease",
+        transition: "background 0.25s ease"
     },
     sectionHeaderDark: {
         background: "#2A2A2A",
-        color: "#BB86FC",
+        color: "#BB86FC"
     },
     sectionHeaderLight: {
         background: "#eaeaea",
-        color: "#5A2DA8",
+        color: "#5A2DA8"
     }
 }

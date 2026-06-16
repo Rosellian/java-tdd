@@ -1,7 +1,11 @@
 import {validateSchema} from "../jsonValidation";
 
-export function setInitialText(isPrimitive, value) {
-    return isPrimitive ? String(value) : JSON.stringify(value, null, 2);
+export function stringifyText(isPrimitive, value) {
+    return isPrimitive ? String(value) : stringify(value);
+}
+
+function stringify(value) {
+    return JSON.stringify(value, null, 2);
 }
 
 export function applyChange(event, setText, isPrimitive, onChange, schema, setError) {

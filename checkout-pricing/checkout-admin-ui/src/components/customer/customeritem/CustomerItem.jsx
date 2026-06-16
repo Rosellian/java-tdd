@@ -43,28 +43,28 @@ const styles = {
         display: "flex",
         flexDirection: "column",
         paddingLeft: 4,
-        paddingRight: 4,
+        paddingRight: 4
     },
     containerDark: {
         background: "#1E1E1E",
         color: "#eee",
-        borderColor: "#333",
+        borderColor: "#333"
     },
     containerLight: {
         background: "#fafafa",
         color: "#222",
-        borderColor: "#ccc",
+        borderColor: "#ccc"
     },
     scrollArea: {
         overflowY: "auto",
         maxHeight: 300,
         paddingRight: 20,
-        flex: "1 1 auto",
+        flex: "1 1 auto"
     },
     scrollDark: {
-        background: "#1E1E1E",
+        background: "#1E1E1E"
     },
     scrollLight: {
-        background: "#f5f5f5",
+        background: "#f5f5f5"
     }
 }

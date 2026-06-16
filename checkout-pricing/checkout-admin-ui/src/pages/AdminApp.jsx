@@ -64,29 +64,29 @@ const styles = {
     container: {
         minHeight: "100vh",
         padding: 20,
-        fontFamily: "monospace",
+        fontFamily: "monospace"
     },
     dark: {
         background: "#121212",
-        color: "#E0E0E0",
+        color: "#E0E0E0"
     },
     light: {
         background: "#ffffff",
-        color: "#000000",
+        color: "#000000"
     },
     header: {
         textAlign: "center",
         marginBottom: 10,
-        color: "#BB86FC",
+        color: "#BB86FC"
     },
     controls: {
         display: "flex",
         flexDirection: "column",
-        gap: 20,
+        gap: 20
     },
     row: {
         display: "flex",
         gap: 20,
-        alignItems: "flex-start",
+        alignItems: "flex-start"
     }
 }

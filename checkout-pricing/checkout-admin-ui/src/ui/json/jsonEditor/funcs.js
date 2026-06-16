@@ -18,3 +18,7 @@ export function applyChange(event, setText, schema, setError, onChange) {
         setError("Invalid JSON");
     }
 }
+
+export function stringify(value) {
+    return JSON.stringify(value, null, 2);
+}

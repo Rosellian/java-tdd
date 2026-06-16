@@ -691,6 +691,7 @@ Two versions created as prototypes:
 - Making CartEditor and Customer V2 layout more compact.
 - Changing main controls layout (left sided).
 - Making CartEditor shorter.
+- Fix change sync between customer panels.(just prototype stage, not needed later)
 
 ### Current structure
 ```

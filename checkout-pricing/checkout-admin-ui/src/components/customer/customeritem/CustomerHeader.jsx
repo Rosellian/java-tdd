@@ -25,16 +25,16 @@ const styles = {
         fontSize: "1rem",
         fontWeight: 600,
         flexShrink: 0,
-        transition: "background 0.25s ease, color 0.25s ease",
+        transition: "background 0.25s ease, color 0.25s ease"
     },
     headerDark: {
         background: "#2A2A2A",
         color: "#BB86FC",
-        borderBottom: "1px solid #333",
+        borderBottom: "1px solid #333"
     },
     headerLight: {
         background: "#f0f0f0",
         color: "#5A2DA8",
-        borderBottom: "1px solid #ccc",
+        borderBottom: "1px solid #ccc"
     }
 }

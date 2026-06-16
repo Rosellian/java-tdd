@@ -1,16 +1,20 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {AnimatedBody} from "../../AnimatedBody";
-import {applyChange, setInitialText} from "./funcs";
+import {applyChange, stringifyText} from "./funcs";
 import {ItemHeader} from "./ItemHeader";
 import {PrimitiveInput} from "./PrimitiveInput";
 import {JsonInput} from "./JsonInput";
 
 export function EditableJsonItem({ label, value, originalValue, schema, onChange, isPrimitive }) {
     const [open, setOpen] = useState(false);
-    const [text, setText] = useState(setInitialText(isPrimitive, value));
+    const [text, setText] = useState(stringifyText(isPrimitive, value));
     const [error, setError] = useState(null);
 
     const changed = JSON.stringify(value) !== JSON.stringify(originalValue);
+
+    useEffect(() => {
+        setText(stringifyText(isPrimitive, value));
+    }, [value]);
 
     function handleChange(e) {
         applyChange(e, setText, isPrimitive, onChange, schema, setError);

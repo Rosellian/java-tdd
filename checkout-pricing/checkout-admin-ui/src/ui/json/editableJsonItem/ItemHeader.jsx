@@ -24,14 +24,14 @@ const styles = {
         padding: "6px 4px",
         borderRadius: 4,
         fontWeight: 600,
-        transition: "background 0.25s ease",
+        transition: "background 0.25s ease"
     },
     headerDark: {
         background: "#2A2A2A",
-        color: "#BB86FC",
+        color: "#BB86FC"
     },
     headerLight: {
         background: "#eaeaea",
-        color: "#5A2DA8",
+        color: "#5A2DA8"
     }
 }

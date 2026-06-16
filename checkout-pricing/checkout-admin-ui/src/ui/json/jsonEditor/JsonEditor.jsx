@@ -1,14 +1,18 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useTheme} from "../../theme/ThemeProvider";
-import {applyChange} from "./funcs";
+import {applyChange, stringify} from "./funcs";
 
 export function JsonEditor({ value, originalValue, schema, onChange }) {
     const { theme } = useTheme();
 
-    const [text, setText] = useState(JSON.stringify(value, null, 2));
+    const [text, setText] = useState(stringify(value));
     const [error, setError] = useState(null);
 
     const changed = JSON.stringify(value) !== JSON.stringify(originalValue);
+
+    useEffect(() => {
+        setText(stringify(value));
+    }, [value]);
 
     const handleChange = (e) => {
         applyChange(e, setText, schema, setError, onChange);
@@ -52,17 +56,17 @@ const styles = {
         overflowY: "auto",
         overflowX: "hidden",
         resize: "none",
-        transition: "background 0.25s ease, color 0.25s ease, border-color 0.25s ease",
+        transition: "background 0.25s ease, color 0.25s ease, border-color 0.25s ease"
     },
     jsonInputDark: {
         background: "#2A2A2A",
         color: "#eee",
-        borderColor: "#444",
+        borderColor: "#444"
     },
     jsonInputLight: {
         background: "#ffffff",
         color: "#222",
-        borderColor: "#ccc",
+        borderColor: "#ccc"
     },
     error: {
         color: "#ff4444",

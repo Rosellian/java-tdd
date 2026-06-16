@@ -22,7 +22,7 @@ const styles = {
     row: {
         display: "flex",
         marginTop: 6,
-        marginBottom: 6,
+        marginBottom: 6
     },
     input: {
         flex: 1,
@@ -30,16 +30,16 @@ const styles = {
         borderRadius: 4,
         border: "1px solid",
         fontSize: "0.9rem",
-        transition: "background 0.25s ease, color 0.25s ease, border-color 0.25s ease",
+        transition: "background 0.25s ease, color 0.25s ease, border-color 0.25s ease"
     },
     inputDark: {
         background: "#2A2A2A",
         color: "#eee",
-        borderColor: "#444",
+        borderColor: "#444"
     },
     inputLight: {
         background: "#ffffff",
         color: "#222",
-        borderColor: "#ccc",
+        borderColor: "#ccc"
     }
 }

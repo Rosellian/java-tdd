@@ -35,17 +35,17 @@ const styles = {
         wordBreak: "break-word",
         overflowY: "auto",
         overflowX: "hidden",
-        resize: "none",
+        resize: "none"
     },
     textareaDark: {
         background: "#2A2A2A",
         color: "#eee",
-        borderColor: "#444",
+        borderColor: "#444"
     },
     textareaLight: {
         background: "#ffffff",
         color: "#222",
-        borderColor: "#ccc",
+        borderColor: "#ccc"
     },
     error: {
         color: "#ff4444",

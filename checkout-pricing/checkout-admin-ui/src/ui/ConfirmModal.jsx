@@ -26,30 +26,30 @@ const styles = {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        zIndex: 9999,
+        zIndex: 9999
     },
     modal: {
         padding: 20,
         borderRadius: 6,
         minWidth: 280,
-        transition: "background 0.3s ease",
+        transition: "background 0.3s ease"
     },
     modalDark: {
         background: "#222",
-        color: "#fff",
+        color: "#fff"
     },
     modalLight: {
         background: "#fff",
-        color: "#000",
+        color: "#000"
     },
     message: {
         marginBottom: 20,
-        fontSize: 16,
+        fontSize: 16
     },
     buttons: {
         display: "flex",
         justifyContent: "flex-end",
-        gap: 10,
+        gap: 10
     },
     cancel: {
         padding: "6px 12px",
@@ -57,7 +57,7 @@ const styles = {
         border: "none",
         borderRadius: 4,
         cursor: "pointer",
-        color: "#fff",
+        color: "#fff"
     },
     confirm: {
         padding: "6px 12px",
@@ -65,6 +65,6 @@ const styles = {
         border: "none",
         borderRadius: 4,
         cursor: "pointer",
-        color: "#fff",
+        color: "#fff"
     }
 }

@@ -15,6 +15,6 @@ export function ButtonPanel({ cart, ruleset, priceList, customer, getTrace }) {
 
 const styles = {
     buttons: {
-        marginBottom: 40,
+        marginBottom: 40
     }
 }

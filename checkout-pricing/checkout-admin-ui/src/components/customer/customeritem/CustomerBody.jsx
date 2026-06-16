@@ -43,14 +43,14 @@ const styles = {
     body: {
         gap: 10,
         padding: 10,
-        transition: "background 0.25s ease",
+        transition: "background 0.25s ease"
     },
     bodyDark: {
         background: "#1A1A1A",
-        borderTop: "1px solid #333",
+        borderTop: "1px solid #333"
     },
     bodyLight: {
         background: "#ffffff",
-        borderTop: "1px solid #ccc",
+        borderTop: "1px solid #ccc"
     }
 }
