@@ -37,6 +37,7 @@ const styles = {
         padding: 15,
         borderRadius: 4,
         minWidth: 200,
+        alignSelf: "flex-start",
         transition: "background 0.3s ease, color 0.3s ease",
     },
     boxDark: {

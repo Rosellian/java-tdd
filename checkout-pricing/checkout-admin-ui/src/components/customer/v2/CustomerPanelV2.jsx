@@ -39,40 +39,43 @@ const styles = {
         borderRadius: 4,
         minWidth: 300,
         transition: "background 0.3s ease, color 0.3s ease",
-        height: 650,
+        // height: 650,
+        minHeight: 0,
         display: "flex",
         flexDirection: "column",
+        alignSelf: "flex-start"
     },
     boxDark: {
         background: "#1E1E1E",
-        color: "#E0E0E0",
+        color: "#E0E0E0"
     },
     boxLight: {
         background: "#f5f5f5",
-        color: "#000000",
+        color: "#000000"
     },
     title: {
         marginBottom: 10,
-        transition: "color 0.3s ease",
+        transition: "color 0.3s ease"
     },
     titleDark: {
-        color: "#80CBC4",
+        color: "#80CBC4"
     },
     titleLight: {
-        color: "#00796B",
+        color: "#00796B"
     },
     scrollArea: {
         overflowY: "auto",
         paddingRight: 6,
         flex: "1 1 auto",
+        alignSelf: "flex-start",
         maxHeight: 600,
         width: "100%",
-        boxSizing: "border-box",
+        boxSizing: "border-box"
     },
     scrollDark: {
-        background: "#1E1E1E",
+        background: "#1E1E1E"
     },
     scrollLight: {
-        background: "#f5f5f5",
+        background: "#f5f5f5"
     }
 }

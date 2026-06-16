@@ -688,6 +688,7 @@ Two versions created as prototypes:
 ### More graphical improvements
 - Making RuleEditor and PriceListEditor collapsible to save space.
 - Consistent color theme for RuleTypeSelector label.
+- Making CartEditor and Customer V2 layout more compact.
 
 ### Current structure
 ```
