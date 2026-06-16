@@ -706,7 +706,7 @@ Two versions created as prototypes:
   - DPGraph
     - Adding scrollbar
     - More compact SkuNodes
-    - Better details view TODO
+    - Better details view prototype
 
 ### Current structure
 ```

@@ -3,6 +3,7 @@ import {DPDetails} from "./dpdetails/DPDetails";
 import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {addGlobalIndex, groupBySku} from "./dpFuncs";
 import {SkuNodes} from "./SkuNodes";
+import {DPDetailsV2} from "./v2/DPDetailsV2";
 
 export function DPGraph({ dp }) {
     const { theme } = useTheme();
@@ -37,7 +38,10 @@ export function DPGraph({ dp }) {
             </div>
 
             {selectedStep !== null && (
-                <DPDetails node={dp[selectedStep]} index={selectedStep} />
+                <>
+                    <DPDetails node={dp[selectedStep]} index={selectedStep} />
+                    <DPDetailsV2 node={dp[selectedStep]} index={selectedStep} />
+                </>
             )}
         </div>
     )
