@@ -10,9 +10,7 @@ export async function runPricingTrace(cart, ruleset, priceList, customer) {
 }
 
 async function callPricingEndpoint(cart, ruleset, priceList, customer, endpoint) {
-    console.log(customer)
     const body = createBody(cart, ruleset, priceList, customer);
-    console.log(body);
 
     return await fetch("/api/pricing/" + endpoint, {
         method: "POST",

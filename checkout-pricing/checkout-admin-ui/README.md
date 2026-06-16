@@ -702,9 +702,11 @@ Two versions created as prototypes:
     - Adding scrollbar to DPBody
 - Making RuleDebugger layout more compact
   - RuleTimeline
-    - adding scrollbar
+    - Adding scrollbar
   - DPGraph
-    - adding scrollbar
+    - Adding scrollbar
+    - More compact SkuNodes
+    - Better details view TODO
 
 ### Current structure
 ```

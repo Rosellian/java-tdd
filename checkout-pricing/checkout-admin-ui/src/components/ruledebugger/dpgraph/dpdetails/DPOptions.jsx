@@ -25,12 +25,12 @@ export function DPOptions({ node }) {
 const styles = {
     dpValueList: {
         fontStyle: "italic",
-        transition: "color 0.25s ease",
+        transition: "color 0.25s ease"
     },
     listDark: {
-        color: "#ccc",
+        color: "#ccc"
     },
     listLight: {
-        color: "#444",
+        color: "#444"
     }
 }

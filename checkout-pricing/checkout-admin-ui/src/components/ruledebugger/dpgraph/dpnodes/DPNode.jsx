@@ -26,44 +26,45 @@ export function DPNode({ node, hoverIndex, setHoverIndex, selectedStep, setSelec
 
 const styles = {
     dpNode: {
-        padding: "10px 14px",
+        height: 20,
+        padding: 10,
         borderRadius: 6,
         cursor: "pointer",
         transition: "all 0.2s ease",
         fontSize: "0.9rem",
         fontWeight: 500,
-        border: "1px solid",
+        border: "1px solid"
     },
     nodeDark: {
         background: "#2a2a2a",
         borderColor: "#444",
-        color: "#ccc",
+        color: "#ccc"
     },
     nodeLight: {
         background: "#f0f0f0",
         borderColor: "#ccc",
-        color: "#333",
+        color: "#333"
     },
     nodeHoverDark: {
         background: "#3a3a3a",
         borderColor: "#666",
-        color: "#fff",
+        color: "#fff"
     },
     nodeHoverLight: {
         background: "#e4d7ff",
         borderColor: "#bba3ff",
-        color: "#3A1F6B",
+        color: "#3A1F6B"
     },
     nodeSelectedDark: {
         background: "#BB86FC",
         borderColor: "#BB86FC",
         color: "#000",
-        fontWeight: 600,
+        fontWeight: 600
     },
     nodeSelectedLight: {
         background: "#D9C4FF",
         borderColor: "#B48CFF",
         color: "#3A1F6B",
-        fontWeight: 600,
+        fontWeight: 600
     }
 }

@@ -13,6 +13,7 @@ export function SkuNodes({ sku, nodes }) {
                 ...styles.skuHeader,
                 ...(theme === "dark" ? styles.skuHeaderDark : styles.skuHeaderLight)
             }}>{sku}</h3>
+
             <DPNodes nodes={nodes}/>
         </div>
     )
@@ -20,28 +21,29 @@ export function SkuNodes({ sku, nodes }) {
 
 const styles = {
     skuBlock: {
-        marginBottom: 24,
-        padding: 12,
+        display: "flex",
+        marginBottom: 10,
+        padding: 5,
+        gap: 10,
         borderRadius: 8,
-        transition: "background 0.25s ease, color 0.25s ease",
+        transition: "background 0.25s ease, color 0.25s ease"
     },
     skuDark: {
-        background: "#222",
+        background: "#222"
     },
     skuLight: {
         background: "#fff",
-        border: "1px solid #ddd",
+        border: "1px solid #ddd"
     },
     skuHeader: {
-        marginBottom: 12,
         fontSize: "1.1rem",
         fontWeight: 600,
-        transition: "color 0.25s ease",
+        transition: "color 0.25s ease"
     },
     skuHeaderDark: {
-        color: "#BB86FC",
+        color: "#BB86FC"
     },
     skuHeaderLight: {
-        color: "#5A2DA8",
+        color: "#5A2DA8"
     }
 }

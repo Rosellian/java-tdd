@@ -19,8 +19,9 @@ export function DPNodes({ nodes }) {
 const styles = {
     dpNodes: {
         display: "flex",
-        gap: 12,
+        gap: 10,
         flexWrap: "wrap",
-        marginBottom: 16,
+        alignItems: "center",
+        marginBottom: 5
     }
 }

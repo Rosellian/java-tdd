@@ -21,12 +21,12 @@ export function DPDetail({ label, value }) {
 const styles = {
     dpValue: {
         fontWeight: 600,
-        transition: "color 0.25s ease",
+        transition: "color 0.25s ease"
     },
     valueDark: {
-        color: "#4caf50",
+        color: "#4caf50"
     },
     valueLight: {
-        color: "#2e7d32",
+        color: "#2e7d32"
     }
 }
