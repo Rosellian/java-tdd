@@ -694,8 +694,12 @@ Two versions created as prototypes:
 - Fix change sync between customer panels.(just prototype stage, not needed later)
 - Making RuleInspector layout more compact
   - RuleTimeline
+    - Including full toString ruleName text in body instead of header.
+    - Collapsible parts
+    - Adding scrollbar to parts
   - SkuBreakdown
   - DPSection
+    - Adding scrollbar to DPBody
 
 ### Current structure
 ```
