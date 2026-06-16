@@ -11,7 +11,7 @@ export function EventHeader({event, index, onClick}) {
         }} onClick={onClick}>
             <strong style={{
                 ...(theme === "dark" ? styles.titleDark : styles.titleLight)
-            }}>{index + 1}. {event.ruleName}</strong>
+            }}>{index + 1}. {event.name}</strong>
 
             <EventStatus event={event} />
         </div>
@@ -26,22 +26,22 @@ const styles = {
         justifyContent: "space-between",
         alignItems: "center",
         transition: "background 0.25s ease, color 0.25s ease",
-        borderBottom: "1px solid",
+        borderBottom: "1px solid"
     },
     headerDark: {
         background: "#2A2A2A",
         borderColor: "#333",
-        color: "#eee",
+        color: "#eee"
     },
     headerLight: {
         background: "#f0f0f0",
         borderColor: "#ccc",
-        color: "#222",
+        color: "#222"
     },
     titleDark: {
-        color: "#BB86FC",
+        color: "#BB86FC"
     },
     titleLight: {
-        color: "#5A2DA8",
+        color: "#5A2DA8"
     }
 }

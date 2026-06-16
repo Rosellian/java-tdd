@@ -55,7 +55,7 @@ An interactive, collapsible timeline with:
     function Section({ title, children }) {}
     ```
 3. Rule-timeline (collapsible)
-   `RuleTimeLine.jsx`
+   `RuleTimeline.jsx`
     ```jsx
     function RuleTimeline({ events }) {}
     
@@ -90,7 +90,7 @@ An interactive, collapsible timeline with:
 │   └── ruleinspector
 │       ├── DPSection.jsx
 │       ├── RuleInspector.jsx
-│       ├── RuleTimeLine.jsx
+│       ├── RuleTimeline.jsx
 │       ├── Section.jsx
 │       ├── SkuBreakdown.jsx
 │       └── Styles.jsx
@@ -206,7 +206,7 @@ Fixing styling of the module by separating the Style-file and moving parts to th
 Changes done in:
 - `RuleInspector.jsx`
 - `Section.jsx`
-- `RuleTimeLine.jsx`
+- `RuleTimeline.jsx`
 - `SkuBreakdown.jsx`
 - `DPSection.jsx`
 ### Improve the graphical display of Rule Debugger:
@@ -692,6 +692,10 @@ Two versions created as prototypes:
 - Changing main controls layout (left sided).
 - Making CartEditor shorter.
 - Fix change sync between customer panels.(just prototype stage, not needed later)
+- Making RuleInspector layout more compact
+  - RuleTimeline
+  - SkuBreakdown
+  - DPSection
 
 ### Current structure
 ```

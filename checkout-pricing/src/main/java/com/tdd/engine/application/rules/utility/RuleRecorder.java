@@ -30,9 +30,10 @@ public class RuleRecorder {
         RuleDelta delta = after.delta();
         boolean applied = delta.applied();
         String ruleName = ruleInput.rule().toString();
+        String name = ruleInput.rule().name();
         int stepIndex = rt.getStepIndex();
 
-        return new RuleTraceEvent(ruleName, applied, delta, ruleInput.context(), after.context(), stepIndex);
+        return new RuleTraceEvent(ruleName, name, applied, delta, ruleInput.context(), after.context(), stepIndex);
     }
 
     public RuleTrace updateRuleTrace(RuleTrace rt, After after) {

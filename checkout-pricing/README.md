@@ -1333,8 +1333,10 @@ Adding delete protection for default rulesets and price lists.
 
 ---
 
-### Customer data
-Adding support for more customer information.
+### Data changes
+- Adding support for more customer information.
+- Passing simple rule name and full toString-version in RuleTraceEvent to enable more customization in RuleInspector UI.
+---
 
 ## Testing
 ### Test cases
