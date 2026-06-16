@@ -7,6 +7,7 @@ import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
 export function RuleItem({ rule }) {
     const { theme } = useTheme();
+
     const [open, setOpen] = useState(false);
     const {selectedStep, setSelectedStep} = useTraceSync();
     const isActive = rule.stepIndex === selectedStep;
@@ -26,7 +27,7 @@ export function RuleItem({ rule }) {
                 <RuleBody rule={rule} />
             </AnimatedBody>
         </li>
-    );
+    )
 }
 
 function selectOnClick(open, setOpen, selectedStep, setSelectedStep) {
@@ -39,7 +40,7 @@ const baseBorderLight = "1px solid #ddd";
 const styles = {
     timelineItem: {
         padding: "10px 10px",
-        transition: "background 0.25s ease, border-color 0.25s ease",
+        transition: "background 0.25s ease, border-color 0.25s ease"
     },
     itemDark: {
         borderTop: baseBorderDark,
@@ -47,7 +48,7 @@ const styles = {
         borderBottom: baseBorderDark,
         borderLeft: baseBorderDark,
         background: "#1a1a1a",
-        color: "#eee",
+        color: "#eee"
     },
     itemLight: {
         borderTop: baseBorderLight,
@@ -55,14 +56,14 @@ const styles = {
         borderBottom: baseBorderLight,
         borderLeft: baseBorderLight,
         background: "#fafafa",
-        color: "#222",
+        color: "#222"
     },
     activeDark: {
         background: "#222",
-        borderLeft: "3px solid #BB86FC",
+        borderLeft: "3px solid #BB86FC"
     },
     activeLight: {
         background: "#e8e0ff",
-        borderLeft: "3px solid #5A2DA8",
+        borderLeft: "3px solid #5A2DA8"
     }
 }

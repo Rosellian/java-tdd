@@ -3,6 +3,7 @@ import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function SkuRules({ rules }) {
     const { theme } = useTheme();
+
     const groupedBySku = groupBySku(rules);
     const sortedSkuKeys = Object.keys(groupedBySku).sort();
 
@@ -21,7 +22,7 @@ export function SkuRules({ rules }) {
                 </ul>
             </li>
         ))
-    );
+    )
 }
 
 function groupBySku(rules) {
@@ -39,7 +40,7 @@ const styles = {
         marginBottom: 6,
         fontWeight: "bold",
         fontSize: "0.9rem",
-        transition: "color 0.25s ease",
+        transition: "color 0.25s ease"
     },
     list: {
         paddingLeft: 0,
@@ -47,9 +48,9 @@ const styles = {
         listStyle: "none"
     },
     headerDark: {
-        color: "#BB86FC",
+        color: "#BB86FC"
     },
     headerLight: {
-        color: "#5A2DA8",
+        color: "#5A2DA8"
     }
 }

@@ -27,41 +27,41 @@ export function RuleEntry({ rule, onClick, open }) {
 const styles = {
     ruleHeader: {
         display: "grid",
-        gridTemplateColumns: "1fr 1fr auto",
+        gridTemplateColumns: "1fr auto auto",
         alignItems: "center",
         columnGap: 12,
         cursor: "pointer",
         userSelect: "none",
         padding: "4px 0",
-        transition: "background 0.25s ease, color 0.25s ease",
+        transition: "background 0.25s ease, color 0.25s ease"
     },
     headerDark: {
         background: "transparent",
-        color: "#eee",
+        color: "#eee"
     },
     headerLight: {
         background: "transparent",
-        color: "#222",
+        color: "#222"
     },
     ruleName: {
         fontSize: "1rem",
         fontWeight: 600,
-        transition: "color 0.25s ease",
+        transition: "color 0.25s ease"
     },
     nameDark: {
-        color: "#BB86FC",
+        color: "#BB86FC"
     },
     nameLight: {
-        color: "#5A2DA8",
+        color: "#5A2DA8"
     },
     ruleToggle: {
         fontSize: "0.9rem",
-        transition: "color 0.25s ease",
+        transition: "color 0.25s ease"
     },
     toggleDark: {
-        color: "#888",
+        color: "#888"
     },
     toggleLight: {
-        color: "#666",
+        color: "#666"
     }
 }

@@ -15,12 +15,12 @@ const styles = {
     ruleValue: {
         fontSize: "0.85rem",
         marginTop: 4,
-        transition: "color 0.25s ease",
+        transition: "color 0.25s ease"
     },
     valueDark: {
-        color: "#bbb",
+        color: "#bbb"
     },
     valueLight: {
-        color: "#555",
+        color: "#555"
     }
 }

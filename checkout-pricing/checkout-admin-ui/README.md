@@ -703,6 +703,7 @@ Two versions created as prototypes:
 - Making RuleDebugger layout more compact
   - RuleTimeline
     - Adding scrollbar
+    - More compact layout
   - DPGraph
     - Adding scrollbar
     - More compact SkuNodes

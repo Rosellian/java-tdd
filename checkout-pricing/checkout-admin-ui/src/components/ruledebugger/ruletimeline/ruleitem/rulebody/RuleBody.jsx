@@ -20,18 +20,18 @@ export function RuleBody({ rule }) {
 const styles = {
     ruleBody: {
         marginTop: 8,
-        paddingLeft: 4,
+        paddingLeft: 4
     },
     ruleEffect: {
         marginTop: 4,
         fontSize: "0.85rem",
         fontWeight: 600,
-        transition: "color 0.25s ease",
+        transition: "color 0.25s ease"
     },
     effectDark: {
-        color: "#4caf50",
+        color: "#4caf50"
     },
     effectLight: {
-        color: "#2e7d32",
+        color: "#2e7d32"
     }
 }

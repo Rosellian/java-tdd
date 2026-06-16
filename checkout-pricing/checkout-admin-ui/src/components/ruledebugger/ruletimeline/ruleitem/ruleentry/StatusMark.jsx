@@ -18,6 +18,6 @@ export function StatusMark({ matched }) {
 const styles = {
     matched: {
         fontWeight: 500,
-        transition: "color 0.25s ease",
+        transition: "color 0.25s ease"
     }
 }
