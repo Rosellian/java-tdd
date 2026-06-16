@@ -1,6 +1,7 @@
 import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {PriceRowList} from "./pricerowlist/PriceRowList";
 import {addItem} from "./editorOps";
+import {CollapsibleSection} from "../../../ui/CollapsibleSection";
 
 export function PriceListEditor({ priceList, onChange }) {
     const { theme } = useTheme();
@@ -8,52 +9,53 @@ export function PriceListEditor({ priceList, onChange }) {
     if (!priceList || !Array.isArray(priceList.unitPrices)) return null;
 
     return (
-        <div style={{
-            ...styles.box,
-            ...(theme === "dark" ? styles.boxDark : styles.boxLight)
-        }}>
-            <h3 style={{
-                ...styles.title,
-                ...(theme === "dark" ? styles.titleDark : styles.titleLight)
-            }}>Unit Prices</h3>
+        <CollapsibleSection title="Price List Editor" changed={false}>
+            <div style={{
+                ...styles.box,
+                ...(theme === "dark" ? styles.boxDark : styles.boxLight)
+            }}>
+                <h3 style={{
+                    ...styles.title,
+                    ...(theme === "dark" ? styles.titleDark : styles.titleLight)
+                }}>Unit Prices</h3>
 
-            <PriceRowList priceList={priceList} onChange={onChange} />
+                <PriceRowList priceList={priceList} onChange={onChange} />
 
-            <button onClick={() => addItem(priceList, onChange)}
-                style={{
-                    ...styles.addButton,
-                    ...(theme === "dark" ? styles.addButtonDark : styles.addButtonLight)
-                }}>+ Add SKU</button>
-        </div>
-    );
+                <button onClick={() => addItem(priceList, onChange)}
+                        style={{
+                            ...styles.addButton,
+                            ...(theme === "dark" ? styles.addButtonDark : styles.addButtonLight)
+                        }}>+ Add SKU</button>
+            </div>
+        </CollapsibleSection>
+    )
 }
 
 const styles = {
     box: {
         background: "#1E1E1E",
-        width: "fit-content",
-        padding: 15,
+        width: "100%",
         borderRadius: 4,
         display: "flex",
         flexDirection: "column",
         gap: 10,
-        transition: "background 0.3s ease",
+        transition: "background 0.3s ease"
     },
     boxDark: {
-        background: "#1E1E1E",
+        background: "#1E1E1E"
     },
     boxLight: {
-        background: "#f2f2f2",
+        background: "#f2f2f2"
     },
     title: {
         marginBottom: 10,
-        transition: "color 0.3s ease",
+        transition: "color 0.3s ease"
     },
     titleDark: {
-        color: "#82B1FF",
+        color: "#82B1FF"
     },
     titleLight: {
-        color: "#5A2DA8",
+        color: "#5A2DA8"
     },
     addButton: {
         width: "100px",
@@ -61,14 +63,14 @@ const styles = {
         borderRadius: 4,
         border: "none",
         cursor: "pointer",
-        marginTop: 10,
+        marginTop: 10
     },
     addButtonDark: {
         background: "#4CAF50",
-        color: "#fff",
+        color: "#fff"
     },
     addButtonLight: {
         background: "#4CAF50",
-        color: "#000",
+        color: "#000"
     }
 }

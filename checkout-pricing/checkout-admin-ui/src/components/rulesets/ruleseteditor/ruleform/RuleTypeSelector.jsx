@@ -5,7 +5,10 @@ export function RuleTypeSelector({ value, onChange }) {
 
     return (
         <div style={styles.box}>
-            <label style={styles.label}>Rule Type</label>
+            <label style={{
+                ...styles.label,
+                ...(theme === "dark" ? styles.labelDark : styles.labelLight)
+            }}>Rule Type</label>
 
             <select value={value} onChange={(e) => onChange(e.target.value)}
                 style={{
@@ -31,8 +34,13 @@ const styles = {
         marginBottom: 12
     },
     label: {
-        fontSize: "0.9rem",
+        fontSize: "0.9rem"
+    },
+    labelDark: {
         color: "#82B1FF"
+    },
+    labelLight: {
+        color: "#5A2DA8"
     },
     select: {
         padding: "6px 8px",

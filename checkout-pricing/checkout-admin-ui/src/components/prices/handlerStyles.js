@@ -2,6 +2,7 @@ export const handlerStyles = {
     wrapper: {
         display: "flex",
         flexDirection: "column",
+        alignSelf: "flex-start",
         gap: 16,
         padding: 16,
         borderRadius: 6,
@@ -23,7 +24,7 @@ export const handlerStyles = {
     },
     editorWrapper: {
         width: "100%",
-        maxWidth: "1200px",
+        maxWidth: "755px",
         alignSelf: "stretch",
     },
     loading: {
