@@ -700,6 +700,11 @@ Two versions created as prototypes:
   - SkuBreakdown
   - DPSection
     - Adding scrollbar to DPBody
+- Making RuleDebugger layout more compact
+  - RuleTimeline
+    - adding scrollbar
+  - DPGraph
+    - adding scrollbar
 
 ### Current structure
 ```

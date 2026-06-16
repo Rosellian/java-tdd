@@ -30,9 +30,11 @@ export function DPGraph({ dp }) {
                 ...(theme === "dark" ? styles.headerDark : styles.headerLight)
             }}>DP Graph</h3>
 
-            {Object.entries(grouped).map(([sku, nodes]) =>
-                <SkuNodes key={sku} sku={sku} nodes={nodes} />
-            )}
+            <div style={styles.scrollSection}>
+                {Object.entries(grouped).map(([sku, nodes]) =>
+                    <SkuNodes key={sku} sku={sku} nodes={nodes} />
+                )}
+            </div>
 
             {selectedStep !== null && (
                 <DPDetails node={dp[selectedStep]} index={selectedStep} />
@@ -45,36 +47,42 @@ const styles = {
     dpWrapper: {
         padding: 16,
         borderRadius: 8,
-        transition: "background 0.25s ease, color 0.25s ease",
+        transition: "background 0.25s ease, color 0.25s ease"
     },
     wrapperLight: {
         background: "#f5f5f5",
-        color: "#000",
+        color: "#000"
     },
     dpHeader: {
         marginBottom: 12,
         fontSize: "1.1rem",
         fontWeight: 600,
-        transition: "color 0.25s ease",
+        transition: "color 0.25s ease"
     },
     headerDark: {
-        color: "#fff",
+        color: "#fff"
     },
     headerLight: {
-        color: "#3A1F6B",
+        color: "#3A1F6B"
+    },
+    scrollSection: {
+        maxHeight: 300,
+        overflowY: "auto",
+        paddingRight: 6,
+        marginBottom: 15
     },
     dpEmpty: {
         padding: 16,
         borderRadius: 8,
         fontStyle: "italic",
-        transition: "background 0.25s ease, color 0.25s ease",
+        transition: "background 0.25s ease, color 0.25s ease"
     },
     emptyDark: {
         background: "#1a1a1a",
-        color: "#777",
+        color: "#777"
     },
     emptyLight: {
         background: "#fafafa",
-        color: "#666",
+        color: "#666"
     }
 }

@@ -16,62 +16,72 @@ export function RuleDebugger({ trace }) {
             }}>
                 <p>No trace available. Run a pricing evaluation.</p>
             </div>
-        );
+        )
     }
 
     const debuggerTrace = trace.debuggerTrace;
 
     return (
         <div style={{
-            ...styles.ruleDebugger,
+            ...styles.container,
             ...(theme === "dark" ? styles.dark : styles.light)
         }}>
             <h2 style={{
                 ...(theme === "dark" ? styles.headerDark : styles.headerLight)
             }}>Rule Debugger</h2>
 
-            <div style={styles.debuggerGrid}>
+            <div style={styles.ruleDebugger}>
                 <TraceSyncProvider>
-                    <ChainOverview steps={debuggerTrace.steps} />
-                    <RuleTimeline rules={debuggerTrace.rules} />
-                    <DPGraph dp={debuggerTrace.dp} />
+                    <div style={styles.leftCol}>
+                        <ChainOverview steps={debuggerTrace.steps} />
+                        <RuleTimeline rules={debuggerTrace.rules} />
+                    </div>
+
+                    <div style={styles.rightCol}>
+                        <DPGraph dp={debuggerTrace.dp} />
+                        <PriceEvolutionChart prices={debuggerTrace.priceEvolution} />
+                    </div>
                 </TraceSyncProvider>
-                <PriceEvolutionChart prices={debuggerTrace.priceEvolution} />
             </div>
         </div>
-    );
+    )
 }
 
 export const styles = {
-    ruleDebugger: {
+    container: {
         padding: 16,
         borderRadius: 8,
-        transition: "background 0.3s ease, color 0.3s ease",
+        transition: "background 0.3s ease, color 0.3s ease"
     },
     dark: {
         background: "#1a1a1a",
-        color: "#eee",
+        color: "#eee"
     },
     light: {
         background: "#f5f5f5",
-        color: "#000",
+        color: "#000"
     },
     headerDark: {
         color: "#BB86FC",
-        marginBottom: 16,
+        marginBottom: 16
     },
     headerLight: {
         color: "#5A2DA8",
-        marginBottom: 16,
+        marginBottom: 16
     },
-    debuggerGrid: {
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: 16,
+    ruleDebugger: {
+        display: "flex",
+        alignItems: "flex-start",
+        gap: 16
     },
-    section: {
-        background: "#222",
-        padding: 12,
-        borderRadius: 6,
+    leftCol: {
+        flex: 1,
+        display: "flex",
+        gap: 12
+    },
+    rightCol: {
+        flex: 1,
+        display: "flex",
+        gap: 12
     }
 }

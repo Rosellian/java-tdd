@@ -11,7 +11,7 @@ export function RuleTimeline({ rules }) {
                 ...styles.timelineEmpty,
                 ...(theme === "dark" ? styles.emptyDark : styles.emptyLight)
             }}>No rules matched in this step.</div>
-        );
+        )
     }
 
     const globalRules = rules.filter(r => !r.sku);
@@ -26,60 +26,67 @@ export function RuleTimeline({ rules }) {
                 ...(theme === "dark" ? styles.headerDark : styles.headerLight)
             }}>Rule Timeline</h3>
 
-            <ul style={styles.timelineList}>
-                {globalRules.map((r, i) => (
-                    <RuleItem key={i} rule={r} />
-                ))}
+            <div style={styles.scrollSection}>
+                <ul style={styles.timelineList}>
+                    {globalRules.map((r, i) => (
+                        <RuleItem key={i} rule={r} />
+                    ))}
 
-                <SkuRules rules={rules} />
-            </ul>
+                    <SkuRules rules={rules} />
+                </ul>
+            </div>
         </div>
-    );
+    )
 }
 
 const styles = {
     timelineWrapper: {
         padding: 16,
         borderRadius: 8,
-        transition: "background 0.25s ease, color 0.25s ease",
+        transition: "background 0.25s ease, color 0.25s ease"
     },
     wrapperDark: {
         background: "#1a1a1a",
-        color: "#eee",
+        color: "#eee"
     },
     wrapperLight: {
         background: "#f5f5f5",
-        color: "#222",
+        color: "#222"
     },
     timelineHeader: {
         marginBottom: 12,
         fontSize: "1.1rem",
         fontWeight: 600,
-        transition: "color 0.25s ease",
+        transition: "color 0.25s ease"
     },
     headerDark: {
-        color: "#fff",
+        color: "#fff"
     },
     headerLight: {
-        color: "#3A1F6B",
+        color: "#3A1F6B"
+    },
+    scrollSection: {
+        maxHeight: 300,
+        overflowY: "auto",
+        paddingRight: 6
     },
     timelineList: {
         listStyle: "none",
         padding: 0,
-        margin: 0,
+        margin: 0
     },
     timelineEmpty: {
         padding: 16,
         borderRadius: 8,
         fontStyle: "italic",
-        transition: "background 0.25s ease, color 0.25s ease",
+        transition: "background 0.25s ease, color 0.25s ease"
     },
     emptyDark: {
         background: "#1a1a1a",
-        color: "#777",
+        color: "#777"
     },
     emptyLight: {
         background: "#fafafa",
-        color: "#666",
+        color: "#666"
     }
 }
