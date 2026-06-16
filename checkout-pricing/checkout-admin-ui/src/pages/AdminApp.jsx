@@ -32,14 +32,21 @@ export default function AdminApp() {
             <h1 style={styles.header}>Pricing Engine Admin</h1>
 
             <div style={styles.controls}>
-                <RulesetHandler onRulesetChange={setRuleset} />
-                <PriceListHandler onPriceListChange={setPriceList} />
-                <CartEditor cart={cart} onChange={setCart} />
-                <CustomerPanel customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
-                <CustomerPanelV2 customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
+                <div style={styles.row}>
+                    <RulesetHandler onRulesetChange={setRuleset} />
 
-                <ButtonPanel cart={cart} ruleset={ruleset} priceList={priceList} customer={customer}
-                             getTrace={getTrace} />
+                    <PriceListHandler onPriceListChange={setPriceList} />
+                </div>
+
+                <div style={styles.row}>
+                    <CartEditor cart={cart} onChange={setCart} />
+
+                    <CustomerPanel customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
+                    <CustomerPanelV2 customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
+
+                    <ButtonPanel cart={cart} ruleset={ruleset} priceList={priceList} customer={customer}
+                                 getTrace={getTrace} />
+                </div>
             </div>
 
             {loading && <p>Evaluating pricing…</p>}
@@ -74,6 +81,12 @@ const styles = {
     },
     controls: {
         display: "flex",
+        flexDirection: "column",
         gap: 20,
+    },
+    row: {
+        display: "flex",
+        gap: 20,
+        alignItems: "flex-start",
     }
 }
