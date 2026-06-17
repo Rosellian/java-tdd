@@ -5,7 +5,7 @@ export function AnimatedBody({ children, open }) {
         <AnimatePresence initial={false}>
             {open && (
                 <motion.div
-                    key="rule-body"
+                    key="body"
                     layout
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}

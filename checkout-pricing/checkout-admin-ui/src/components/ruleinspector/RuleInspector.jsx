@@ -3,6 +3,7 @@ import {SkuBreakdown} from "./skubreakdown/SkuBreakdown";
 import {DPSection} from "./dpsection/DPSection";
 import {useTheme} from "../../ui/theme/ThemeProvider";
 import {TotalSection} from "./TotalSection";
+import {DPSectionV2} from "./dpsection/v2/DPSectionV2";
 
 export function RuleInspector({ trace }) {
     const { theme } = useTheme();
@@ -38,9 +39,9 @@ export function RuleInspector({ trace }) {
                 <div style={styles.right}>
                     <SkuBreakdown skuTraces={inspectionTrace.skuTraces} />
                     <DPSection dpTraces={inspectionTrace.dpTraces} />
+                    <DPSectionV2 dpTraces={inspectionTrace.dpTraces} />
                     <TotalSection finalTotal={inspectionTrace.finalTotal} />
                 </div>
-
             </div>
         </div>
     )

@@ -125,12 +125,12 @@ const styles = {
     badgeDark: {
         background: "#2A2A2A",
         border: "1px solid #444",
-        color: "#BB86FC"
+        color: "#4caf50"
     },
     badgeLight: {
         background: "#f5f0ff",
         border: "1px solid #d6c6ff",
-        color: "#5A2DA8"
+        color: "#2e7d32"
     },
     tagList: {
         display: "flex",

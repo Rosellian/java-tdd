@@ -708,6 +708,7 @@ Two versions created as prototypes:
     - Adding scrollbar
     - More compact SkuNodes
     - Better details view prototype
+- Add new prototype of RuleInspector DPSection
 
 ### Current structure
 ```
