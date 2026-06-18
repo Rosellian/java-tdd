@@ -1,19 +1,26 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
-import {highlightJsonSafe} from "../../../../ui/json/highlighting/highlight";
+import {CollapsibleJsonView} from "../../../../ui/json/collapsible/CollapsibleJsonView";
+import {normalizeNumbers} from "../../../../ui/json/collapsible/funcs";
 
 export function BodyPart({ label, value }) {
     const { theme } = useTheme();
+    const isDark = theme === "dark";
+
+    const normalizedValue = normalizeNumbers(value);
 
     return(
-        <pre
+        <div
             style={{
                 ...styles.pre,
-                ...(theme === "dark" ? styles.preDark : styles.preLight)
-        }}>
-            <strong>{label}:</strong>
-            {"\n"}
-            {highlightJsonSafe(value)}
-        </pre>
+                ...(isDark ? styles.preDark : styles.preLight)
+            }}
+        >
+            <div style={{ fontWeight: 600, marginBottom: 4 }}>
+                {label}
+            </div>
+
+            <CollapsibleJsonView value={normalizedValue} />
+        </div>
     )
 }
 
