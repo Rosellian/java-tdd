@@ -712,6 +712,8 @@ Two versions created as prototypes:
 - RuleInspector
   - RuleTimeline
     - Add JSON syntax highlighting
+  - SkuBreakdown
+    - Add JSON syntax highlighting
 ---
 
 ### Added functionality and improvements

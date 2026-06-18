@@ -1,18 +1,18 @@
 import {useTheme} from "../../../../../ui/theme/ThemeProvider";
+import {highlightJsonSafe} from "../../../../../ui/json/highlighting/highlight";
 
 export function SkuData({ skuData }) {
     const { theme } = useTheme();
 
     return (
-        <pre style={{
-            ...styles.pre,
-            ...(theme === "dark" ? styles.preDark : styles.preLight)
-        }}>{formatData(skuData)}</pre>
+        <pre
+            style={{
+                ...styles.pre,
+                ...(theme === "dark" ? styles.preDark : styles.preLight)
+            }}>
+            {highlightJsonSafe(skuData)}
+        </pre>
     )
-}
-
-function formatData(sku) {
-    return JSON.stringify(sku, null, 2);
 }
 
 const styles = {

@@ -5,17 +5,15 @@ export function BodyPart({ label, value }) {
     const { theme } = useTheme();
 
     return(
-        <div>
-            <pre
-                style={{
-                    ...styles.pre,
-                    ...(theme === "dark" ? styles.preDark : styles.preLight)
-            }}>
-                <strong>{label}:</strong>
-                {"\n"}
-                {highlightJsonSafe(value)}
-            </pre>
-        </div>
+        <pre
+            style={{
+                ...styles.pre,
+                ...(theme === "dark" ? styles.preDark : styles.preLight)
+        }}>
+            <strong>{label}:</strong>
+            {"\n"}
+            {highlightJsonSafe(value)}
+        </pre>
     )
 }
 
