@@ -709,6 +709,9 @@ Two versions created as prototypes:
     - More compact SkuNodes
     - Better details view prototype
 - Add new prototype of RuleInspector DPSection
+- RuleInspector
+  - RuleTimeline
+    - Add JSON syntax highlighting
 ---
 
 ### Added functionality and improvements
