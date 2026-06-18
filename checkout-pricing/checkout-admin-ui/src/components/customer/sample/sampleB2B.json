@@ -1,0 +1,81 @@
+{
+  "id": "B2B-50123",
+  "segment": "B2B",
+
+  "basicInfo": {
+    "companyName": "Nordic Retail Solutions AB",
+    "organizationNumber": "559187-4421",
+    "industry": "Retail Technology",
+    "email": "info@nordicretail.se",
+    "phone": "+46 31 445 22 10",
+
+    "billingAddress": {
+      "street": "Östra Hamngatan 42",
+      "city": "Göteborg",
+      "zip": "411 09",
+      "country": "Sweden"
+    },
+
+    "shippingAddress": {
+      "street": "Exportgatan 12",
+      "city": "Hisings Backa",
+      "zip": "422 46",
+      "country": "Sweden"
+    },
+
+    "contacts": [
+      {
+        "name": "Maria Svensson",
+        "role": "Purchasing Manager",
+        "email": "maria.svensson@nordicretail.se",
+        "phone": "+46 70 812 44 91"
+      },
+      {
+        "name": "Henrik Dahl",
+        "role": "Finance Controller",
+        "email": "henrik.dahl@nordicretail.se",
+        "phone": "+46 72 991 33 20"
+      }
+    ]
+  },
+
+  "metadata": {
+    "accountManager": "Daniel Rosell",
+    "creditLimit": 250000,
+    "paymentTerms": "30 days",
+    "preferredLanguage": "sv-SE",
+    "riskScore": 18,
+    "lifetimeValue": 982000,
+    "marketingOptIn": false
+  },
+
+  "recentOrders": [
+    {
+      "orderId": "B2B-ORD-30012",
+      "date": "2026-05-30",
+      "total": 12499,
+      "items": [
+        { "sku": "POS-TERMINAL", "quantity": 3, "price": 2999 },
+        { "sku": "SCANNER-X2", "quantity": 5, "price": 799 }
+      ]
+    },
+    {
+      "orderId": "B2B-ORD-29988",
+      "date": "2026-04-18",
+      "total": 34999,
+      "items": [
+        { "sku": "KIOSK-PRO", "quantity": 1, "price": 24999 },
+        { "sku": "RECEIPT-PRINTER", "quantity": 4, "price": 2500 }
+      ]
+    }
+  ],
+
+  "preferences": {
+    "theme": "dark",
+    "notifications": {
+      "email": true,
+      "sms": false,
+      "push": false
+    }
+  }
+}

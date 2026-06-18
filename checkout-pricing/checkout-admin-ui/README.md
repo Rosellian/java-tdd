@@ -709,6 +709,10 @@ Two versions created as prototypes:
     - More compact SkuNodes
     - Better details view prototype
 - Add new prototype of RuleInspector DPSection
+---
+
+### Added functionality and improvements
+- Export and import of Customer JSON
 
 ### Current structure
 ```

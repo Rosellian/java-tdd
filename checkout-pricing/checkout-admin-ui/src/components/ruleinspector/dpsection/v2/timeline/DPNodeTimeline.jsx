@@ -1,6 +1,5 @@
 import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 import {Details} from "./Details";
-import {color} from "framer-motion";
 
 export function DPNodeTimeline({ dp }) {
     const { theme } = useTheme();

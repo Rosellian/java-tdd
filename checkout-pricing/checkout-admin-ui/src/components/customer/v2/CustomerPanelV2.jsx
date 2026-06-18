@@ -1,6 +1,7 @@
 import { useTheme } from "../../../ui/theme/ThemeProvider";
 import {EditableRow} from "./EditableRow";
 import {CustomerSections} from "./sections/CustomerSections";
+import {CustomerJsonLoader} from "../loader/CustomerJsonLoader";
 
 export function CustomerPanelV2({ customer, setCustomer, originalCustomer }) {
     const { theme } = useTheme();
@@ -18,6 +19,8 @@ export function CustomerPanelV2({ customer, setCustomer, originalCustomer }) {
                 ...styles.title,
                 ...(theme === "dark" ? styles.titleDark : styles.titleLight)
             }}>Customer</h3>
+
+            <CustomerJsonLoader customer={customer} onImport={(json) => setCustomer(json)} />
 
             <div style={{
                 ...styles.scrollArea,
@@ -39,7 +42,6 @@ const styles = {
         borderRadius: 4,
         minWidth: 300,
         transition: "background 0.3s ease, color 0.3s ease",
-        // height: 650,
         minHeight: 0,
         display: "flex",
         flexDirection: "column",
