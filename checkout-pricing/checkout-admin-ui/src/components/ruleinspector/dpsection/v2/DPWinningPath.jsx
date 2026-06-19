@@ -1,4 +1,5 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
+import {highlightExplanationLine} from "../highlighting/highlighting";
 
 export function DPWinningPath({ dp }) {
     const { theme } = useTheme();
@@ -17,7 +18,12 @@ export function DPWinningPath({ dp }) {
             </h4>
 
             <div style={styles.path}>
-                {dp.winningPath.join(" → ")}
+                {dp.winningPath.map((line, i) => (
+                    <div key={i}>
+                        {highlightExplanationLine(line)}
+                        {i < dp.winningPath.length-1 ? " +" : ""}
+                    </div>
+                ))}
             </div>
 
             <div style={styles.reason}>

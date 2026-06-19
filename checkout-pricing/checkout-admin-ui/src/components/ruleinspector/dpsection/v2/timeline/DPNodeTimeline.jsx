@@ -1,5 +1,6 @@
 import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 import {Details} from "./Details";
+import {highlightExplanationLine} from "../../highlighting/highlighting";
 
 export function DPNodeTimeline({ dp }) {
     const { theme } = useTheme();
@@ -32,7 +33,7 @@ export function DPNodeTimeline({ dp }) {
                             <strong>Explanation:</strong>
                             <ul style={styles.explanation}>
                                 {node.explanation.map((line, i) => (
-                                    <li key={i}>{line}</li>
+                                    <li key={i}>{highlightExplanationLine(line)}</li>
                                 ))}
                             </ul>
                         </div>

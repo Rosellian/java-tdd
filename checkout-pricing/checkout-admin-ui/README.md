@@ -715,6 +715,8 @@ Two versions created as prototypes:
     - Collapsible JSON keys
   - SkuBreakdown
     - Add JSON syntax highlighting
+  - DPSection
+    - Syntax highlighting for explanation and winning path.
 ---
 
 ### Added functionality and improvements

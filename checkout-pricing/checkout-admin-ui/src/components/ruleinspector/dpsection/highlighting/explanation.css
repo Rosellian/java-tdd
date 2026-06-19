@@ -1,0 +1,45 @@
+body[data-theme="light"] {
+    --text-rule: #8E24AA;
+    --text-number: #2E7D32;
+    --text-operator: #E65100;
+    --text-keyword: #5A2DA8;
+    --text-arrow: #0277BD;
+}
+
+body[data-theme="dark"] {
+    --text-rule: #CE93D8;
+    --text-number: #81C784;
+    --text-operator: #FFB74D;
+    --text-keyword: #BB86FC;
+    --text-arrow: #4FC3F7;
+}
+
+/* RULES */
+.text-rule {
+    color: var(--text-rule);
+    font-weight: 700;
+}
+
+/* NUMBERS */
+.text-number {
+    color: var(--text-number);
+    font-weight: 600;
+}
+
+/* OPERATORS: → = + - * */
+.text-operator {
+    color: var(--text-operator);
+    font-weight: 700;
+}
+
+/* KEYWORDS: State, Price, Option, etc */
+.text-keyword {
+    color: var(--text-keyword);
+    font-weight: 600;
+}
+
+/* ARROWS (optional separate class) */
+.text-arrow {
+    color: var(--text-arrow);
+    font-weight: 700;
+}
