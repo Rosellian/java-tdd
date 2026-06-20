@@ -24,16 +24,16 @@ const styles = {
         whiteSpace: "pre-wrap",
         overflowX: "auto",
         transition: "background 0.25s ease, color 0.25s ease",
-        border: "1px solid",
+        border: "1px solid"
     },
     preDark: {
         background: "#2A2A2A",
         color: "#ccc",
-        borderColor: "#333",
+        borderColor: "#333"
     },
     preLight: {
         background: "#f5f5f5",
         color: "#333",
-        borderColor: "#ddd",
+        borderColor: "#ddd"
     }
 }

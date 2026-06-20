@@ -4,6 +4,7 @@ import {ThemeProvider} from "./ui/theme/ThemeProvider";
 import "./ui/theme/scrollbar.css";
 import "./ui/json/highlighting/json.css";
 import "./components/ruleinspector/dpsection/highlighting/explanation.css";
+import "./components/ruleinspector/skubreakdown/badge.css";
 
 function App() {
   return <ThemeProvider>

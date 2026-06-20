@@ -1,4 +1,5 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
+import {Badge} from "../Badge";
 
 export function SkuHeader({ skuData, onClick }) {
     const { theme } = useTheme();
@@ -9,7 +10,10 @@ export function SkuHeader({ skuData, onClick }) {
             ...(theme === "dark" ? styles.headerDark : styles.headerLight)
         }} onClick={onClick}>
             <strong>{skuData.sku}</strong>
-            <span>{skuData.total} kr</span>
+
+            <div style={styles.total}>
+                <Badge type="total">{skuData.total} kr</Badge>
+            </div>
         </div>
     )
 }
@@ -21,16 +25,20 @@ const styles = {
         display: "flex",
         justifyContent: "space-between",
         transition: "background 0.25s ease, color 0.25s ease",
-        borderBottom: "1px solid",
+        borderBottom: "1px solid"
     },
     headerDark: {
         background: "#263238",
         color: "#80CBC4",
-        borderColor: "#333",
+        borderColor: "#333"
     },
     headerLight: {
         background: "#e8f1f3",
         color: "#00695c",
-        borderColor: "#ccc",
+        borderColor: "#ccc"
+    },
+    total: {
+        display: "flex",
+        gap: 6
     }
 }

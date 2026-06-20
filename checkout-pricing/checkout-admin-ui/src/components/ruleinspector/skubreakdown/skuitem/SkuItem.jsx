@@ -14,13 +14,13 @@ export function SkuItem({ skuData }) {
             ...styles.sku,
             ...(theme === "dark" ? styles.skuDark : styles.skuLight)
         }}>
-            <SkuHeader skuData={skuData} onClick={() => setOpen(!open)}/>
+            <SkuHeader skuData={skuData} onClick={() => setOpen(!open)} />
 
             <AnimatedBody open={open}>
                 <SkuBody skuData={skuData} />
             </AnimatedBody>
         </div>
-    );
+    )
 }
 
 const styles = {
@@ -28,16 +28,16 @@ const styles = {
         marginBottom: 10,
         borderRadius: 4,
         border: "1px solid",
-        transition: "background 0.25s ease, border-color 0.25s ease",
+        transition: "background 0.25s ease, border-color 0.25s ease"
     },
     skuDark: {
         background: "#1E1E1E",
         borderColor: "#333",
-        color: "#eee",
+        color: "#eee"
     },
     skuLight: {
         background: "#fafafa",
         borderColor: "#ccc",
-        color: "#222",
+        color: "#222"
     }
 }

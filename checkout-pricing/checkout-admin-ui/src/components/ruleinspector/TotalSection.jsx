@@ -18,12 +18,12 @@ const styles = {
     total: {
         fontSize: 24,
         fontWeight: "bold",
-        transition: "color 0.3s ease",
+        transition: "color 0.3s ease"
     },
     totalDark: {
-        color: "#03DAC6",
+        color: "#03DAC6"
     },
     totalLight: {
-        color: "#00897B",
+        color: "#00897B"
     }
 }

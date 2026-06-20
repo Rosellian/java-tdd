@@ -10,5 +10,5 @@ export function SkuBreakdown({ skuTraces }) {
                 ))}
             </div>
         </Section>
-    );
+    )
 }
