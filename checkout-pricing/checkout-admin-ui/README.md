@@ -718,6 +718,8 @@ Two versions created as prototypes:
     - Add badges
   - DPSection
     - Syntax highlighting for explanation and winning path.
+    - Version 2
+      - Collapsible explanation and details
 ---
 
 ### Added functionality and improvements
