@@ -23,8 +23,11 @@ export function CollapsibleJsonItem({ label, value, level }) {
                     </span>
                 )}
 
-                <span className="json-key">"{label}"</span>:
-                {!isObject && <JsonValue value={value} />}
+                <div style={styles.jsonValue}>
+                    <span className="json-key">"{label}"</span>
+                    <span>:</span>
+                    {!isObject && <JsonValue value={value} />}
+                </div>
             </div>
 
             {isObject && open && (
@@ -48,6 +51,11 @@ const styles = {
     },
     toggle: {
         opacity: 0.7
+    },
+    jsonValue: {
+        display: "flex",
+        gap: 6,
+        alignItems: "center"
     },
     value: {
         marginLeft: 16

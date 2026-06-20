@@ -18,7 +18,7 @@ export function CollapsibleJsonView({ value, level = 0 }) {
                     key={key}
                     label={key}
                     value={val}
-                    level={level}
+                    level={level + 1}
                 />
             ))}
         </div>

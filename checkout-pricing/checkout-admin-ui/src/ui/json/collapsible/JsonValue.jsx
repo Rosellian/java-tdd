@@ -1,6 +1,4 @@
 export function JsonValue({ value }) {
-    console.log("TYPE:", typeof value, "VALUE:", value);
-
     if (value === null) return <span className="json-null">null</span>;
 
     if (typeof value === "string") return <span className="json-string">"{value}"</span>;

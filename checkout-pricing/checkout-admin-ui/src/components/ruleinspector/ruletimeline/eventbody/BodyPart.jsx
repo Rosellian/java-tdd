@@ -1,12 +1,9 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
-import {CollapsibleJsonView} from "../../../../ui/json/collapsible/CollapsibleJsonView";
-import {normalizeNumbers} from "../../../../ui/json/collapsible/funcs";
+import {highlightJsonSafe} from "../../../../ui/json/highlighting/highlight";
 
 export function BodyPart({ label, value }) {
     const { theme } = useTheme();
     const isDark = theme === "dark";
-
-    const normalizedValue = normalizeNumbers(value);
 
     return(
         <div
@@ -19,7 +16,7 @@ export function BodyPart({ label, value }) {
                 {label}
             </div>
 
-            <CollapsibleJsonView value={normalizedValue} />
+            {highlightJsonSafe(value)}
         </div>
     )
 }
