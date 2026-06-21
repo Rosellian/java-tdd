@@ -1,35 +1,39 @@
 import {Options} from "./Options";
+import {highlightExplanationLine} from "../../highlighting/highlighting";
+import {CollapsibleBlock} from "./CollapsibleBlock";
 
-export function Details({node, remaining, isDark }) {
+export function Details({node, debuggerNode, remaining, beforePrice, isDark }) {
     return (
-        <div style={styles.details}>
-            <span>Rule:</span>
-            <span>{node.rule ?? "—"}</span>
+        <CollapsibleBlock title="Details">
+            <div style={styles.details}>
+                <span>Rule:</span>
+                <span>{node.rule ?? "—"}</span>
 
-            <span>Before:</span>
-            <span>{node.beforePrice}</span>
+                <span>Before:</span>
+                <span>{beforePrice}</span>
 
-            <span>After:</span>
-            <span style={{
-                ...styles.afterPrice,
-                ...(isDark ? styles.afterPriceDark : styles.afterPriceLight)
-            }}>
-                {node.afterPrice}
-            </span>
+                <span>After:</span>
+                <span style={{
+                    ...styles.afterPrice,
+                    ...(isDark ? styles.afterPriceDark : styles.afterPriceLight)
+                }}>
+                    {debuggerNode.price}
+                </span>
 
-            <span>Remaining:</span>
-            <span>{remaining}</span>
+                <span>Remaining:</span>
+                <span>{remaining}</span>
 
-            <span>Chosen:</span>
-            <span style={{
-                ...styles.chosen,
-                ...(isDark ? styles.chosenDark : styles.chosenLight)
-            }}>
-                {node.chosen}
-            </span>
+                <span>Chosen:</span>
+                <span style={{
+                    ...styles.chosen,
+                    ...(isDark ? styles.chosenDark : styles.chosenLight)
+                }}>
+                    {highlightExplanationLine(debuggerNode.chosen)}
+                </span>
 
-            <Options node={node} isDark={isDark} />
-        </div>
+                <Options options={debuggerNode.options} isDark={isDark} />
+            </div>
+        </CollapsibleBlock>
     )
 }
 

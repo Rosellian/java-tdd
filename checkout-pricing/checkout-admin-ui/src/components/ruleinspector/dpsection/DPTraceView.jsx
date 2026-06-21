@@ -27,16 +27,16 @@ const styles = {
         marginBottom: 10,
         borderRadius: 4,
         border: "1px solid",
-        transition: "background 0.25s ease, border-color 0.25s ease",
+        transition: "background 0.25s ease, border-color 0.25s ease"
     },
     dpDark: {
         background: "#1E1E1E",
         borderColor: "#333",
-        color: "#eee",
+        color: "#eee"
     },
     dpLight: {
         background: "#fafafa",
         borderColor: "#ccc",
-        color: "#222",
+        color: "#222"
     }
 }

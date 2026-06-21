@@ -4,7 +4,7 @@ import {DPOverview} from "./DPOverview";
 import {DPNodeTimeline} from "./timeline/DPNodeTimeline";
 import {DPWinningPath} from "./DPWinningPath";
 
-export function DPTraceBlock({ dp, isDark }) {
+export function DPTraceBlock({ dp, debuggerDP, isDark }) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -18,6 +18,7 @@ export function DPTraceBlock({ dp, isDark }) {
                      ...(isDark ? styles.headerDark : styles.headerLight)
                  }}>
                 <span>SKU {dp.sku}</span>
+
                 <span style={styles.toggle}>{open ? "▲" : "▼"}</span>
             </div>
 
@@ -26,7 +27,7 @@ export function DPTraceBlock({ dp, isDark }) {
                     <DPOverview dp={dp} />
 
                     <div style={styles.scrollArea}>
-                        <DPNodeTimeline dp={dp} />
+                        <DPNodeTimeline dp={dp} debuggerDP={debuggerDP} />
                     </div>
 
                     <DPWinningPath dp={dp} />

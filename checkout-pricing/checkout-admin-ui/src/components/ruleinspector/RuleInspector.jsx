@@ -39,7 +39,7 @@ export function RuleInspector({ trace }) {
                 <div style={styles.right}>
                     <SkuBreakdown skuTraces={inspectionTrace.skuTraces} />
                     <DPSection dpTraces={inspectionTrace.dpTraces} />
-                    <DPSectionV2 dpTraces={inspectionTrace.dpTraces} />
+                    <DPSectionV2 dpTraces={inspectionTrace.dpTraces} debuggerDPTraces={trace.debuggerTrace.dp} />
                     <TotalSection finalTotal={inspectionTrace.finalTotal} />
                 </div>
             </div>

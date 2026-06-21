@@ -1,9 +1,10 @@
-export function Options({ node, isDark }) {
+export function Options({ options, isDark }) {
     return (
-        <div>
+        <div style={styles.container}>
             <span>Options:</span>
+
             <div style={styles.options}>
-                {(node.options?.length ? node.options : ["None"]).map((opt, j) => (
+                {(options?.length ? options : ["None"]).map((opt, j) => (
                     <span key={j} style={{
                         ...styles.option,
                         ...(isDark ? styles.optionDark : styles.optionLight)
@@ -17,10 +18,15 @@ export function Options({ node, isDark }) {
 }
 
 const styles = {
+    container: {
+        display: "flex",
+        flexWrap: "wrap",
+        gap: 5,
+    },
     options: {
         display: "flex",
         flexWrap: "wrap",
-        gap: 4
+        gap: 5
     },
     option: {
         padding: "2px 6px",

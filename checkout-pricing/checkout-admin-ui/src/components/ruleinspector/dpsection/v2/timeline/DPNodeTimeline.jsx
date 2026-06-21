@@ -2,15 +2,16 @@ import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 import {Details} from "./Details";
 import {ExplanationBlock} from "./ExplanationBlock";
 
-export function DPNodeTimeline({ dp }) {
+export function DPNodeTimeline({ dp, debuggerDP }) {
     const { theme } = useTheme();
     const isDark = theme === "dark";
 
     return (
         <div style={styles.timeline}>
             {dp.nodes.map((node, nodeIndex) => {
-                const remaining = dp.remaining - (nodeIndex + 1);
-                const prevPrice = nodeIndex > 0 ? dp.nodes[nodeIndex - 1].price : null;
+                const {debuggerNode, remaining, prevPrice} =
+                    getDetailsInput(debuggerDP, nodeIndex, dp);
+
                 const priceColor = getPriceColor(prevPrice, node.price, isDark);
 
                 return (
@@ -24,19 +25,31 @@ export function DPNodeTimeline({ dp }) {
 
                         <div style={styles.price}>
                             <strong>Price: </strong>
+
                             <span style={{color: priceColor}}>
                                 {node.price}
                             </span>
                         </div>
 
-                        <ExplanationBlock node={node}>
-                            <Details node={node} remaining={remaining} isDark={isDark}/>
-                        </ExplanationBlock>
+                        <ExplanationBlock node={node} />
+
+                        <Details node={node} debuggerNode={debuggerNode} beforePrice={prevPrice} remaining={remaining}
+                                 isDark={isDark}/>
                     </div>
                 )
             })}
         </div>
     )
+}
+
+function getDetailsInput(debuggerDP, nodeIndex, dp) {
+    const debuggerNode = debuggerDP[nodeIndex];
+
+    const remaining = dp.remaining - (nodeIndex + 1);
+
+    const prevPrice = nodeIndex > 0 ? dp.nodes[nodeIndex - 1].price : null;
+
+    return {debuggerNode, remaining, prevPrice};
 }
 
 function getPriceColor(prev, current, isDark) {

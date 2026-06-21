@@ -719,7 +719,10 @@ Two versions created as prototypes:
   - DPSection
     - Syntax highlighting for explanation and winning path.
     - Version 2
-      - Collapsible explanation and details
+      - Collapsible explanation and details combined
+      - Using debugger data for details
+      - Separate collapsible details block
+      - Separate collapsible explanation block
 ---
 
 ### Added functionality and improvements

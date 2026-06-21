@@ -28,6 +28,7 @@ export function DPWinningPath({ dp }) {
 
             <div style={styles.reason}>
                 <strong>Reason: SAMPLE DATA</strong>
+
                 <ul>
                     <li>Lowest final price</li>
                     <li>Valid remaining count</li>

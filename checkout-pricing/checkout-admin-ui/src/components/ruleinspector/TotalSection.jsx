@@ -9,7 +9,9 @@ export function TotalSection({ finalTotal }) {
             <div style={{
                 ...styles.total,
                 ...(theme === "dark" ? styles.totalDark : styles.totalLight)
-            }}>{finalTotal} kr</div>
+            }}>
+                {finalTotal} kr
+            </div>
         </Section>
     )
 }
