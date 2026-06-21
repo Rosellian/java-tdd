@@ -1,21 +1,18 @@
 import {useTraceSync} from "../../TraceSyncProvider";
 import {DPDetails} from "./dpdetails/DPDetails";
 import {useTheme} from "../../../ui/theme/ThemeProvider";
-import {addGlobalIndex, groupBySku} from "./dpFuncs";
+import {addGlobalIndex, groupBySku, renderEmptyState} from "./dpFuncs";
 import {SkuNodes} from "./SkuNodes";
 import {DPDetailsV2} from "./v2/DPDetailsV2";
 
 export function DPGraph({ dp }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
+
     const { selectedStep } = useTraceSync();
 
     if (!dp) {
-        return (
-            <div style={{
-                ...styles.dpEmpty,
-                ...(theme === "dark" ? styles.emptyDark : styles.emptyLight)
-            }}>No dynamic programming steps recorded.</div>
-        )
+        return renderEmptyState(isDark);
     }
 
     const indexedDP = addGlobalIndex(dp);
@@ -24,12 +21,14 @@ export function DPGraph({ dp }) {
     return (
         <div style={{
             ...styles.dpWrapper,
-            ...(theme === "dark" ? styles.wrapperDark : styles.wrapperLight)
+            ...(isDark ? styles.wrapperDark : styles.wrapperLight)
         }}>
             <h3 style={{
                 ...styles.dpHeader,
-                ...(theme === "dark" ? styles.headerDark : styles.headerLight)
-            }}>DP Graph</h3>
+                ...(isDark ? styles.headerDark : styles.headerLight)
+            }}>
+                DP Graph
+            </h3>
 
             <div style={styles.scrollSection}>
                 {Object.entries(grouped).map(([sku, nodes]) =>
@@ -40,6 +39,7 @@ export function DPGraph({ dp }) {
             {selectedStep !== null && (
                 <>
                     <DPDetails node={dp[selectedStep]} index={selectedStep} />
+
                     <DPDetailsV2 node={dp[selectedStep]} index={selectedStep} />
                 </>
             )}
@@ -74,19 +74,5 @@ const styles = {
         overflowY: "auto",
         paddingRight: 6,
         marginBottom: 15
-    },
-    dpEmpty: {
-        padding: 16,
-        borderRadius: 8,
-        fontStyle: "italic",
-        transition: "background 0.25s ease, color 0.25s ease"
-    },
-    emptyDark: {
-        background: "#1a1a1a",
-        color: "#777"
-    },
-    emptyLight: {
-        background: "#fafafa",
-        color: "#666"
     }
 }

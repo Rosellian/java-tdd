@@ -1,5 +1,5 @@
 import {Options} from "./Options";
-import {highlightExplanationLine} from "../../highlighting/highlighting";
+import {highlightExplanationLine} from "../../../../../functions/dp/highlighting/highlighting";
 import {CollapsibleBlock} from "./CollapsibleBlock";
 
 export function Details({node, debuggerNode, remaining, beforePrice, isDark }) {

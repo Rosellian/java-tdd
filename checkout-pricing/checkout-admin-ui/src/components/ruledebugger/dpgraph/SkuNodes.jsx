@@ -3,16 +3,19 @@ import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function SkuNodes({ sku, nodes }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div key={sku} style={{
             ...styles.skuBlock,
-            ...(theme === "dark" ? styles.skuDark : styles.skuLight)
+            ...(isDark ? styles.skuDark : styles.skuLight)
         }}>
             <h3 style={{
                 ...styles.skuHeader,
-                ...(theme === "dark" ? styles.skuHeaderDark : styles.skuHeaderLight)
-            }}>{sku}</h3>
+                ...(isDark ? styles.skuHeaderDark : styles.skuHeaderLight)
+            }}>
+                {sku}
+            </h3>
 
             <DPNodes nodes={nodes}/>
         </div>

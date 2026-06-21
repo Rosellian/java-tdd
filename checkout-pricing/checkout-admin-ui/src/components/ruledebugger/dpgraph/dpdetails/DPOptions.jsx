@@ -3,27 +3,37 @@ import {detailsStyles} from "./detailsStyles";
 
 export function DPOptions({ node }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div style={detailsStyles.dpDetailsRow}>
             <span style={{
                 ...detailsStyles.dpLabel,
-                ...(theme === "dark" ? detailsStyles.labelDark : detailsStyles.labelLight)
-            }}>Options:</span>
+                ...(isDark ? detailsStyles.labelDark : detailsStyles.labelLight)
+            }}>
+                Options:
+            </span>
+
             <span style={{
                 ...styles.dpValueList,
-                ...(theme === "dark" ? styles.listDark : styles.listLight)
+                ...(isDark ? styles.listDark : styles.listLight)
             }}>
-                    {node.options && node.options.length > 0
-                        ? node.options.join(", ")
-                        : "None"}
+                {getOptions(node)}
             </span>
         </div>
     )
 }
 
+function getOptions(node) {
+    let isNonEmpty = node.options && node.options.length > 0;
+
+    return isNonEmpty ? node.options.join(",\n") : "None";
+}
+
 const styles = {
     dpValueList: {
+        whiteSpace: "pre-wrap",
+        wordBreak: "break-word",
         fontStyle: "italic",
         transition: "color 0.25s ease"
     },

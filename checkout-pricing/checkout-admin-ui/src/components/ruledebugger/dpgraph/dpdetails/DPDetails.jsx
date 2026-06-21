@@ -1,24 +1,26 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {DPDetail} from "./DPDetail";
 import {DPOptions} from "./DPOptions";
+import {formatChosen} from "../../../../functions/formatting";
 
 export function DPDetails({ node, index }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div style={{
             ...styles.dpDetails,
-            ...(theme === "dark" ? styles.detailsDark : styles.detailsLight)
+            ...(isDark ? styles.detailsDark : styles.detailsLight)
         }}>
             <h4 style={{
                 ...styles.dpDetailsHeader,
-                ...(theme === "dark" ? styles.headerDark : styles.headerLight)
+                ...(isDark ? styles.headerDark : styles.headerLight)
             }}>
                 Step {index + 1}
             </h4>
 
             <DPDetail label={"State"} value={node.state} />
-            <DPDetail label={"Chosen"} value={node.chosen} />
+            <DPDetail label={"Chosen"} value={formatChosen(node.chosen)} preFormatted={true} />
             <DPDetail label={"Price"} value={node.price} />
 
             <DPOptions node={node} />
@@ -28,6 +30,8 @@ export function DPDetails({ node, index }) {
 
 const styles = {
     dpDetails: {
+        width: "100%",
+        minWidth: 260,
         padding: 12,
         borderRadius: 6,
         border: "1px solid",

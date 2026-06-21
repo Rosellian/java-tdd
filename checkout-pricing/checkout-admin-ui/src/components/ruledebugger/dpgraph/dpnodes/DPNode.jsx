@@ -2,6 +2,7 @@ import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
 export function DPNode({ node, hoverIndex, setHoverIndex, selectedStep, setSelectedStep }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     const i = node.globalIndex;
     const isHovered = hoverIndex === i;
@@ -13,15 +14,21 @@ export function DPNode({ node, hoverIndex, setHoverIndex, selectedStep, setSelec
             onClick={() => setSelectedStep(i)}
             style={{
                 ...styles.dpNode,
-                ...(theme === "dark" ? styles.nodeDark : styles.nodeLight),
-                ...(isHovered ?
-                    theme === "dark" ? styles.nodeHoverDark : styles.nodeHoverLight
-                    : {}),
-                ...(isSelected ?
-                    theme === "dark" ? styles.nodeSelectedDark : styles.nodeSelectedLight
-                    : {})
-            }}>{node.state}</div>
+                ...(isDark ? styles.nodeDark : styles.nodeLight),
+                ...(getHoveredStyle(isHovered, isDark)),
+                ...(getSelectedStyle(isSelected, isDark))
+        }}>
+            {node.state}
+        </div>
     )
+}
+
+function getHoveredStyle(isHovered, isDark) {
+    return isHovered ? isDark ? styles.nodeHoverDark : styles.nodeHoverLight : {};
+}
+
+function getSelectedStyle(isSelected, isDark) {
+    return isSelected ? isDark ? styles.nodeSelectedDark : styles.nodeSelectedLight : {};
 }
 
 const styles = {

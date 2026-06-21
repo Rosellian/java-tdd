@@ -1,8 +1,10 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
+import {formatChosen} from "../../../../functions/formatting";
 
 export function DPDetailsV2({ node, index }) {
     const { theme } = useTheme();
     const isDark = theme === "dark";
+    let valueColor = isDark ? styles.valueDark : styles.valueLight;
 
     return (
         <div style={{
@@ -18,9 +20,10 @@ export function DPDetailsV2({ node, index }) {
 
             <div style={styles.row}>
                 <span style={styles.label}>State</span>
+
                 <span style={{
                     ...styles.value,
-                    ...(isDark ? styles.valueDark : styles.valueLight)
+                    ...valueColor
                 }}>
                     {node.state}
                 </span>
@@ -28,19 +31,21 @@ export function DPDetailsV2({ node, index }) {
 
             <div style={styles.row}>
                 <span style={styles.label}>Chosen</span>
+
                 <span style={{
                     ...styles.badge,
                     ...(isDark ? styles.badgeDark : styles.badgeLight)
                 }}>
-                    {node.chosen}
+                    {formatChosen(node.chosen)}
                 </span>
             </div>
 
             <div style={styles.row}>
                 <span style={styles.label}>Price</span>
+
                 <span style={{
                     ...styles.value,
-                    ...(isDark ? styles.valueDark : styles.valueLight)
+                    ...valueColor
                 }}>
                     {node.price}
                 </span>
@@ -48,6 +53,7 @@ export function DPDetailsV2({ node, index }) {
 
             <div style={styles.row}>
                 <span style={styles.label}>Options</span>
+
                 <div style={styles.tagList}>
                     {(node.options?.length > 0 ? node.options : ["None"]).map((opt, i) => (
                         <span key={i} style={{
@@ -71,6 +77,8 @@ const styles = {
         display: "flex",
         flexDirection: "column",
         gap: 8,
+        width: "100%",
+        minWidth: 260,
         fontSize: "0.85rem",
         transition: "background 0.25s ease, border-color 0.25s ease"
     },
@@ -120,6 +128,7 @@ const styles = {
         borderRadius: 4,
         fontWeight: 600,
         maxWidth: "100%",
+        whiteSpace: "pre-wrap",
         wordBreak: "break-word"
     },
     badgeDark: {

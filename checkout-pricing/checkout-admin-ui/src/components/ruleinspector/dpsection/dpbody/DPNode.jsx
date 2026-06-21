@@ -1,5 +1,5 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
-import {highlightExplanationLine} from "../highlighting/highlighting";
+import {highlightExplanationLine} from "../../../../functions/dp/highlighting/highlighting";
 
 export function DPNode({ node }) {
     const { theme } = useTheme();

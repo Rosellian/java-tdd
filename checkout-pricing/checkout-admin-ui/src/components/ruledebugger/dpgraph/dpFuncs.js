@@ -12,3 +12,31 @@ export function groupBySku(indexedDP) {
         return acc;
     }, {});
 }
+
+export function renderEmptyState(isDark) {
+    return (
+        <div style={{
+            ...styles.dpEmpty,
+            ...(isDark ? styles.emptyDark : styles.emptyLight)
+        }}>
+            No dynamic programming steps recorded.
+        </div>
+    )
+}
+
+const styles = {
+    dpEmpty: {
+        padding: 16,
+        borderRadius: 8,
+        fontStyle: "italic",
+        transition: "background 0.25s ease, color 0.25s ease"
+    },
+    emptyDark: {
+        background: "#1a1a1a",
+        color: "#777"
+    },
+    emptyLight: {
+        background: "#fafafa",
+        color: "#666"
+    }
+}
