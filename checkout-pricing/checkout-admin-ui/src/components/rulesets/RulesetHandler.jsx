@@ -45,16 +45,18 @@ export function RulesetHandler({ onRulesetChange }) {
             }
 
             <div style={handlerStyles.handler}>
-                <RulesetSelector value={selected} onChange={(v) => {
-                    setMode("existing");
-                    setSelected(v);
-                }} names={rulesetNames} />
+                <div style={handlerStyles.inputs}>
+                    <RulesetSelector value={selected} onChange={(v) => {
+                        setMode("existing");
+                        setSelected(v);
+                    }} names={rulesetNames} />
 
-                {isRulesetSet &&
-                    (<TextInput label="Ruleset Name" field="name" value={ruleset.name} update={
-                        (field, value) => triggerUpdateRulesetName(value)}
-                    />)
-                }
+                    {isRulesetSet &&
+                        (<TextInput label="Ruleset Name" field="name" value={ruleset.name} width={200}
+                                    update={(field, value) => triggerUpdateRulesetName(value)}
+                        />)
+                    }
+                </div>
 
                 <ButtonPanel status={status}>
                     <Save ruleset={ruleset} status={status} setStatus={setStatus} setMode={setMode} />

@@ -1,14 +1,16 @@
 import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 
-export function TextInput({ label, field, value, update }) {
+export function TextInput({ label, field, value, update, width }) {
     return (
-        <Field label={label} value={value ?? ""} onChange={(e) => update(field, e.target.value)} />
+        <Field label={label} value={value ?? ""} width={width}
+               onChange={(e) => update(field, e.target.value)} />
     )
 }
 
-export function NumberInput({ label, field, value, update }) {
+export function NumberInput({ label, field, value, update, width }) {
     return (
-        <Field type="number" label={label} value={value} onChange={(e) => update(field, Number(e.target.value))} />
+        <Field type="number" label={label} value={value} width={width ?? 50}
+               onChange={(e) => update(field, Number(e.target.value))} />
     )
 }
 
@@ -21,7 +23,8 @@ export function StackableField({ rule, update}) {
             <select
                 style={{
                     ...styles.input,
-                    ...(isDark ? styles.inputDark : styles.inputLight)
+                    ...(isDark ? styles.inputDark : styles.inputLight),
+                    width: 55
                 }}
                 value={rule.stackable ? "true" : "false"}
                 onChange={(e) => update("stackable", e.target.value === "true")}
@@ -33,7 +36,7 @@ export function StackableField({ rule, update}) {
     )
 }
 
-function Field({ type, label, value, onChange }) {
+function Field({ type, label, value, onChange, width = 150 }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -42,7 +45,8 @@ function Field({ type, label, value, onChange }) {
             <input
                 style={{
                     ...styles.input,
-                    ...(isDark ? styles.inputDark : styles.inputLight)
+                    ...(isDark ? styles.inputDark : styles.inputLight),
+                    width: width
                 }}
                 type={!type ? "text" : type}
                 min={type === "number" ? 0 : undefined}
@@ -71,10 +75,10 @@ const styles = {
     label: {
         marginBottom: 4,
         fontSize: "0.85rem",
+        whiteSpace: "nowrap",
         opacity: 0.8
     },
     input: {
-        width: "200px",
         padding: "6px 8px",
         borderRadius: 4,
         border: "1px solid",
