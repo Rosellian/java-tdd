@@ -3,6 +3,7 @@ import {RuleValue} from "./RuleValue";
 
 export function RuleBody({ rule }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div style={styles.ruleBody}>
@@ -11,8 +12,10 @@ export function RuleBody({ rule }) {
 
             <div style={{
                 ...styles.ruleEffect,
-                ...(theme === "dark" ? styles.effectDark : styles.effectLight)
-            }}>{rule.delta}</div>
+                ...(isDark ? styles.effectDark : styles.effectLight)
+            }}>
+                {rule.delta}
+            </div>
         </div>
     )
 }

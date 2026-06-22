@@ -2,12 +2,15 @@ import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 
 export function RuleValue({ label, value }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div style={{
             ...styles.ruleValue,
-            ...(theme === "dark" ? styles.valueDark : styles.valueLight)
-        }}>{label}: {value}</div>
+            ...(isDark ? styles.valueDark : styles.valueLight)
+        }}>
+            {label}: {value}
+        </div>
     )
 }
 

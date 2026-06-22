@@ -3,23 +3,28 @@ import {StatusMark} from "./StatusMark";
 
 export function RuleEntry({ rule, onClick, open }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div style={{
             ...styles.ruleHeader,
-            ...(theme === "dark" ? styles.headerDark : styles.headerLight)
+            ...(isDark ? styles.headerDark : styles.headerLight)
         }} onClick={onClick}>
             <span style={{
                 ...styles.ruleName,
-                ...(theme === "dark" ? styles.nameDark : styles.nameLight)
-            }}>{rule.name}</span>
+                ...(isDark ? styles.nameDark : styles.nameLight)
+            }}>
+                {rule.name}
+            </span>
 
             <StatusMark matched={rule.matched} />
 
             <span style={{
                 ...styles.ruleToggle,
-                ...(theme === "dark" ? styles.toggleDark : styles.toggleLight)
-            }}>{open ? "▲" : "▼"}</span>
+                ...(isDark ? styles.toggleDark : styles.toggleLight)
+            }}>
+                {open ? "▲" : "▼"}
+            </span>
         </div>
     )
 }
@@ -27,7 +32,7 @@ export function RuleEntry({ rule, onClick, open }) {
 const styles = {
     ruleHeader: {
         display: "grid",
-        gridTemplateColumns: "1fr auto auto",
+        gridTemplateColumns: "minmax(200px, 1fr) auto auto",
         alignItems: "center",
         columnGap: 12,
         cursor: "pointer",

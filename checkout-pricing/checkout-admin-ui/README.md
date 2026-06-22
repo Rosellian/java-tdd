@@ -727,6 +727,10 @@ Two versions created as prototypes:
     - Avoid too low width
     - Line wrap chosen and options
     - Syntax highlighting for options
+  - RuleTimeline
+    - Avoid too low width and line wrap
+  - ChainOverview
+      - Avoid too low width and line wrap
 ---
 
 ### Added functionality and improvements

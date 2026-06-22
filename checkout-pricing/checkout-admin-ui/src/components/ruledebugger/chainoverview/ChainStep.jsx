@@ -1,30 +1,29 @@
 import {ChainContent} from "./chaincontent/ChainContent";
 import {useTheme} from "../../../ui/theme/ThemeProvider";
+import {ChainIndex} from "./chaincontent/ChainIndex";
 
 export function ChainStep({ step, index, selectedStep, setSelectedStep }) {
     const { theme } = useTheme();
-
-    const isActive = selectedStep === index;
+    let isDark = theme === "dark";
+    let isActive = selectedStep === index;
 
     return (
         <li key={index} onClick={() => setSelectedStep(index)} style={{
             ...styles.chainItem,
-            ...(theme === "dark" ? styles.dark : styles.light),
-            ...(isActive ?
-                theme === "dark" ? styles.activeDark : styles.activeLight
-                : {})
+            ...(isDark ? styles.dark : styles.light),
+            ...getActiveStyle(isActive, isDark)
         }}>
-            <div style={{
-                ...styles.chainIndex,
-                ...(theme === "dark" ? styles.indexDark : styles.indexLight),
-                ...(isActive ?
-                    theme === "dark" ? styles.indexActiveDark : styles.indexActiveLight
-                    : {})
-            }}>{index + 1}</div>
+            <ChainIndex index={index} isActive={isActive} isDark={isDark} />
 
             <ChainContent step={step}/>
         </li>
-    );
+    )
+}
+
+function getActiveStyle(isActive, isDark) {
+    return isActive ?
+        isDark ? styles.activeDark : styles.activeLight
+        : {};
 }
 
 const baseBorderDark = "1px solid #333";
@@ -35,7 +34,7 @@ const styles = {
         gap: 12,
         padding: "10px 10px",
         cursor: "pointer",
-        transition: "background 0.25s ease, border-left 0.25s ease",
+        transition: "background 0.25s ease, border-left 0.25s ease"
     },
     dark: {
         borderTop: baseBorderDark,
@@ -43,7 +42,7 @@ const styles = {
         borderBottom: baseBorderDark,
         borderLeft: baseBorderDark,
         background: "#1a1a1a",
-        color: "#eee",
+        color: "#eee"
     },
     light: {
         borderTop: baseBorderLight,
@@ -51,40 +50,14 @@ const styles = {
         borderBottom: baseBorderLight,
         borderLeft: baseBorderLight,
         background: "#fafafa",
-        color: "#000",
+        color: "#000"
     },
     activeDark: {
         background: "#222",
-        borderLeft: "3px solid #4caf50",
+        borderLeft: "3px solid #4caf50"
     },
     activeLight: {
         background: "#e8f5e9",
-        borderLeft: "3px solid #2e7d32",
-    },
-    chainIndex: {
-        width: 28,
-        height: 28,
-        borderRadius: "50%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontWeight: "bold",
-        transition: "background 0.25s ease, color 0.25s ease",
-    },
-    indexDark: {
-        background: "#333",
-        color: "#aaa",
-    },
-    indexLight: {
-        background: "#ddd",
-        color: "#555",
-    },
-    indexActiveDark: {
-        background: "#4caf50",
-        color: "#fff",
-    },
-    indexActiveLight: {
-        background: "#2e7d32",
-        color: "#fff",
-    },
+        borderLeft: "3px solid #2e7d32"
+    }
 }

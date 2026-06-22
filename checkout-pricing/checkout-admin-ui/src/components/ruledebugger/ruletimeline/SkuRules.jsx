@@ -13,7 +13,9 @@ export function SkuRules({ rules }) {
                 <div style={{
                     ...styles.skuHeader,
                     ...(theme === "dark" ? styles.headerDark : styles.headerLight)
-                }}>{sku}</div>
+                }}>
+                    {sku}
+                </div>
 
                 <ul style={styles.list}>
                     {groupedBySku[sku].map((r, i) => (

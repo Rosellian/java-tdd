@@ -7,18 +7,16 @@ import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
 export function RuleItem({ rule }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     const [open, setOpen] = useState(false);
     const {selectedStep, setSelectedStep} = useTraceSync();
-    const isActive = rule.stepIndex === selectedStep;
 
     return (
         <li style={{
             ...styles.timelineItem,
-            ...(theme === "dark" ? styles.itemDark : styles.itemLight),
-            ...(isActive ?
-                theme === "dark" ? styles.activeDark : styles.activeLight
-                : {})
+            ...(isDark ? styles.itemDark : styles.itemLight),
+            ...(getActiveStyle(rule, selectedStep, isDark))
         }}>
             <RuleEntry rule={rule} onClick={() => selectOnClick(open, setOpen, selectedStep, setSelectedStep)}
                        open={open} />
@@ -28,6 +26,14 @@ export function RuleItem({ rule }) {
             </AnimatedBody>
         </li>
     )
+}
+
+function getActiveStyle(rule, selectedStep, isDark) {
+    let isActive = rule.stepIndex === selectedStep;
+
+    return isActive ?
+        isDark ? styles.activeDark : styles.activeLight
+        : {};
 }
 
 function selectOnClick(open, setOpen, selectedStep, setSelectedStep) {

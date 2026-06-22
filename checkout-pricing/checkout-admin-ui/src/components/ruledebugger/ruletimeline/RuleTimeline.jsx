@@ -1,17 +1,14 @@
 import {RuleItem} from "./ruleitem/RuleItem";
 import {SkuRules} from "./SkuRules";
 import {useTheme} from "../../../ui/theme/ThemeProvider";
+import {renderEmptyState} from "./timelineFuncs";
 
 export function RuleTimeline({ rules }) {
     const { theme } = useTheme()
+    let isDark = theme === "dark";
 
     if (!rules) {
-        return (
-            <div style={{
-                ...styles.timelineEmpty,
-                ...(theme === "dark" ? styles.emptyDark : styles.emptyLight)
-            }}>No rules matched in this step.</div>
-        )
+        return renderEmptyState(isDark);
     }
 
     const globalRules = rules.filter(r => !r.sku);
@@ -19,12 +16,14 @@ export function RuleTimeline({ rules }) {
     return (
         <div style={{
             ...styles.timelineWrapper,
-            ...(theme === "dark" ? styles.wrapperDark : styles.wrapperLight)
+            ...(isDark ? styles.wrapperDark : styles.wrapperLight)
         }}>
             <h3 style={{
                 ...styles.timelineHeader,
-                ...(theme === "dark" ? styles.headerDark : styles.headerLight)
-            }}>Rule Timeline</h3>
+                ...(isDark ? styles.headerDark : styles.headerLight)
+            }}>
+                Rule Timeline
+            </h3>
 
             <div style={styles.scrollSection}>
                 <ul style={styles.timelineList}>
@@ -74,19 +73,5 @@ const styles = {
         listStyle: "none",
         padding: 0,
         margin: 0
-    },
-    timelineEmpty: {
-        padding: 16,
-        borderRadius: 8,
-        fontStyle: "italic",
-        transition: "background 0.25s ease, color 0.25s ease"
-    },
-    emptyDark: {
-        background: "#1a1a1a",
-        color: "#777"
-    },
-    emptyLight: {
-        background: "#fafafa",
-        color: "#666"
     }
 }
