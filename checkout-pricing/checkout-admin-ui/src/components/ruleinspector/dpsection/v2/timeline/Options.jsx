@@ -1,3 +1,5 @@
+import {highlightExplanationLine} from "../../../../../functions/dp/highlighting/highlighting";
+
 export function Options({ options, isDark }) {
     return (
         <div style={styles.container}>
@@ -9,7 +11,7 @@ export function Options({ options, isDark }) {
                         ...styles.option,
                         ...(isDark ? styles.optionDark : styles.optionLight)
                     }}>
-                        {opt}
+                        {highlightExplanationLine(opt)}
                     </span>
                 ))}
             </div>
