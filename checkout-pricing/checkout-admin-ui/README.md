@@ -733,6 +733,9 @@ Two versions created as prototypes:
       - Avoid too low width and line wrap
   - PriceListEditor
     - More compact price input fields
+    - Compact header
+  - RuleEditor
+    - Compact header
 ---
 
 ### Added functionality and improvements
