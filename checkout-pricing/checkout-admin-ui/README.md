@@ -726,6 +726,7 @@ Two versions created as prototypes:
   - DPGraph
     - Avoid too low width
     - Line wrap chosen and options
+    - Syntax highlighting for options
 ---
 
 ### Added functionality and improvements

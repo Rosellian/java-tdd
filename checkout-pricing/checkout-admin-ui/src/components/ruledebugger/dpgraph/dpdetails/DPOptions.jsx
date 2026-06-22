@@ -1,9 +1,12 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {detailsStyles} from "./detailsStyles";
+import {highlightExplanationLine} from "../../../../functions/dp/highlighting/highlighting";
 
 export function DPOptions({ node }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
+
+    let options = node.options?.length > 0 ? node.options : ["None"];
 
     return (
         <div style={detailsStyles.dpDetailsRow}>
@@ -14,27 +17,22 @@ export function DPOptions({ node }) {
                 Options:
             </span>
 
-            <span style={{
-                ...styles.dpValueList,
-                ...(isDark ? styles.listDark : styles.listLight)
-            }}>
-                {getOptions(node)}
-            </span>
+            <div style={styles.dpValueList}>
+                {options.map((opt) => (
+                    <span>
+                        {highlightExplanationLine(opt)}
+                    </span>
+                ))}
+            </div>
         </div>
     )
 }
 
-function getOptions(node) {
-    let isNonEmpty = node.options && node.options.length > 0;
-
-    return isNonEmpty ? node.options.join(",\n") : "None";
-}
-
 const styles = {
     dpValueList: {
-        whiteSpace: "pre-wrap",
-        wordBreak: "break-word",
-        fontStyle: "italic",
+        display: "flex",
+        flexDirection: "column",
+        gap: 4,
         transition: "color 0.25s ease"
     },
     listDark: {

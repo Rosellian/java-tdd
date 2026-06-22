@@ -1,10 +1,11 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
-import {formatChosen} from "../../../../functions/formatting";
+import {formatChosen} from "../../../../functions/dp/formatting";
+import {DPOptions} from "./DPOptions";
+import {DPDetailRow} from "./DPDetailRow";
 
 export function DPDetailsV2({ node, index }) {
     const { theme } = useTheme();
     const isDark = theme === "dark";
-    let valueColor = isDark ? styles.valueDark : styles.valueLight;
 
     return (
         <div style={{
@@ -18,53 +19,14 @@ export function DPDetailsV2({ node, index }) {
                 Step {index + 1}
             </div>
 
-            <div style={styles.row}>
-                <span style={styles.label}>State</span>
+            <DPDetailRow label="State" value={node.state} />
 
-                <span style={{
-                    ...styles.value,
-                    ...valueColor
-                }}>
-                    {node.state}
-                </span>
-            </div>
+            <DPDetailRow label="Chosen" value={formatChosen(node.chosen)} valueStyle={styles.badge}
+                         valueColor={isDark ? styles.badgeDark : styles.badgeLight} />
 
-            <div style={styles.row}>
-                <span style={styles.label}>Chosen</span>
+            <DPDetailRow label="Price" value={node.price} />
 
-                <span style={{
-                    ...styles.badge,
-                    ...(isDark ? styles.badgeDark : styles.badgeLight)
-                }}>
-                    {formatChosen(node.chosen)}
-                </span>
-            </div>
-
-            <div style={styles.row}>
-                <span style={styles.label}>Price</span>
-
-                <span style={{
-                    ...styles.value,
-                    ...valueColor
-                }}>
-                    {node.price}
-                </span>
-            </div>
-
-            <div style={styles.row}>
-                <span style={styles.label}>Options</span>
-
-                <div style={styles.tagList}>
-                    {(node.options?.length > 0 ? node.options : ["None"]).map((opt, i) => (
-                        <span key={i} style={{
-                            ...styles.tag,
-                            ...(isDark ? styles.tagDark : styles.tagLight)
-                        }}>
-                            {opt}
-                        </span>
-                    ))}
-                </div>
-            </div>
+            <DPOptions node={node} isDark={isDark}/>
         </div>
     )
 }
@@ -103,26 +65,6 @@ const styles = {
     headerLight: {
         color: "#5A2DA8"
     },
-    row: {
-        display: "grid",
-        gridTemplateColumns: "80px 1fr",
-        alignItems: "start",
-        gap: 6
-    },
-    label: {
-        opacity: 0.75,
-        fontWeight: 500
-    },
-    value: {
-        fontWeight: 600,
-        wordBreak: "break-word"
-    },
-    valueDark: {
-        color: "#4caf50"
-    },
-    valueLight: {
-        color: "#2e7d32"
-    },
     badge: {
         padding: "2px 6px",
         borderRadius: 4,
@@ -140,26 +82,5 @@ const styles = {
         background: "#f5f0ff",
         border: "1px solid #d6c6ff",
         color: "#2e7d32"
-    },
-    tagList: {
-        display: "flex",
-        flexWrap: "wrap",
-        gap: 4
-    },
-    tag: {
-        padding: "2px 6px",
-        borderRadius: 4,
-        fontSize: "0.75rem",
-        border: "1px solid"
-    },
-    tagDark: {
-        background: "#1E1E1E",
-        borderColor: "#333",
-        color: "#ccc"
-    },
-    tagLight: {
-        background: "#f5f5f5",
-        borderColor: "#ccc",
-        color: "#333"
     }
 }

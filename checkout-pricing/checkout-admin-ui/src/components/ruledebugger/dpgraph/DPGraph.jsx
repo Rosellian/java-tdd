@@ -70,6 +70,8 @@ const styles = {
         color: "#3A1F6B"
     },
     scrollSection: {
+        width: "100%",
+        minWidth: 250,
         maxHeight: 300,
         overflowY: "auto",
         paddingRight: 6,

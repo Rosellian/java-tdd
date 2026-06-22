@@ -2,8 +2,20 @@ export function highlightExplanationLine(line) {
     const specialPriceRuleRe = /(\d+)-for-(\d+(\.\d+)?)/;
     const numberRe = /(\d+(\.\d+)?)/;
     const opRe = /(->|=>|→|x|=|\+|\*|-)/;
-    const keywordRe =
-        /(non-stackable|\bState\b|\bPrice\b|\bOption\b|\bChosen\b|\bTotal\b|\bRemaining\b|-for-|\bitems\b|\bkr\b)/;
+    const keywordRe = new RegExp(
+        [
+            "non-stackable",
+            "\\bunitPrice\\b",
+            "\\bState\\b",
+            "\\bPrice\\b",
+            "\\bOption\\b",
+            "\\bChosen\\b",
+            "\\bTotal\\b",
+            "\\bRemaining\\b",
+            "\\bitems\\b",
+            "\\bkr\\b"
+        ].join("|")
+    );
 
     const tokens = [];
     let i = 0;
