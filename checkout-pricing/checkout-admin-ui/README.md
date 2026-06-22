@@ -731,6 +731,8 @@ Two versions created as prototypes:
     - Avoid too low width and line wrap
   - ChainOverview
       - Avoid too low width and line wrap
+  - PriceListEditor
+    - More compact price input fields
 ---
 
 ### Added functionality and improvements

@@ -20,6 +20,6 @@ const styles = {
         paddingRight: 4,
         display: "flex",
         flexDirection: "column",
-        gap: 8,
+        gap: 8
     }
 }

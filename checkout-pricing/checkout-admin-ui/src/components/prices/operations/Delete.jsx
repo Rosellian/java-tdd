@@ -8,6 +8,8 @@ import {buttonStyles} from "./buttonStyles";
 export function Delete({priceList, setPriceList, priceListNames, setPriceListNames, setMode, status, setStatus,
                            selected, setSelected }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
+
     const [showConfirm, setShowConfirm] = useState(false);
 
     const isProtectedSelected = theme === "light" && isProtectedPriceList(selected);
@@ -19,9 +21,11 @@ export function Delete({priceList, setPriceList, priceListNames, setPriceListNam
                     title={isProtectedSelected ? "This price list cannot be deleted" : ""}
                     style={{
                         ...buttonStyles.base,
-                        ...(theme === "dark" ? styles.deleteButtonDark : styles.deleteButtonLight),
+                        ...(isDark ? styles.deleteButtonDark : styles.deleteButtonLight),
                         ...(isProtectedSelected ? styles.buttonDisabled : {})
-                    }}>{status === "deleting" ? "Deleting…" : "Delete"}</button>
+            }}>
+                {status === "deleting" ? "Deleting…" : "Delete"}
+            </button>
 
             {showConfirm && (
                 <ConfirmModal theme={theme} message={`Are you sure you want to delete price list "${priceList.name}"?`}
@@ -71,14 +75,14 @@ async function confirmDelete(priceList, setPriceList, setShowConfirm, setStatus,
 const styles = {
     buttonDisabled: {
         opacity: 0.5,
-        cursor: "not-allowed",
+        cursor: "not-allowed"
     },
     deleteButtonDark: {
         background: "#8B0000",
-        color: "#fff",
+        color: "#fff"
     },
     deleteButtonLight: {
         background: "#FFCCCC",
-        color: "#660000",
+        color: "#660000"
     }
 }

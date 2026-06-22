@@ -4,14 +4,17 @@ import {createNewPriceListDraft} from "../handlerFuncs";
 
 export function New({ mode, setMode, setSelected, setPriceListNames, setPriceList, onPriceListChange }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <button disabled={mode === "new"} onClick={() => newPriceList(setMode, setSelected, setPriceListNames,
             setPriceList, onPriceListChange)}
                 style={{
                     ...buttonStyles.base,
-                    ...(theme === "dark" ? styles.newButtonDark : styles.newButtonLight)
-                }}>+ New Price List</button>
+                    ...(isDark ? styles.newButtonDark : styles.newButtonLight)
+        }}>
+            + New Price List
+        </button>
     )
 }
 
@@ -29,10 +32,10 @@ function newPriceList(setMode, setSelected, setPriceListNames, setPriceList, onP
 const styles = {
     newButtonDark: {
         background: "#4CAF50",
-        color: "#fff",
+        color: "#fff"
     },
     newButtonLight: {
         background: "#4CAF50",
-        color: "#000",
+        color: "#000"
     }
 }

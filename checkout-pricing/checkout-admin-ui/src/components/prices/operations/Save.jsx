@@ -6,6 +6,7 @@ import {buttonStyles} from "./buttonStyles";
 
 export function Save({ priceList, setMode, status, setStatus }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     const [showConfirm, setShowConfirm] = useState(false);
 
@@ -15,8 +16,10 @@ export function Save({ priceList, setMode, status, setStatus }) {
                     disabled={status === "saving"}
                     style={{
                         ...buttonStyles.base,
-                        ...(theme === "dark" ? buttonStyles.dark : buttonStyles.light)
-                    }}>{status === "saving" ? "Saving…" : "Save"}</button>
+                        ...(isDark ? buttonStyles.dark : buttonStyles.light)
+            }}>
+                {status === "saving" ? "Saving…" : "Save"}
+            </button>
 
             {showConfirm && (
                 <ConfirmModal theme={theme} message={`Are you sure you want to save changes to "${priceList.name}"?`}

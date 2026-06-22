@@ -5,6 +5,7 @@ import {CollapsibleSection} from "../../../ui/CollapsibleSection";
 
 export function PriceListEditor({ priceList, onChange }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     if (!priceList || !Array.isArray(priceList.unitPrices)) return null;
 
@@ -12,20 +13,24 @@ export function PriceListEditor({ priceList, onChange }) {
         <CollapsibleSection title="Price List Editor" changed={false}>
             <div style={{
                 ...styles.box,
-                ...(theme === "dark" ? styles.boxDark : styles.boxLight)
+                ...(isDark ? styles.boxDark : styles.boxLight)
             }}>
                 <h3 style={{
                     ...styles.title,
-                    ...(theme === "dark" ? styles.titleDark : styles.titleLight)
-                }}>Unit Prices</h3>
+                    ...(isDark ? styles.titleDark : styles.titleLight)
+                }}>
+                    Unit Prices
+                </h3>
 
                 <PriceRowList priceList={priceList} onChange={onChange} />
 
                 <button onClick={() => addItem(priceList, onChange)}
                         style={{
                             ...styles.addButton,
-                            ...(theme === "dark" ? styles.addButtonDark : styles.addButtonLight)
-                        }}>+ Add SKU</button>
+                            ...(isDark ? styles.addButtonDark : styles.addButtonLight)
+                }}>
+                    + Add SKU
+                </button>
             </div>
         </CollapsibleSection>
     )

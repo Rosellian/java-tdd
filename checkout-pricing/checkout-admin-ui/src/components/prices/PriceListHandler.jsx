@@ -12,6 +12,7 @@ import {handlerStyles} from "./handlerStyles";
 
 export function PriceListHandler({ onPriceListChange }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     const [priceListNames, setPriceListNames] = useState([]);
     const [selected, setSelected] = useState("default");
@@ -36,9 +37,13 @@ export function PriceListHandler({ onPriceListChange }) {
     return (
         <div style={{
             ...handlerStyles.wrapper,
-            ...(theme === "dark" ? handlerStyles.wrapperDark : handlerStyles.wrapperLight)
+            ...(isDark ? handlerStyles.wrapperDark : handlerStyles.wrapperLight)
         }}>
-            {fallbackUsed && <div style={handlerStyles.fallback}>Failed to load from server, fallback used</div>}
+            {fallbackUsed &&
+                <div style={handlerStyles.fallback}>
+                    Failed to load from server, fallback used
+                </div>
+            }
 
             <div style={handlerStyles.handler}>
                 <PriceListSelector value={selected} onChange={(v) => {
@@ -63,8 +68,16 @@ export function PriceListHandler({ onPriceListChange }) {
                 </ButtonPanel>
             </div>
 
-            {status === "loading" && <div style={handlerStyles.loading}>Loading price list…</div>}
-            {status === "error" && <div style={handlerStyles.error}>Failed to load or save price list</div>}
+            {status === "loading" &&
+                <div style={handlerStyles.loading}>
+                    Loading price list…
+                </div>
+            }
+            {status === "error" &&
+                <div style={handlerStyles.error}>
+                    Failed to load or save price list
+                </div>
+            }
 
             <div style={handlerStyles.editorWrapper}>
                 {isPriceListSet && (
@@ -72,5 +85,5 @@ export function PriceListHandler({ onPriceListChange }) {
                 )}
             </div>
         </div>
-    );
+    )
 }

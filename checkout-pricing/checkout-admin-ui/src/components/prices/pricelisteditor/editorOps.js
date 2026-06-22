@@ -7,10 +7,12 @@ export function updateItem(index, field, value, priceList, onChange) {
 
 export function deleteItem(index, priceList, onChange) {
     const updated = priceList.unitPrices.filter((_, i) => i !== index);
+
     onChange({ ...priceList, unitPrices: updated });
 }
 
 export function addItem(priceList, onChange) {
     const updated = [...priceList.unitPrices, { sku: "", price: 0 }];
+
     onChange({ ...priceList, unitPrices: updated });
 }
