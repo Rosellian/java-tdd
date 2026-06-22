@@ -1,6 +1,7 @@
 export function updateRule(index, updatedRule, draft, setDraft, onChange) {
     const updatedRules = [...draft.rules];
     updatedRules[index] = updatedRule;
+
     const newDraft = { ...draft, rules: updatedRules };
 
     setDraft(newDraft);
@@ -20,6 +21,7 @@ export function addRule(draft, setDraft, onChange, setSelectedRule) {
 
 export function deleteRule(index, draft, setDraft, onChange, setSelectedRule) {
     const updated = draft.rules.filter((_, i) => i !== index);
+
     const newDraft = { ...draft, rules: updated };
 
     setDraft(newDraft);

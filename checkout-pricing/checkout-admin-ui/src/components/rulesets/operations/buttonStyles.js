@@ -4,14 +4,14 @@ export const buttonStyles = {
         borderRadius: 4,
         border: "none",
         cursor: "pointer",
-        width: "120px",
+        width: "120px"
     },
     dark: {
         background: "#BB86FC",
-        color: "#fff",
+        color: "#fff"
     },
     light: {
         background: "#D9C4FF",
-        color: "#3A1F6B",
+        color: "#3A1F6B"
     }
 }

@@ -7,6 +7,8 @@ import {CollapsibleSection} from "../../../ui/CollapsibleSection";
 
 export function RulesetEditor({ ruleset, onChange }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
+
     const [selectedRule, setSelectedRule] = useState(0);
     const [draft, setDraft] = useState(ruleset);
 
@@ -19,13 +21,14 @@ export function RulesetEditor({ ruleset, onChange }) {
 
     const safeIndex = getSafeIndex(selectedRule, draft);
     const rule = draft.rules[safeIndex];
+
     if (!rule) return null;
 
     return (
         <CollapsibleSection title="Ruleset Editor" changed={false} >
             <div style={{
                 ...styles.editor,
-                ...(theme === "dark" ? styles.editorDark : styles.editorLight)
+                ...(isDark ? styles.editorDark : styles.editorLight)
             }}>
                 <RuleList rules={draft.rules} selectedRule={safeIndex} onSelect={setSelectedRule}
                           onAdd={() => addRule(draft, setDraft, onChange, setSelectedRule)}

@@ -736,6 +736,7 @@ Two versions created as prototypes:
     - Compact header
   - RuleEditor
     - Compact header
+    - Compact RuleForm input fields
 ---
 
 ### Added functionality and improvements

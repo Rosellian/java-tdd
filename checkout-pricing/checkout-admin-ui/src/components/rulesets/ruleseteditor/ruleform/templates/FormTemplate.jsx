@@ -2,11 +2,12 @@ import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 
 export function FormTemplate({ title, children }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div style={{
             ...styles.box,
-            ...(theme === "dark" ? styles.boxDark : styles.boxLight)
+            ...(isDark ? styles.boxDark : styles.boxLight)
         }}>
             <h3 style={styles.title}>{title}</h3>
 

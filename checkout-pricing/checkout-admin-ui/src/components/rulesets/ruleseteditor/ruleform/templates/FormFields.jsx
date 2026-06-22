@@ -14,13 +14,14 @@ export function NumberInput({ label, field, value, update }) {
 
 export function StackableField({ rule, update}) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <FieldGroup label="Stackable">
             <select
                 style={{
                     ...styles.input,
-                    ...(theme === "dark" ? styles.inputDark : styles.inputLight)
+                    ...(isDark ? styles.inputDark : styles.inputLight)
                 }}
                 value={rule.stackable ? "true" : "false"}
                 onChange={(e) => update("stackable", e.target.value === "true")}
@@ -34,13 +35,14 @@ export function StackableField({ rule, update}) {
 
 function Field({ type, label, value, onChange }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <FieldGroup label={label}>
             <input
                 style={{
                     ...styles.input,
-                    ...(theme === "dark" ? styles.inputDark : styles.inputLight)
+                    ...(isDark ? styles.inputDark : styles.inputLight)
                 }}
                 type={!type ? "text" : type}
                 min={type === "number" ? 0 : undefined}
@@ -55,6 +57,7 @@ function FieldGroup({ label, children }) {
     return (
         <div style={styles.field}>
             <label style={styles.label}>{label}</label>
+
             {children}
         </div>
     )

@@ -8,6 +8,8 @@ import {ConfirmModal} from "../../../ui/ConfirmModal";
 export function Delete({ ruleset, setRuleset, rulesetNames, setRulesetNames, status, setStatus, setMode,
                            selected, setSelected }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
+
     const [showConfirm, setShowConfirm] = useState(false);
 
     const isProtectedSelected = theme === "light" && isProtectedRuleset(selected);
@@ -18,14 +20,19 @@ export function Delete({ ruleset, setRuleset, rulesetNames, setRulesetNames, sta
                     title={isProtectedSelected ? "This ruleset cannot be deleted" : ""}
                     style={{
                         ...buttonStyles.base,
-                        ...(theme === "dark" ? styles.deleteButtonDark : styles.deleteButtonLight),
+                        ...(isDark ? styles.deleteButtonDark : styles.deleteButtonLight),
                         ...(isProtectedSelected ? styles.buttonDisabled : {})
-                    }}>{status === "deleting" ? "Deleting…" : "Delete"}</button>
+                    }}
+            >
+                {status === "deleting" ? "Deleting…" : "Delete"}
+            </button>
+
             {showConfirm && (
                 <ConfirmModal theme={theme} message={`Are you sure you want to delete ruleset "${ruleset.name}"?`}
                               onConfirm={() => confirmDelete(ruleset, setRuleset, rulesetNames,
                                   setRulesetNames, setShowConfirm, setStatus, setMode, setSelected)}
-                              onCancel={() => setShowConfirm(false)}/>
+                              onCancel={() => setShowConfirm(false)}
+                />
             )}
         </div>
     )
@@ -72,14 +79,14 @@ async function confirmDelete(ruleset, setRuleset, rulesetNames, setRulesetNames,
 const styles = {
     buttonDisabled: {
         opacity: 0.5,
-        cursor: "not-allowed",
+        cursor: "not-allowed"
     },
     deleteButtonDark: {
         background: "#8B0000",
-        color: "#fff",
+        color: "#fff"
     },
     deleteButtonLight: {
         background: "#FFCCCC",
-        color: "#660000",
+        color: "#660000"
     }
 }

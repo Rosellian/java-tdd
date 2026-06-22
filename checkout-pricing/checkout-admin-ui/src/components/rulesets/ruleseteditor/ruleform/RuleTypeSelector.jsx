@@ -2,19 +2,22 @@ import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
 export function RuleTypeSelector({ value, onChange }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div style={styles.box}>
             <label style={{
                 ...styles.label,
-                ...(theme === "dark" ? styles.labelDark : styles.labelLight)
-            }}>Rule Type</label>
+                ...(isDark ? styles.labelDark : styles.labelLight)
+            }}>
+                Rule Type
+            </label>
 
             <select value={value} onChange={(e) => onChange(e.target.value)}
                 style={{
                     ...styles.select,
-                    ...(theme === "dark" ? styles.selectDark : styles.selectLight)
-                }}>
+                    ...(isDark ? styles.selectDark : styles.selectLight)
+            }}>
                 <option value="SpecialPrice">Special Price</option>
                 <option value="BuyXGetYFree">Buy X Get Y Free</option>
                 <option value="BuyXGetYDiscount">Buy X Get Y at Discount</option>

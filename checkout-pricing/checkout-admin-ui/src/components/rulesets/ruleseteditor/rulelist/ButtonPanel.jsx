@@ -2,33 +2,38 @@ import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
 export function ButtonPanel({ onAdd, onDelete }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div style={styles.buttonPanel}>
             <button
                 style={{
                     ...styles.addButton,
-                    ...(theme === "dark" ? styles.addButtonDark : styles.addButtonLight)
+                    ...(isDark ? styles.addButtonDark : styles.addButtonLight)
                 }}
                 onClick={onAdd}
-            >+ Add Rule</button>
+            >
+                + Add Rule
+            </button>
 
             <button
                 style={{
                     ...styles.deleteButton,
-                    ...(theme === "dark" ? styles.deleteButtonDark : styles.deleteButtonLight)
+                    ...(isDark ? styles.deleteButtonDark : styles.deleteButtonLight)
                 }}
                 onClick={onDelete}
-            >Delete</button>
+            >
+                Delete
+            </button>
         </div>
-    );
+    )
 }
 
 const styles = {
     buttonPanel: {
         display: "flex",
         gap: 15,
-        marginTop: 10,
+        marginTop: 10
     },
     addButton: {
         marginTop: 4,
@@ -36,15 +41,15 @@ const styles = {
         border: "none",
         borderRadius: 4,
         cursor: "pointer",
-        transition: "background 0.3s ease, color 0.3s ease",
+        transition: "background 0.3s ease, color 0.3s ease"
     },
     addButtonLight: {
         background: "#4CAF50",
-        color: "#000",
+        color: "#000"
     },
     addButtonDark: {
         background: "#66BB6A",
-        color: "#fff",
+        color: "#fff"
     },
     deleteButton: {
         marginTop: 4,
@@ -52,14 +57,14 @@ const styles = {
         border: "none",
         borderRadius: 4,
         cursor: "pointer",
-        transition: "background 0.3s ease, color 0.3s ease",
+        transition: "background 0.3s ease, color 0.3s ease"
     },
     deleteButtonDark: {
         background: "#8B0000",
-        color: "#fff",
+        color: "#fff"
     },
     deleteButtonLight: {
         background: "#FFCCCC",
-        color: "#660000",
+        color: "#660000"
     }
 }

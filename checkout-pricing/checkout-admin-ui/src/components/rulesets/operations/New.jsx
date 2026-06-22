@@ -4,14 +4,17 @@ import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function New({ mode, setMode, setSelected, setRuleset, setRulesetNames, onRulesetChange }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <button disabled={mode === "new"} onClick={() => newRuleset(setMode, setSelected, setRuleset,
             setRulesetNames, onRulesetChange)}
                 style={{
                     ...buttonStyles.base,
-                    ...(theme === "dark" ? styles.newButtonDark : styles.newButtonLight)
-        }}>+ New Ruleset</button>
+                    ...(isDark ? styles.newButtonDark : styles.newButtonLight)
+        }}>
+            + New Ruleset
+        </button>
     )
 }
 
@@ -29,10 +32,10 @@ function newRuleset(setMode, setSelected, setRuleset, setRulesetNames, onRuleset
 const styles = {
     newButtonDark: {
         background: "#4CAF50",
-        color: "#fff",
+        color: "#fff"
     },
     newButtonLight: {
         background: "#4CAF50",
-        color: "#000",
+        color: "#000"
     }
 }

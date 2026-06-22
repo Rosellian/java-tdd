@@ -2,6 +2,7 @@ import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function RulesetDropdown({ value, onChange, names }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <select
@@ -9,8 +10,9 @@ export function RulesetDropdown({ value, onChange, names }) {
             onChange={(e) => onChange(e.target.value)}
             style={{
                 ...styles.select,
-                ...(theme === "dark" ? styles.selectDark : styles.selectLight)
-            }}>
+                ...(isDark ? styles.selectDark : styles.selectLight)
+            }}
+        >
             {names.map(n => (
                 <option key={n} value={n}>{n}</option>
             ))}
@@ -23,16 +25,16 @@ const styles = {
         border: "1px solid",
         padding: 5,
         width: "auto",
-        transition: "background 0.3s ease, color 0.3s ease, border-color 0.3s ease",
+        transition: "background 0.3s ease, color 0.3s ease, border-color 0.3s ease"
     },
     selectDark: {
         background: "#2A2A2A",
         borderColor: "#333",
-        color: "#E0E0E0",
+        color: "#E0E0E0"
     },
     selectLight: {
         background: "#ffffff",
         borderColor: "#ccc",
-        color: "#000000",
+        color: "#000000"
     }
 }
