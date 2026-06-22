@@ -46,15 +46,17 @@ export function PriceListHandler({ onPriceListChange }) {
             }
 
             <div style={handlerStyles.handler}>
-                <PriceListSelector value={selected} onChange={(v) => {
-                    setMode("existing");
-                    setSelected(v);
-                }} names={priceListNames}/>
+                <div style={handlerStyles.inputs}>
+                    <PriceListSelector value={selected} onChange={(v) => {
+                        setMode("existing");
+                        setSelected(v);
+                    }} names={priceListNames}/>
 
-                {isPriceListSet && (
-                    <TextInput label="Price List Name" field="name" value={priceList.name}
-                               update={(field, value) => triggerUpdatePriceListName(value)}/>
-                )}
+                    {isPriceListSet && (
+                        <TextInput label="Price List Name" field="name" value={priceList.name}
+                                   update={(field, value) => triggerUpdatePriceListName(value)}/>
+                    )}
+                </div>
 
                 <ButtonPanel mode={mode} status={status} selected={selected}>
                     <Save priceList={priceList} setMode={setMode} status={status} setStatus={setStatus} />

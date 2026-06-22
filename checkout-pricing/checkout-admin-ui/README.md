@@ -740,6 +740,8 @@ Two versions created as prototypes:
     - Compact improved layout
   - RulesetHandler
     - Compact improved layout
+  - PriceListHandler
+    - Compact improved layout
 ---
 
 ### Added functionality and improvements

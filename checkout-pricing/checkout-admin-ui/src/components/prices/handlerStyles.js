@@ -22,6 +22,11 @@ export const handlerStyles = {
         width: "fit-content",
         alignSelf: "flex-start"
     },
+    inputs: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 10
+    },
     editorWrapper: {
         width: "100%",
         maxWidth: "755px",
