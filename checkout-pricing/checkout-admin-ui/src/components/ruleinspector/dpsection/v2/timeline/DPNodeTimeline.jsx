@@ -33,8 +33,8 @@ export function DPNodeTimeline({ dp, debuggerDP }) {
 
                         <ExplanationBlock node={node} />
 
-                        <Details node={node} debuggerNode={debuggerNode} beforePrice={prevPrice} remaining={remaining}
-                                 isDark={isDark}/>
+                        <Details node={node} debuggerNode={debuggerNode}
+                                 beforePrice={prevPrice} remaining={remaining} />
                     </div>
                 )
             })}

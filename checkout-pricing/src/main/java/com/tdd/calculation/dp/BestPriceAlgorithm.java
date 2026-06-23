@@ -5,8 +5,10 @@ import com.tdd.calculation.dp.candidate.Candidate;
 import com.tdd.calculation.dp.candidate.CandidateCalculator;
 import com.tdd.calculation.dp.utility.PathEntry;
 import com.tdd.calculation.dp.utility.SkuRuleRecorder;
+import com.tdd.rules.PricingOption;
 import com.tdd.tracing.DPNode;
 import com.tdd.tracing.DPTrace;
+import com.tdd.tracing.RuleData;
 import com.tdd.tracing.debug.PricingTraceCollector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.tdd.calculation.dp.DpUtils.*;
+import static java.util.stream.Collectors.toList;
 
 public class BestPriceAlgorithm {
     private static final Logger logger = LoggerFactory.getLogger(BestPriceAlgorithm.class);
@@ -29,13 +32,13 @@ public class BestPriceAlgorithm {
 
     public DPTrace bestPriceFor(String sku, int remaining) {
         log("Running DP-algorithm for SKU {}", sku);
-        if(remaining <= 0) return noResult(sku, remaining, collector);
+        double unitPrice = rules.getUnitPrice(sku);
+        if(remaining <= 0) return noResult(sku, unitPrice, remaining, collector);
 
         double[] dp = initDp(remaining);
         List<PathEntry> path = createPathStart();
         List<DPNode> nodes = new ArrayList<>();
 
-        double unitPrice = rules.getUnitPrice(sku);
         SkuRuleRecorder skuRuleRecorder = new SkuRuleRecorder(sku, unitPrice, collector);
 
         for(int i = 1; i <= remaining; i++) {
@@ -47,9 +50,12 @@ public class BestPriceAlgorithm {
 
         double finalPrice = dp[remaining];
         PathEntry finalPath = path.get(remaining);
-        skuRuleRecorder.recordTrace(remaining, finalPrice, finalPath.appliedRules());
+        List<PricingOption> appliedRules = finalPath.appliedRules();
 
-        DPTrace dpTrace = new DPTrace(sku, remaining, nodes, finalPrice, finalPath.stringPath());
+        skuRuleRecorder.recordTrace(remaining, finalPrice, appliedRules);
+
+        DPTrace dpTrace = new DPTrace(sku, unitPrice, remaining, nodes, createRuleData(appliedRules),
+                finalPrice, finalPath.stringPath());
         log("Finished DP-algorithm for SKU {} with result {}", sku, dpTrace);
 
         return dpTrace;
@@ -62,15 +68,21 @@ public class BestPriceAlgorithm {
     }
 
     private void updateResults(Candidate candidate, List<PathEntry> path, List<DPNode> nodes, int i, double[] dp) {
-        path.add(candidate.pathEntry());
+        PathEntry pathEntry = candidate.pathEntry();
+        path.add(pathEntry);
 
-        List<String> best = candidate.pathEntry().stringPath();
-        DPNode dpNode = new DPNode(i, dp[i], List.copyOf(best));
+        List<String> best = pathEntry.stringPath();
+        DPNode dpNode = new DPNode(i, dp[i], List.copyOf(best), createRuleData(pathEntry.appliedRules()));
         nodes.add(dpNode);
 
         if(collector != null) {
             collector.recordDP("i=" + i, i, candidate.optionsLabels(), String.join(" + ", best),
                     dp[i], candidate.sku());
         }
+    }
+
+    private List<RuleData> createRuleData(List<PricingOption> appliedRules) {
+        return appliedRules.stream().map(RuleData::from)
+                .collect(toList());
     }
 }

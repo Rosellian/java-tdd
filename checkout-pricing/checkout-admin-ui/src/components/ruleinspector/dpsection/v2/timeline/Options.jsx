@@ -1,6 +1,10 @@
 import {highlightExplanationLine} from "../../../../../functions/dp/highlighting/highlighting";
+import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 
-export function Options({ options, isDark }) {
+export function Options({ options }) {
+    const { theme } = useTheme();
+    const isDark = theme === "dark";
+
     return (
         <div style={styles.container}>
             <span>Options:</span>
@@ -22,7 +26,7 @@ export function Options({ options, isDark }) {
 const styles = {
     container: {
         display: "flex",
-        flexWrap: "wrap",
+        flexDirection: "column",
         gap: 5,
     },
     options: {
@@ -35,7 +39,8 @@ const styles = {
         padding: "2px 6px",
         borderRadius: 4,
         fontSize: "0.75rem",
-        border: "1px solid"
+        border: "1px solid",
+        width: "fit-content",
     },
     optionDark: {
         background: "#1E1E1E",

@@ -725,6 +725,7 @@ Two versions created as prototypes:
       - Separate collapsible explanation block
       - Syntax highlighting for options
       - Wider option blocks
+      - Adding unit price and rule data
   - DPGraph
     - Avoid too low width
     - Line wrap chosen and options

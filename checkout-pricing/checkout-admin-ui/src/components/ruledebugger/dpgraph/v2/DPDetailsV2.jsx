@@ -1,5 +1,5 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
-import {formatChosen} from "../../../../functions/dp/formatting";
+import {lineWrapOnPlus} from "../../../../functions/dp/formatting";
 import {DPOptions} from "./DPOptions";
 import {DPDetailRow} from "./DPDetailRow";
 
@@ -21,7 +21,7 @@ export function DPDetailsV2({ node, index }) {
 
             <DPDetailRow label="State" value={node.state} />
 
-            <DPDetailRow label="Chosen" value={formatChosen(node.chosen)} valueStyle={styles.badge}
+            <DPDetailRow label="Chosen" value={lineWrapOnPlus(node.chosen)} valueStyle={styles.badge}
                          valueColor={isDark ? styles.badgeDark : styles.badgeLight} />
 
             <DPDetailRow label="Price" value={node.price} />

@@ -1338,6 +1338,7 @@ Adding delete protection for default rulesets and price lists.
 - Passing simple rule name and full toString-version in RuleTraceEvent 
   to enable more customization in RuleInspector UI.
 - Making options, chosen and explanations (path data) in DP trace more homogeneous.
+- Adding unit price and applied rules to DP tracing data.
 ---
 
 ## Testing

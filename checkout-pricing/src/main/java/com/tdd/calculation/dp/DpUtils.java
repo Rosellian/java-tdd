@@ -14,11 +14,11 @@ public class DpUtils {
 
     private DpUtils() {}
 
-    static DPTrace noResult(String sku, int remaining, PricingTraceCollector collector) {
+    static DPTrace noResult(String sku, double unitPrice, int remaining, PricingTraceCollector collector) {
         if(collector != null)
             collector.recordDP("i=0", 0, List.of(), ITEMS_0_KR, 0, sku);
 
-        return new DPTrace(sku, remaining, List.of(), 0, List.of(ITEMS_0_KR));
+        return new DPTrace(sku, unitPrice, remaining, List.of(), List.of(), 0, List.of(ITEMS_0_KR));
     }
 
     static double [] initDp(int n) {

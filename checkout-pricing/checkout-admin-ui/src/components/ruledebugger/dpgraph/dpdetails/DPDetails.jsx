@@ -1,7 +1,7 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {DPDetail} from "./DPDetail";
 import {DPOptions} from "./DPOptions";
-import {formatChosen} from "../../../../functions/dp/formatting";
+import {lineWrapOnPlus} from "../../../../functions/dp/formatting";
 
 export function DPDetails({ node, index }) {
     const { theme } = useTheme();
@@ -20,7 +20,7 @@ export function DPDetails({ node, index }) {
             </h4>
 
             <DPDetail label={"State"} value={node.state} />
-            <DPDetail label={"Chosen"} value={formatChosen(node.chosen)} preFormatted={true} />
+            <DPDetail label={"Chosen"} value={lineWrapOnPlus(node.chosen)} preFormatted={true} />
             <DPDetail label={"Price"} value={node.price} />
 
             <DPOptions node={node} />
