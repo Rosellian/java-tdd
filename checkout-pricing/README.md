@@ -1335,7 +1335,9 @@ Adding delete protection for default rulesets and price lists.
 
 ### Data changes
 - Adding support for more customer information.
-- Passing simple rule name and full toString-version in RuleTraceEvent to enable more customization in RuleInspector UI.
+- Passing simple rule name and full toString-version in RuleTraceEvent 
+  to enable more customization in RuleInspector UI.
+- Making options, chosen and explanations (path data) in DP trace more homogeneous.
 ---
 
 ## Testing

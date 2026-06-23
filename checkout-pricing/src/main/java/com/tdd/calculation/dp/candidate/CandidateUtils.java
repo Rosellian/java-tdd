@@ -12,13 +12,13 @@ public class CandidateUtils {
 
     static List<String> createOptionsLabels(int i, double[] dp) {
         List<String> optionsLabels = new ArrayList<>();
-        optionsLabels.add("unitPrice x" + i + " = " + dp[i]);
+        optionsLabels.add("unitPrice x " + i + " = " + dp[i]);
 
         return optionsLabels;
     }
 
     static String createOptionLabel(PricingOption opt, double candidate) {
-        return opt.quantity() + " for " + opt.price() + " -> " + candidate;
+        return opt.quantity() + "-for-" + opt.price() + " -> " + candidate;
     }
 
     static List<String> createUnitPriceEntry(int i, double unitPrice) {

@@ -724,6 +724,7 @@ Two versions created as prototypes:
       - Separate collapsible details block
       - Separate collapsible explanation block
       - Syntax highlighting for options
+      - Wider option blocks
   - DPGraph
     - Avoid too low width
     - Line wrap chosen and options

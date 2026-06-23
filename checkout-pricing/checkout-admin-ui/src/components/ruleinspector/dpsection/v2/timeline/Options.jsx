@@ -27,10 +27,11 @@ const styles = {
     },
     options: {
         display: "flex",
-        flexWrap: "wrap",
+        flexDirection: "column",
         gap: 5
     },
     option: {
+        whiteSpace: "nowrap",
         padding: "2px 6px",
         borderRadius: 4,
         fontSize: "0.75rem",
