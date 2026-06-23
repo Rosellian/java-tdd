@@ -731,6 +731,7 @@ Two versions created as prototypes:
     - Syntax highlighting for options
   - RuleTimeline
     - Avoid too low width and line wrap
+    - Color coded price
   - ChainOverview
       - Avoid too low width and line wrap
   - PriceListEditor
