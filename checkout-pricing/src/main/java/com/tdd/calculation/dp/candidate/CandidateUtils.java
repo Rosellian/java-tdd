@@ -21,22 +21,20 @@ public class CandidateUtils {
         return opt.quantity() + "-for-" + opt.price() + " -> " + candidate;
     }
 
-    static List<String> createUnitPriceEntry(int i, double unitPrice) {
-        List<String> best = new ArrayList<>();
-        best.add(i + " x " + unitPrice + " = " + i*unitPrice + " kr");
-
-        return best;
+    static String createUnitPriceEntry(int n, double unitPrice) {
+        return n + " x " + unitPrice + " = " + n*unitPrice + " kr";
     }
 
-    static List<String> createBestPriceList(List<PathEntry> path, PricingOption opt, int i) {
-        List<String> best;
+    static List<String> createBestPriceList(List<PathEntry> path, PricingOption opt, int i, double unitPrice) {
+        List<String> best = new ArrayList<>();
         int quantity = opt.quantity();
+        int remaining = i - quantity;
 
         if(opt.stackable()) {
             best = new ArrayList<>(path.get(i - quantity).stringPath());
         }
-        else {
-            best = new ArrayList<>();
+        else if(remaining > 0) {
+            best.add(createUnitPriceEntry(remaining, unitPrice));
         }
 
         best.add(quantity + "-for-" + opt.price() + (opt.stackable() ? "" : " (non-stackable)"));
@@ -44,7 +42,7 @@ public class CandidateUtils {
         return best;
     }
 
-    static List<PricingOption> createAppliedRule(List<PathEntry> path, PricingOption opt, int i) {
+    static List<PricingOption> createAppliedRules(List<PathEntry> path, PricingOption opt, int i) {
         List<PricingOption> newAppliedRules;
         int quantity = opt.quantity();
 

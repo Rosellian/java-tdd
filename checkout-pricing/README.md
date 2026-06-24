@@ -1339,6 +1339,7 @@ Adding delete protection for default rulesets and price lists.
   to enable more customization in RuleInspector UI.
 - Making options, chosen and explanations (path data) in DP trace more homogeneous.
 - Adding unit price and applied rules to DP tracing data.
+- Fix for non-stacking rule path data.
 ---
 
 ## Testing

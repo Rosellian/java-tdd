@@ -26,7 +26,7 @@ public class CandidateCalculator {
     //TODO dp is updated (side-effect)
     public Candidate candidateFor(double[] dp, int i, List<PathEntry> path) {
         dp[i] = i * unitPrice;
-        List<String> best = createUnitPriceEntry(i, unitPrice);
+        List<String> best = List.of(createUnitPriceEntry(i, unitPrice));
         List<PricingOption> appliedRules = new ArrayList<>();
         List<String> optionsLabels = createOptionsLabels(i, dp);
 
@@ -41,8 +41,8 @@ public class CandidateCalculator {
 
                 if(isBetterCandidate) {
                     dp[i] = candidate;
-                    best = createBestPriceList(path, opt, i);
-                    appliedRules = createAppliedRule(path, opt, i);
+                    best = createBestPriceList(path, opt, i, unitPrice);
+                    appliedRules = createAppliedRules(path, opt, i);
                 }
             }
         }

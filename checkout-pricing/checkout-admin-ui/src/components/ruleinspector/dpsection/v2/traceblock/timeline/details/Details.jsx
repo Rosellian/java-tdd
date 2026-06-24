@@ -44,11 +44,6 @@ const styles = {
         gridTemplateColumns: "1fr",
         gap: 6
     },
-    chosenContainer: {
-        display: "flex",
-        flexDirection: "column",
-        gap: 5,
-    },
     afterPrice: {
         fontWeight: 600
     },

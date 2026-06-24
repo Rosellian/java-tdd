@@ -34,6 +34,11 @@ function createChosenData(debuggerNode) {
 }
 
 const styles = {
+    chosenContainer: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 5,
+    },
     chosen: {
         padding: "2px 6px",
         width: "fit-content",
