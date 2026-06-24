@@ -1,3 +1,5 @@
+import {Tooltip} from "./Tooltip";
+
 export function Rules({ rules }) {
     return (
         <div style={styles.rules}>
@@ -5,13 +7,14 @@ export function Rules({ rules }) {
 
             <div style={styles.ruleList}>
                 {rules.map((rule, i) => (
-                    <span
+                    <Tooltip
                         key={i}
-                        title={JSON.stringify(rule.data, null, 2)}
-                        style={styles.ruleItem}
+                        text={JSON.stringify(rule.data, null, 2)}
                     >
-                        {rule.name}{i < rules.length - 1 ? ", " : ""}
-                    </span>
+                        <span style={styles.ruleItem}>
+                            {rule.name}{i < rules.length - 1 ? ", " : ""}
+                        </span>
+                    </Tooltip>
                 ))}
             </div>
         </div>

@@ -1,5 +1,5 @@
 import {useTheme} from "../../../../../ui/theme/ThemeProvider";
-import {Rules} from "./Rules";
+import {Rules} from "./rules/Rules";
 
 export function DPOverview({ dp }) {
     const { theme } = useTheme();

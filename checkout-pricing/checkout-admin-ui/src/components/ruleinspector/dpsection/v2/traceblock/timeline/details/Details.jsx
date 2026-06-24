@@ -1,7 +1,7 @@
 import {Options} from "./Options";
 import {CollapsibleBlock} from "../CollapsibleBlock";
 import {useTheme} from "../../../../../../../ui/theme/ThemeProvider";
-import {Rules} from "../../Rules";
+import {Rules} from "../../rules/Rules";
 import {Chosen} from "./Chosen";
 import {Detail} from "./Detail";
 
