@@ -15,14 +15,14 @@ export function Tooltip({ text, children }) {
         >
             {children}
 
-            {hover && (
-                <div style={{
-                    ...styles.tooltip,
-                    ...(isDark ? styles.tooltipDark : styles.tooltipLight)
-                }}>
-                    {text}
-                </div>
-            )}
+            <div style={{
+                ...styles.tooltip,
+                ...(isDark ? styles.tooltipDark : styles.tooltipLight),
+                ...({opacity: hover ? 1 : 0}),
+                ...({transform: hover ? "translateY(0px)" : "translateY(-4px)"})
+            }}>
+                {text}
+            </div>
         </span>
     )
 }
@@ -42,7 +42,9 @@ const styles = {
         whiteSpace: "pre-wrap",
         maxWidth: 300,
         fontSize: "0.8rem",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.25)"
+        boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
+        pointerEvents: "none",
+        transition: "opacity 0.5s ease, transform 0.5s ease"
     },
     tooltipDark: {
         background: "#1E1E1E",
