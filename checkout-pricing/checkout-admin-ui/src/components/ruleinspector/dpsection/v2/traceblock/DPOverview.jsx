@@ -1,4 +1,5 @@
-import {useTheme} from "../../../../ui/theme/ThemeProvider";
+import {useTheme} from "../../../../../ui/theme/ThemeProvider";
+import {Rules} from "./Rules";
 
 export function DPOverview({ dp }) {
     const { theme } = useTheme();
@@ -15,10 +16,9 @@ export function DPOverview({ dp }) {
             <div><strong>Unit price:</strong> {dp.unitPrice}</div>
             <div><strong>Remaining:</strong> {dp.remaining}</div>
             <div><strong>Steps:</strong> {dp.nodes.length}</div>
-            <div style={styles.rules}>
-                <strong>Rules affecting DP:</strong>
-                {rules.map(rule => rule.name).join(", ")}
-            </div>
+
+            <Rules rules={rules} />
+
             <div><strong>Final Price:</strong> {dp.finalPrice}</div>
         </div>
     )
@@ -39,9 +39,5 @@ const styles = {
         background: "#fff",
         borderColor: "#ccc",
         color: "#222"
-    },
-    rules: {
-        display: "flex",
-        flexDirection: "column",
     }
 }

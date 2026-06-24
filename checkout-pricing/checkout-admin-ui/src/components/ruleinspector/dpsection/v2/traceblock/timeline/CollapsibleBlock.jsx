@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {AnimatedBody} from "../../../../../ui/AnimatedBody";
+import {AnimatedBody} from "../../../../../../ui/AnimatedBody";
 
 export function CollapsibleBlock({ children, title, itemCount }) {
     const [open, setOpen] = useState(false);

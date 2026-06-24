@@ -1,5 +1,5 @@
-import {highlightExplanationLine} from "../../../../../functions/dp/highlighting/highlighting";
-import {useTheme} from "../../../../../ui/theme/ThemeProvider";
+import {highlightExplanationLine} from "../../../../../../../functions/dp/highlighting/highlighting";
+import {useTheme} from "../../../../../../../ui/theme/ThemeProvider";
 
 export function Options({ options }) {
     const { theme } = useTheme();

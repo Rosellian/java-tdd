@@ -19,7 +19,7 @@ export function DPTraceView({ dp }) {
                 <DPBody dp={dp} />
             </AnimatedBody>
         </div>
-    );
+    )
 }
 
 const styles = {

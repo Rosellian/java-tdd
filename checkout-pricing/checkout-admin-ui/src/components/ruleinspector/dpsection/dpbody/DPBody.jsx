@@ -1,6 +1,6 @@
-import {DPNode} from "./DPNode";
+import {DPNode} from "./node/DPNode";
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
-import {DPResult} from "./DPResult";
+import {DPResult} from "./result/DPResult";
 
 export function DPBody({ dp }) {
     const { theme } = useTheme();

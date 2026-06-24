@@ -1,4 +1,4 @@
-import {highlightExplanationLine} from "../../../../../functions/dp/highlighting/highlighting";
+import {highlightExplanationLine} from "../../../../../../functions/dp/highlighting/highlighting";
 import {CollapsibleBlock} from "./CollapsibleBlock";
 
 export function ExplanationBlock({ node }) {

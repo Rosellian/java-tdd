@@ -726,6 +726,7 @@ Two versions created as prototypes:
       - Syntax highlighting for options
       - Wider option blocks
       - Adding unit price and rule data
+      - Rule data as a tooltip
   - DPGraph
     - Avoid too low width
     - Line wrap chosen and options

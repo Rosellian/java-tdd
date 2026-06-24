@@ -1,6 +1,8 @@
-import {useTheme} from "../../../../../ui/theme/ThemeProvider";
-import {Details} from "./Details";
+import {useTheme} from "../../../../../../ui/theme/ThemeProvider";
+import {Details} from "./details/Details";
 import {ExplanationBlock} from "./ExplanationBlock";
+import {Price} from "./Price";
+import {getDetailsInput} from "./timelineFuncs";
 
 export function DPNodeTimeline({ dp, debuggerDP }) {
     const { theme } = useTheme();
@@ -10,9 +12,7 @@ export function DPNodeTimeline({ dp, debuggerDP }) {
         <div style={styles.timeline}>
             {dp.nodes.map((node, nodeIndex) => {
                 const {debuggerNode, remaining, prevPrice} =
-                    getDetailsInput(debuggerDP, nodeIndex, dp);
-
-                const priceColor = getPriceColor(prevPrice, node.price, isDark);
+                    getDetailsInput(dp, nodeIndex, debuggerDP);
 
                 return (
                     <div key={nodeIndex} style={{
@@ -23,13 +23,7 @@ export function DPNodeTimeline({ dp, debuggerDP }) {
                             Step {node.stepIndex}
                         </div>
 
-                        <div style={styles.price}>
-                            <strong>Price: </strong>
-
-                            <span style={{color: priceColor}}>
-                                {node.price}
-                            </span>
-                        </div>
+                        <Price node={node} prevPrice={prevPrice} />
 
                         <ExplanationBlock node={node} />
 
@@ -40,27 +34,6 @@ export function DPNodeTimeline({ dp, debuggerDP }) {
             })}
         </div>
     )
-}
-
-function getDetailsInput(debuggerDP, nodeIndex, dp) {
-    const debuggerNode = debuggerDP[nodeIndex];
-
-    const remaining = dp.remaining - (nodeIndex + 1);
-
-    const prevPrice = nodeIndex > 0 ? dp.nodes[nodeIndex - 1].price : null;
-
-    return {debuggerNode, remaining, prevPrice};
-}
-
-function getPriceColor(prev, current, isDark) {
-    //TODO Maybe compare with full unit price alternative
-    if (prev == null) return isDark ? "#ccc" : "#333";
-
-    if (current < prev) return isDark ? "#4caf50" : "#2e7d32";
-
-    if (current > prev) return "#d32f2f";
-
-    return "#f9a825";
 }
 
 const styles = {
@@ -87,9 +60,6 @@ const styles = {
     step: {
         fontWeight: 600,
         marginBottom: 4
-    },
-    price: {
-        marginBottom: 6
     },
     explanation: {
         marginTop: 4,
