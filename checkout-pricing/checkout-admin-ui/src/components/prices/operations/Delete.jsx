@@ -5,7 +5,7 @@ import {deletePriceList} from "../../../api/prices/prices";
 import {useState} from "react";
 import {buttonStyles} from "./buttonStyles";
 
-export function Delete({priceList, setPriceList, priceListNames, setPriceListNames, setMode, status, setStatus,
+export function Delete({priceList, setPriceList, priceListNames, setPriceListNames, status, setStatus,
                            selected, setSelected }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
@@ -28,11 +28,10 @@ export function Delete({priceList, setPriceList, priceListNames, setPriceListNam
             </button>
 
             {showConfirm && (
-                <ConfirmModal theme={theme} message={`Are you sure you want to delete price list "${priceList.name}"?`}
-                              onConfirm={ () =>
-                                  confirmDelete(priceList, setPriceList, setShowConfirm, setStatus, setSelected,
-                                      setMode, priceListNames, setPriceListNames)}
-                              onCancel={() => setShowConfirm(false)}/>
+                <ConfirmModal message={`Are you sure you want to delete price list "${priceList.name}"?`}
+                              onConfirm={ () => confirmDelete(priceList, setPriceList, setShowConfirm,
+                                  setStatus, setSelected, priceListNames, setPriceListNames)}
+                              onCancel={() => setShowConfirm(false)} />
             )}
         </div>
     )
@@ -49,24 +48,24 @@ function handleDelete(priceList, setShowConfirm) {
     setShowConfirm(true);
 }
 
-async function confirmDelete(priceList, setPriceList, setShowConfirm, setStatus, setSelected, setMode,
+async function confirmDelete(priceList, setPriceList, setShowConfirm, setStatus, setSelected,
                              priceListNames, setPriceListNames) {
     setShowConfirm(false);
     setStatus("loading");
 
     const ok = await deletePriceList(priceList.name);
     if (ok) {
-        setPriceListNames(prev => prev.filter(n => n !== priceList.name));
+        const updatedNames = priceListNames.filter(n => n !== priceList.name);
+        setPriceListNames(updatedNames);
 
-        const next = priceListNames.filter(n => n !== priceList.name)[0] ?? null;
+        const next = updatedNames[0] ?? null;
 
         if (next) {
             setSelected(next);
-            setMode("existing");
         } else {
             setPriceList(null);
-            setMode("loading");
         }
+        setPriceList(null);
     }
 
     setStatus(ok ? "idle" : "error");

@@ -13,37 +13,35 @@ export function createNewPriceListDraft() {
     };
 }
 
-export function getInitialState(setPriceListNames, setFallbackUsed, setSelected, setMode) {
+export function getInitialState(setPriceListNames, setPriceList, setFallbackUsed, setSelected, setLoaded, setStatus,
+    onPriceListChange) {
     getPriceListNames().then(list => {
         const names = list ?? DEFAULT_PRICE_LISTS;
 
         setPriceListNames(names);
         setFallbackUsed(!list);
 
-        setSelected(names[0]);
-        setMode("existing");
-    });
-}
+        const first = names[0];
+        setSelected(first);
+        setLoaded(first);
 
-export function updateState(mode, selected, setStatus, setPriceList, setFallbackUsed, onPriceListChange) {
-    if (mode !== "existing" || !selected) return;
+        setStatus("loading");
 
-    setStatus("loading");
+        getPriceListWithFallback(first).then(({priceList, fallback}) => {
+            if (!priceList) {
+                setStatus("error");
+                return;
+            }
 
-    getPriceListWithFallback(selected).then(({priceList, fallback}) => {
-        if (!priceList) {
-            setStatus("error");
-            return;
-        }
+            if (!Array.isArray(priceList.unitPrices)) {
+                priceList.unitPrices = [];
+            }
 
-        if (!Array.isArray(priceList.unitPrices)) {
-            priceList.unitPrices = [];
-        }
-
-        setPriceList(priceList);
-        setFallbackUsed(fallback);
-        setStatus("idle");
-        onPriceListChange(selected);
+            setPriceList(priceList);
+            setFallbackUsed(fallback);
+            setStatus("idle");
+            onPriceListChange(first);
+        });
     });
 }
 

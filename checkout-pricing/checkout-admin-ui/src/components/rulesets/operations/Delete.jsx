@@ -28,11 +28,10 @@ export function Delete({ ruleset, setRuleset, rulesetNames, setRulesetNames, sta
             </button>
 
             {showConfirm && (
-                <ConfirmModal theme={theme} message={`Are you sure you want to delete ruleset "${ruleset.name}"?`}
+                <ConfirmModal message={`Are you sure you want to delete ruleset "${ruleset.name}"?`}
                               onConfirm={() => confirmDelete(ruleset, setRuleset, rulesetNames,
                                   setRulesetNames, setShowConfirm, setStatus, setMode, setSelected)}
-                              onCancel={() => setShowConfirm(false)}
-                />
+                              onCancel={() => setShowConfirm(false)} />
             )}
         </div>
     )

@@ -4,29 +4,27 @@ import {PriceListSelector} from "./pricelistselector/PriceListSelector";
 import {TextInput} from "../rulesets/ruleseteditor/ruleform/templates/FormFields";
 import {PriceListEditor} from "./pricelisteditor/PriceListEditor";
 import {ButtonPanel} from "./operations/ButtonPanel";
-import {getInitialState, updatePriceListName, updateState} from "./handlerFuncs";
+import {getInitialState, updatePriceListName} from "./handlerFuncs";
 import {Delete} from "./operations/Delete";
 import {Save} from "./operations/Save";
 import {New} from "./operations/New";
 import {handlerStyles} from "./handlerStyles";
+import {Load} from "./operations/Load";
 
 export function PriceListHandler({ onPriceListChange }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
     const [priceListNames, setPriceListNames] = useState([]);
-    const [selected, setSelected] = useState("default");
     const [priceList, setPriceList] = useState(null);
+    const [selected, setSelected] = useState("default");
+    const [loaded, setLoaded] = useState(null);
 
     const [fallbackUsed, setFallbackUsed] = useState(false);
-    const [mode, setMode] = useState("loading"); // loading, existing, new, deleting
     const [status, setStatus] = useState("idle"); // idle, saving, loading, deleting, error
 
-    useEffect(() => getInitialState(setPriceListNames, setFallbackUsed, setSelected, setMode), []);
-
-    useEffect(() => updateState(mode, selected, setStatus, setPriceList, setFallbackUsed,
-            onPriceListChange),
-        [selected, mode]);
+    useEffect(() => getInitialState(setPriceListNames, setPriceList, setFallbackUsed, setSelected,
+        setStatus, setLoaded, onPriceListChange), []);
 
     function triggerUpdatePriceListName(newName) {
         updatePriceListName(priceList, newName, setPriceList, setPriceListNames, setSelected, onPriceListChange);
@@ -39,18 +37,9 @@ export function PriceListHandler({ onPriceListChange }) {
             ...handlerStyles.wrapper,
             ...(isDark ? handlerStyles.wrapperDark : handlerStyles.wrapperLight)
         }}>
-            {fallbackUsed &&
-                <div style={handlerStyles.fallback}>
-                    Failed to load from server, fallback used
-                </div>
-            }
-
             <div style={handlerStyles.handler}>
                 <div style={handlerStyles.inputs}>
-                    <PriceListSelector value={selected} onChange={(v) => {
-                        setMode("existing");
-                        setSelected(v);
-                    }} names={priceListNames}/>
+                    <PriceListSelector value={selected} onChange={(v) => setSelected(v)} names={priceListNames}/>
 
                     {isPriceListSet && (
                         <TextInput label="Price List Name" field="name" value={priceList.name}
@@ -58,15 +47,19 @@ export function PriceListHandler({ onPriceListChange }) {
                     )}
                 </div>
 
-                <ButtonPanel mode={mode} status={status} selected={selected}>
-                    <Save priceList={priceList} setMode={setMode} status={status} setStatus={setStatus} />
+                <ButtonPanel>
+                    <Load status={status} setStatus={setStatus} selected={selected} setLoaded={setLoaded}
+                          setPriceList={setPriceList} setFallbackUsed={setFallbackUsed}
+                          onPriceListChange={onPriceListChange} />
+
+                    <Save priceList={priceList} status={status} setStatus={setStatus} setLoaded={setLoaded} />
 
                     <Delete priceList={priceList} setPriceList={setPriceList} priceListNames={priceListNames}
-                            setPriceListNames={setPriceListNames} mode={mode} setMode={setMode} status={status}
-                            setStatus={setStatus} selected={selected} setSelected={setSelected} />
+                            setPriceListNames={setPriceListNames} status={status} setStatus={setStatus}
+                            selected={selected} setSelected={setSelected} />
 
-                    <New setPriceList={setPriceList} setPriceListNames={setPriceListNames} setMode={setMode}
-                         setSelected={setSelected} onPriceListChange={onPriceListChange} />
+                    <New setPriceList={setPriceList} setPriceListNames={setPriceListNames} setSelected={setSelected}
+                         onPriceListChange={onPriceListChange} />
                 </ButtonPanel>
             </div>
 
@@ -78,6 +71,12 @@ export function PriceListHandler({ onPriceListChange }) {
             {status === "error" &&
                 <div style={handlerStyles.error}>
                     Failed to load or save price list
+                </div>
+            }
+
+            {fallbackUsed &&
+                <div style={handlerStyles.fallback}>
+                    Failed to load from server, fallback used
                 </div>
             }
 

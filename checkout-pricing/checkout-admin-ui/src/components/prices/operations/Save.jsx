@@ -4,7 +4,7 @@ import {useState} from "react";
 import {savePriceList} from "../../../api/prices/prices";
 import {buttonStyles} from "./buttonStyles";
 
-export function Save({ priceList, setMode, status, setStatus }) {
+export function Save({ priceList, status, setStatus, setLoaded }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -22,8 +22,9 @@ export function Save({ priceList, setMode, status, setStatus }) {
             </button>
 
             {showConfirm && (
-                <ConfirmModal theme={theme} message={`Are you sure you want to save changes to "${priceList.name}"?`}
-                              onConfirm={() => confirmSave(priceList, setShowConfirm, setStatus, setMode)}
+                <ConfirmModal message={`Are you sure you want to save changes to "${priceList.name}"?`}
+                              onConfirm={() => confirmSave(priceList, setShowConfirm,
+                                  setStatus, setLoaded)}
                               onCancel={() => setShowConfirm(false)}/>
             )}
         </div>
@@ -36,14 +37,15 @@ async function handleSave(priceList, setShowConfirm) {
     setShowConfirm(true);
 }
 
-async function confirmSave(priceList, setShowConfirm, setStatus, setMode) {
+async function confirmSave(priceList, setShowConfirm, setStatus, setLoaded) {
     setShowConfirm(false);
 
     setStatus("saving");
 
     const ok = await savePriceList(priceList.name, priceList);
-    if (ok) {
-        setMode("existing");
+    if(ok) {
+        setLoaded(priceList.name);
     }
+
     setStatus(ok ? "idle" : "error");
 }

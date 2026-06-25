@@ -2,13 +2,12 @@ import {buttonStyles} from "./buttonStyles";
 import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {createNewPriceListDraft} from "../handlerFuncs";
 
-export function New({ mode, setMode, setSelected, setPriceListNames, setPriceList, onPriceListChange }) {
+export function New({setSelected, setPriceListNames, setPriceList, onPriceListChange }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
     return (
-        <button disabled={mode === "new"} onClick={() => newPriceList(setMode, setSelected, setPriceListNames,
-            setPriceList, onPriceListChange)}
+        <button onClick={() => newPriceList(setSelected, setPriceListNames, setPriceList, onPriceListChange)}
                 style={{
                     ...buttonStyles.base,
                     ...(isDark ? styles.newButtonDark : styles.newButtonLight)
@@ -18,10 +17,9 @@ export function New({ mode, setMode, setSelected, setPriceListNames, setPriceLis
     )
 }
 
-function newPriceList(setMode, setSelected, setPriceListNames, setPriceList, onPriceListChange) {
+function newPriceList(setSelected, setPriceListNames, setPriceList, onPriceListChange) {
     const draft = createNewPriceListDraft();
 
-    setMode("new");
     setPriceList(draft);
 
     setPriceListNames(prev => [...prev, draft.name]);

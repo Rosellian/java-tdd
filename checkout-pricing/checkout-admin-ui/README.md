@@ -753,6 +753,7 @@ Two versions are created as prototypes:
 
 ### Added functionality and improvements
 - Export and import of Customer JSON
+- Load with prompt in PriceListHandler
 
 ### Current structure
 ```

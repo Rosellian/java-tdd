@@ -1,21 +1,27 @@
-export function ConfirmModal({ message, onConfirm, onCancel, theme }) {
+import {useTheme} from "./theme/ThemeProvider";
+
+export function ConfirmModal({ message, onConfirm, onCancel }) {
+    const { theme } = useTheme();
+    let isDark = theme === "dark";
+
     const confirmLabel = onConfirm.name.replace("confirm", ""); //TODO a bit hacky solution?
 
     return (
         <div style={styles.overlay}>
             <div style={{
                 ...styles.modal,
-                ...(theme === "dark" ? styles.modalDark : styles.modalLight)
+                ...(isDark ? styles.modalDark : styles.modalLight)
             }}>
                 <div style={styles.message}>{message}</div>
 
                 <div style={styles.buttons}>
                     <button style={styles.cancel} onClick={onCancel}>Cancel</button>
+
                     <button style={styles.confirm} onClick={onConfirm}>{confirmLabel}</button>
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
 const styles = {

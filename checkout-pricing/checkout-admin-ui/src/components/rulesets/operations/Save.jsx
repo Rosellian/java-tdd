@@ -22,7 +22,7 @@ export function Save({ ruleset, status, setStatus, setMode }) {
             </button>
 
             {showConfirm && (
-                <ConfirmModal theme={theme} message={`Are you sure you want to save changes to "${ruleset.name}"?`}
+                <ConfirmModal message={`Are you sure you want to save changes to "${ruleset.name}"?`}
                               onConfirm={() => confirmSave(ruleset, setShowConfirm, setStatus, setMode)}
                               onCancel={() => setShowConfirm(false)}
                 />
