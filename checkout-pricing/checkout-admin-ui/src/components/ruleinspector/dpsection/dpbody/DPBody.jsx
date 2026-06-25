@@ -4,11 +4,12 @@ import {DPResult} from "./result/DPResult";
 
 export function DPBody({ dp }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div style={{
             ...styles.dpBody,
-            ...(theme === "dark" ? styles.bodyDark : styles.bodyLight)
+            ...(isDark ? styles.bodyDark : styles.bodyLight)
         }}>
             <div style={styles.nodeScroll}>
                 {dp.nodes.map((node) => (

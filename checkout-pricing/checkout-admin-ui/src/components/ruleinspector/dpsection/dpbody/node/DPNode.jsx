@@ -6,11 +6,11 @@ export function DPNode({ node }) {
     const isDark = theme === "dark";
 
     return (
-        <div key={node.index} style={{
+        <div key={node.stepIndex} style={{
             ...styles.dpNode,
             ...(isDark ? styles.nodeDark : styles.nodeLight)
         }}>
-            <strong>[{node.index}] → {node.price} kr</strong>
+            <strong>[{node.stepIndex}] → {node.price} kr</strong>
 
             <Explanation node={node} />
         </div>

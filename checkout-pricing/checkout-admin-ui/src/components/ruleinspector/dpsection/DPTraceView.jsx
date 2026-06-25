@@ -6,12 +6,13 @@ import {useState} from "react";
 
 export function DPTraceView({ dp }) {
     const { theme } = useTheme();
-    const [open, setOpen] = useState(false);
+    let isDark = theme === "dark";
 
+    const [open, setOpen] = useState(false);
     return (
         <div style={{
             ...styles.dp,
-            ...(theme === "dark" ? styles.dpDark : styles.dpLight)
+            ...(isDark ? styles.dpDark : styles.dpLight)
         }}>
             <DPHeader dp={dp} onClick={() => setOpen(!open)} />
 

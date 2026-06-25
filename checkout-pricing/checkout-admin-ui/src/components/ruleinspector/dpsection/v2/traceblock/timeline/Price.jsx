@@ -1,13 +1,13 @@
 import {useTheme} from "../../../../../../ui/theme/ThemeProvider";
 
-export function Price ({ node, prevPrice }) {
+export function Price ({ label, node, prevPrice }) {
     const { theme } = useTheme();
     const isDark = theme === "dark";
     const priceColor = getPriceColor(prevPrice, node.price, isDark);
 
     return (
         <div style={styles.price}>
-            <strong>Price: </strong>
+            <strong>{label}: </strong>
 
             <span style={{color: priceColor}}>
                 {node.price}
@@ -29,6 +29,7 @@ function getPriceColor(prev, current, isDark) {
 
 const styles = {
     price: {
-        marginBottom: 6
+        marginBottom: 6,
+        fontWeight: 600
     }
 }

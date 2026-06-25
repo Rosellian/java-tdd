@@ -2,11 +2,12 @@ import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function DPHeader({ dp, onClick }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div style={{
             ...styles.dpHeader,
-            ...(theme === "dark" ? styles.headerDark : styles.headerLight)
+            ...(isDark ? styles.headerDark : styles.headerLight)
         }} onClick={onClick}>
             <strong>SKU {dp.sku}</strong>
 

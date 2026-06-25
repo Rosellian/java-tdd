@@ -1,14 +1,11 @@
 import {Options} from "./Options";
 import {CollapsibleBlock} from "../CollapsibleBlock";
-import {useTheme} from "../../../../../../../ui/theme/ThemeProvider";
 import {Rules} from "../../rules/Rules";
 import {Chosen} from "./Chosen";
 import {Detail} from "./Detail";
+import {Price} from "../Price";
 
 export function Details({node, debuggerNode, remaining, beforePrice }) {
-    const { theme } = useTheme();
-    const isDark = theme === "dark";
-
     const rules = node.rules ?? [];
 
     return (
@@ -19,16 +16,7 @@ export function Details({node, debuggerNode, remaining, beforePrice }) {
                 <Detail label="Remaining" value={remaining} />
                 <Detail label="Before" value={beforePrice} />
 
-                <div>
-                    <span>After: </span>
-
-                    <span style={{
-                        ...styles.afterPrice,
-                        ...(isDark ? styles.afterPriceDark : styles.afterPriceLight)
-                    }}>
-                        {debuggerNode.price}
-                    </span>
-                </div>
+                <Price label="After" node={node} prevPrice={beforePrice} />
 
                 <Chosen debuggerNode={debuggerNode} />
 
@@ -43,14 +31,5 @@ const styles = {
         display: "grid",
         gridTemplateColumns: "1fr",
         gap: 6
-    },
-    afterPrice: {
-        fontWeight: 600
-    },
-    afterPriceDark: {
-        color: "#4caf50"
-    },
-    afterPriceLight: {
-        color: "#2e7d32"
     }
 }

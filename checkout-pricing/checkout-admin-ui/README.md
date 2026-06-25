@@ -718,6 +718,7 @@ Two versions created as prototypes:
     - Add badges
   - DPSection
     - Syntax highlighting for explanation and winning path.
+    - Fixed the step index bug
     - Version 2
       - Collapsible explanation and details combined
       - Using debugger data for details
@@ -727,6 +728,7 @@ Two versions created as prototypes:
       - Wider option blocks
       - Adding unit price and rule data
       - Rule data as a tooltip
+      - Color coding price values
   - DPGraph
     - Avoid too low width
     - Line wrap chosen and options

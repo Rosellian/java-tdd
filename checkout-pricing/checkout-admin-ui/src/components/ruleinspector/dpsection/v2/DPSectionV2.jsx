@@ -3,9 +3,6 @@ import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {DPTraceBlock} from "./traceblock/DPTraceBlock";
 
 export function DPSectionV2({ dpTraces, debuggerDPTraces }) {
-    const { theme } = useTheme();
-    const isDark = theme === "dark";
-
     let debuggerDPBySku = groupBySku(debuggerDPTraces);
 
     return (
@@ -13,7 +10,7 @@ export function DPSectionV2({ dpTraces, debuggerDPTraces }) {
             {dpTraces.map((dpTrace, i) => {
                 let debuggerDP = debuggerDPBySku[dpTrace.sku];
 
-                return <DPTraceBlock key={i} dp={dpTrace} debuggerDP={debuggerDP} isDark={isDark}/>
+                return <DPTraceBlock key={i} dp={dpTrace} debuggerDP={debuggerDP} />
             })}
         </Section>
     )
