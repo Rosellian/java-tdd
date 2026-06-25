@@ -1,9 +1,9 @@
 import {useTheme} from "../../../../../../ui/theme/ThemeProvider";
 
-export function Price ({ label, node, prevPrice }) {
+export function Price ({ label, node, beforePrice }) {
     const { theme } = useTheme();
     const isDark = theme === "dark";
-    const priceColor = getPriceColor(prevPrice, node.price, isDark);
+    const priceColor = getPriceColor(beforePrice, node.price, isDark);
 
     return (
         <div style={styles.price}>
@@ -16,13 +16,12 @@ export function Price ({ label, node, prevPrice }) {
     )
 }
 
-function getPriceColor(prev, current, isDark) {
-    //TODO Maybe compare with full unit price alternative
-    if (prev == null) return isDark ? "#ccc" : "#333";
+function getPriceColor(before, current, isDark) {
+    if (before == null) return isDark ? "#ccc" : "#333";
 
-    if (current < prev) return isDark ? "#4caf50" : "#2e7d32";
+    if (current < before) return isDark ? "#4caf50" : "#2e7d32";
 
-    if (current > prev) return "#d32f2f";
+    if (current > before) return "#d32f2f";
 
     return "#f9a825";
 }

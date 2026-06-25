@@ -5,9 +5,7 @@ export function getDetailsInput(dp, nodeIndex, debuggerDP) {
 
     const remaining = dp.remaining - step;
 
-    const prevPrice = nodeIndex > 0 ? dp.nodes[nodeIndex - 1].price : null;
-
     const unitPrice = dp.unitPrice * step;
 
-    return {debuggerNode, remaining, prevPrice, unitPrice};
+    return {debuggerNode, remaining, unitPrice};
 }

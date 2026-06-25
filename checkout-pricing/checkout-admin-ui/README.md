@@ -545,7 +545,7 @@ Enabling:
 - Save changes to rulesets to backend
 - Load rulesets from the backend
 #### Component setup
-1. RulesetHandler is added as a main component to the AdminApp to operate on the rulesets.
+1. RulesetHandler is added as a main part to the AdminApp to operate on the rulesets.
    ```jsx
    <RulesetHandler onRulesetChange={setRuleset} />
    ```
@@ -577,7 +577,7 @@ export async function saveRuleset(name, ruleset) {}
 ### Price list handler
 Following the same structure and functionality as the Ruleset handler.
 #### Component setup
-1. PriceListHandler is added as a main component to the AdminApp to operate on the price lists.
+1. PriceListHandler is added as a main part to the AdminApp to operate on the price lists.
    ```jsx
    <PriceListHandler onPriceListChange={setPriceList} />
    ```
@@ -608,22 +608,22 @@ export async function savePriceList(name, priceList) {}
 ---
 
 ### Refactoring and improvements
-- Refactoring RulesetHandler using similar pattern as price lists
+- Refactoring RulesetHandler using a similar pattern as price lists
 - Make RulesetHandler more compact
 - Make PriceListHandler more compact
 - Add scrollbars
   - Rules in RulesetEditor
   - Prices in PriceListEditor
-  - Cart(SKU and quantity) in CartEditor
+  - Cart (SKU and quantity) in CartEditor
   - Better dark theme scrollbar look
-- Adding confirmation prompt when saving changes to database
+- Adding a confirmation prompt when saving changes to a database
   - Rulesets
   - Price lists
 - Improved contrast for buttons in light mode
 - Adjust to merged pricing endpoints
 - Using PricingRequest with metadata
 
-#### Adding delete button
+#### Adding the delete button
 - RulesetHandler
 - PriceListHandler
 - Adding delete protection for defaults
@@ -637,7 +637,7 @@ Going through the code and fixing minor bugs, refactoring and keeping code clean
 - RuleDebugger
 - RuleInspector
 
-#### Applying dark/light theme to rest of application
+#### Applying dark/light theme to the rest of the application
 - RuleDebugger
   - ChainOverview
   - DPGraph
@@ -652,12 +652,12 @@ Going through the code and fixing minor bugs, refactoring and keeping code clean
 ### Customer panel
 Being able to view and edit customer data included in pricing evaluation requests.
 #### Components
-Two versions created as prototypes:
+Two versions are created as prototypes:
 ```jsx
 <CustomerPanel customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
 <CustomerPanelV2 customer={customer} setCustomer={setCustomer} originalCustomer={originalCustomer} />
 ```
-1. Minimalistic, collapsible design(similar to Rule inspector) with JSON fields.  
+1. Minimalistic, collapsible design (similar to Rule inspector) with JSON fields.  
    Subcomponents:
    - ```jsx
      <CustomerItem customer={customer} updateField={updateField} originalCustomer={originalCustomer} />
@@ -689,12 +689,12 @@ Two versions created as prototypes:
 - Making RuleEditor and PriceListEditor collapsible to save space.
 - Consistent color theme for RuleTypeSelector label.
 - Making CartEditor and Customer V2 layout more compact.
-- Changing main controls layout (left sided).
-- Making CartEditor shorter.
-- Fix change sync between customer panels.(just prototype stage, not needed later)
+- Changing the main controls layout (left-sided).
+- Shortening CartEditor.
+- Fix change sync between customer panels. (just a prototype stage, not needed later)
 - Making RuleInspector layout more compact
   - RuleTimeline
-    - Including full toString ruleName text in body instead of header.
+    - Including full toString ruleName text in the body instead of the header.
     - Collapsible parts
     - Adding scrollbar to parts
   - SkuBreakdown
@@ -708,7 +708,7 @@ Two versions created as prototypes:
     - Adding scrollbar
     - More compact SkuNodes
     - Better details view prototype
-- Add new prototype of RuleInspector DPSection
+- Add a new prototype of RuleInspector DPSection
 - RuleInspector
   - RuleTimeline
     - Add JSON syntax highlighting

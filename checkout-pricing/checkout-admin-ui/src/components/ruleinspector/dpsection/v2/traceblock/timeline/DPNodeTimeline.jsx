@@ -11,7 +11,7 @@ export function DPNodeTimeline({ dp, debuggerDP }) {
     return (
         <div style={styles.timeline}>
             {dp.nodes.map((node, nodeIndex) => {
-                const {debuggerNode, remaining, prevPrice, unitPrice} =
+                const {debuggerNode, remaining, unitPrice} =
                     getDetailsInput(dp, nodeIndex, debuggerDP);
 
                 return (
@@ -23,7 +23,7 @@ export function DPNodeTimeline({ dp, debuggerDP }) {
                             Step {node.stepIndex}
                         </div>
 
-                        <Price label="Price" node={node} prevPrice={unitPrice} />
+                        <Price label="Price" node={node} beforePrice={unitPrice} />
 
                         <ExplanationBlock node={node} />
 
