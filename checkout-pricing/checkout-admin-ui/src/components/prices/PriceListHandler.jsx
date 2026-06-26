@@ -10,6 +10,7 @@ import {Save} from "./operations/Save";
 import {New} from "./operations/New";
 import {handlerStyles} from "./handlerStyles";
 import {Load} from "./operations/Load";
+import {DiscardChangesModal} from "./DiscardModal";
 
 export function PriceListHandler({ onPriceListChange }) {
     const { theme } = useTheme();
@@ -23,6 +24,8 @@ export function PriceListHandler({ onPriceListChange }) {
 
     const [isDraft, setIsDraft] = useState(false);
     const [unsavedChanges, setUnsavedChanges] = useState(false);
+    const [showDiscardModal, setShowDiscardModal] = useState(false);
+    const [pendingSelection, setPendingSelection] = useState(null);
 
     const [fallbackUsed, setFallbackUsed] = useState(false);
     const [status, setStatus] = useState("idle"); // idle, saving, loading, deleting, error
@@ -45,18 +48,26 @@ export function PriceListHandler({ onPriceListChange }) {
                 <div style={handlerStyles.inputs}>
                     <PriceListSelector value={selected} onChange={(v) => {
                         if (unsavedChanges) {
-                            const ok = window.confirm("You have unsaved changes. Discard them?");
-                            if (!ok) return;
-                        }
-
-                        if(isDraft) {
-                            setPriceListNames(prev => prev.filter(n => n !== selected));
+                            setPendingSelection(v);
+                            setShowDiscardModal(true);
+                            return;
                         }
                         setSelected(v);
-                        setPriceList(null);
-                        setIsDraft(false);
-                        setUnsavedChanges(false);
-                    }} names={priceListNames}/>
+                    }} names={priceListNames} isDraft={isDraft} selected={selected}/>
+
+                    {showDiscardModal && (
+                        <DiscardChangesModal onConfirm={() => {
+                            if(isDraft) {
+                                setPriceListNames(prev => prev.filter(n => n !== selected));
+                            }
+
+                            setPriceList(null);
+                            setIsDraft(false);
+                            setUnsavedChanges(false);
+                            setSelected(pendingSelection);
+                            setShowDiscardModal(false);
+                        }} onCancel={() => setShowDiscardModal(false)}/>
+                    )}
 
                     {isPriceListSet && (
                         <TextInput label="Price List Name" field="name" value={priceList.name}

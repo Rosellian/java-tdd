@@ -1,6 +1,7 @@
 import {useTheme} from "./theme/ThemeProvider";
 
-export function ConfirmModal({ message, onConfirm, onCancel }) {
+export function ConfirmModal({ message, children, onConfirm, onCancel, confirmLabel = "Yes",
+                                 cancelLabel = "Cancel", confirmStyle = {}, cancelStyle = {} }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -10,12 +11,24 @@ export function ConfirmModal({ message, onConfirm, onCancel }) {
                 ...styles.modal,
                 ...(isDark ? styles.modalDark : styles.modalLight)
             }}>
-                <div style={styles.message}>{message}</div>
+                <div style={styles.message}>
+                    {children ?? message}
+                </div>
 
                 <div style={styles.buttons}>
-                    <button style={styles.cancel} onClick={onCancel}>Cancel</button>
+                    <button onClick={onCancel} style={{
+                        ...styles.cancel,
+                        ...cancelStyle
+                    }}>
+                        {cancelLabel}
+                    </button>
 
-                    <button style={styles.confirm} onClick={onConfirm}>Yes</button>
+                    <button onClick={onConfirm} style={{
+                        ...styles.confirm,
+                        ...confirmStyle
+                    }}>
+                        {confirmLabel}
+                    </button>
                 </div>
             </div>
         </div>

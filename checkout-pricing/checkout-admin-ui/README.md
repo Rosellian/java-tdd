@@ -757,6 +757,8 @@ Two versions are created as prototypes:
   - Handle new list creation
   - Unsaved changes indication
   - Disabled state for buttons
+  - Discard changes modal
+  - Dropdown unsaved badge
 
 ### Current structure
 ```
