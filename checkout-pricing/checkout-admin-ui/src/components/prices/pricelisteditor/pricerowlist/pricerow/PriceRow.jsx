@@ -20,7 +20,7 @@ export function PriceRow({ item, onChange, onDelete }) {
                 ✕
             </button>
         </div>
-    );
+    )
 }
 
 const styles = {

@@ -5,8 +5,8 @@ import {deletePriceList} from "../../../api/prices/prices";
 import {useState} from "react";
 import {buttonStyles} from "./buttonStyles";
 
-export function Delete({priceList, setPriceList, priceListNames, setPriceListNames, status, setStatus,
-                           selected, setSelected }) {
+export function Delete({ priceList, priceListNames, setPriceListNames, status, setStatus, selected, setSelected,
+                           isDraft, unsavedChanges, onDelete }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -16,7 +16,7 @@ export function Delete({priceList, setPriceList, priceListNames, setPriceListNam
 
     return (
         <div>
-            <button disabled={isProtectedSelected}
+            <button disabled={isProtectedSelected || unsavedChanges}
                     onClick={() => handleDelete(priceList, setShowConfirm)}
                     title={isProtectedSelected ? "This price list cannot be deleted" : ""}
                     style={{
@@ -29,8 +29,8 @@ export function Delete({priceList, setPriceList, priceListNames, setPriceListNam
 
             {showConfirm && (
                 <ConfirmModal message={`Are you sure you want to delete price list "${priceList.name}"?`}
-                              onConfirm={ () => confirmDelete(priceList, setPriceList, setShowConfirm,
-                                  setStatus, setSelected, priceListNames, setPriceListNames)}
+                              onConfirm={ () => confirmDelete(priceList, priceListNames,
+                                  setPriceListNames, setShowConfirm, setStatus, setSelected, isDraft, onDelete)}
                               onCancel={() => setShowConfirm(false)} />
             )}
         </div>
@@ -48,9 +48,17 @@ function handleDelete(priceList, setShowConfirm) {
     setShowConfirm(true);
 }
 
-async function confirmDelete(priceList, setPriceList, setShowConfirm, setStatus, setSelected,
-                             priceListNames, setPriceListNames) {
+async function confirmDelete(priceList, priceListNames, setPriceListNames, setShowConfirm, setStatus, setSelected,
+                             isDraft, onDelete) {
     setShowConfirm(false);
+
+    if (isDraft) {
+        setPriceListNames(prev => prev.filter(n => n !== priceList.name));
+        setSelected(null);
+        onDelete();
+        return;
+    }
+
     setStatus("loading");
 
     const ok = await deletePriceList(priceList.name);
@@ -59,13 +67,11 @@ async function confirmDelete(priceList, setPriceList, setShowConfirm, setStatus,
         setPriceListNames(updatedNames);
 
         const next = updatedNames[0] ?? null;
-
         if (next) {
             setSelected(next);
-        } else {
-            setPriceList(null);
         }
-        setPriceList(null);
+
+        onDelete();
     }
 
     setStatus(ok ? "idle" : "error");

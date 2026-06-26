@@ -5,9 +5,7 @@ export function PriceListDropdown({ value, onChange, names }) {
     let isDark = theme === "dark";
 
     return (
-        <select
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
+        <select value={value} onChange={(e) => onChange(e.target.value)}
             style={{
                 ...styles.select,
                 ...(isDark ? styles.selectDark : styles.selectLight)

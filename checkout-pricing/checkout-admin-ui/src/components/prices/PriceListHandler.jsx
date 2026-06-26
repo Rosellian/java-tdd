@@ -17,8 +17,12 @@ export function PriceListHandler({ onPriceListChange }) {
 
     const [priceListNames, setPriceListNames] = useState([]);
     const [priceList, setPriceList] = useState(null);
+
     const [selected, setSelected] = useState("default");
     const [loaded, setLoaded] = useState(null);
+
+    const [isDraft, setIsDraft] = useState(false);
+    const [unsavedChanges, setUnsavedChanges] = useState(false);
 
     const [fallbackUsed, setFallbackUsed] = useState(false);
     const [status, setStatus] = useState("idle"); // idle, saving, loading, deleting, error
@@ -39,7 +43,20 @@ export function PriceListHandler({ onPriceListChange }) {
         }}>
             <div style={handlerStyles.handler}>
                 <div style={handlerStyles.inputs}>
-                    <PriceListSelector value={selected} onChange={(v) => setSelected(v)} names={priceListNames}/>
+                    <PriceListSelector value={selected} onChange={(v) => {
+                        if (unsavedChanges) {
+                            const ok = window.confirm("You have unsaved changes. Discard them?");
+                            if (!ok) return;
+                        }
+
+                        if(isDraft) {
+                            setPriceListNames(prev => prev.filter(n => n !== selected));
+                        }
+                        setSelected(v);
+                        setPriceList(null);
+                        setIsDraft(false);
+                        setUnsavedChanges(false);
+                    }} names={priceListNames}/>
 
                     {isPriceListSet && (
                         <TextInput label="Price List Name" field="name" value={priceList.name}
@@ -48,18 +65,39 @@ export function PriceListHandler({ onPriceListChange }) {
                 </div>
 
                 <ButtonPanel>
-                    <Load status={status} setStatus={setStatus} selected={selected} setLoaded={setLoaded}
-                          setPriceList={setPriceList} setFallbackUsed={setFallbackUsed}
-                          onPriceListChange={onPriceListChange} />
+                    <Load status={status} setStatus={setStatus} selected={selected} unsavedChanges={unsavedChanges}
+                          onLoad={(priceList, fallback) => {
+                              setPriceList(priceList);
+                              setFallbackUsed(fallback);
+                              setIsDraft(false);
+                              setLoaded(selected);
+                              onPriceListChange(selected);
+                              setUnsavedChanges(false);
+                          }} />
 
-                    <Save priceList={priceList} status={status} setStatus={setStatus} setLoaded={setLoaded} />
+                    <Save priceList={priceList} status={status} setStatus={setStatus} unsavedChanges={unsavedChanges}
+                          onSave={priceList => {
+                              setIsDraft(false);
+                              setUnsavedChanges(false);
+                              setLoaded(priceList.name);
+                          }} />
 
-                    <Delete priceList={priceList} setPriceList={setPriceList} priceListNames={priceListNames}
-                            setPriceListNames={setPriceListNames} status={status} setStatus={setStatus}
-                            selected={selected} setSelected={setSelected} />
+                    <Delete priceList={priceList} priceListNames={priceListNames} setPriceListNames={setPriceListNames}
+                            status={status} setStatus={setStatus} selected={selected} setSelected={setSelected}
+                            isDraft={isDraft} unsavedChanges={unsavedChanges} onDelete={() => {
+                                setPriceList(null);
+                                setIsDraft(false);
+                                setUnsavedChanges(false);
+                            }} />
 
-                    <New setPriceList={setPriceList} setPriceListNames={setPriceListNames} setSelected={setSelected}
-                         onPriceListChange={onPriceListChange} />
+                    <New unsavedChanges={unsavedChanges} onNew={draft => {
+                        setPriceList(draft);
+                        setPriceListNames(prev => [...prev, draft.name]);
+                        setSelected(draft.name);
+                        setIsDraft(true);
+                        setUnsavedChanges(true);
+                        onPriceListChange(draft.name);
+                    }} />
                 </ButtonPanel>
             </div>
 
@@ -80,9 +118,27 @@ export function PriceListHandler({ onPriceListChange }) {
                 </div>
             }
 
+            {isDraft && (
+                <div style={handlerStyles.draft}>
+                    Unsaved draft
+                </div>
+            )}
+
+            {unsavedChanges && (
+                <div style={{
+                    ...handlerStyles.unsavedChanges,
+                    ...(isDark ? handlerStyles.unsavedChangesDark : handlerStyles.unsavedChangesLight)
+                }}>
+                    Unsaved changes
+                </div>
+            )}
+
             <div style={handlerStyles.editorWrapper}>
                 {isPriceListSet && (
-                    <PriceListEditor priceList={priceList} onChange={setPriceList} />
+                    <PriceListEditor priceList={priceList} onChange={(updated) => {
+                        setPriceList(updated);
+                        setUnsavedChanges(true);
+                    }} />
                 )}
             </div>
         </div>

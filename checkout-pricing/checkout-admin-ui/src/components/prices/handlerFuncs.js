@@ -15,7 +15,15 @@ export function createNewPriceListDraft() {
 
 export function getInitialState(setPriceListNames, setPriceList, setFallbackUsed, setSelected, setLoaded, setStatus,
     onPriceListChange) {
-    getPriceListNames().then(list => {
+    getPriceListNames().then(
+        updatePriceListNamesAndCurrentList(setPriceListNames, setFallbackUsed, setSelected, setLoaded, setStatus,
+            setPriceList, onPriceListChange)
+    );
+}
+
+function updatePriceListNamesAndCurrentList(setPriceListNames, setFallbackUsed, setSelected, setLoaded, setStatus,
+                                            setPriceList, onPriceListChange) {
+    return list => {
         const names = list ?? DEFAULT_PRICE_LISTS;
 
         setPriceListNames(names);
@@ -27,22 +35,28 @@ export function getInitialState(setPriceListNames, setPriceList, setFallbackUsed
 
         setStatus("loading");
 
-        getPriceListWithFallback(first).then(({priceList, fallback}) => {
-            if (!priceList) {
-                setStatus("error");
-                return;
-            }
+        getPriceListWithFallback(first).then(
+            updatePriceList(first, setStatus, setPriceList, setFallbackUsed, onPriceListChange)
+        );
+    };
+}
 
-            if (!Array.isArray(priceList.unitPrices)) {
-                priceList.unitPrices = [];
-            }
+function updatePriceList(name, setStatus, setPriceList, setFallbackUsed, onPriceListChange) {
+    return ({priceList, fallback}) => {
+        if (!priceList) {
+            setStatus("error");
+            return;
+        }
 
-            setPriceList(priceList);
-            setFallbackUsed(fallback);
-            setStatus("idle");
-            onPriceListChange(first);
-        });
-    });
+        if (!Array.isArray(priceList.unitPrices)) {
+            priceList.unitPrices = [];
+        }
+
+        setPriceList(priceList);
+        setFallbackUsed(fallback);
+        setStatus("idle");
+        onPriceListChange(name);
+    };
 }
 
 export function updatePriceListName(priceList, newName, setPriceList, setPriceListNames, setSelected,

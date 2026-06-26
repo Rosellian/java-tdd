@@ -4,7 +4,7 @@ import {useState} from "react";
 import {savePriceList} from "../../../api/prices/prices";
 import {buttonStyles} from "./buttonStyles";
 
-export function Save({ priceList, status, setStatus, setLoaded }) {
+export function Save({ priceList, status, setStatus, unsavedChanges, onSave }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -13,18 +13,18 @@ export function Save({ priceList, status, setStatus, setLoaded }) {
     return (
         <div>
             <button onClick={() => handleSave(priceList, setShowConfirm)}
-                    disabled={status === "saving"}
+                    disabled={!unsavedChanges || status === "saving"}
                     style={{
                         ...buttonStyles.base,
                         ...(isDark ? buttonStyles.dark : buttonStyles.light)
-            }}>
+                    }}
+            >
                 {status === "saving" ? "Saving…" : "Save"}
             </button>
 
             {showConfirm && (
                 <ConfirmModal message={`Are you sure you want to save changes to "${priceList.name}"?`}
-                              onConfirm={() => confirmSave(priceList, setShowConfirm,
-                                  setStatus, setLoaded)}
+                              onConfirm={() => confirmSave(priceList, setShowConfirm, setStatus, onSave)}
                               onCancel={() => setShowConfirm(false)}/>
             )}
         </div>
@@ -37,14 +37,14 @@ async function handleSave(priceList, setShowConfirm) {
     setShowConfirm(true);
 }
 
-async function confirmSave(priceList, setShowConfirm, setStatus, setLoaded) {
+async function confirmSave(priceList, setShowConfirm, setStatus, onSave) {
     setShowConfirm(false);
 
     setStatus("saving");
 
     const ok = await savePriceList(priceList.name, priceList);
     if(ok) {
-        setLoaded(priceList.name);
+        onSave(priceList);
     }
 
     setStatus(ok ? "idle" : "error");
