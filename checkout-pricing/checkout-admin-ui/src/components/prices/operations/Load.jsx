@@ -4,7 +4,7 @@ import {buttonStyles} from "./buttonStyles";
 import {ConfirmModal} from "../../../ui/ConfirmModal";
 import {getPriceListWithFallback} from "../../../api/prices/pricesFallback";
 
-export function Load({ status, setStatus, unsavedChanges, selected, onLoad }) {
+export function Load({ status, setStatus, disabledExp, selected, onLoad }) {
     const { theme } = useTheme();
     const isDark = theme === "dark";
 
@@ -34,7 +34,7 @@ export function Load({ status, setStatus, unsavedChanges, selected, onLoad }) {
 
     return (
         <div>
-            <button disabled={status === "loading" || unsavedChanges} onClick={handleLoad}
+            <button disabled={status === "loading" || disabledExp} onClick={handleLoad}
                     style={{
                         ...buttonStyles.base,
                         ...(isDark ? buttonStyles.dark : buttonStyles.light)

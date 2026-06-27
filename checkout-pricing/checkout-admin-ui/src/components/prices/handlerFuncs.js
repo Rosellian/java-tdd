@@ -13,16 +13,16 @@ export function createNewPriceListDraft() {
     };
 }
 
-export function getInitialState(setPriceListNames, setPriceList, setFallbackUsed, setSelected, setLoaded, setStatus,
+export function getInitialState(setPriceListNames, setPriceList, setOriginalPriceList, setFallbackUsed, setSelected, setLoaded, setStatus,
     onPriceListChange) {
     getPriceListNames().then(
         updatePriceListNamesAndCurrentList(setPriceListNames, setFallbackUsed, setSelected, setLoaded, setStatus,
-            setPriceList, onPriceListChange)
+            setPriceList, setOriginalPriceList, onPriceListChange)
     );
 }
 
 function updatePriceListNamesAndCurrentList(setPriceListNames, setFallbackUsed, setSelected, setLoaded, setStatus,
-                                            setPriceList, onPriceListChange) {
+                                            setPriceList, setOriginalPriceList, onPriceListChange) {
     return list => {
         const names = list ?? DEFAULT_PRICE_LISTS;
 
@@ -36,12 +36,12 @@ function updatePriceListNamesAndCurrentList(setPriceListNames, setFallbackUsed, 
         setStatus("loading");
 
         getPriceListWithFallback(first).then(
-            updatePriceList(first, setStatus, setPriceList, setFallbackUsed, onPriceListChange)
+            updatePriceList(first, setStatus, setPriceList, setOriginalPriceList, setFallbackUsed, onPriceListChange)
         );
     };
 }
 
-function updatePriceList(name, setStatus, setPriceList, setFallbackUsed, onPriceListChange) {
+function updatePriceList(name, setStatus, setPriceList, setOriginalPriceList, setFallbackUsed, onPriceListChange) {
     return ({priceList, fallback}) => {
         if (!priceList) {
             setStatus("error");
@@ -53,6 +53,7 @@ function updatePriceList(name, setStatus, setPriceList, setFallbackUsed, onPrice
         }
 
         setPriceList(priceList);
+        setOriginalPriceList(JSON.parse(JSON.stringify(priceList)));
         setFallbackUsed(fallback);
         setStatus("idle");
         onPriceListChange(name);

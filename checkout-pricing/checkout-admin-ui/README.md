@@ -759,6 +759,7 @@ Two versions are created as prototypes:
   - Disabled state for buttons
   - Discard changes modal
   - Dropdown unsaved badge
+  - Changes diff view
 
 ### Current structure
 ```

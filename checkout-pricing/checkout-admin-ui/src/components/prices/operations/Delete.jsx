@@ -6,7 +6,7 @@ import {useState} from "react";
 import {buttonStyles} from "./buttonStyles";
 
 export function Delete({ priceList, priceListNames, setPriceListNames, status, setStatus, selected, setSelected,
-                           isDraft, unsavedChanges, onDelete }) {
+                           isDraft, disabledExp, onDelete }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -16,7 +16,7 @@ export function Delete({ priceList, priceListNames, setPriceListNames, status, s
 
     return (
         <div>
-            <button disabled={isProtectedSelected || unsavedChanges}
+            <button disabled={isProtectedSelected || disabledExp}
                     onClick={() => handleDelete(priceList, setShowConfirm)}
                     title={isProtectedSelected ? "This price list cannot be deleted" : ""}
                     style={{

@@ -21,7 +21,7 @@ export function PriceListHandler({ onPriceListChange }) {
 
     const [selected, setSelected] = useState("default");
     const [loaded, setLoaded] = useState(null);
-
+    const [originalPriceList, setOriginalPriceList] = useState(null);
     const [isDraft, setIsDraft] = useState(false);
     const [unsavedChanges, setUnsavedChanges] = useState(false);
     const [showDiscardModal, setShowDiscardModal] = useState(false);
@@ -30,8 +30,8 @@ export function PriceListHandler({ onPriceListChange }) {
     const [fallbackUsed, setFallbackUsed] = useState(false);
     const [status, setStatus] = useState("idle"); // idle, saving, loading, deleting, error
 
-    useEffect(() => getInitialState(setPriceListNames, setPriceList, setFallbackUsed, setSelected,
-        setStatus, setLoaded, onPriceListChange), []);
+    useEffect(() => getInitialState(setPriceListNames, setPriceList, setOriginalPriceList, setFallbackUsed,
+        setSelected, setStatus, setLoaded, onPriceListChange), []);
 
     function triggerUpdatePriceListName(newName) {
         updatePriceListName(priceList, newName, setPriceList, setPriceListNames, setSelected, onPriceListChange);
@@ -76,9 +76,11 @@ export function PriceListHandler({ onPriceListChange }) {
                 </div>
 
                 <ButtonPanel>
-                    <Load status={status} setStatus={setStatus} selected={selected} unsavedChanges={unsavedChanges}
-                          onLoad={(priceList, fallback) => {
-                              setPriceList(priceList);
+                    <Load status={status} setStatus={setStatus} selected={selected}
+                          disabledExp={unsavedChanges || isDraft}
+                          onLoad={(newPriceList, fallback) => {
+                              setPriceList(newPriceList);
+                              setOriginalPriceList(JSON.parse(JSON.stringify(newPriceList)));
                               setFallbackUsed(fallback);
                               setIsDraft(false);
                               setLoaded(selected);
@@ -95,7 +97,7 @@ export function PriceListHandler({ onPriceListChange }) {
 
                     <Delete priceList={priceList} priceListNames={priceListNames} setPriceListNames={setPriceListNames}
                             status={status} setStatus={setStatus} selected={selected} setSelected={setSelected}
-                            isDraft={isDraft} unsavedChanges={unsavedChanges} onDelete={() => {
+                            isDraft={isDraft} disabledExp={isDraft || unsavedChanges} onDelete={() => {
                                 setPriceList(null);
                                 setIsDraft(false);
                                 setUnsavedChanges(false);
@@ -144,6 +146,21 @@ export function PriceListHandler({ onPriceListChange }) {
                 </div>
             )}
 
+            {unsavedChanges && originalPriceList && (
+                <div style={{
+                    marginTop: 10,
+                    padding: "8px 12px",
+                    background: isDark ? "#263238" : "#ECEFF1",
+                    borderRadius: 4,
+                    fontSize: 13
+                }}>
+                    <div style={{ fontWeight: 600, marginBottom: 4 }}>Changes:</div>
+                    {diffPriceLists(originalPriceList, priceList).map((d, i) => (
+                        <div key={i} style={{ marginLeft: 8 }}>• {d}</div>
+                    ))}
+                </div>
+            )}
+
             <div style={handlerStyles.editorWrapper}>
                 {isPriceListSet && (
                     <PriceListEditor priceList={priceList} onChange={(updated) => {
@@ -154,4 +171,29 @@ export function PriceListHandler({ onPriceListChange }) {
             </div>
         </div>
     )
+}
+
+function diffPriceLists(a, b) {
+    if (!a || !b) return [];
+
+    const diffs = [];
+
+    if (a.name !== b.name) diffs.push("Name changed");
+
+    const max = Math.max(a.unitPrices.length, b.unitPrices.length);
+
+    for (let i = 0; i < max; i++) {
+        const oldItem = a.unitPrices[i];
+        const newItem = b.unitPrices[i];
+
+        if (!oldItem || !newItem) {
+            diffs.push("SKU list length changed");
+            continue;
+        }
+
+        if (oldItem.sku !== newItem.sku) diffs.push(`SKU changed at row ${i + 1}`);
+        if (oldItem.price !== newItem.price) diffs.push(`Price changed at row ${i + 1}`);
+    }
+
+    return diffs;
 }
