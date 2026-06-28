@@ -8,7 +8,7 @@ export function CollapsibleSection({ title, changed, children, defaultOpen = fal
 
     const [open, setOpen] = useState(defaultOpen);
 
-    let borderColor = changed ? "4px solid #FFB300" : "4px solid transparent";
+    let changedBorderColor = changed ? "4px solid #FFB300" : "1px solid transparent";
 
     return (
         <div style={styles.container}>
@@ -16,7 +16,7 @@ export function CollapsibleSection({ title, changed, children, defaultOpen = fal
                 style={{
                     ...styles.header,
                     ...(isDark ? styles.headerDark : styles.headerLight),
-                    borderLeft: borderColor
+                    borderLeft: changedBorderColor
                 }}
             >
                 <span>{title}</span>
@@ -50,12 +50,16 @@ const styles = {
     headerDark: {
         background: "#2A2A2A",
         color: "#82B1FF",
-        borderColor: "#333"
+        borderTop: "1px solid #333",
+        borderRight: "1px solid #333",
+        borderBottom: "1px solid #333"
     },
     headerLight: {
         background: "#eaeaea",
         color: "#5A2DA8",
-        borderColor: "#ccc"
+        borderTop: "1px solid #ccc",
+        borderRight: "1px solid #ccc",
+        borderBottom: "1px solid #ccc"
     },
     toggle: {
         opacity: 0.8

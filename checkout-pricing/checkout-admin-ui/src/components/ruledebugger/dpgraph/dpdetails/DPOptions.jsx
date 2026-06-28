@@ -18,8 +18,8 @@ export function DPOptions({ node }) {
             </span>
 
             <div style={styles.dpValueList}>
-                {options.map((opt) => (
-                    <span>
+                {options.map((opt, i) => (
+                    <span key={i}>
                         {highlightExplanationLine(opt)}
                     </span>
                 ))}

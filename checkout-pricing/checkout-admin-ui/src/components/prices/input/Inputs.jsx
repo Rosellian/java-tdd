@@ -3,7 +3,7 @@ import {DiscardChangesModal} from "./DiscardModal";
 import {PriceListSelector} from "./selector/PriceListSelector";
 import {useState} from "react";
 
-export function Inputs({ priceList, priceListNames, unsavedChanges, isDraft,
+export function Inputs({ priceList, priceListNames, unsavedChanges, isDraft, selected,
                            setSelected, onDiscardConfirm, triggerUpdatePriceListName }) {
     const [showDiscardModal, setShowDiscardModal] = useState(false);
     const [pendingSelection, setPendingSelection] = useState(null);

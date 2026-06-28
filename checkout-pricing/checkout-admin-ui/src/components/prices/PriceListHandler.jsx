@@ -111,7 +111,7 @@ export function PriceListHandler({ onPriceListChange }) {
         }}>
             <div style={handlerStyles.handler}>
                 <Inputs priceList={priceList} priceListNames={priceListNames} unsavedChanges={unsavedChanges}
-                        isDraft={isDraft} setSelected={setSelected} onDiscardConfirm={onDiscardConfirm}
+                        isDraft={isDraft} selected={selected} setSelected={setSelected} onDiscardConfirm={onDiscardConfirm}
                         triggerUpdatePriceListName={triggerUpdatePriceListName} />
 
                 <ButtonPanel status={status} setStatus={setStatus} selected={selected} isDraft={isDraft}
