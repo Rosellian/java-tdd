@@ -1,11 +1,11 @@
-export const PROTECTED_RULESETS = [
+const PROTECTED_RULESETS = [
     "default",
     "campaigna",
     "campaignb",
     "nocrossnoskudiscount"
 ];
 
-export const PROTECTED_PRICE_LISTS = [
+const PROTECTED_PRICE_LISTS = [
     "default"
 ];
 

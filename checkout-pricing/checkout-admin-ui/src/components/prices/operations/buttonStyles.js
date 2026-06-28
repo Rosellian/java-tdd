@@ -13,5 +13,9 @@ export const buttonStyles = {
     light: {
         background: "#D9C4FF",
         color: "#3A1F6B"
+    },
+    buttonDisabled: {
+        opacity: 0.5,
+        cursor: "not-allowed"
     }
 }

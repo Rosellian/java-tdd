@@ -1,6 +1,3 @@
-import {getPriceListNames} from "../../api/prices/prices";
-import {getPriceListWithFallback} from "../../api/prices/pricesFallback";
-
 export const DEFAULT_PRICE_LISTS = ["default"];
 
 export function createNewPriceListDraft() {
@@ -13,55 +10,29 @@ export function createNewPriceListDraft() {
     };
 }
 
-export function getInitialState(setPriceListNames, setPriceList, setOriginalPriceList, setFallbackUsed, setSelected, setLoaded, setStatus,
-    onPriceListChange) {
-    getPriceListNames().then(
-        updatePriceListNamesAndCurrentList(setPriceListNames, setFallbackUsed, setSelected, setLoaded, setStatus,
-            setPriceList, setOriginalPriceList, onPriceListChange)
-    );
+export function loadPriceListNames(list, setPriceListNames, setFallbackUsed) {
+    const names = list ?? DEFAULT_PRICE_LISTS;
+
+    setPriceListNames(names);
+    setFallbackUsed(!list);
+
+    return names[0];
 }
 
-function updatePriceListNamesAndCurrentList(setPriceListNames, setFallbackUsed, setSelected, setLoaded, setStatus,
-                                            setPriceList, setOriginalPriceList, onPriceListChange) {
-    return list => {
-        const names = list ?? DEFAULT_PRICE_LISTS;
+export function loadPriceList(priceList, fallback, setStatus, updatePriceList) {
+    if (!priceList) {
+        setStatus("error");
+        return;
+    }
 
-        setPriceListNames(names);
-        setFallbackUsed(!list);
+    if (!Array.isArray(priceList.unitPrices)) {
+        priceList.unitPrices = [];
+    }
 
-        const first = names[0];
-        setSelected(first);
-        setLoaded(first);
-
-        setStatus("loading");
-
-        getPriceListWithFallback(first).then(
-            updatePriceList(first, setStatus, setPriceList, setOriginalPriceList, setFallbackUsed, onPriceListChange)
-        );
-    };
+    updatePriceList(priceList, fallback);
 }
 
-function updatePriceList(name, setStatus, setPriceList, setOriginalPriceList, setFallbackUsed, onPriceListChange) {
-    return ({priceList, fallback}) => {
-        if (!priceList) {
-            setStatus("error");
-            return;
-        }
-
-        if (!Array.isArray(priceList.unitPrices)) {
-            priceList.unitPrices = [];
-        }
-
-        setPriceList(priceList);
-        setOriginalPriceList(JSON.parse(JSON.stringify(priceList)));
-        setFallbackUsed(fallback);
-        setStatus("idle");
-        onPriceListChange(name);
-    };
-}
-
-export function updatePriceListName(priceList, newName, setPriceList, setPriceListNames, setSelected,
-                                    onPriceListChange) {
+export function updatePriceListName(priceList, newName, setPriceList, setPriceListNames) {
     if (!priceList) return;
 
     const updated = {...priceList, name: newName};
@@ -70,7 +41,4 @@ export function updatePriceListName(priceList, newName, setPriceList, setPriceLi
     setPriceListNames(prev =>
         prev.map(n => (n === priceList.name ? newName : n))
     );
-
-    setSelected(newName);
-    onPriceListChange(newName);
 }

@@ -1,5 +1,5 @@
-import {ConfirmModal} from "../../ui/ConfirmModal";
-import {useTheme} from "../../ui/theme/ThemeProvider";
+import {ConfirmModal} from "../../../ui/ConfirmModal";
+import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function DiscardChangesModal({ onConfirm, onCancel }) {
     const { theme } = useTheme();

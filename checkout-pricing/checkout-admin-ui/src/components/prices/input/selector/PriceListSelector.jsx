@@ -1,4 +1,4 @@
-import {useTheme} from "../../../ui/theme/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {PriceListDropdown} from "./PriceListDropdown";
 
 export function PriceListSelector({ value, onChange, names, isDraft, selected }) {

@@ -5,83 +5,72 @@ import {deletePriceList} from "../../../api/prices/prices";
 import {useState} from "react";
 import {buttonStyles} from "./buttonStyles";
 
-export function Delete({ priceList, priceListNames, setPriceListNames, status, setStatus, selected, setSelected,
-                           isDraft, disabledExp, onDelete }) {
+export function Delete({ priceList, priceListNames, status, setStatus, isDraft, disabledExp, onDelete }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
     const [showConfirm, setShowConfirm] = useState(false);
 
-    const isProtectedSelected = theme === "light" && isProtectedPriceList(selected);
+    function handleDelete() {
+        if (!priceList) return;
+
+        if (isProtectedPriceList(priceList.name)) {
+            alert(`Price list ${priceList.name} cannot be deleted.`);
+            return;
+        }
+
+        setShowConfirm(true);
+    }
+
+    async function confirmDelete() {
+        setShowConfirm(false);
+
+        if (isDraft) {
+            let namesWithCurrentRemoved = removeList(priceListNames, priceList);
+            onDelete(null, namesWithCurrentRemoved);
+            setStatus("idle")
+
+            return;
+        }
+
+        setStatus("deleting");
+
+        const ok = await deletePriceList(priceList.name);
+        if (ok) {
+            const updatedNames = removeList(priceListNames, priceList);
+            const next = updatedNames[0] ?? null;
+
+            onDelete(next, updatedNames);
+        }
+
+        setStatus(ok ? "idle" : "error");
+    }
 
     return (
         <div>
-            <button disabled={isProtectedSelected || disabledExp}
-                    onClick={() => handleDelete(priceList, setShowConfirm)}
-                    title={isProtectedSelected ? "This price list cannot be deleted" : ""}
+            <button disabled={disabledExp} onClick={() => handleDelete()}
                     style={{
                         ...buttonStyles.base,
                         ...(isDark ? styles.deleteButtonDark : styles.deleteButtonLight),
-                        ...(isProtectedSelected ? styles.buttonDisabled : {})
+                        ...(disabledExp ? buttonStyles.buttonDisabled : {})
             }}>
                 {status === "deleting" ? "Deleting…" : "Delete"}
             </button>
 
             {showConfirm && (
                 <ConfirmModal message={`Are you sure you want to delete price list "${priceList.name}"?`}
-                              onConfirm={ () => confirmDelete(priceList, priceListNames,
-                                  setPriceListNames, setShowConfirm, setStatus, setSelected, isDraft, onDelete)}
+                              onConfirm={() => confirmDelete()}
                               onCancel={() => setShowConfirm(false)} />
             )}
         </div>
     )
 }
 
-function handleDelete(priceList, setShowConfirm) {
-    if (!priceList) return;
-
-    if (isProtectedPriceList(priceList.name)) {
-        alert(`Price list ${priceList.name} cannot be deleted.`);
-        return;
-    }
-
-    setShowConfirm(true);
-}
-
-async function confirmDelete(priceList, priceListNames, setPriceListNames, setShowConfirm, setStatus, setSelected,
-                             isDraft, onDelete) {
-    setShowConfirm(false);
-
-    if (isDraft) {
-        setPriceListNames(prev => prev.filter(n => n !== priceList.name));
-        setSelected(null);
-        onDelete();
-        return;
-    }
-
-    setStatus("loading");
-
-    const ok = await deletePriceList(priceList.name);
-    if (ok) {
-        const updatedNames = priceListNames.filter(n => n !== priceList.name);
-        setPriceListNames(updatedNames);
-
-        const next = updatedNames[0] ?? null;
-        if (next) {
-            setSelected(next);
-        }
-
-        onDelete();
-    }
-
-    setStatus(ok ? "idle" : "error");
+function removeList(priceListNames, priceList) {
+    return priceListNames.filter(n => n !== priceList.name);
 }
 
 const styles = {
-    buttonDisabled: {
-        opacity: 0.5,
-        cursor: "not-allowed"
-    },
     deleteButtonDark: {
         background: "#8B0000",
         color: "#fff"

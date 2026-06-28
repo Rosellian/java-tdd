@@ -10,10 +10,11 @@ export function Save({ priceList, status, setStatus, unsavedChanges, onSave }) {
 
     const [showConfirm, setShowConfirm] = useState(false);
 
+    let isDisabled = !unsavedChanges || status === "saving";
+
     return (
         <div>
-            <button onClick={() => handleSave(priceList, setShowConfirm)}
-                    disabled={!unsavedChanges || status === "saving"}
+            <button onClick={() => handleSave(priceList, setShowConfirm)} disabled={isDisabled}
                     style={{
                         ...buttonStyles.base,
                         ...(isDark ? buttonStyles.dark : buttonStyles.light)

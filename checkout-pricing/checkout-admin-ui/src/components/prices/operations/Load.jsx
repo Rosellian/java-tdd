@@ -10,6 +10,8 @@ export function Load({ status, setStatus, disabledExp, selected, onLoad }) {
 
     const [showConfirm, setShowConfirm] = useState(false);
 
+    let isDisabled = status === "loading" || disabledExp;
+
     function handleLoad() {
         if (!selected) return;
 
@@ -34,7 +36,7 @@ export function Load({ status, setStatus, disabledExp, selected, onLoad }) {
 
     return (
         <div>
-            <button disabled={status === "loading" || disabledExp} onClick={handleLoad}
+            <button disabled={isDisabled} onClick={handleLoad}
                     style={{
                         ...buttonStyles.base,
                         ...(isDark ? buttonStyles.dark : buttonStyles.light)

@@ -1,4 +1,4 @@
-import {useTheme} from "../../../ui/theme/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
 export function PriceListDropdown({ value, onChange, names, isDraft, selected }) {
     const { theme } = useTheme();
