@@ -3,7 +3,7 @@ import {DiscardChangesModal} from "./DiscardModal";
 import {PriceListSelector} from "./selector/PriceListSelector";
 import {useState} from "react";
 
-export function Inputs({ priceList, priceListNames, selected, unsavedChanges, isDraft,
+export function Inputs({ priceList, priceListNames, unsavedChanges, isDraft,
                            setSelected, onDiscardConfirm, triggerUpdatePriceListName }) {
     const [showDiscardModal, setShowDiscardModal] = useState(false);
     const [pendingSelection, setPendingSelection] = useState(null);
@@ -12,8 +12,10 @@ export function Inputs({ priceList, priceListNames, selected, unsavedChanges, is
         if (unsavedChanges) {
             setPendingSelection(value);
             setShowDiscardModal(true);
+
             return;
         }
+
         setSelected(value);
     }
 
@@ -27,16 +29,15 @@ export function Inputs({ priceList, priceListNames, selected, unsavedChanges, is
 
     return (
         <div style={styles.inputs}>
-            <PriceListSelector value={selected} onChange={onSelect} names={priceListNames} isDraft={isDraft}
-                               selected={selected}/>
+            <PriceListSelector value={selected} onChange={onSelect} names={priceListNames} isDraft={isDraft} />
 
             {showDiscardModal && (
-                <DiscardChangesModal onConfirm={onConfirm} onCancel={() => setShowDiscardModal(false)}/>
+                <DiscardChangesModal onConfirm={onConfirm} onCancel={() => setShowDiscardModal(false)} />
             )}
 
             {isPriceListSet && (
                 <TextInput label="Price List Name" field="name" value={priceList.name}
-                           update={(field, value) => triggerUpdatePriceListName(value)}/>
+                           update={(field, value) => triggerUpdatePriceListName(value)} />
             )}
         </div>
     )

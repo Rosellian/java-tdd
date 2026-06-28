@@ -20,18 +20,7 @@ export function Load({ status, setStatus, disabledExp, selected, onLoad }) {
 
     function confirmLoad() {
         setShowConfirm(false);
-        setStatus("loading");
-
-        getPriceListWithFallback(selected).then(({priceList, fallback}) => {
-            if (!priceList) {
-                setStatus("error");
-                return;
-            }
-
-            onLoad(priceList, fallback);
-
-            setStatus("idle");
-        });
+        load(setStatus, selected, onLoad);
     }
 
     return (
@@ -39,7 +28,8 @@ export function Load({ status, setStatus, disabledExp, selected, onLoad }) {
             <button disabled={isDisabled} onClick={handleLoad}
                     style={{
                         ...buttonStyles.base,
-                        ...(isDark ? buttonStyles.dark : buttonStyles.light)
+                        ...(isDark ? buttonStyles.dark : buttonStyles.light),
+                        ...(isDisabled ? buttonStyles.buttonDisabled : {})
                     }}
             >
                 {status === "loading" ? "Loading…" : "Load"}
@@ -51,4 +41,19 @@ export function Load({ status, setStatus, disabledExp, selected, onLoad }) {
             )}
         </div>
     )
+}
+
+function load(setStatus, selected, onLoad) {
+    setStatus("loading");
+
+    getPriceListWithFallback(selected).then(({priceList, fallback}) => {
+        if (!priceList) {
+            setStatus("error");
+            return;
+        }
+
+        onLoad(priceList, fallback);
+
+        setStatus("idle");
+    });
 }

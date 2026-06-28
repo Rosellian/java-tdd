@@ -9,8 +9,7 @@ export function ButtonPanel({ status, setStatus, selected, isDraft, unsavedChang
 
     return (
         <div style={styles.buttonPanel}>
-            <Load status={status} setStatus={setStatus} selected={selected}
-                  disabledExp={disabledExp} onLoad={onLoad} />
+            <Load status={status} setStatus={setStatus} selected={selected} disabledExp={disabledExp} onLoad={onLoad} />
 
             <Save priceList={priceList} status={status} setStatus={setStatus} unsavedChanges={unsavedChanges}
                   onSave={onSave} />

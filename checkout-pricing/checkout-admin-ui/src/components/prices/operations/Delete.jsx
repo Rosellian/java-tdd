@@ -26,29 +26,16 @@ export function Delete({ priceList, priceListNames, status, setStatus, isDraft, 
         setShowConfirm(false);
 
         if (isDraft) {
-            let namesWithCurrentRemoved = removeList(priceListNames, priceList);
-            onDelete(null, namesWithCurrentRemoved);
-            setStatus("idle")
-
+            deleteDraft(priceListNames, priceList, onDelete, setStatus);
             return;
         }
 
-        setStatus("deleting");
-
-        const ok = await deletePriceList(priceList.name);
-        if (ok) {
-            const updatedNames = removeList(priceListNames, priceList);
-            const next = updatedNames[0] ?? null;
-
-            onDelete(next, updatedNames);
-        }
-
-        setStatus(ok ? "idle" : "error");
+        await deleteList(setStatus, priceList, priceListNames, onDelete);
     }
 
     return (
         <div>
-            <button disabled={disabledExp} onClick={() => handleDelete()}
+            <button disabled={disabledExp} onClick={handleDelete}
                     style={{
                         ...buttonStyles.base,
                         ...(isDark ? styles.deleteButtonDark : styles.deleteButtonLight),
@@ -59,11 +46,31 @@ export function Delete({ priceList, priceListNames, status, setStatus, isDraft, 
 
             {showConfirm && (
                 <ConfirmModal message={`Are you sure you want to delete price list "${priceList.name}"?`}
-                              onConfirm={() => confirmDelete()}
+                              onConfirm={confirmDelete}
                               onCancel={() => setShowConfirm(false)} />
             )}
         </div>
     )
+}
+
+function deleteDraft(priceListNames, priceList, onDelete, setStatus) {
+    let namesWithCurrentRemoved = removeList(priceListNames, priceList);
+    onDelete(null, namesWithCurrentRemoved);
+    setStatus("idle");
+}
+
+async function deleteList(setStatus, priceList, priceListNames, onDelete) {
+    setStatus("deleting");
+
+    const ok = await deletePriceList(priceList.name);
+    if (ok) {
+        const updatedNames = removeList(priceListNames, priceList);
+        const next = updatedNames[0] ?? null;
+
+        onDelete(next, updatedNames);
+    }
+
+    setStatus(ok ? "idle" : "error");
 }
 
 function removeList(priceListNames, priceList) {

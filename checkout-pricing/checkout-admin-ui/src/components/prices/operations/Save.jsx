@@ -10,14 +10,27 @@ export function Save({ priceList, status, setStatus, unsavedChanges, onSave }) {
 
     const [showConfirm, setShowConfirm] = useState(false);
 
+    async function handleSave() {
+        if (!priceList) return;
+
+        setShowConfirm(true);
+    }
+
+    async function confirmSave() {
+        setShowConfirm(false);
+
+        await save(setStatus, priceList, onSave);
+    }
+
     let isDisabled = !unsavedChanges || status === "saving";
 
     return (
         <div>
-            <button onClick={() => handleSave(priceList, setShowConfirm)} disabled={isDisabled}
+            <button onClick={handleSave} disabled={isDisabled}
                     style={{
                         ...buttonStyles.base,
-                        ...(isDark ? buttonStyles.dark : buttonStyles.light)
+                        ...(isDark ? buttonStyles.dark : buttonStyles.light),
+                        ...(isDisabled ? buttonStyles.buttonDisabled : {})
                     }}
             >
                 {status === "saving" ? "Saving…" : "Save"}
@@ -25,26 +38,18 @@ export function Save({ priceList, status, setStatus, unsavedChanges, onSave }) {
 
             {showConfirm && (
                 <ConfirmModal message={`Are you sure you want to save changes to "${priceList.name}"?`}
-                              onConfirm={() => confirmSave(priceList, setShowConfirm, setStatus, onSave)}
+                              onConfirm={confirmSave}
                               onCancel={() => setShowConfirm(false)}/>
             )}
         </div>
     )
 }
 
-async function handleSave(priceList, setShowConfirm) {
-    if (!priceList) return;
-
-    setShowConfirm(true);
-}
-
-async function confirmSave(priceList, setShowConfirm, setStatus, onSave) {
-    setShowConfirm(false);
-
+async function save(setStatus, priceList, onSave) {
     setStatus("saving");
 
     const ok = await savePriceList(priceList.name, priceList);
-    if(ok) {
+    if (ok) {
         onSave(priceList);
     }
 

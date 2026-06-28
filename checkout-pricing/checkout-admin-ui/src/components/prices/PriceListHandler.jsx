@@ -110,9 +110,9 @@ export function PriceListHandler({ onPriceListChange }) {
             ...(isDark ? handlerStyles.wrapperDark : handlerStyles.wrapperLight)
         }}>
             <div style={handlerStyles.handler}>
-                <Inputs priceList={priceList} priceListNames={priceListNames} selected={selected}
-                        unsavedChanges={unsavedChanges} isDraft={isDraft} setSelected={setSelected}
-                        onDiscardConfirm={onDiscardConfirm} triggerUpdatePriceListName={triggerUpdatePriceListName} />
+                <Inputs priceList={priceList} priceListNames={priceListNames} unsavedChanges={unsavedChanges}
+                        isDraft={isDraft} setSelected={setSelected} onDiscardConfirm={onDiscardConfirm}
+                        triggerUpdatePriceListName={triggerUpdatePriceListName} />
 
                 <ButtonPanel status={status} setStatus={setStatus} selected={selected} isDraft={isDraft}
                              unsavedChanges={unsavedChanges} priceList={priceList} priceListNames={priceListNames}

@@ -10,7 +10,8 @@ export function New({ unsavedChanges, onNew }) {
         <button disabled={unsavedChanges} onClick={() => newPriceList(onNew)}
                 style={{
                     ...buttonStyles.base,
-                    ...(isDark ? styles.newButtonDark : styles.newButtonLight)
+                    ...(isDark ? styles.newButtonDark : styles.newButtonLight),
+                    ...(unsavedChanges ? buttonStyles.buttonDisabled : {})
         }}>
             + New Price List
         </button>

@@ -1,6 +1,6 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
-export function PriceListDropdown({ value, onChange, names, isDraft, selected }) {
+export function PriceListDropdown({ value, onChange, names, isDraft }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -12,7 +12,7 @@ export function PriceListDropdown({ value, onChange, names, isDraft, selected })
         }}>
             {names.map(name => (
                 <option key={name} value={name}>
-                    {isDraft && name === selected ? `${name} (unsaved)` : name}
+                    {isDraft && name === value ? `${name} (unsaved)` : name}
                 </option>
             ))}
         </select>
