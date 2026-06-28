@@ -3,13 +3,13 @@ import {highlightJsonSafe} from "../../../../../ui/json/highlighting/highlight";
 
 export function SkuData({ skuData }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
-        <pre
-            style={{
-                ...styles.pre,
-                ...(theme === "dark" ? styles.preDark : styles.preLight)
-            }}>
+        <pre style={{
+            ...styles.pre,
+            ...(isDark ? styles.preDark : styles.preLight)
+        }}>
             {highlightJsonSafe(skuData)}
         </pre>
     )

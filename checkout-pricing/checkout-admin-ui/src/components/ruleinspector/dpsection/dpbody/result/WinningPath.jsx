@@ -11,7 +11,9 @@ export function WinningPath({ dp }) {
             ...(isDark ? styles.preDark : styles.preLight)
         }}>
             {dp.winningPath.map((line, i) => (
-                <div key={i}>{highlightExplanationLine(line)}</div>
+                <div key={i}>
+                    {highlightExplanationLine(line)}
+                </div>
             ))}
         </pre>
     )

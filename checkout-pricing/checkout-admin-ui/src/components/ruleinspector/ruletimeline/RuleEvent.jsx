@@ -7,18 +7,20 @@ import {useState} from "react";
 
 export function RuleEvent({ event, index }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
+    let activeStyle = isDark ? styles.eventActiveDark : styles.eventActiveLight;
 
     const [open, setOpen] = useState(false);
     const { selectedStep, setSelectedStep } = useTraceSync();
     const isActive = event.stepIndex === selectedStep;
 
+    let isActiveStyle = isActive ? activeStyle : {};
+
     return (
         <div style={{
             ...styles.event,
-            ...(theme === "dark" ? styles.eventDark : styles.eventLight),
-            ...(isActive ?
-                theme === "dark" ? styles.eventActiveDark : styles.eventActiveLight
-                : {})
+            ...(isDark ? styles.eventDark : styles.eventLight),
+            ...isActiveStyle
         }}>
             <EventHeader event={event} index={index}
                          onClick={() => openAndSelect(event, open, setOpen, setSelectedStep)} />
@@ -41,7 +43,7 @@ const styles = {
     event: {
         marginBottom: 10,
         borderRadius: 4,
-        transition: "background 0.25s ease, border-color 0.25s ease",
+        transition: "background 0.25s ease, border-color 0.25s ease"
     },
     eventDark: {
         background: "#1E1E1E",
@@ -49,7 +51,7 @@ const styles = {
         borderRight: baseBorderDark,
         borderBottom: baseBorderDark,
         borderLeft: baseBorderDark,
-        color: "#eee",
+        color: "#eee"
     },
     eventLight: {
         background: "#fafafa",
@@ -57,14 +59,14 @@ const styles = {
         borderRight: baseBorderLight,
         borderBottom: baseBorderLight,
         borderLeft: baseBorderLight,
-        color: "#222",
+        color: "#222"
     },
     eventActiveDark: {
         background: "#2A2A2A",
-        borderLeft: "3px solid #BB86FC",
+        borderLeft: "3px solid #BB86FC"
     },
     eventActiveLight: {
         background: "#e8e0ff",
-        borderLeft: "3px solid #5A2DA8",
+        borderLeft: "3px solid #5A2DA8"
     }
 }

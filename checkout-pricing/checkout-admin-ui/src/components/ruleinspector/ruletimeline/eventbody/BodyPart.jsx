@@ -12,7 +12,7 @@ export function BodyPart({ label, value }) {
                 ...(isDark ? styles.preDark : styles.preLight)
             }}
         >
-            <div style={{ fontWeight: 600, marginBottom: 4 }}>
+            <div style={styles.label}>
                 {label}
             </div>
 
@@ -40,5 +40,9 @@ const styles = {
         background: "#f5f5f5",
         color: "#333",
         border: "1px solid #ddd"
+    },
+    label: {
+        fontWeight: 600,
+        marginBottom: 4
     }
 }

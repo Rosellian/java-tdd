@@ -3,12 +3,13 @@ import {useTheme} from "../../ui/theme/ThemeProvider";
 
 export function TotalSection({ finalTotal }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <Section title="Final Total">
             <div style={{
                 ...styles.total,
-                ...(theme === "dark" ? styles.totalDark : styles.totalLight)
+                ...(isDark ? styles.totalDark : styles.totalLight)
             }}>
                 {finalTotal} kr
             </div>

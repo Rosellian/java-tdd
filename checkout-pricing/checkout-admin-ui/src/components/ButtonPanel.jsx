@@ -6,11 +6,11 @@ export function ButtonPanel({ cart, ruleset, priceList, customer, getTrace }) {
 
     return (
         <div style={styles.buttons}>
-            <DisabledButton isDisabled={isDisabled} onClick={() => getTrace(cart, ruleset, priceList, customer)}
-                            name="Evaluate" />
+            <DisabledButton name="Evaluate" isDisabled={isDisabled}
+                            onClick={() => getTrace(cart, ruleset, priceList, customer)} />
             <ThemeToggleButton />
         </div>
-    );
+    )
 }
 
 const styles = {

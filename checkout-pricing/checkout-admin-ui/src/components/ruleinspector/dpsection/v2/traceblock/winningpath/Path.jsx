@@ -6,6 +6,7 @@ export function Path({ dp }) {
             {dp.winningPath.map((line, i) => (
                 <div key={i}>
                     {highlightExplanationLine(line)}
+
                     {i < dp.winningPath.length - 1 ? " +" : ""}
                 </div>
             ))}

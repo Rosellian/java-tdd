@@ -3,15 +3,18 @@ import {EventStatus} from "./EventStatus";
 
 export function EventHeader({event, index, onClick}) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
-        <div style={{
+        <div onClick={onClick} style={{
             ...styles.eventHeader,
-            ...(theme === "dark" ? styles.headerDark : styles.headerLight)
-        }} onClick={onClick}>
+            ...(isDark ? styles.headerDark : styles.headerLight)
+        }}>
             <strong style={{
-                ...(theme === "dark" ? styles.titleDark : styles.titleLight)
-            }}>{index + 1}. {event.name}</strong>
+                ...(isDark ? styles.titleDark : styles.titleLight)
+            }}>
+                {index + 1}. {event.name}
+            </strong>
 
             <EventStatus event={event} />
         </div>

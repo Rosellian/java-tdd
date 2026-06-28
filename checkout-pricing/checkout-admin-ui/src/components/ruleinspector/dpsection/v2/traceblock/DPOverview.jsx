@@ -12,14 +12,27 @@ export function DPOverview({ dp }) {
             ...styles.overview,
             ...(isDark ? styles.overviewDark : styles.overviewLight)
         }}>
-            <div><strong>SKU:</strong> {dp.sku}</div>
-            <div><strong>Unit price:</strong> {dp.unitPrice}</div>
-            <div><strong>Remaining:</strong> {dp.remaining}</div>
-            <div><strong>Steps:</strong> {dp.nodes.length}</div>
+            <div>
+                <strong>SKU:</strong> {dp.sku}
+            </div>
+
+            <div>
+                <strong>Unit price:</strong> {dp.unitPrice}
+            </div>
+
+            <div>
+                <strong>Remaining:</strong> {dp.remaining}
+            </div>
+
+            <div>
+                <strong>Steps:</strong> {dp.nodes.length}
+            </div>
 
             <Rules rules={rules} />
 
-            <div><strong>Final Price:</strong> {dp.finalPrice}</div>
+            <div>
+                <strong>Final Price:</strong> {dp.finalPrice}
+            </div>
         </div>
     )
 }

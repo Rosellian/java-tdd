@@ -5,13 +5,17 @@ export function DPHeader({ dp, onClick }) {
     let isDark = theme === "dark";
 
     return (
-        <div style={{
+        <div onClick={onClick} style={{
             ...styles.dpHeader,
             ...(isDark ? styles.headerDark : styles.headerLight)
-        }} onClick={onClick}>
-            <strong>SKU {dp.sku}</strong>
+        }}>
+            <strong>
+                SKU {dp.sku}
+            </strong>
 
-            <span>Remaining: {dp.remaining}</span>
+            <span>
+                Remaining: {dp.remaining}
+            </span>
         </div>
     )
 }

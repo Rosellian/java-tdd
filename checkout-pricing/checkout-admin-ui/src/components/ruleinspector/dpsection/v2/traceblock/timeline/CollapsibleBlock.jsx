@@ -7,11 +7,15 @@ export function CollapsibleBlock({ children, title, itemCount }) {
     return (
         <div style={styles.container}>
             <div style={styles.header} onClick={() => setOpen(!open)}>
-                <span style={styles.arrow}>{open ? "▼" : "▶"}</span>
+                <span style={styles.arrow}>
+                    {open ? "▼" : "▶"}
+                </span>
 
                 <span style={styles.title}>{title}</span>
 
-                {itemCount && <span style={styles.count}>({itemCount})</span>}
+                {itemCount && <span style={styles.count}>
+                    ({itemCount})
+                </span>}
             </div>
 
             <AnimatedBody open={open}>

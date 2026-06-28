@@ -1,5 +1,4 @@
 import {Section} from "../../../../ui/Section";
-import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {DPTraceBlock} from "./traceblock/DPTraceBlock";
 
 export function DPSectionV2({ dpTraces, debuggerDPTraces }) {

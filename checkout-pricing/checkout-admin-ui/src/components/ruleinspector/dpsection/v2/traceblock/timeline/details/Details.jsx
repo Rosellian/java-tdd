@@ -14,6 +14,7 @@ export function Details({node, debuggerNode, remaining, beforePrice }) {
                 <Rules rules={rules} />
 
                 <Detail label="Remaining" value={remaining} />
+
                 <Detail label="Before" value={beforePrice} />
 
                 <Price label="After" node={node} beforePrice={beforePrice} />

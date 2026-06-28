@@ -6,13 +6,14 @@ import {useState} from "react";
 
 export function SkuItem({ skuData }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     const [open, setOpen] = useState(false);
 
     return (
         <div style={{
             ...styles.sku,
-            ...(theme === "dark" ? styles.skuDark : styles.skuLight)
+            ...(isDark ? styles.skuDark : styles.skuLight)
         }}>
             <SkuHeader skuData={skuData} onClick={() => setOpen(!open)} />
 

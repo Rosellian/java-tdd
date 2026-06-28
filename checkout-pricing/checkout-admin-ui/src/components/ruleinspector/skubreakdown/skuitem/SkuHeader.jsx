@@ -3,16 +3,21 @@ import {Badge} from "../Badge";
 
 export function SkuHeader({ skuData, onClick }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
-        <div style={{
+        <div onClick={onClick} style={{
             ...styles.skuHeader,
-            ...(theme === "dark" ? styles.headerDark : styles.headerLight)
-        }} onClick={onClick}>
-            <strong>{skuData.sku}</strong>
+            ...(isDark ? styles.headerDark : styles.headerLight)
+        }}>
+            <strong>
+                {skuData.sku}
+            </strong>
 
             <div style={styles.total}>
-                <Badge type="total">{skuData.total} kr</Badge>
+                <Badge type="total">
+                    {skuData.total} kr
+                </Badge>
             </div>
         </div>
     )

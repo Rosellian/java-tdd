@@ -4,32 +4,29 @@ import {DPSection} from "./dpsection/DPSection";
 import {useTheme} from "../../ui/theme/ThemeProvider";
 import {TotalSection} from "./TotalSection";
 import {DPSectionV2} from "./dpsection/v2/DPSectionV2";
+import {inspectorStyles, renderEmptyState} from "./inspectorFuncs";
 
 export function RuleInspector({ trace }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     if (!trace || !trace.inspectionTrace) {
-        return (
-            <div style={{
-                ...styles.container,
-                ...(theme === "dark" ? styles.dark : styles.light)
-            }}>
-                <p>No trace available. Run a pricing evaluation.</p>
-            </div>
-        )
+        return renderEmptyState(isDark);
     }
 
     const inspectionTrace = trace.inspectionTrace;
 
     return (
         <div style={{
-            ...styles.container,
-            ...(theme === "dark" ? styles.dark : styles.light)
+            ...inspectorStyles.container,
+            ...(isDark ? inspectorStyles.dark : inspectorStyles.light)
         }}>
             <h1 style={{
                 ...styles.header,
-                ...(theme === "dark" ? styles.headerDark : styles.headerLight)
-            }}>Rule Inspector</h1>
+                ...(isDark ? styles.headerDark : styles.headerLight)
+            }}>
+                Rule Inspector
+            </h1>
 
             <div style={styles.row}>
                 <div style={styles.left}>
@@ -38,8 +35,11 @@ export function RuleInspector({ trace }) {
 
                 <div style={styles.right}>
                     <SkuBreakdown skuTraces={inspectionTrace.skuTraces} />
+
                     <DPSection dpTraces={inspectionTrace.dpTraces} />
+
                     <DPSectionV2 dpTraces={inspectionTrace.dpTraces} debuggerDPTraces={trace.debuggerTrace.dp} />
+
                     <TotalSection finalTotal={inspectionTrace.finalTotal} />
                 </div>
             </div>
@@ -48,20 +48,6 @@ export function RuleInspector({ trace }) {
 }
 
 const styles = {
-    container: {
-        fontFamily: "monospace",
-        padding: 20,
-        margin: "0 auto",
-        transition: "background 0.3s ease, color 0.3s ease"
-    },
-    dark: {
-        background: "#121212",
-        color: "#E0E0E0"
-    },
-    light: {
-        background: "#ffffff",
-        color: "#000000"
-    },
     header: {
         textAlign: "center",
         marginBottom: 30,

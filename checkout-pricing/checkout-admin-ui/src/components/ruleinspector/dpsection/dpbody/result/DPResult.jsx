@@ -7,17 +7,22 @@ export function DPResult({ dp }) {
     let headerStyle = isDark ? styles.h4Dark : styles.h4Light;
 
     return (
-        <div style={{marginTop: 10}}>
+        <div style={styles.container}>
             <h4 style={headerStyle}>Winning Path</h4>
+
             <WinningPath dp={dp} />
 
             <h4 style={headerStyle}>Total</h4>
+
             <div>{dp.finalPrice} kr</div>
         </div>
     )
 }
 
 const styles = {
+    container: {
+        marginTop: 10
+    },
     h4Dark: {
         color: "#BB86FC",
         marginTop: 10

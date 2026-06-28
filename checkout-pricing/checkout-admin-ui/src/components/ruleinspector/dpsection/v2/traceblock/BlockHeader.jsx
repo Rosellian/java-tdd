@@ -10,9 +10,13 @@ export function BlockHeader({ dp, open, setOpen }) {
                  ...styles.header,
                  ...(isDark ? styles.headerDark : styles.headerLight)
              }}>
-            <span>SKU {dp.sku}</span>
+            <span>
+                SKU {dp.sku}
+            </span>
 
-            <span style={styles.toggle}>{open ? "▲" : "▼"}</span>
+            <span style={styles.toggle}>
+                {open ? "▲" : "▼"}
+            </span>
         </div>
     )
 }

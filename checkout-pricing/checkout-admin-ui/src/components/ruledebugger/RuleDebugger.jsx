@@ -4,28 +4,22 @@ import {DPGraph} from "./dpgraph/DPGraph";
 import {PriceEvolutionChart} from "./priceevolutionchart/PriceEvolutionChart";
 import {TraceSyncProvider} from "../TraceSyncProvider";
 import {useTheme} from "../../ui/theme/ThemeProvider";
+import {debuggerStyles, renderEmptyState} from "./debuggerFuncs";
 
 export function RuleDebugger({ trace }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
     if (!trace || !trace.debuggerTrace) {
-        return (
-            <div style={{
-                ...styles.ruleDebugger,
-                ...(isDark ? styles.dark : styles.light)
-            }}>
-                <p>No trace available. Run a pricing evaluation.</p>
-            </div>
-        )
+        return renderEmptyState(isDark);
     }
 
     const debuggerTrace = trace.debuggerTrace;
 
     return (
         <div style={{
-            ...styles.container,
-            ...(isDark ? styles.dark : styles.light)
+            ...debuggerStyles.container,
+            ...(isDark ? debuggerStyles.dark : debuggerStyles.light)
         }}>
             <h2 style={{
                 ...(isDark ? styles.headerDark : styles.headerLight)
@@ -51,19 +45,6 @@ export function RuleDebugger({ trace }) {
 }
 
 export const styles = {
-    container: {
-        padding: 16,
-        borderRadius: 8,
-        transition: "background 0.3s ease, color 0.3s ease"
-    },
-    dark: {
-        background: "#1a1a1a",
-        color: "#eee"
-    },
-    light: {
-        background: "#f5f5f5",
-        color: "#000"
-    },
     headerDark: {
         color: "#BB86FC",
         marginBottom: 16
