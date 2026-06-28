@@ -4,11 +4,15 @@ import {applyChange, stringify} from "./funcs";
 
 export function JsonEditor({ value, originalValue, schema, onChange }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
+
+    const changed = JSON.stringify(value) !== JSON.stringify(originalValue);
+
+    let changedColor = changed ? "#FFB300" : undefined;
+    let borderColor = error ? "#ff4444" : changedColor;
 
     const [text, setText] = useState(stringify(value));
     const [error, setError] = useState(null);
-
-    const changed = JSON.stringify(value) !== JSON.stringify(originalValue);
 
     useEffect(() => {
         setText(stringify(value));
@@ -20,11 +24,11 @@ export function JsonEditor({ value, originalValue, schema, onChange }) {
 
     return (
         <div style={styles.container}>
-            <textarea value={text} onChange={handleChange}
+            <textarea name="JsonInput" value={text} onChange={handleChange}
                 style={{
                     ...styles.jsonInput,
-                    ...(theme === "dark" ? styles.jsonInputDark : styles.jsonInputLight),
-                    borderColor: error ? "#ff4444" : changed ? "#FFB300" : undefined
+                    ...(isDark ? styles.jsonInputDark : styles.jsonInputLight),
+                    borderColor: borderColor
                 }}/>
 
             {error && (

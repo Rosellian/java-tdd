@@ -2,16 +2,19 @@ import {useTheme} from "./theme/ThemeProvider";
 
 export function Section({ title, children }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div style={styles.section}>
             <h2 style={{
                 ...styles.sectionHeader,
-                ...(theme === "dark" ? styles.headerDark : styles.headerLight)
-            }}>{title}</h2>
+                ...(isDark ? styles.headerDark : styles.headerLight)
+            }}>
+                {title}
+            </h2>
             {children}
         </div>
-    );
+    )
 }
 
 const styles = {

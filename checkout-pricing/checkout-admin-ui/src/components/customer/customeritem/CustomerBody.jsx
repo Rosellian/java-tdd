@@ -4,6 +4,7 @@ import {EditableJsonItem} from "../../../ui/json/editableJsonItem/EditableJsonIt
 
 export function CustomerBody({ customer, updateField, originalCustomer }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     const schema = generateSchema(customer);
     const fields = Object.keys(customer).map(key => ({
@@ -20,7 +21,7 @@ export function CustomerBody({ customer, updateField, originalCustomer }) {
         <div
             style={{
                 ...styles.body,
-                ...(theme === "dark" ? styles.bodyDark : styles.bodyLight)
+                ...(isDark ? styles.bodyDark : styles.bodyLight)
             }}
         >
             {fields.map(field => (

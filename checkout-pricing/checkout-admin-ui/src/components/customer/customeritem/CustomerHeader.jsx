@@ -2,13 +2,14 @@ import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function CustomerHeader({ customer, onClick }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div onClick={onClick}
              style={{
                  ...styles.header,
-                 ...(theme === "dark" ? styles.headerDark : styles.headerLight)
-             }}>
+                 ...(isDark ? styles.headerDark : styles.headerLight)
+        }}>
             <span>ID: {customer.id}</span>
         </div>
     )

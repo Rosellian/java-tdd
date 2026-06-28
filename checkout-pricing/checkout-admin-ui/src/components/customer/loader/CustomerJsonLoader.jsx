@@ -27,7 +27,7 @@ export function CustomerJsonLoader({ customer, onImport }) {
                         style={{
                             ...styles.button,
                             ...themeStyle
-                        }}>
+                }}>
                     Export JSON
                 </button>
 
@@ -35,7 +35,7 @@ export function CustomerJsonLoader({ customer, onImport }) {
                         style={{
                             ...styles.button,
                             ...themeStyle
-                        }}>
+                }}>
                     Import JSON
                 </button>
             </div>

@@ -17,8 +17,7 @@ export function CollapsibleSection({ title, changed, children, defaultOpen = fal
                     ...styles.header,
                     ...(isDark ? styles.headerDark : styles.headerLight),
                     borderLeft: changedBorderColor
-                }}
-            >
+            }}>
                 <span>{title}</span>
 
                 <span style={styles.toggle}>{open ? "▼" : "▶"}</span>

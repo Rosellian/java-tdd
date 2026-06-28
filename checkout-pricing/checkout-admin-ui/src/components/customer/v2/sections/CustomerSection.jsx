@@ -4,17 +4,22 @@ import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
 export function CustomerSection({ label, open, setOpen, changed, field, updateField, customer, originalCustomer }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
+    let changedColor = changed ? "4px solid #FFB300" : "4px solid transparent";
 
     return (
         <div>
             <div onClick={() => setOpen(!open)}
                  style={{
                      ...styles.sectionHeader,
-                     ...(theme === "dark" ? styles.sectionHeaderDark : styles.sectionHeaderLight),
-                     borderLeft: changed ? "4px solid #FFB300" : "4px solid transparent"
-                 }}>
+                     ...(isDark ? styles.sectionHeaderDark : styles.sectionHeaderLight),
+                     borderLeft: changedColor
+            }}>
                 <span>{label}</span>
-                <span style={{ opacity: 0.8 }}>{open ? "▼" : "▶"}</span>
+
+                <span style={styles.toggle}>
+                    {open ? "▼" : "▶"}
+                </span>
             </div>
 
             {open && (
@@ -48,5 +53,8 @@ const styles = {
     sectionHeaderLight: {
         background: "#eaeaea",
         color: "#5A2DA8"
+    },
+    toggle: {
+        opacity: 0.8
     }
 }

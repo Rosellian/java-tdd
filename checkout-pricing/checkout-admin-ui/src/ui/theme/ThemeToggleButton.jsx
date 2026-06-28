@@ -2,17 +2,15 @@ import {useTheme} from "./ThemeProvider";
 
 export function ThemeToggleButton() {
     const { theme, toggleTheme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
-        <button
-            style={{
-                ...styles.button,
-                background: theme === "dark" ? "#444" : "#ddd",
-                color: theme === "dark" ? "#fff" : "#000",
-            }}
-            onClick={toggleTheme}
-        >
-            {theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+        <button onClick={toggleTheme} style={{
+            ...styles.button,
+            background: isDark ? "#444" : "#ddd",
+            color: isDark ? "#fff" : "#000"
+        }}>
+            {isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
         </button>
     )
 }

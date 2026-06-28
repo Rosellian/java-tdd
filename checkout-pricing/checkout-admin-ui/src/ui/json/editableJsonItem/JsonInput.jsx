@@ -2,15 +2,18 @@ import {useTheme} from "../../theme/ThemeProvider";
 
 export function JsonInput({ value, onChange, changed, error }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
+    let changedColor = changed ? "#FFB300" : undefined;
+    let borderColor = error ? "#ff4444" : changedColor;
 
     return (
         <>
-            <textarea value={value} onChange={onChange}
+            <textarea name="JsonInput" value={value} onChange={onChange}
                       style={{
                           ...styles.textarea,
-                          ...(theme === "dark" ? styles.textareaDark : styles.textareaLight),
-                          borderColor: error ? "#ff4444" : changed ? "#FFB300" : undefined}}
-            />
+                          ...(isDark ? styles.textareaDark : styles.textareaLight),
+                          borderColor: borderColor
+            }}/>
 
             {error && (
                 <div style={styles.error}>

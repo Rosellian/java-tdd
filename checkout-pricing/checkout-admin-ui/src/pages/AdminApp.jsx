@@ -14,6 +14,7 @@ import {CustomerPanelV2} from "../components/customer/v2/CustomerPanelV2";
 
 export default function AdminApp() {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     const [cart, setCart] = useState({});
     const [ruleset, setRuleset] = useState("default");
@@ -27,9 +28,11 @@ export default function AdminApp() {
     return (
         <div style={{
             ...styles.container,
-            ...(theme === "dark" ? styles.dark : styles.light)
+            ...(isDark ? styles.dark : styles.light)
         }}>
-            <h1 style={styles.header}>Pricing Engine Admin</h1>
+            <h1 style={styles.header}>
+                Pricing Engine Admin
+            </h1>
 
             <div style={styles.controls}>
                 <div style={styles.row}>

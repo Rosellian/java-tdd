@@ -2,14 +2,17 @@ import {useTheme} from "./theme/ThemeProvider";
 
 export function DisabledButton({ isDisabled, onClick, name }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <button disabled={isDisabled} onClick={onClick}
             style={{
                 ...styles.button,
-                ...(theme === "dark" ? styles.buttonDark : styles.buttonLight),
+                ...(isDark ? styles.buttonDark : styles.buttonLight),
                 ...(isDisabled ? styles.buttonDisabled : {})
-        }}>{name}</button>
+        }}>
+            {name}
+        </button>
     )
 }
 

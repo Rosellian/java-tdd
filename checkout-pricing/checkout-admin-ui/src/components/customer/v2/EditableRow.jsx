@@ -2,18 +2,18 @@ import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function EditableRow({ label, value, onChange }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     return (
         <div style={styles.row}>
-            <strong style={{ width: 120 }}>{label}</strong>
-            <input
-                value={value}
-                onChange={e => onChange(e.target.value)}
-                style={{
-                    ...styles.input,
-                    ...(theme === "dark" ? styles.inputDark : styles.inputLight)
-                }}
-            />
+            <strong style={styles.label}>{label}</strong>
+
+            <input name={`${label}Input`} value={value}
+                   onChange={e => onChange(e.target.value)}
+                   style={{
+                       ...styles.input,
+                       ...(isDark ? styles.inputDark : styles.inputLight)
+            }}/>
         </div>
     )
 }
@@ -23,6 +23,9 @@ const styles = {
         display: "flex",
         marginTop: 6,
         marginBottom: 6
+    },
+    label: {
+        width: 120
     },
     input: {
         flex: 1,

@@ -6,6 +6,7 @@ import {CustomerBody} from "./CustomerBody";
 
 export function CustomerItem({ customer, updateField, originalCustomer }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     const [open, setOpen] = useState(false);
 
@@ -13,14 +14,13 @@ export function CustomerItem({ customer, updateField, originalCustomer }) {
         <div
             style={{
                 ...styles.container,
-                ...(theme === "dark" ? styles.containerDark : styles.containerLight)
-            }}
-        >
+                ...(isDark ? styles.containerDark : styles.containerLight)
+        }}>
             <CustomerHeader customer={customer} onClick={() => setOpen(!open)} />
 
             <div style={{
                 ...styles.scrollArea,
-                ...(theme === "dark" ? styles.scrollDark : styles.scrollLight)
+                ...(isDark ? styles.scrollDark : styles.scrollLight)
             }}>
                 <AnimatedBody open={open}>
                     <CustomerBody customer={customer} updateField={updateField} originalCustomer={originalCustomer} />

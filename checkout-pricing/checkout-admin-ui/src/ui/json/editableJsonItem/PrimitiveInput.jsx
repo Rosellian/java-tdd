@@ -2,14 +2,16 @@ import {useTheme} from "../../theme/ThemeProvider";
 
 export function PrimitiveInput({ value, onChange, changed }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
+    let changedColor = changed ? "#FFB300" : undefined;
 
     return (
         <input value={value} onChange={onChange}
                style={{
                    ...styles.input,
-                   ...(theme === "dark" ? styles.inputDark : styles.inputLight),
-                   borderColor: changed ? "#FFB300" : undefined}}
-        />
+                   ...(isDark ? styles.inputDark : styles.inputLight),
+                   borderColor: changedColor
+        }}/>
     )
 }
 

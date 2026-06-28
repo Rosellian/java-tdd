@@ -1,4 +1,9 @@
-export function DiffList({ changes, isDark }) {
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
+
+export function DiffList({ changes }) {
+    const { theme } = useTheme();
+    const isDark = theme === "dark";
+
     return (
         <div style={styles.diffList}>
             {changes.map((c, i) => (
@@ -12,16 +17,17 @@ export function DiffList({ changes, isDark }) {
 
                     <div style={styles.diffRow}>
                         <span style={styles.label}>Now:</span>
+
                         <span style={styles.valueRemoved}>
-                                {JSON.stringify(c.from)}
-                            </span>
+                            {JSON.stringify(c.from)}
+                        </span>
                     </div>
 
                     <div style={styles.diffRow}>
                         <span style={styles.label}>Imported as:</span>
                         <span style={styles.valueAdded}>
-                                {JSON.stringify(c.to)}
-                            </span>
+                            {JSON.stringify(c.to)}
+                        </span>
                     </div>
                 </div>
             ))}

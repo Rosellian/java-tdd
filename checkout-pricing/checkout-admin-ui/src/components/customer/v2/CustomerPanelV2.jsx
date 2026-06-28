@@ -5,6 +5,7 @@ import {CustomerJsonLoader} from "../loader/CustomerJsonLoader";
 
 export function CustomerPanelV2({ customer, setCustomer, originalCustomer }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     function updateField(key, value) {
         setCustomer(prev => ({ ...prev, [key]: value }));
@@ -13,20 +14,23 @@ export function CustomerPanelV2({ customer, setCustomer, originalCustomer }) {
     return (
         <div style={{
             ...styles.box,
-            ...(theme === "dark" ? styles.boxDark : styles.boxLight)
+            ...(isDark ? styles.boxDark : styles.boxLight)
         }}>
             <h3 style={{
                 ...styles.title,
-                ...(theme === "dark" ? styles.titleDark : styles.titleLight)
-            }}>Customer</h3>
+                ...(isDark ? styles.titleDark : styles.titleLight)
+            }}>
+                Customer
+            </h3>
 
             <CustomerJsonLoader customer={customer} onImport={(json) => setCustomer(json)} />
 
             <div style={{
                 ...styles.scrollArea,
-                ...(theme === "dark" ? styles.scrollDark : styles.scrollLight)
+                ...(isDark ? styles.scrollDark : styles.scrollLight)
             }}>
                 <EditableRow label="ID" value={customer.id} onChange={value => updateField("id", value)} />
+
                 <EditableRow label="Segment" value={customer.segment}
                              onChange={value => updateField("segment", value)} />
 

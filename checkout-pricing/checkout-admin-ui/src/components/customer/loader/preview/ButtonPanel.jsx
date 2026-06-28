@@ -1,11 +1,16 @@
-export function ButtonPanel({ onCancel, onConfirm, isDark }) {
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
+
+export function ButtonPanel({ onCancel, onConfirm }) {
+    const { theme } = useTheme();
+    const isDark = theme === "dark";
+
     return (
         <div style={styles.buttonRow}>
             <button onClick={onCancel}
                     style={{
                         ...styles.button,
                         ...(isDark ? styles.buttonCancelDark : styles.buttonCancelLight)
-                    }}>
+            }}>
                 Cancel
             </button>
 
@@ -13,7 +18,7 @@ export function ButtonPanel({ onCancel, onConfirm, isDark }) {
                     style={{
                         ...styles.button,
                         ...(isDark ? styles.buttonConfirmDark : styles.buttonConfirmLight)
-                    }}>
+            }}>
                 Import
             </button>
         </div>
