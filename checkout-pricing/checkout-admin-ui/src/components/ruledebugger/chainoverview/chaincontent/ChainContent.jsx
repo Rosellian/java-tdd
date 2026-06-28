@@ -3,8 +3,8 @@ import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
 export function ChainContent({ step }) {
     const { theme } = useTheme();
-
     let isDark = theme === "dark";
+
     return (
         <div style={styles.chainContent}>
             <div style={{

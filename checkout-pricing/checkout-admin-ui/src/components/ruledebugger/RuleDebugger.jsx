@@ -7,12 +7,13 @@ import {useTheme} from "../../ui/theme/ThemeProvider";
 
 export function RuleDebugger({ trace }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     if (!trace || !trace.debuggerTrace) {
         return (
             <div style={{
                 ...styles.ruleDebugger,
-                ...(theme === "dark" ? styles.dark : styles.light)
+                ...(isDark ? styles.dark : styles.light)
             }}>
                 <p>No trace available. Run a pricing evaluation.</p>
             </div>
@@ -24,11 +25,13 @@ export function RuleDebugger({ trace }) {
     return (
         <div style={{
             ...styles.container,
-            ...(theme === "dark" ? styles.dark : styles.light)
+            ...(isDark ? styles.dark : styles.light)
         }}>
             <h2 style={{
-                ...(theme === "dark" ? styles.headerDark : styles.headerLight)
-            }}>Rule Debugger</h2>
+                ...(isDark ? styles.headerDark : styles.headerLight)
+            }}>
+                Rule Debugger
+            </h2>
 
             <div style={styles.ruleDebugger}>
                 <TraceSyncProvider>

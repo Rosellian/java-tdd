@@ -5,16 +5,17 @@ import {chartStyles} from "./chartStyles";
 
 export function PriceEvolutionChart({ prices }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     if (!prices) {
         return (
             <div style={{
                 ...chartStyles.priceEmpty,
-                ...(theme === "dark" ? chartStyles.emptyDark : chartStyles.emptyLight)
+                ...(isDark ? chartStyles.emptyDark : chartStyles.emptyLight)
             }}>
                 No price evolution data available.
             </div>
-        );
+        )
     }
 
     const points = calculatePoints(prices);
@@ -23,14 +24,16 @@ export function PriceEvolutionChart({ prices }) {
     return (
         <div style={{
             ...chartStyles.priceWrapper,
-            ...(theme === "dark" ? chartStyles.wrapperDark : chartStyles.wrapperLight)
+            ...(isDark ? chartStyles.wrapperDark : chartStyles.wrapperLight)
         }}>
             <h3 style={{
                 ...chartStyles.priceHeader,
-                ...(theme === "dark" ? chartStyles.headerDark : chartStyles.headerLight)
-            }}>Price Evolution</h3>
+                ...(isDark ? chartStyles.headerDark : chartStyles.headerLight)
+            }}>
+                Price Evolution
+            </h3>
 
             <PriceGraph prices={prices} path={path} points={points} />
         </div>
-    );
+    )
 }

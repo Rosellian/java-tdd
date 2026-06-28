@@ -6,10 +6,10 @@ export function RuleEntry({ rule, onClick, open }) {
     let isDark = theme === "dark";
 
     return (
-        <div style={{
+        <div onClick={onClick} style={{
             ...styles.ruleHeader,
             ...(isDark ? styles.headerDark : styles.headerLight)
-        }} onClick={onClick}>
+        }}>
             <span style={{
                 ...styles.ruleName,
                 ...(isDark ? styles.nameDark : styles.nameLight)

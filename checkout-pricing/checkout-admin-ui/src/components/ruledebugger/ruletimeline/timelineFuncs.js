@@ -1,4 +1,9 @@
-export function renderEmptyState(isDark) {
+import {useTheme} from "../../../ui/theme/ThemeProvider";
+
+export function renderEmptyState() {
+    const { theme } = useTheme();
+    let isDark = theme === "dark";
+
     return (
         <div style={{
             ...styles.timelineEmpty,

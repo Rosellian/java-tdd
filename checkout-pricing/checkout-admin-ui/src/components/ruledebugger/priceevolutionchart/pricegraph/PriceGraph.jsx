@@ -6,13 +6,15 @@ import {DrawGraph, DrawPoint} from "./graphFuncs";
 
 export function PriceGraph({ prices, path, points }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
+
     const [hoverIndex, setHoverIndex] = useState(null);
 
     return (
         <div>
             <svg width={chartOps.width} height={chartOps.height} style={{
                 ...styles.svg,
-                ...(theme === "dark" ? styles.svgDark : styles.svgLight)
+                ...(isDark ? styles.svgDark : styles.svgLight)
             }}>
                 <DrawGraph path={path}/>
 
@@ -21,7 +23,9 @@ export function PriceGraph({ prices, path, points }) {
                 )}
             </svg>
 
-            {hoverIndex !== null && <PriceTooltip prices={prices} hoverIndex={hoverIndex}/>}
+            {hoverIndex !== null && (
+                <PriceTooltip prices={prices} hoverIndex={hoverIndex}/>
+            )}
         </div>
     )
 }
@@ -30,14 +34,14 @@ const styles = {
     svg: {
         borderRadius: 6,
         border: "1px solid",
-        transition: "background 0.25s ease, border-color 0.25s ease",
+        transition: "background 0.25s ease, border-color 0.25s ease"
     },
     svgDark: {
         background: "#111",
-        borderColor: "#333",
+        borderColor: "#333"
     },
     svgLight: {
         background: "#fafafa",
-        borderColor: "#ccc",
+        borderColor: "#ccc"
     }
 }

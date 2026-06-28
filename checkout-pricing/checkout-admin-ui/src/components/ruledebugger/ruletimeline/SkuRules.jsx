@@ -3,27 +3,30 @@ import {useTheme} from "../../../ui/theme/ThemeProvider";
 
 export function SkuRules({ rules }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     const groupedBySku = groupBySku(rules);
     const sortedSkuKeys = Object.keys(groupedBySku).sort();
 
     return (
-        sortedSkuKeys.map(sku => (
-            <li key={sku}>
-                <div style={{
-                    ...styles.skuHeader,
-                    ...(theme === "dark" ? styles.headerDark : styles.headerLight)
-                }}>
-                    {sku}
-                </div>
+        sortedSkuKeys.map(sku => {
+            return (
+                <li key={sku}>
+                    <div style={{
+                        ...styles.skuHeader,
+                        ...(isDark ? styles.headerDark : styles.headerLight)
+                    }}>
+                        {sku}
+                    </div>
 
-                <ul style={styles.list}>
-                    {groupedBySku[sku].map((r, i) => (
-                        <RuleItem key={`${sku}-${i}`} rule={r} />
-                    ))}
-                </ul>
-            </li>
-        ))
+                    <ul style={styles.list}>
+                        {groupedBySku[sku].map((r, i) => (
+                            <RuleItem key={`${sku}-${i}`} rule={r}/>
+                        ))}
+                    </ul>
+                </li>
+            )
+        })
     )
 }
 

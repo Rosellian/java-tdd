@@ -28,7 +28,7 @@ export function ChainOverview({ steps }) {
                 ))}
             </ul>
         </section>
-    );
+    )
 }
 
 const styles = {

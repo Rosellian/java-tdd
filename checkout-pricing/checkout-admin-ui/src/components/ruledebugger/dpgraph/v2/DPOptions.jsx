@@ -1,7 +1,11 @@
 import {highlightExplanationLine} from "../../../../functions/dp/highlighting/highlighting";
 import {detailsStyles} from "./detailsStyles";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
-export function DPOptions({ node, isDark }) {
+export function DPOptions({ node }) {
+    const { theme } = useTheme();
+    let isDark = theme === "dark";
+
     return (
         <div style={detailsStyles.row}>
             <span style={detailsStyles.label}>Options</span>
@@ -12,8 +16,8 @@ export function DPOptions({ node, isDark }) {
                         ...styles.tag,
                         ...(isDark ? styles.tagDark : styles.tagLight)
                     }}>
-                            {highlightExplanationLine(opt)}
-                        </span>
+                        {highlightExplanationLine(opt)}
+                    </span>
                 ))}
             </div>
         </div>

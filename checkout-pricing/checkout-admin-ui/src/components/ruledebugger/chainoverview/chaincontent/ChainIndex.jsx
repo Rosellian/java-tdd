@@ -1,4 +1,9 @@
-export function ChainIndex({ index, isActive, isDark }) {
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
+
+export function ChainIndex({ index, isActive }) {
+    const { theme } = useTheme();
+    let isDark = theme === "dark";
+
     return (
         <div style={{
             ...styles.chainIndex,
