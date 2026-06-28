@@ -12,14 +12,16 @@ export function SkuForm({ sku, setSku, qty, setQty }) {
 
 function Input({ type, value, onChange }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
-    const placeHolder = type !== "number" ? "SKU" : "";
+    const name = type === "number" ? "SkuQuantity" : "Sku";
+    const placeHolder = type !== "number" ? "SKU" : "0";
 
     return (
-        <input type={type} value={value} placeholder={placeHolder} onChange={onChange}
+        <input type={type} value={value} name={name} placeholder={placeHolder} onChange={onChange}
                style={{
                    ...styles.input,
-                   ...(theme === "dark" ? styles.inputDark : styles.inputLight)
+                   ...(isDark ? styles.inputDark : styles.inputLight)
         }}/>
     )
 }
@@ -28,22 +30,22 @@ const styles = {
     wrapper: {
         marginTop: 10,
         display: "flex",
-        gap: 5,
+        gap: 5
     },
     input: {
         border: "1px solid",
         padding: 5,
         width: 60,
-        transition: "background 0.3s ease, color 0.3s ease, border-color 0.3s ease",
+        transition: "background 0.3s ease, color 0.3s ease, border-color 0.3s ease"
     },
     inputDark: {
         background: "#2A2A2A",
         borderColor: "#333",
-        color: "#E0E0E0",
+        color: "#E0E0E0"
     },
     inputLight: {
         background: "#ffffff",
         borderColor: "#ccc",
-        color: "#000000",
+        color: "#000000"
     }
 }

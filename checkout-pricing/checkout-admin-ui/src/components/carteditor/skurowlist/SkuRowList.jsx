@@ -16,6 +16,6 @@ const styles = {
         overflowY: "auto",
         paddingRight: 4,
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "column"
     }
 }

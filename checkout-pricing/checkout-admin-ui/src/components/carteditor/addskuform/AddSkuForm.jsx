@@ -4,6 +4,7 @@ import {SkuForm} from "./SkuForm";
 
 export function AddSkuForm({ onAdd }) {
     const { theme } = useTheme();
+    let isDark = theme === "dark";
 
     const [sku, setSku] = useState("");
     const [qty, setQty] = useState(1);
@@ -21,19 +22,22 @@ export function AddSkuForm({ onAdd }) {
     return (
         <div style={styles.addRow}>
             <SkuForm sku={sku} setSku={setSku} qty={qty} setQty={setQty} />
-            <button style={{
+
+            <button onClick={submit} style={{
                 ...styles.addButton,
-                ...(theme === "dark" ? styles.addButtonDark : styles.addButtonLight)
-            }} onClick={submit}>Add</button>
+                ...(isDark ? styles.addButtonDark : styles.addButtonLight)
+            }}>
+                Add
+            </button>
         </div>
-    );
+    )
 }
 
 const styles = {
     addRow: {
         marginTop: 10,
         display: "flex",
-        gap: 5,
+        gap: 5
     },
     addButton: {
         border: "none",
@@ -41,14 +45,14 @@ const styles = {
         borderRadius: 4,
         cursor: "pointer",
         fontWeight: "bold",
-        transition: "background 0.3s ease, color 0.3s ease",
+        transition: "background 0.3s ease, color 0.3s ease"
     },
     addButtonDark: {
         background: "#4CAF50",
-        color: "#fff",
+        color: "#fff"
     },
     addButtonLight: {
         background: "#4CAF50",
-        color: "#000",
+        color: "#000"
     }
 }

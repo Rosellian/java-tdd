@@ -9,8 +9,10 @@ export function CartEditor({ cart, onChange }) {
 
     function updateSku(sku, qty) {
         const next = { ...cart };
+
         if (qty <= 0) delete next[sku];
         else next[sku] = qty;
+
         onChange(next);
     }
 
@@ -23,18 +25,22 @@ export function CartEditor({ cart, onChange }) {
                 <h3 style={{
                     ...styles.title,
                     ...(theme === "dark" ? styles.titleDark : styles.titleLight)
-                }}>Cart</h3>
+                }}>
+                    Cart
+                </h3>
 
                 <SkuRowList cart={cart} updateSku={updateSku} />
+
                 <AddSkuForm onAdd={updateSku} />
             </div>
 
             <div style={styles.column}>
                 <RecentCarts cart={cart} setCart={onChange}/>
+
                 <CartLoader cart={cart} setCart={onChange} />
             </div>
         </div>
-    );
+    )
 }
 
 const styles = {

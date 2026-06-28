@@ -749,6 +749,7 @@ Two versions are created as prototypes:
     - Compact improved layout
   - PriceListHandler
     - Compact improved layout
+- Fixing minor bugs and adhering to React conventions.
 ---
 
 ### Added functionality and improvements
