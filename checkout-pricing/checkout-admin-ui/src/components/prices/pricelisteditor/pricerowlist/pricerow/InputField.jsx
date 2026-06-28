@@ -5,7 +5,7 @@ export function InputField({ type, placeholder, value, onChange, width }) {
     let isDark = theme === "dark";
 
     return (
-        <input type={type} placeholder={placeholder} value={value} onChange={onChange}
+        <input name={`${placeholder}Input`} type={type} placeholder={placeholder} value={value} onChange={onChange}
                style={{
                    ...styles.input,
                    ...(isDark ? styles.inputDark : styles.inputLight),

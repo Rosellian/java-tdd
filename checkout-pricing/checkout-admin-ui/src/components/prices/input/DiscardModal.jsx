@@ -14,6 +14,7 @@ export function DiscardChangesModal({ onConfirm, onCancel }) {
             <div style={styles.message}>
                 You have unsaved changes
             </div>
+
             <div>
                 Do you want to discard them and continue?
             </div>
