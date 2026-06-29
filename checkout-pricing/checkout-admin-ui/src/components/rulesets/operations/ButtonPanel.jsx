@@ -11,8 +11,7 @@ export function ButtonPanel({ children, status }) {
                 style={{
                     ...buttonStyles.base,
                     ...(isDark ? buttonStyles.dark : buttonStyles.light)
-                }}
-            >
+            }}>
                 {status === "loading" ? "Loading…" : "Load"}
             </button>
 

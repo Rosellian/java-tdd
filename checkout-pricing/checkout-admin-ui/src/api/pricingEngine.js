@@ -14,7 +14,7 @@ async function callPricingEndpoint(cart, ruleset, priceList, customer, endpoint)
 
     return await fetch("/api/pricing/" + endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=utf-8" },
         body: JSON.stringify(body),
     });
 }

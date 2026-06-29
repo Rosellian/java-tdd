@@ -31,7 +31,7 @@ export async function saveRuleset(name, ruleset) {
     try {
         const res = await fetch(`${BASE_PATH}/${name}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json; charset=utf-8" },
             body: JSON.stringify(ruleset)
         });
 

@@ -4,27 +4,32 @@ export function RuleTypeSelector({ value, onChange }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
+    let title = "RuleTypeSelection";
+
     return (
         <div style={styles.box}>
-            <label style={{
+            <span style={{
                 ...styles.label,
                 ...(isDark ? styles.labelDark : styles.labelLight)
             }}>
                 Rule Type
-            </label>
+            </span>
 
-            <select value={value} onChange={(e) => onChange(e.target.value)}
-                style={{
-                    ...styles.select,
-                    ...(isDark ? styles.selectDark : styles.selectLight)
-            }}>
-                <option value="SpecialPrice">Special Price</option>
-                <option value="BuyXGetYFree">Buy X Get Y Free</option>
-                <option value="BuyXGetYDiscount">Buy X Get Y at Discount</option>
-                <option value="SkuDiscount">SKU Discount</option>
-                <option value="CrossSkuBuyXGetYFree">Cross SKU Buy X Get Y Free</option>
-                <option value="CrossSkuBuyXGetYDiscount">Cross SKU Buy X Get Y at Discount</option>
-            </select>
+            <label>
+                <select title={title} name={title} value={value}
+                        onChange={(e) => onChange(e.target.value)}
+                        style={{
+                            ...styles.select,
+                            ...(isDark ? styles.selectDark : styles.selectLight)
+                        }}>
+                    <option value="SpecialPrice">Special Price</option>
+                    <option value="BuyXGetYFree">Buy X Get Y Free</option>
+                    <option value="BuyXGetYDiscount">Buy X Get Y at Discount</option>
+                    <option value="SkuDiscount">SKU Discount</option>
+                    <option value="CrossSkuBuyXGetYFree">Cross SKU Buy X Get Y Free</option>
+                    <option value="CrossSkuBuyXGetYDiscount">Cross SKU Buy X Get Y at Discount</option>
+                </select>
+            </label>
         </div>
     )
 }

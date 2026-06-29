@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.tdd.api.pricing.rest.PricingResponse.from;
 
 @RestController
-@RequestMapping("/api/pricing")
+@RequestMapping(value = "/api/pricing", produces = "application/json; charset=utf-8")
 public class PricingController {
     private static final Logger logger = LoggerFactory.getLogger(PricingController.class);
 

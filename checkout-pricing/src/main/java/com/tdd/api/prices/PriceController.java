@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/prices")
+@RequestMapping(value = "/api/prices", produces = "application/json; charset=utf-8")
 public class PriceController implements DataController<PriceList> {
     private static final Set<String> PROTECTED = Set.of("default");
     private static final Logger logger = LoggerFactory.getLogger(PriceController.class);

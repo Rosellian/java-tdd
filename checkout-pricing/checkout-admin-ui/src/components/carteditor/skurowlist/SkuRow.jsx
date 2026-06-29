@@ -4,12 +4,14 @@ export function SkuRow({sku, qty, update}) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
+    let title = "SkuQuantity";
+
     return (
         <div key={sku} style={styles.row}>
             <span>{sku}</span>
 
             <input
-                type="number" value={qty} name="SkuQuantity"
+                type="number" value={qty} name={title} title={title} placeholder="0"
                 onChange={(e) => update(sku, Number(e.target.value))}
                 style={{
                     ...styles.input,

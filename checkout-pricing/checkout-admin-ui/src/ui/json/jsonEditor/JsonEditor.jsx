@@ -6,13 +6,13 @@ export function JsonEditor({ value, originalValue, schema, onChange }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
+    const [text, setText] = useState(stringify(value));
+    const [error, setError] = useState(null);
+
     const changed = JSON.stringify(value) !== JSON.stringify(originalValue);
 
     let changedColor = changed ? "#FFB300" : undefined;
     let borderColor = error ? "#ff4444" : changedColor;
-
-    const [text, setText] = useState(stringify(value));
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         setText(stringify(value));

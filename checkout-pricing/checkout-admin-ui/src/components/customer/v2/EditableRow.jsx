@@ -4,11 +4,13 @@ export function EditableRow({ label, value, onChange }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
+    let title = `${label}Input`;
+
     return (
         <div style={styles.row}>
             <strong style={styles.label}>{label}</strong>
 
-            <input name={`${label}Input`} value={value}
+            <input name={title} title={title} placeholder={title} value={value}
                    onChange={e => onChange(e.target.value)}
                    style={{
                        ...styles.input,

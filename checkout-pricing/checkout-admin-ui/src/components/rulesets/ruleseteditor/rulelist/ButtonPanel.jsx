@@ -6,23 +6,17 @@ export function ButtonPanel({ onAdd, onDelete }) {
 
     return (
         <div style={styles.buttonPanel}>
-            <button
-                style={{
-                    ...styles.addButton,
-                    ...(isDark ? styles.addButtonDark : styles.addButtonLight)
-                }}
-                onClick={onAdd}
-            >
+            <button onClick={onAdd} style={{
+                ...styles.addButton,
+                ...(isDark ? styles.addButtonDark : styles.addButtonLight)
+            }}>
                 + Add Rule
             </button>
 
-            <button
-                style={{
-                    ...styles.deleteButton,
-                    ...(isDark ? styles.deleteButtonDark : styles.deleteButtonLight)
-                }}
-                onClick={onDelete}
-            >
+            <button onClick={onDelete} style={{
+                ...styles.deleteButton,
+                ...(isDark ? styles.deleteButtonDark : styles.deleteButtonLight)
+            }}>
                 Delete
             </button>
         </div>

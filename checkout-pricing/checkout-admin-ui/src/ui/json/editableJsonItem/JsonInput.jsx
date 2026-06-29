@@ -6,9 +6,11 @@ export function JsonInput({ value, onChange, changed, error }) {
     let changedColor = changed ? "#FFB300" : undefined;
     let borderColor = error ? "#ff4444" : changedColor;
 
+    let label = "JsonInput";
+
     return (
         <>
-            <textarea name="JsonInput" value={value} onChange={onChange}
+            <textarea name={label} title={label} value={value} onChange={onChange}
                       style={{
                           ...styles.textarea,
                           ...(isDark ? styles.textareaDark : styles.textareaLight),

@@ -9,7 +9,9 @@ export function FormTemplate({ title, children }) {
             ...styles.box,
             ...(isDark ? styles.boxDark : styles.boxLight)
         }}>
-            <h3 style={styles.title}>{title}</h3>
+            <h3 style={styles.title}>
+                {title}
+            </h3>
 
             <div style={styles.grid}>
                 {children}

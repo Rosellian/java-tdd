@@ -4,15 +4,15 @@ export function RulesetDropdown({ value, onChange, names }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
+    let label = "RulesetSelection";
+
     return (
-        <select
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            style={{
-                ...styles.select,
-                ...(isDark ? styles.selectDark : styles.selectLight)
-            }}
-        >
+        <select title={label} name={label} value={value}
+                onChange={(e) => onChange(e.target.value)}
+                style={{
+                    ...styles.select,
+                    ...(isDark ? styles.selectDark : styles.selectLight)
+        }}>
             {names.map(n => (
                 <option key={n} value={n}>{n}</option>
             ))}

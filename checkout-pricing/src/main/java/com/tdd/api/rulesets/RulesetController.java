@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/rulesets")
+@RequestMapping(value = "/api/rulesets", produces = "application/json; charset=utf-8")
 public class RulesetController implements DataController<Ruleset> {
     private static final Set<String> PROTECTED = Set.of(
             "default", "campaigna", "campaignb", "nocrossnoskudiscount"

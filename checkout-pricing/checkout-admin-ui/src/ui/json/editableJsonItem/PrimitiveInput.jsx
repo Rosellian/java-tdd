@@ -5,8 +5,10 @@ export function PrimitiveInput({ value, onChange, changed }) {
     let isDark = theme === "dark";
     let changedColor = changed ? "#FFB300" : undefined;
 
+    let label = "PrimitiveInput";
+
     return (
-        <input value={value} onChange={onChange}
+        <input name={label} title={label} value={value} onChange={onChange}
                style={{
                    ...styles.input,
                    ...(isDark ? styles.inputDark : styles.inputLight),

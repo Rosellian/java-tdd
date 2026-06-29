@@ -34,7 +34,7 @@ export async function savePriceList(name, priceList) {
     try {
         const res = await fetch(`${BASE_PATH}/${name}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json; charset=utf-8" },
             body: JSON.stringify(priceList)
         });
 

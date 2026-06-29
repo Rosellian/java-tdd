@@ -18,9 +18,11 @@ export function StackableField({ rule, update}) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
+    let title = "StackableSelection";
+
     return (
         <FieldGroup label="Stackable">
-            <select
+            <select title={title} name={title}
                 style={{
                     ...styles.input,
                     ...(isDark ? styles.inputDark : styles.inputLight),
@@ -39,10 +41,11 @@ export function StackableField({ rule, update}) {
 function Field({ type, label, value, onChange, width = 150 }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
+    let title = `${label}Input`;
 
     return (
         <FieldGroup label={label}>
-            <input
+            <input name={title} title={title}
                 style={{
                     ...styles.input,
                     ...(isDark ? styles.inputDark : styles.inputLight),
@@ -60,9 +63,10 @@ function Field({ type, label, value, onChange, width = 150 }) {
 function FieldGroup({ label, children }) {
     return (
         <div style={styles.field}>
-            <label style={styles.label}>{label}</label>
-
-            {children}
+            <span style={styles.label}>{label}</span>
+            <label>
+                {children}
+            </label>
         </div>
     )
 }

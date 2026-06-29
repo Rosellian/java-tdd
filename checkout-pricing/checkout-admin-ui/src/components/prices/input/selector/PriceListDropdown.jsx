@@ -7,7 +7,7 @@ export function PriceListDropdown({ value, onChange, names, isDraft }) {
     let label = "PriceListSelection";
 
     return (
-        <select title={label} value={value}
+        <select title={label} name={label} value={value}
                 onChange={(e) => onChange(e.target.value)}
             style={{
                 ...styles.select,

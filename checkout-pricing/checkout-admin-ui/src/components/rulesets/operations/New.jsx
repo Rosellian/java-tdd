@@ -26,7 +26,7 @@ function newRuleset(setMode, setSelected, setRuleset, setRulesetNames, onRuleset
 
     setRulesetNames(prev => [...prev, draft.name]);
     setSelected(draft.name);
-    onRulesetChange(draft.name); //TODO might need to become full ruleset later
+    onRulesetChange(draft.name);
 }
 
 const styles = {
