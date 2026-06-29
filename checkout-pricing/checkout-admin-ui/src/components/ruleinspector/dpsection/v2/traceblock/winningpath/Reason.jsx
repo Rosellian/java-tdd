@@ -1,4 +1,4 @@
-export function Reason({  }) {
+export function Reason({ dp }) {
     return (
         <div style={styles.reason}>
             <strong>Reason: SAMPLE DATA</strong>

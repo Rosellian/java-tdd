@@ -20,7 +20,7 @@ export function DPWinningPath({ dp }) {
 
             <Path dp={dp} />
 
-            <Reason/>
+            <Reason dp={dp}/>
         </div>
     )
 }

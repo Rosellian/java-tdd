@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useTheme} from "../../ui/theme/ThemeProvider";
 import {PriceListEditor} from "./pricelisteditor/PriceListEditor";
 import {ButtonPanel} from "./operations/ButtonPanel";
-import {loadPriceList, loadPriceListNames, updatePriceListName} from "./handlerFuncs";
+import {isEqualPriceList, loadPriceList, loadPriceListNames, updatePriceListName} from "./handlerFuncs";
 import {handlerStyles} from "./handlerStyles";
 import {getPriceListWithFallback} from "../../api/prices/pricesFallback";
 import {getPriceListNames} from "../../api/prices/prices";
@@ -63,12 +63,13 @@ export function PriceListHandler({ onPriceListChange }) {
     function triggerUpdatePriceListName(newName) {
         updatePriceListName(priceList, newName, setPriceList, setPriceListNames);
 
-        setUnsavedChanges(true);
+        let sameName = originalPriceList && originalPriceList.name === newName;
+        setUnsavedChanges(!sameName);
+
         setSelected(newName);
         onPriceListChange(newName);
     }
 
-    //TODO split up and combine according to other operations' needs?
     function onLoad(newPriceList, fallback) {
         setPriceList(newPriceList);
         setOriginalPriceList(newPriceList);
@@ -126,7 +127,9 @@ export function PriceListHandler({ onPriceListChange }) {
                 {isPriceListSet && (
                     <PriceListEditor priceList={priceList} onChange={(updated) => {
                         setPriceList(updated);
-                        setUnsavedChanges(true);
+
+                        let noChanges = originalPriceList && isEqualPriceList(updated, originalPriceList);
+                        setUnsavedChanges(!noChanges);
                     }} />
                 )}
             </div>

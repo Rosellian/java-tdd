@@ -757,10 +757,12 @@ Two versions are created as prototypes:
 - Load with prompt in PriceListHandler
   - Handle new list creation
   - Unsaved changes indication
+    - Hide when changes are removed
   - Disabled state for buttons
   - Discard changes modal
   - Dropdown unsaved badge
   - Changes diff view
+    - Hide when changes are removed
 
 ### Current structure
 ```

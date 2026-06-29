@@ -42,3 +42,21 @@ export function updatePriceListName(priceList, newName, setPriceList, setPriceLi
         prev.map(n => (n === priceList.name ? newName : n))
     );
 }
+
+export function isEqualPriceList(a, b) {
+    if (!a || !b) return false;
+
+    if (a.name !== b.name) return false;
+
+    if (a.unitPrices.length !== b.unitPrices.length) return false;
+
+    for (let i = 0; i < a.unitPrices.length; i++) {
+        const x = a.unitPrices[i];
+        const y = b.unitPrices[i];
+
+        if (x.sku !== y.sku) return false;
+        if (x.price !== y.price) return false;
+    }
+
+    return true;
+}
