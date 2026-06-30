@@ -1,3 +1,6 @@
+import {getPriceListNames} from "../../api/prices/prices";
+import {getPriceListWithFallback} from "../../api/prices/pricesFallback";
+
 export const DEFAULT_PRICE_LISTS = ["default"];
 
 export function createNewPriceListDraft() {
@@ -8,6 +11,21 @@ export function createNewPriceListDraft() {
             { sku: "", price: 0 }
         ]
     };
+}
+
+export function initPriceLists(setPriceListNames, setFallbackUsed, setStatus, initPriceList) {
+    getPriceListNames().then(
+        list => {
+            const first = loadPriceListNames(list, setPriceListNames, setFallbackUsed);
+
+            setStatus("loading");
+
+            getPriceListWithFallback(first).then(
+                ({priceList, fallback}) =>
+                    loadPriceList(priceList, fallback, setStatus, initPriceList)
+            );
+        }
+    );
 }
 
 export function loadPriceListNames(list, setPriceListNames, setFallbackUsed) {
@@ -32,18 +50,41 @@ export function loadPriceList(priceList, fallback, setStatus, updatePriceList) {
     updatePriceList(priceList, fallback);
 }
 
-export function updatePriceListName(priceList, newName, setPriceList, setPriceListNames) {
+export function updatePriceListName(priceList, newName, setPriceListNames) {
     if (!priceList) return;
 
     const updated = {...priceList, name: newName};
-    setPriceList(updated);
 
     setPriceListNames(prev =>
         prev.map(n => (n === priceList.name ? newName : n))
     );
+
+    return updated;
 }
 
-export function isEqualPriceList(a, b) {
+export function updatePriceList(priceList, setPriceList, setSelected, onPriceListChange) {
+    setPriceList(priceList);
+    const name = priceList.name;
+    setSelected(name);
+    onPriceListChange(name);
+}
+
+export function setLoadedPriceList(setOriginalPriceList, priceList, setFallbackUsed, fallback) {
+    setOriginalPriceList(priceList);
+    setFallbackUsed(fallback);
+}
+
+export function setChanges(setIsDraft, setUnsavedChanges, isUnsaved = false) {
+    setIsDraft(isUnsaved);
+    setUnsavedChanges(isUnsaved);
+}
+
+export function updateChanges(originalPriceList, updatedPriceList, setUnsavedChanges) {
+    let noChanges = originalPriceList && isEqualPriceList(updatedPriceList, originalPriceList);
+    setUnsavedChanges(!noChanges);
+}
+
+function isEqualPriceList(a, b) {
     if (!a || !b) return false;
 
     if (a.name !== b.name) return false;

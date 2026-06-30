@@ -2,10 +2,9 @@ import {useEffect, useState} from "react";
 import {useTheme} from "../../ui/theme/ThemeProvider";
 import {PriceListEditor} from "./pricelisteditor/PriceListEditor";
 import {ButtonPanel} from "./operations/ButtonPanel";
-import {isEqualPriceList, loadPriceList, loadPriceListNames, updatePriceListName} from "./handlerFuncs";
+import {initPriceLists, setChanges, setLoadedPriceList, updateChanges, updatePriceList, updatePriceListName}
+    from "./handlerFuncs";
 import {handlerStyles} from "./handlerStyles";
-import {getPriceListWithFallback} from "../../api/prices/pricesFallback";
-import {getPriceListNames} from "../../api/prices/prices";
 import {StatusBar} from "./status/StatusBar";
 import {Inputs} from "./input/Inputs";
 
@@ -17,7 +16,6 @@ export function PriceListHandler({ onPriceListChange }) {
     const [priceList, setPriceList] = useState(null);
 
     const [selected, setSelected] = useState("default");
-    const [loaded, setLoaded] = useState(null);
     const [originalPriceList, setOriginalPriceList] = useState(null);
     const [isDraft, setIsDraft] = useState(false);
     const [unsavedChanges, setUnsavedChanges] = useState(false);
@@ -26,84 +24,54 @@ export function PriceListHandler({ onPriceListChange }) {
     const [status, setStatus] = useState("idle"); // idle, saving, loading, deleting, error
 
     useEffect(() => {
-        getPriceListNames().then(
-            list => {
-                const first = loadPriceListNames(list, setPriceListNames, setFallbackUsed);
-
-                setSelected(first);
-                setLoaded(first);
-                setStatus("loading");
-
-                getPriceListWithFallback(first).then(
-                    ({priceList, fallback}) =>
-                        loadPriceList(priceList, fallback, setStatus, updatePriceList)
-                );
-            }
-        );
+        initPriceLists(setPriceListNames, setFallbackUsed, setStatus, initPriceList);
     }, []);
 
-    function updatePriceList(priceList, fallback) {
-        setPriceList(priceList);
-        setOriginalPriceList(priceList);
-        setFallbackUsed(fallback);
+    function initPriceList(priceList, fallback) {
+        updatePriceList(priceList, setPriceList, setSelected, onPriceListChange);
+        setLoadedPriceList(setOriginalPriceList, priceList, setFallbackUsed, fallback);
         setStatus("idle");
-        onPriceListChange(priceList.name);
     }
 
     function onDiscardConfirm() {
-        if(isDraft) {
-            setPriceListNames(prev => prev.filter(n => n !== selected));
-        }
-
+        if(isDraft) setPriceListNames(prev => prev.filter(n => n !== selected));
         setPriceList(null);
-        setIsDraft(false);
-        setUnsavedChanges(false);
+        setChanges(setIsDraft, setUnsavedChanges);
     }
 
     function triggerUpdatePriceListName(newName) {
-        updatePriceListName(priceList, newName, setPriceList, setPriceListNames);
-
-        let sameName = originalPriceList && originalPriceList.name === newName;
-        setUnsavedChanges(!sameName);
-
-        setSelected(newName);
-        onPriceListChange(newName);
+        const updatedPriceList = updatePriceListName(priceList, newName, setPriceListNames);
+        updateChanges(originalPriceList, updatedPriceList, setUnsavedChanges);
+        updatePriceList(updatedPriceList, setPriceList, setSelected, onPriceListChange);
     }
 
     function onLoad(newPriceList, fallback) {
-        setPriceList(newPriceList);
-        setOriginalPriceList(newPriceList);
-        setFallbackUsed(fallback);
-        setIsDraft(false);
-        setLoaded(selected);
-        onPriceListChange(selected);
-        setUnsavedChanges(false);
+        updatePriceList(newPriceList, setPriceList, setSelected, onPriceListChange);
+        setLoadedPriceList(setOriginalPriceList, newPriceList, setFallbackUsed, fallback);
+        setChanges(setIsDraft, setUnsavedChanges);
     }
 
-    function onSave(priceList) {
-        setIsDraft(false);
-        setUnsavedChanges(false);
-        setLoaded(priceList.name);
+    function onSave() {
+        setChanges(setIsDraft, setUnsavedChanges);
     }
 
     function onDelete(toSelected, updatedNames) {
         setPriceListNames(updatedNames);
         setPriceList(null);
         setSelected(toSelected);
-        setIsDraft(false);
-        setUnsavedChanges(false);
+        setChanges(setIsDraft, setUnsavedChanges);
     }
 
     function onNew(draft) {
-        setPriceList(draft);
+        updatePriceList(draft, setPriceList, setSelected, onPriceListChange);
         setPriceListNames(prev => [...prev, draft.name]);
-        setSelected(draft.name);
-        setIsDraft(true);
-        setUnsavedChanges(true);
-        onPriceListChange(draft.name);
+        setChanges(setIsDraft, setUnsavedChanges, true);
     }
 
-    const isPriceListSet = priceList !== null;
+    function onEdit(updated) {
+        setPriceList(updated);
+        updateChanges(originalPriceList, updated, setUnsavedChanges);
+    }
 
     return (
         <div style={{
@@ -112,8 +80,8 @@ export function PriceListHandler({ onPriceListChange }) {
         }}>
             <div style={handlerStyles.handler}>
                 <Inputs priceList={priceList} priceListNames={priceListNames} unsavedChanges={unsavedChanges}
-                        isDraft={isDraft} selected={selected} setSelected={setSelected} onDiscardConfirm={onDiscardConfirm}
-                        triggerUpdatePriceListName={triggerUpdatePriceListName} />
+                        isDraft={isDraft} selected={selected} setSelected={setSelected}
+                        onDiscardConfirm={onDiscardConfirm} triggerUpdatePriceListName={triggerUpdatePriceListName} />
 
                 <ButtonPanel status={status} setStatus={setStatus} selected={selected} isDraft={isDraft}
                              unsavedChanges={unsavedChanges} priceList={priceList} priceListNames={priceListNames}
@@ -124,14 +92,7 @@ export function PriceListHandler({ onPriceListChange }) {
                        priceList={priceList} originalPriceList={originalPriceList} />
 
             <div style={handlerStyles.editorWrapper}>
-                {isPriceListSet && (
-                    <PriceListEditor priceList={priceList} onChange={(updated) => {
-                        setPriceList(updated);
-
-                        let noChanges = originalPriceList && isEqualPriceList(updated, originalPriceList);
-                        setUnsavedChanges(!noChanges);
-                    }} />
-                )}
+                <PriceListEditor priceList={priceList} onChange={onEdit} />
             </div>
         </div>
     )
