@@ -5,81 +5,79 @@ import {buttonStyles} from "./buttonStyles";
 import {deleteRuleset} from "../../../api/rulesets/rulesets";
 import {ConfirmModal} from "../../../ui/ConfirmModal";
 
-export function Delete({ ruleset, setRuleset, rulesetNames, setRulesetNames, status, setStatus, setMode,
-                           selected, setSelected }) {
+export function Delete({ ruleset, rulesetNames, status, setStatus, isDraft, disabledExp, onDelete }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
     const [showConfirm, setShowConfirm] = useState(false);
 
-    const isProtectedSelected = theme === "light" && isProtectedRuleset(selected);
+    function handleDelete() {
+        if (!ruleset) return;
+
+        if (isProtectedRuleset(ruleset.name)) {
+            alert(`Ruleset ${ruleset.name} cannot be deleted.`);
+            return;
+        }
+
+        setShowConfirm(true);
+    }
+
+    async function confirmDelete() {
+        setShowConfirm(false);
+
+        if (isDraft) {
+            deleteDraft(rulesetNames, ruleset, onDelete, setStatus);
+            return;
+        }
+
+        await deleteList(setStatus, ruleset, rulesetNames, onDelete);
+    }
 
     return (
         <div>
-            <button disabled={isProtectedSelected} onClick={() => handleDelete(ruleset, setShowConfirm)}
-                    title={isProtectedSelected ? "This ruleset cannot be deleted" : ""}
+            <button disabled={disabledExp} onClick={handleDelete}
                     style={{
                         ...buttonStyles.base,
                         ...(isDark ? styles.deleteButtonDark : styles.deleteButtonLight),
-                        ...(isProtectedSelected ? styles.buttonDisabled : {})
-                    }}
-            >
+                        ...(disabledExp ? buttonStyles.buttonDisabled : {})
+                    }}>
                 {status === "deleting" ? "Deleting…" : "Delete"}
             </button>
 
             {showConfirm && (
                 <ConfirmModal message={`Are you sure you want to delete ruleset "${ruleset.name}"?`}
-                              onConfirm={() => confirmDelete(ruleset, setRuleset, rulesetNames,
-                                  setRulesetNames, setShowConfirm, setStatus, setMode, setSelected)}
+                              onConfirm={confirmDelete}
                               onCancel={() => setShowConfirm(false)} />
             )}
         </div>
     )
 }
 
-function handleDelete(ruleset, setShowConfirm) {
-    if (!ruleset) return;
-
-    if (isProtectedRuleset(ruleset.name)) {
-        alert(`Ruleset ${ruleset.name} cannot be deleted.`);
-        return;
-    }
-
-    setShowConfirm(true);
+function deleteDraft(rulesetNames, ruleset, onDelete, setStatus) {
+    let namesWithCurrentRemoved = removeList(rulesetNames, ruleset);
+    onDelete(null, namesWithCurrentRemoved);
+    setStatus("idle");
 }
 
-async function confirmDelete(ruleset, setRuleset, rulesetNames, setRulesetNames, setShowConfirm, setStatus,
-                             setMode, setSelected) {
-    setShowConfirm(false);
-    setStatus("loading");
+async function deleteList(setStatus, ruleset, rulesetNames, onDelete) {
+    setStatus("deleting");
 
-    const name = ruleset.name;
-
-    const ok = await deleteRuleset(name);
+    const ok = await deleteRuleset(ruleset.name);
     if (ok) {
-        const updated = rulesetNames.filter(n => n !== name);
-        setRulesetNames(updated);
+        const updatedNames = removeList(rulesetNames, ruleset);
+        const next = updatedNames[0] ?? null;
 
-        const next = updated[0] ?? null;
-
-        if (next) {
-            setSelected(next);
-            setMode("existing");
-        } else {
-            setSelected(null)
-            setRuleset(null);
-            setMode("loading");
-        }
+        onDelete(next, updatedNames);
     }
 
     setStatus(ok ? "idle" : "error");
 }
 
+function removeList(rulesetNames, ruleset) {
+    return rulesetNames.filter(n => n !== ruleset.name);
+}
+
 const styles = {
-    buttonDisabled: {
-        opacity: 0.5,
-        cursor: "not-allowed"
-    },
     deleteButtonDark: {
         background: "#8B0000",
         color: "#fff"

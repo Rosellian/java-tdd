@@ -38,8 +38,7 @@ export function Save({ priceList, status, setStatus, unsavedChanges, onSave }) {
 
             {showConfirm && (
                 <ConfirmModal message={`Are you sure you want to save changes to "${priceList.name}"?`}
-                              onConfirm={confirmSave}
-                              onCancel={() => setShowConfirm(false)}/>
+                              onConfirm={confirmSave} onCancel={() => setShowConfirm(false)} />
             )}
         </div>
     )
@@ -50,7 +49,7 @@ async function save(setStatus, priceList, onSave) {
 
     const ok = await savePriceList(priceList.name, priceList);
     if (ok) {
-        onSave(priceList);
+        onSave();
     }
 
     setStatus(ok ? "idle" : "error");

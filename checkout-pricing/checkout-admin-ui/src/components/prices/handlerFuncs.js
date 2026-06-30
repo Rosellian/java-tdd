@@ -28,7 +28,7 @@ export function initPriceLists(setPriceListNames, setFallbackUsed, setStatus, in
     );
 }
 
-export function loadPriceListNames(list, setPriceListNames, setFallbackUsed) {
+function loadPriceListNames(list, setPriceListNames, setFallbackUsed) {
     const names = list ?? DEFAULT_PRICE_LISTS;
 
     setPriceListNames(names);
@@ -37,7 +37,7 @@ export function loadPriceListNames(list, setPriceListNames, setFallbackUsed) {
     return names[0];
 }
 
-export function loadPriceList(priceList, fallback, setStatus, updatePriceList) {
+function loadPriceList(priceList, fallback, setStatus, initPriceList) {
     if (!priceList) {
         setStatus("error");
         return;
@@ -47,7 +47,7 @@ export function loadPriceList(priceList, fallback, setStatus, updatePriceList) {
         priceList.unitPrices = [];
     }
 
-    updatePriceList(priceList, fallback);
+    initPriceList(priceList, fallback);
 }
 
 export function updatePriceListName(priceList, newName, setPriceListNames) {

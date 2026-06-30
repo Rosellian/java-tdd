@@ -1,6 +1,6 @@
-import {useTheme} from "../../../ui/theme/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
-export function RulesetDropdown({ value, onChange, names }) {
+export function RulesetDropdown({ value, onChange, names, isDraft }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -13,8 +13,10 @@ export function RulesetDropdown({ value, onChange, names }) {
                     ...styles.select,
                     ...(isDark ? styles.selectDark : styles.selectLight)
         }}>
-            {names.map(n => (
-                <option key={n} value={n}>{n}</option>
+            {names.map(name => (
+                <option key={name} value={name}>
+                    {isDraft && name === value ? `${name} (unsaved)` : name}
+                </option>
             ))}
         </select>
     )

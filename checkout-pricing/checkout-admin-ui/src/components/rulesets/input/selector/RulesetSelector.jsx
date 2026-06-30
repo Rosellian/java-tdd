@@ -1,7 +1,7 @@
-import {useTheme} from "../../../ui/theme/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {RulesetDropdown} from "./RulesetDropdown";
 
-export function RulesetSelector({ value, onChange, names }) {
+export function RulesetSelector({ value, onChange, names, isDraft }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -17,7 +17,7 @@ export function RulesetSelector({ value, onChange, names }) {
                 Ruleset
             </h3>
 
-            <RulesetDropdown value={value} onChange={onChange} names={names} />
+            <RulesetDropdown value={value} onChange={onChange} names={names} isDraft={isDraft} />
         </div>
     )
 }

@@ -763,6 +763,13 @@ Two versions are created as prototypes:
   - Dropdown unsaved badge
   - Changes diff view
     - Hide when changes are removed
+- Load with prompt in RulesetHandler
+  - Handle all operations
+  - Unsaved changes indication
+  - Disabled state for buttons
+  - Discard changes modal
+  - Dropdown unsaved badge
+  - Changes diff view
 
 ### Current structure
 ```

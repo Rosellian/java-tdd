@@ -21,50 +21,82 @@ export function createNewRulesetDraft() {
     };
 }
 
-export function getInitialState(setRulesetNames, setFallbackUsed, setSelected, setMode) {
-    getRulesetNames().then(list => {
-        const names = list ?? DEFAULT_RULESETS;
+export function initRulesets(setRulesetNames, setFallbackUsed, setStatus, initRuleset) {
+    getRulesetNames().then(
+        list => {
+            let first = loadRulesetNames(list, setRulesetNames, setFallbackUsed);
 
-        setRulesetNames(names);
-        setFallbackUsed(!list);
+            setStatus("loading");
 
-        setSelected(names[0]);
-        setMode("existing");
-    });
+            getRulesetWithFallback(first).then(
+                ({ruleset, fallback}) =>
+                    loadRuleset(ruleset, fallback, setStatus, initRuleset)
+            );
+        });
 }
 
-export function updateState(mode, selected, setStatus, setRuleset, setFallbackUsed, onRulesetChange) {
-    if (mode !== "existing" || !selected) return;
+export function loadRulesetNames(list, setRulesetNames, setFallbackUsed) {
+    let names = list ?? DEFAULT_RULESETS;
 
-    setStatus("loading");
+    setRulesetNames(names);
+    setFallbackUsed(!list);
 
-    getRulesetWithFallback(selected).then(({ruleset, fallback}) => {
-        if (!ruleset) {
-            setStatus("error");
-            return;
-        }
-
-        if (!Array.isArray(ruleset.rules)) {
-            ruleset.rules = [];
-        }
-
-        setRuleset(ruleset);
-        setFallbackUsed(fallback);
-        setStatus("idle");
-        onRulesetChange(selected);
-    });
+    return names[0];
 }
 
-export function updateRulesetNames(ruleset, newName, setRuleset, setRulesetNames, setSelected, onRulesetChange) {
+function loadRuleset(ruleset, fallback, setStatus, initRuleset) {
+    if (!ruleset) {
+        setStatus("error");
+        return;
+    }
+
+    if(!Array.isArray(ruleset.rules)) {
+        ruleset.rules = [];
+    }
+
+    initRuleset(ruleset, fallback);
+}
+
+export function updateRulesetName(ruleset, newName, setRulesetNames) {
     if (!ruleset) return;
 
-    const updatedRuleset = {...ruleset, name: newName};
-    setRuleset(updatedRuleset);
+    let updated = {...ruleset, name: newName};
 
-    setRulesetNames(prev =>
-        prev.map(n => (n === ruleset.name ? newName : n))
-    );
+    setRulesetNames(prev => prev.map(n => (n === ruleset.name ? newName : n)));
 
-    setSelected(newName);
-    onRulesetChange(newName); //TODO might need to become full ruleset later
+    return updated;
+}
+
+export function updateRuleset(ruleset, setRuleset, setSelected, onRulesetChange) {
+    setRuleset(ruleset);
+    let name = ruleset.name;
+    setSelected(name);
+    onRulesetChange(name);
+}
+
+export function setLoadedRuleset(setOriginalRuleset, ruleset, setFallbackUsed, fallback) {
+    setOriginalRuleset(ruleset);
+    setFallbackUsed(fallback);
+}
+
+export function setChanges(setIsDraft, setUnsavedChanges, isUnsaved = false) {
+    setIsDraft(isUnsaved);
+    setUnsavedChanges(isUnsaved);
+}
+
+export function updateChanges(originalRuleset, updatedRuleset, setUnsavedChanges) {
+    let noChanges = originalRuleset && isEqualRuleset(updatedRuleset, originalRuleset);
+    setUnsavedChanges(!noChanges);
+}
+
+function isEqualRuleset(a, b) {
+    if (!a || !b) return false;
+
+    if (a.name !== b.name) return false;
+
+    if (a.rules.length !== b.rules.length) return false;
+
+    //TODO implement rule comparison
+
+    return true;
 }

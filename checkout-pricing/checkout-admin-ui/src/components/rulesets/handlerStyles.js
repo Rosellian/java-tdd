@@ -23,25 +23,9 @@ export const handlerStyles = {
         alignSelf: "flex-start",
         gap: 16
     },
-    inputs: {
-        display: "flex",
-        flexDirection: "column",
-        gap: 10
-    },
     editorWrapper: {
         width: "100%",
         maxWidth: "755px",
         alignSelf: "stretch"
-    },
-    loading: {
-        opacity: 0.7
-    },
-    fallback: {
-        color: "#e57335",
-        fontWeight: "bold"
-    },
-    error: {
-        color: "#E53935",
-        fontWeight: "bold"
     }
 }

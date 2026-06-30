@@ -1,90 +1,98 @@
 import {useEffect, useState} from "react";
 import {useTheme} from "../../ui/theme/ThemeProvider";
-import {RulesetSelector} from "./rulesetselector/RulesetSelector";
 import {RulesetEditor} from "./ruleseteditor/RulesetEditor";
-import {TextInput} from "./ruleseteditor/ruleform/templates/FormFields";
 import {ButtonPanel} from "./operations/ButtonPanel";
 import {handlerStyles} from "./handlerStyles";
-import {getInitialState, updateRulesetNames, updateState} from "./handlerFuncs";
-import {Save} from "./operations/Save";
-import {Delete} from "./operations/Delete";
-import {New} from "./operations/New";
+import {initRulesets, setChanges, setLoadedRuleset, updateChanges, updateRuleset, updateRulesetName}
+    from "./handlerFuncs";
+import {StatusBar} from "./status/StatusBar";
+import {Inputs} from "./input/Inputs";
 
 export function RulesetHandler({ onRulesetChange }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
     const [rulesetNames, setRulesetNames] = useState([]);
-    const [selected, setSelected] = useState("default");
     const [ruleset, setRuleset] = useState(null);
 
+    const [selected, setSelected] = useState("default");
+    const [originalRuleset, setOriginalRuleset] = useState(null);
+    const [isDraft, setIsDraft] = useState(false);
+    const [unsavedChanges, setUnsavedChanges] = useState(false);
+
     const [fallbackUsed, setFallbackUsed] = useState(false);
-    const [mode, setMode] = useState("loading"); // loading, existing, new, deleting
     const [status, setStatus] = useState("idle"); // idle, saving, loading, deleting, error
 
-    useEffect(() => getInitialState(setRulesetNames, setFallbackUsed, setSelected, setMode), []);
+    useEffect(() => {
+        initRulesets(setRulesetNames, setFallbackUsed, setStatus, initRuleset)
+    }, []);
 
-    useEffect(() => updateState(mode, selected, setStatus, setRuleset, setFallbackUsed, onRulesetChange),
-        [selected, mode]);
-
-    function triggerUpdateRulesetName(newName) {
-        updateRulesetNames(ruleset, newName, setRuleset, setRulesetNames, setSelected, onRulesetChange);
+    function initRuleset(ruleset, fallback) {
+        updateRuleset(ruleset, setRuleset, setSelected, onRulesetChange);
+        setLoadedRuleset(setOriginalRuleset, ruleset, setFallbackUsed, fallback);
+        setStatus("idle");
     }
 
-    const isRulesetSet = ruleset !== null;
+    function onDiscardConfirm() {
+        if(isDraft) setRulesetNames(prev => prev.filter(n => n !== selected));
+        setRuleset(null);
+        setChanges(setIsDraft, setUnsavedChanges);
+    }
+
+    function triggerUpdateRulesetName(newName) {
+        let updatedRuleset = updateRulesetName(ruleset, newName, setRulesetNames);
+        updateChanges(originalRuleset, updatedRuleset, setUnsavedChanges);
+        updateRuleset(updatedRuleset, setRuleset, setSelected, onRulesetChange);
+    }
+
+    function onLoad(newRuleset, fallback) {
+        updateRuleset(newRuleset, setRuleset, setSelected, onRulesetChange);
+        setLoadedRuleset(setOriginalRuleset, newRuleset, setFallbackUsed, fallback);
+        setChanges(setIsDraft, setUnsavedChanges);
+    }
+
+    function onSave() {
+        setChanges(setIsDraft, setUnsavedChanges);
+    }
+
+    function onDelete(toSelected, updatedNames) {
+        setRulesetNames(updatedNames);
+        setRuleset(null);
+        setSelected(toSelected);
+        setChanges(setIsDraft, setUnsavedChanges);
+    }
+
+    function onNew(draft) {
+        updateRuleset(draft, setRuleset, setSelected, onRulesetChange);
+        setRulesetNames(prev => [...prev, draft.name]);
+        setChanges(setIsDraft, setUnsavedChanges, true);
+    }
+
+    function onEdit(updated) {
+        setRuleset(updated);
+        updateChanges(originalRuleset, updated, setUnsavedChanges);
+    }
 
     return (
         <div style={{
             ...handlerStyles.wrapper,
             ...(isDark ? handlerStyles.wrapperDark : handlerStyles.wrapperLight)
         }}>
-            {fallbackUsed &&
-                <div style={handlerStyles.fallback}>
-                    Failed to load from server, fallback used
-                </div>
-            }
-
             <div style={handlerStyles.handler}>
-                <div style={handlerStyles.inputs}>
-                    <RulesetSelector value={selected} onChange={(v) => {
-                        setMode("existing");
-                        setSelected(v);
-                    }} names={rulesetNames} />
+                <Inputs ruleset={ruleset} rulesetNames={rulesetNames} unsavedChanges={unsavedChanges} isDraft={isDraft}
+                        selected={selected} setSelected={setSelected} onDiscardConfirm={onDiscardConfirm}
+                        triggerUpdateRulesetName={triggerUpdateRulesetName} />
 
-                    {isRulesetSet &&
-                        (<TextInput label="Ruleset Name" field="name" value={ruleset.name} width={200}
-                                    update={(field, value) => triggerUpdateRulesetName(value)}
-                        />)
-                    }
-                </div>
-
-                <ButtonPanel status={status}>
-                    <Save ruleset={ruleset} status={status} setStatus={setStatus} setMode={setMode} />
-
-                    <Delete ruleset={ruleset} setRuleset={setRuleset} rulesetNames={rulesetNames}
-                            setRulesetNames={setRulesetNames} selected={selected} setSelected={setSelected}
-                            status={status} setStatus={setStatus} setMode={setMode} />
-
-                    <New mode={mode} setMode={setMode} setSelected={setSelected} setRulesetNames={setRulesetNames}
-                         setRuleset={setRuleset} onRulesetChange={onRulesetChange} />
-                </ButtonPanel>
+                <ButtonPanel status={status} setStatus={setStatus} selected={selected} isDraft={isDraft}
+                             unsavedChanges={unsavedChanges} ruleset={ruleset} rulesetNames={rulesetNames}
+                             onLoad={onLoad} onSave={onSave} onDelete={onDelete} onNew={onNew} />
             </div>
 
-            {status === "loading" &&
-                <div style={handlerStyles.loading}>
-                    Loading ruleset…
-                </div>
-            }
-            {status === "error" &&
-                <div style={handlerStyles.error}>
-                    Failed to load or save ruleset
-                </div>
-            }
+            <StatusBar status={status} fallbackUsed={fallbackUsed} isDraft={isDraft} unsavedChanges={unsavedChanges}
+                       ruleset={ruleset} originalRuleset={originalRuleset} />
 
             <div style={handlerStyles.editorWrapper}>
-                {isRulesetSet && (
-                    <RulesetEditor ruleset={ruleset} onChange={setRuleset} />
-                )}
+                <RulesetEditor ruleset={ruleset} onChange={onEdit} />
             </div>
         </div>
     )

@@ -4,18 +4,33 @@ import {saveRuleset} from "../../../api/rulesets/rulesets";
 import {buttonStyles} from "./buttonStyles";
 import {useState} from "react";
 
-export function Save({ ruleset, status, setStatus, setMode }) {
+export function Save({ ruleset, status, setStatus, unsavedChanges, onSave }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
     const [showConfirm, setShowConfirm] = useState(false);
 
+    async function handleSave() {
+        if (!ruleset) return;
+
+        setShowConfirm(true);
+    }
+
+    async function confirmSave() {
+        setShowConfirm(false);
+
+        await save(setStatus, ruleset, onSave);
+    }
+
+    let isDisabled = !unsavedChanges || status === "saving";
+
     return (
         <div>
-            <button onClick={() => handleSave(ruleset, setShowConfirm)} disabled={status === "saving"}
+            <button onClick={handleSave} disabled={isDisabled}
                     style={{
                         ...buttonStyles.base,
-                        ...(isDark ? buttonStyles.dark : buttonStyles.light)
+                        ...(isDark ? buttonStyles.dark : buttonStyles.light),
+                        ...(isDisabled ? buttonStyles.buttonDisabled : {})
                     }}
             >
                 {status === "saving" ? "Saving…" : "Save"}
@@ -23,28 +38,19 @@ export function Save({ ruleset, status, setStatus, setMode }) {
 
             {showConfirm && (
                 <ConfirmModal message={`Are you sure you want to save changes to "${ruleset.name}"?`}
-                              onConfirm={() => confirmSave(ruleset, setShowConfirm, setStatus, setMode)}
-                              onCancel={() => setShowConfirm(false)}
-                />
+                              onConfirm={confirmSave} onCancel={() => setShowConfirm(false)} />
             )}
         </div>
     )
 }
 
-async function handleSave(ruleset, setShowConfirm) {
-    if (!ruleset) return;
-
-    setShowConfirm(true);
-}
-
-async function confirmSave(ruleset, setShowConfirm, setStatus, setMode) {
-    setShowConfirm(false);
-
+async function save(setStatus, ruleset, onSave) {
     setStatus("saving");
 
     const ok = await saveRuleset(ruleset.name, ruleset);
-    if(ok) {
-        setMode("existing");
+    if (ok) {
+        onSave(ruleset);
     }
+
     setStatus(ok ? "idle" : "error");
 }

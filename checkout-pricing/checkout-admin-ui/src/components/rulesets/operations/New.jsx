@@ -2,31 +2,26 @@ import {createNewRulesetDraft} from "../handlerFuncs";
 import {buttonStyles} from "./buttonStyles";
 import {useTheme} from "../../../ui/theme/ThemeProvider";
 
-export function New({ mode, setMode, setSelected, setRuleset, setRulesetNames, onRulesetChange }) {
+export function New({ unsavedChanges, onNew }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
     return (
-        <button disabled={mode === "new"} onClick={() => newRuleset(setMode, setSelected, setRuleset,
-            setRulesetNames, onRulesetChange)}
+        <button disabled={unsavedChanges} onClick={() => newRuleset(onNew)}
                 style={{
                     ...buttonStyles.base,
-                    ...(isDark ? styles.newButtonDark : styles.newButtonLight)
-        }}>
+                    ...(isDark ? styles.newButtonDark : styles.newButtonLight),
+                    ...(unsavedChanges ? buttonStyles.buttonDisabled : {})
+                }}>
             + New Ruleset
         </button>
     )
 }
 
-function newRuleset(setMode, setSelected, setRuleset, setRulesetNames, onRulesetChange) {
+function newRuleset(onNew) {
     const draft = createNewRulesetDraft();
 
-    setMode("new");
-    setRuleset(draft);
-
-    setRulesetNames(prev => [...prev, draft.name]);
-    setSelected(draft.name);
-    onRulesetChange(draft.name);
+    onNew(draft);
 }
 
 const styles = {
