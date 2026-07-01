@@ -1340,6 +1340,7 @@ Adding delete protection for default rulesets and price lists.
 - Making options, chosen and explanations (path data) in DP trace more homogeneous.
 - Adding unit price and applied rules to DP tracing data.
 - Fix for non-stacking rule path data.
+- Using UUID as primary key for rulesets and price lists.
 ---
 
 ## Testing

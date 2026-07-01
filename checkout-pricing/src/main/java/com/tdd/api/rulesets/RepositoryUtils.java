@@ -1,25 +1,44 @@
 package com.tdd.api.rulesets;
 
+import com.tdd.api.rulesets.data.RulesetEntry;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.util.UUID;
 
 public class RepositoryUtils {
-    public static final String LIST_RULESETS = "SELECT name FROM rulesets ORDER BY name";
-    public static final String LOAD_RULESET = "SELECT json FROM rulesets WHERE name = ?";
-    public static final String DELETE_RULESET = "DELETE FROM rulesets WHERE name = ?";
+    public static final String LIST_RULESETS = "SELECT id, name, version FROM rulesets ORDER BY name";
+
+    public static final String LOAD_RULESET = "SELECT json FROM rulesets WHERE id = ?";
+    public static final String LOAD_RULESET_ENTRY_BY_NAME = """
+            SELECT id, name
+            FROM rulesets
+            WHERE LOWER(name) = LOWER(?)
+            """;
+
+    public static final RowMapper<RulesetEntry> rulesetRowMapper = (rs, rowNum) -> new RulesetEntry(
+            UUID.fromString(rs.getString("id")),
+            rs.getString("name"),
+            rs.getString("version")
+    );
+
+    public static final String DELETE_RULESET = "DELETE FROM rulesets WHERE id = ?";
 
     private static final String POSTGRESQL = "PostgreSQL";
     private static final String H_2 = "H2";
     private static final String SAVE_RULESET_POSTGRESQL = """
-                INSERT INTO rulesets (name, version, json, updated_at, created_at)
-                VALUES (?, ?, ?, NOW(), NOW())
-                ON CONFLICT (name)
-                DO UPDATE SET version = EXCLUDED.version,
+                INSERT INTO rulesets (id, name, version, json, updated_at, created_at)
+                VALUES (?, ?, ?, ?, NOW(), NOW())
+                ON CONFLICT (id)
+                DO UPDATE SET version =
+                  name = EXCLUDED.name,
+                  EXCLUDED.version,
                   json = EXCLUDED.json,
                   updated_at = NOW()
             """;
     private static final String SAVE_RULESET_H2 = """
-                MERGE INTO rulesets KEY(name)
-                VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+                MERGE INTO rulesets KEY(id)
+                VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
             """;
 
     private RepositoryUtils() {}

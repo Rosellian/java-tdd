@@ -4,13 +4,16 @@ import com.tdd.PricingRules;
 import com.tdd.api.prices.PriceRegistry;
 import com.tdd.api.prices.data.Price;
 import com.tdd.api.prices.data.PriceList;
+import com.tdd.api.prices.data.PriceListEntry;
 import com.tdd.api.pricing.conversion.converters.ConvertedRules;
 import com.tdd.api.pricing.rest.PricingRequest;
 import com.tdd.api.rulesets.RulesetRegistry;
 import com.tdd.api.rulesets.data.Ruleset;
+import com.tdd.api.rulesets.data.RulesetEntry;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,35 +28,35 @@ public class PricingRulesBuilder {
     }
 
     public PricingRules from(PricingRequest request) {
-        String priceListName = request.priceList();
-        String rulesetName = request.ruleset();
-        PricingRules pricingRules = new PricingRules(rulesetName, priceListName);
+        RulesetEntry ruleset = request.ruleset();
+        PriceListEntry priceList = request.priceList();
+        PricingRules pricingRules = new PricingRules(ruleset.name(), priceList.name());
 
-        Map<String, Double> prices = addPrices(pricingRules, priceListName);
+        Map<String, Double> prices = addPrices(pricingRules, priceList.id());
 
         converter = new RulesConverter(prices);
 
-        addRules(pricingRules, rulesetName);
+        addRules(pricingRules, ruleset.id());
 
         return pricingRules;
     }
 
-    private Map<String, Double> addPrices(PricingRules pricingRules, String priceListName) {
-        Map<String, Double> prices = getPrices(priceListName);
+    private Map<String, Double> addPrices(PricingRules pricingRules, UUID priceListID) {
+        Map<String, Double> prices = getPrices(priceListID);
         pricingRules.setUnitPrices(prices);
 
         return prices;
     }
 
-    private Map<String, Double> getPrices(String priceListName) {
-        PriceList priceList = prices.get(priceListName);
+    private Map<String, Double> getPrices(UUID priceListID) {
+        PriceList priceList = prices.get(priceListID);
 
         return priceList.unitPrices().stream()
                 .collect(Collectors.toMap(Price::sku, Price::price));
     }
 
-    private void addRules(PricingRules pricingRules, String rulesetName) {
-        Ruleset ruleset = rulesets.get(rulesetName);
+    private void addRules(PricingRules pricingRules, UUID rulesetID) {
+        Ruleset ruleset = rulesets.get(rulesetID);
 
         ConvertedRules convertedRules = converter.convertRules(ruleset);
         addConvertedRules(pricingRules, convertedRules);

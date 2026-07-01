@@ -5,8 +5,7 @@ import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
-import static com.tdd.api.rulesets.TestUtils.DEFAULT_NAME;
-import static com.tdd.api.rulesets.TestUtils.V_2;
+import static com.tdd.api.rulesets.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -25,9 +24,10 @@ public class RepoTestUtils {
         String dbUpdateSignature = databaseType.equals(H_2) ? "merge" : "on conflict";
 
         assertTrue(sql.toLowerCase().contains(dbUpdateSignature));
-        assertEquals(DEFAULT_NAME, args.get(0));
-        assertEquals(V_2, args.get(1));
-        assertTrue(args.get(2).toString().contains(VERSION_IN_JSON));
+        assertEquals(DEFAULT_UUID, args.get(0));
+        assertEquals(DEFAULT_NAME, args.get(1));
+        assertEquals(V_2, args.get(2));
+        assertTrue(args.get(3).toString().contains(VERSION_IN_JSON));
     }
 
     public static DataAccessException createDbError() {

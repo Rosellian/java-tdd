@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
+import java.util.UUID;
 
 @Component
 public class RulesetDataLoader {
@@ -36,7 +37,7 @@ public class RulesetDataLoader {
     }
 
     private void loadSample(String name) {
-        if (repository.load(name) != null) {
+        if (repository.loadEntryByName(name) != null) {
             logger.info("Ruleset '{}' already exists. Skipping import.", name);
             return;
         }
@@ -47,8 +48,10 @@ public class RulesetDataLoader {
                 return;
             }
 
-            Ruleset ruleset = mapper.readValue(is, Ruleset.class);
-            repository.save(name, ruleset);
+            var ruleset = mapper.readValue(is, Ruleset.class);
+            var rulesetWithID = new Ruleset(UUID.randomUUID(), ruleset.name(), ruleset.version(), ruleset.rules());
+
+            repository.save(rulesetWithID);
 
             logger.info("Imported sample ruleset: {}", name);
         } catch (Exception e) {

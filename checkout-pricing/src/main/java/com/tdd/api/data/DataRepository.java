@@ -1,13 +1,16 @@
 package com.tdd.api.data;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface DataRepository<T> {
-    T load(String name);
+public interface DataRepository<T, TEntry> {
+    T load(UUID id);
 
-    void save(String name, T data);
+    TEntry loadEntryByName(String name);
 
-    void delete(String name);
+    void save(T data);
 
-    List<String> list();
+    void delete(UUID id);
+
+    List<TEntry> list();
 }

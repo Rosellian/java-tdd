@@ -4,17 +4,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
+import java.util.UUID;
 
-public interface DataController<T> {
+public interface DataController<T, TEntry> {
     @GetMapping
-    Set<String> list();
+    Set<TEntry> list();
 
-    @GetMapping("/{name}")
-    T load(@PathVariable String name);
+    @GetMapping("/{id}")
+    T load(@PathVariable UUID id);
 
-    @PostMapping("/{name}")
-    void save(@PathVariable String name, @RequestBody T data);
+    @PostMapping("/{id}")
+    void save(@PathVariable UUID id, @RequestBody T data);
 
-    @DeleteMapping("/{name}")
-    ResponseEntity<Void> delete(@PathVariable String name);
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> delete(@PathVariable UUID id);
 }

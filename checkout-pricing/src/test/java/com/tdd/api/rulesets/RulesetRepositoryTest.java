@@ -1,6 +1,7 @@
 package com.tdd.api.rulesets;
 
 import com.tdd.api.rulesets.data.Ruleset;
+import com.tdd.api.rulesets.data.RulesetEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -34,7 +35,7 @@ class RulesetRepositoryTest {
         Ruleset ruleset = createDefaultRuleset(V_1);
         dbMocker.mockLoad(ruleset);
 
-        Ruleset result = repository.load(DEFAULT_NAME);
+        Ruleset result = repository.load(DEFAULT_UUID);
 
         assertRuleset(ruleset, result);
     }
@@ -43,7 +44,7 @@ class RulesetRepositoryTest {
     void load_returnsNull_whenNoRowFound() {
         dbMocker.mockLoadDataAccessException(new EmptyResultDataAccessException(1));
 
-        Ruleset result = repository.load(MISSING);
+        Ruleset result = repository.load(MISSING_UUID);
 
         assertNull(result);
     }
@@ -52,7 +53,7 @@ class RulesetRepositoryTest {
     void load_throwsRuntimeException_whenJsonIsInvalid() {
         dbMocker.mockLoadBadJson();
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.load(BAD_JSON));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.load(MISSING_UUID));
 
         assertException("Failed to load ruleset", ex);
     }
@@ -61,9 +62,9 @@ class RulesetRepositoryTest {
     void load_throwsRuntimeException_whenJdbcFails() {
         dbMocker.mockLoadDataAccessException(createDbError());
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.load(MISSING));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.load(MISSING_UUID));
 
-        assertException("Failed to load ruleset " + MISSING, ex);
+        assertException("Failed to load ruleset with id " + MISSING_UUID, ex);
     }
 
     //save
@@ -75,9 +76,9 @@ class RulesetRepositoryTest {
         ArgumentCaptor<String> sqlCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Object> argCaptor = ArgumentCaptor.forClass(Object.class);
 
-        repository.save(DEFAULT_NAME, ruleset);
+        repository.save(ruleset);
 
-        verify(jdbc).update(sqlCaptor.capture(), argCaptor.capture(), argCaptor.capture(), argCaptor.capture());
+        verify(jdbc).update(sqlCaptor.capture(), argCaptor.capture(), argCaptor.capture(), argCaptor.capture(), argCaptor.capture());
 
         assertSave(sqlCaptor, argCaptor, H_2);
     }
@@ -90,9 +91,9 @@ class RulesetRepositoryTest {
         ArgumentCaptor<String> sqlCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Object> argCaptor = ArgumentCaptor.forClass(Object.class);
 
-        repository.save(DEFAULT_NAME, ruleset);
+        repository.save(ruleset);
 
-        verify(jdbc).update(sqlCaptor.capture(), argCaptor.capture(), argCaptor.capture(), argCaptor.capture());
+        verify(jdbc).update(sqlCaptor.capture(), argCaptor.capture(), argCaptor.capture(), argCaptor.capture(), argCaptor.capture());
 
         assertSave(sqlCaptor, argCaptor, POSTGRES_SQL_16);
     }
@@ -102,9 +103,9 @@ class RulesetRepositoryTest {
         Ruleset ruleset = createDefaultRuleset(V_1);
         simulateJsonError();
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(DEFAULT_NAME, ruleset));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(ruleset));
 
-        assertException("Failed to save ruleset " + ruleset.name(), ex);
+        assertException("Failed to save ruleset with id " + ruleset.id(), ex);
     }
 
     @Test
@@ -112,9 +113,9 @@ class RulesetRepositoryTest {
         Ruleset ruleset = createDefaultRuleset(V_1);
         dbMocker.mockSaveDataAccessException();
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(DEFAULT_NAME, ruleset));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(ruleset));
 
-        assertException("Failed to save ruleset " + ruleset.name(), ex);
+        assertException("Failed to save ruleset with id " + ruleset.id(), ex);
     }
 
     //delete
@@ -123,12 +124,12 @@ class RulesetRepositoryTest {
         ArgumentCaptor<String> sql = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Object> arg = ArgumentCaptor.forClass(Object.class);
 
-        repository.delete(DEFAULT_NAME);
+        repository.delete(DEFAULT_UUID);
 
         verify(jdbc).update(sql.capture(), arg.capture());
 
         assertEquals(DELETE_RULESET, sql.getValue());
-        assertEquals(DEFAULT_NAME, arg.getValue());
+        assertEquals(DEFAULT_UUID, arg.getValue());
     }
 
     //list
@@ -136,10 +137,10 @@ class RulesetRepositoryTest {
     void list_returnsNames() {
         dbMocker.mockList();
 
-        List<String> result = repository.list();
+        List<RulesetEntry> result = repository.list();
 
         assertEquals(2, result.size());
-        assertEquals(DEFAULT_NAME, result.getFirst());
+        assertEquals(DEFAULT_ENTRY, result.getFirst());
     }
 
     @Test
@@ -156,6 +157,6 @@ class RulesetRepositoryTest {
 
         doThrow(new RuntimeException("JSON error"))
                 .when(repo)
-                .save(eq(DEFAULT_NAME), any());
+                .save(any());
     }
 }

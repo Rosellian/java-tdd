@@ -13,8 +13,7 @@ import java.util.List;
 
 import static com.tdd.api.rulesets.RepoTestUtils.*;
 import static com.tdd.api.rulesets.RepoTestUtils.createDbError;
-import static com.tdd.api.rulesets.RepositoryUtils.LIST_RULESETS;
-import static com.tdd.api.rulesets.RepositoryUtils.LOAD_RULESET;
+import static com.tdd.api.rulesets.RepositoryUtils.*;
 import static com.tdd.api.rulesets.TestUtils.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -28,18 +27,18 @@ public class DbMocker {
     public DbMocker(JdbcTemplate jdbc) {this.jdbc = jdbc;}
 
     public void mockList() {
-        when(jdbc.queryForList(LIST_RULESETS, String.class))
-                .thenReturn(List.of(DEFAULT_NAME, CAMPAIGN_A_NAME));
+        when(jdbc.query(LIST_RULESETS, rulesetRowMapper))
+                .thenReturn(List.of(DEFAULT_ENTRY, CAMPAIGN_A_ENTRY));
     }
 
     public void mockListDataAccessException() {
-        when(jdbc.queryForList(LIST_RULESETS, String.class))
+        when(jdbc.query(LIST_RULESETS, rulesetRowMapper))
                 .thenThrow(createDbError());
     }
 
     public void mockLoad(Ruleset ruleset) {
         String json = mapper.writeValueAsString(ruleset);
-        when(jdbc.queryForObject(LOAD_RULESET, String.class, DEFAULT_NAME))
+        when(jdbc.queryForObject(LOAD_RULESET, String.class, DEFAULT_UUID))
                 .thenReturn(json);
     }
 
@@ -49,7 +48,7 @@ public class DbMocker {
     }
 
     public void mockLoadDataAccessException(DataAccessException e) {
-        when(jdbc.queryForObject(LOAD_RULESET, String.class, MISSING))
+        when(jdbc.queryForObject(LOAD_RULESET, String.class, MISSING_UUID))
                 .thenThrow(e);
     }
 

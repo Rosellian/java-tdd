@@ -11,6 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 @Component
 public class PriceDataLoader {
@@ -26,7 +27,7 @@ public class PriceDataLoader {
     public void run() {
         String name = "Default";
 
-        if(repository.load(name) != null) {
+        if(repository.loadEntryByName(name) != null) {
             logger.info("Price list '{}' already exists. Skipping import.", name);
             return;
         }
@@ -36,9 +37,9 @@ public class PriceDataLoader {
         var prices = Arrays.stream(SKUs.values())
                 .map(sku -> new Price(sku.name(), sku.unitPrice))
                 .toList();
-        var priceList = new PriceList(name, "v1", prices);
+        var priceList = new PriceList(UUID.randomUUID(), name, "v1", prices);
 
-        repository.save(name, priceList);
+        repository.save(priceList);
 
         logger.info("Imported default price list with SKUs A–E.");
     }

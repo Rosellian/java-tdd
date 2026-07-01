@@ -1,11 +1,9 @@
 package com.tdd.api.prices.data;
 
-import java.util.List;
 import java.util.UUID;
 
-public record PriceList(
+public record PriceListEntry(
         UUID id,
         String name,
-        String version,
-        List<Price> unitPrices
+        String version
 ) {}

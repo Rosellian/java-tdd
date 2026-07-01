@@ -2,6 +2,7 @@ package com.tdd.api.prices;
 
 import com.tdd.api.prices.data.Price;
 import com.tdd.api.prices.data.PriceList;
+import com.tdd.api.prices.data.PriceListEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,50 +29,50 @@ class PriceRegistryTest {
 
     @Test
     void init_loadsAllPriceListsIntoCache() {
-        Set<String> names = registry.listNames();
+        Set<PriceListEntry> entries = registry.list();
 
-        assertList(names);
+        assertList(entries);
 
         verifyListAndLoad();
     }
 
     @Test
     void get_returnsCachedPriceList() {
-        PriceList pl = registry.get(DEFAULT_NAME);
+        PriceList pl = registry.get(DEFAULT_UUID);
 
         assertPriceList(DEFAULT_LIST_1, pl);
     }
 
     @Test
     void get_returnsNull_whenNotInCache() {
-        assertNull(registry.get(MISSING));
+        assertNull(registry.get(MISSING_UUID));
     }
 
     @Test
     void save_updatesCache_andDelegatesToRepository() {
         PriceList newList = createNewList();
 
-        registry.save(NEW_LIST_NAME, newList);
+        registry.save(newList);
 
-        verify(repository).save(NEW_LIST_NAME, newList);
+        verify(repository).save(newList);
 
-        assertEquals(newList, registry.get(NEW_LIST_NAME));
+        assertEquals(newList, registry.get(NEW_LIST_UUID));
     }
 
     @Test
     void delete_removesFromCacheAndDelegatesToRepository() {
-        registry.delete(DEFAULT_NAME);
+        registry.delete(DEFAULT_UUID);
 
-        verify(repository).delete(DEFAULT_NAME);
+        verify(repository).delete(DEFAULT_UUID);
 
         assertCacheDelete();
     }
 
     @Test
     void listNames_returnsAllCachedNames() {
-        Set<String> names = registry.listNames();
+        Set<PriceListEntry> entries = registry.list();
 
-        assertEquals(Set.of(DEFAULT_NAME, PRICE_LIST_A_NAME), names);
+        assertEquals(EXPECTED_ENTRIES, entries);
     }
 
     @Test
@@ -84,35 +85,36 @@ class PriceRegistryTest {
     }
 
     private void mockRepoListAndLoad() {
-        when(repository.list()).thenReturn(List.of(DEFAULT_NAME, PRICE_LIST_A_NAME));
+        when(repository.list()).thenReturn(List.of(DEFAULT_ENTRY, PRICE_LIST_A_ENTRY));
 
-        PriceList listA = createPriceList(PRICE_LIST_A_NAME, V_2, List.of(new Price("B", 40)));
+        PriceList listA = createPriceList(PRICE_LIST_A_UUID, PRICE_LIST_A_NAME, V_2,
+                List.of(new Price("B", 40)));
 
-        when(repository.load(DEFAULT_NAME)).thenReturn(DEFAULT_LIST_1);
-        when(repository.load(PRICE_LIST_A_NAME)).thenReturn(listA);
+        when(repository.load(DEFAULT_UUID)).thenReturn(DEFAULT_LIST_1);
+        when(repository.load(PRICE_LIST_A_UUID)).thenReturn(listA);
     }
 
     private void verifyListAndLoad() {
         verify(repository).list();
-        verify(repository).load(DEFAULT_NAME);
-        verify(repository).load(PRICE_LIST_A_NAME);
+        verify(repository).load(DEFAULT_UUID);
+        verify(repository).load(PRICE_LIST_A_UUID);
     }
 
-    private void assertList(Set<String> names) {
-        assertEquals(Set.of(DEFAULT_NAME, PRICE_LIST_A_NAME), names);
-        assertNotNull(registry.get(DEFAULT_NAME));
-        assertNotNull(registry.get(PRICE_LIST_A_NAME));
+    private void assertList(Set<PriceListEntry> entries) {
+        assertEquals(EXPECTED_ENTRIES, entries);
+        assertNotNull(registry.get(DEFAULT_UUID));
+        assertNotNull(registry.get(PRICE_LIST_A_UUID));
     }
 
     private void assertLoadAll() {
-        assertEquals(2, registry.listNames().size());
-        assertTrue(registry.listNames().contains(DEFAULT_NAME));
-        assertTrue(registry.listNames().contains(PRICE_LIST_A_NAME));
+        assertEquals(2, registry.list().size());
+        assertTrue(registry.list().contains(DEFAULT_ENTRY));
+        assertTrue(registry.list().contains(PRICE_LIST_A_ENTRY));
     }
 
     private void assertCacheDelete() {
-        assertEquals(1, registry.listNames().size());
-        assertFalse(registry.listNames().contains(DEFAULT_NAME));
-        assertTrue(registry.listNames().contains(PRICE_LIST_A_NAME));
+        assertEquals(1, registry.list().size());
+        assertFalse(registry.list().contains(DEFAULT_ENTRY));
+        assertTrue(registry.list().contains(PRICE_LIST_A_ENTRY));
     }
 }

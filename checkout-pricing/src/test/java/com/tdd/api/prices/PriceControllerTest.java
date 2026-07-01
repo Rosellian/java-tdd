@@ -1,6 +1,7 @@
 package com.tdd.api.prices;
 
 import com.tdd.api.prices.data.PriceList;
+import com.tdd.api.prices.data.PriceListEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class PriceControllerTest {
+
     private PriceRegistry registry;
     private PriceController controller;
 
@@ -24,23 +26,23 @@ class PriceControllerTest {
 
     @Test
     void list_returnsAllPriceListNames() {
-        mockListNames();
+        mockListEntries();
 
-        Set<String> result = controller.list();
+        Set<PriceListEntry> result = controller.list();
 
-        verify(registry).listNames();
-        assertEquals(Set.of(DEFAULT_NAME, PRICE_LIST_A_NAME), result);
+        verify(registry).list();
+        assertEquals(EXPECTED_ENTRIES, result);
     }
 
     @Test
     void load_returnsPriceList_whenExists() {
         PriceList pl = DEFAULT_LIST_1;
 
-        when(registry.get(DEFAULT_NAME)).thenReturn(pl);
+        when(registry.get(DEFAULT_UUID)).thenReturn(pl);
 
-        PriceList result = controller.load(DEFAULT_NAME);
+        PriceList result = controller.load(DEFAULT_UUID);
 
-        verify(registry).get(DEFAULT_NAME);
+        verify(registry).get(DEFAULT_UUID);
 
         assertPriceList(pl, result);
     }
@@ -49,9 +51,9 @@ class PriceControllerTest {
     void load_returnsNull_whenNotFound() {
         mockGetNull();
 
-        PriceList result = controller.load(MISSING);
+        PriceList result = controller.load(MISSING_UUID);
 
-        verify(registry).get(MISSING);
+        verify(registry).get(MISSING_UUID);
         assertNull(result);
     }
 
@@ -59,34 +61,37 @@ class PriceControllerTest {
     void save_delegatesToRegistry() {
         PriceList pl = createNewList();
 
-        controller.save(NEW_LIST_NAME, pl);
+        controller.save(NEW_LIST_UUID, pl);
 
-        verify(registry).save(NEW_LIST_NAME, pl);
+        verify(registry).save(pl);
     }
 
     @Test
     void delete_callsRegistryAndReturns204() {
-        ResponseEntity<Void> response = controller.delete(PRICE_LIST_A_NAME);
+        PriceList priceList = createPriceList(PRICE_LIST_A_UUID, PRICE_LIST_A_NAME, V_2, createDefaultPrices());
+        when(registry.get(PRICE_LIST_A_UUID)).thenReturn(priceList);
 
-        verify(registry).delete(PRICE_LIST_A_NAME);
+        ResponseEntity<Void> response = controller.delete(PRICE_LIST_A_UUID);
+
+        verify(registry).delete(PRICE_LIST_A_UUID);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
     @Test
     void deleteDefault_Returns403Forbidden() {
-        ResponseEntity<Void> response = controller.delete(DEFAULT_NAME);
+        when(registry.get(DEFAULT_UUID)).thenReturn(DEFAULT_LIST_1);
 
-        verifyNoInteractions(registry);
+        ResponseEntity<Void> response = controller.delete(DEFAULT_UUID);
 
         assertEquals(403, response.getStatusCode().value());
     }
 
-    private void mockListNames() {
-        when(registry.listNames()).thenReturn(Set.of(DEFAULT_NAME, PRICE_LIST_A_NAME));
+    private void mockListEntries() {
+        when(registry.list()).thenReturn(EXPECTED_ENTRIES);
     }
 
     private void mockGetNull() {
-        when(registry.get(MISSING)).thenReturn(null);
+        when(registry.get(MISSING_UUID)).thenReturn(null);
     }
 }

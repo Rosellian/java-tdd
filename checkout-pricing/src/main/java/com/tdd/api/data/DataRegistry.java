@@ -1,15 +1,16 @@
 package com.tdd.api.data;
 
 import java.util.Set;
+import java.util.UUID;
 
-public interface DataRegistry<T> {
-    T get(String name);
+public interface DataRegistry<T, TEntry> {
+    T get(UUID id);
 
-    void save(String name, T data);
+    void save(T data);
 
-    void delete(String name);
+    void delete(UUID id);
 
-    Set<String> listNames();
+    Set<TEntry> list();
 
     void loadAll();
 }

@@ -2,6 +2,7 @@ package com.tdd.api.rulesets;
 
 import com.tdd.api.data.DataController;
 import com.tdd.api.rulesets.data.Ruleset;
+import com.tdd.api.rulesets.data.RulesetEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -9,12 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/rulesets", produces = "application/json; charset=utf-8")
-public class RulesetController implements DataController<Ruleset> {
+public class RulesetController implements DataController<Ruleset, RulesetEntry> {
     private static final Set<String> PROTECTED = Set.of(
-            "default", "campaigna", "campaignb", "nocrossnoskudiscount"
+            "default", "campaigna", "campaignb", "nocrossnosku-discount"
     );
     private static final Logger logger = LoggerFactory.getLogger(RulesetController.class);
     private final RulesetRegistry registry;
@@ -24,40 +26,47 @@ public class RulesetController implements DataController<Ruleset> {
     }
 
     @Override
-    public Set<String> list() {
+    public Set<RulesetEntry> list() {
         logger.info("Incoming request for list of rulesets");
-        Set<String> rulesets = registry.listNames();
+        Set<RulesetEntry> rulesets = registry.list();
         logger.info("Returning available rulesets {}", rulesets);
 
         return rulesets;
     }
 
     @Override
-    public Ruleset load(String name) {
-        logger.info("Incoming request for ruleset {}", name);
-        Ruleset ruleset = registry.get(name);
+    public Ruleset load(UUID id) {
+        logger.info("Incoming request for ruleset with id {}", id);
+        Ruleset ruleset = registry.get(id);
         logger.info("Response {}", ruleset);
 
         return ruleset;
     }
 
     @Override
-    public void save(String name, Ruleset ruleset) {
-        logger.info("Incoming request to save ruleset {}: {}", name, ruleset);
-        registry.save(name, ruleset);
+    public void save(UUID id, Ruleset ruleset) {
+        logger.info("Incoming request to save ruleset {}: {}", id, ruleset);
+        registry.save(ruleset);
     }
 
     @Override
-    public ResponseEntity<Void> delete(String name) {
-        logger.info("Incoming request to delete ruleset {}", name);
+    public ResponseEntity<Void> delete(UUID id) {
+        logger.info("Incoming request to delete ruleset with id {}", id);
 
-        String normalizedName = name.replace(" ", "").toLowerCase();
-        if(PROTECTED.contains(normalizedName)) {
+        if(isProtected(id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        registry.delete(name);
+        registry.delete(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    private boolean isProtected(UUID id) {
+        Ruleset ruleset = registry.get(id);
+
+        String normalizedName = ruleset.name().replace(" ", "").toLowerCase();
+
+        return PROTECTED.contains(normalizedName);
     }
 }

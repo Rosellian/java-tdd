@@ -2,6 +2,7 @@ package com.tdd.api.prices;
 
 import com.tdd.api.prices.data.Price;
 import com.tdd.api.prices.data.PriceList;
+import com.tdd.api.prices.data.PriceListEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -31,7 +32,7 @@ class PriceRepositoryTest {
     void load_returnsNull_whenNoPriceListFound() {
         dbMocker.mockLoadList(List.of());
 
-        PriceList result = repository.load(DEFAULT_NAME);
+        PriceList result = repository.load(DEFAULT_UUID);
 
         assertNull(result);
     }
@@ -41,7 +42,7 @@ class PriceRepositoryTest {
         dbMocker.mockDefaultPriceList();
         dbMocker.mockLoadPrices();
 
-        PriceList result = repository.load(DEFAULT_NAME);
+        PriceList result = repository.load(DEFAULT_UUID);
 
         assertPriceList(createDefaultPriceList(), result);
     }
@@ -50,7 +51,7 @@ class PriceRepositoryTest {
     void load_throwsRuntimeException_whenJdbcFailsOnPriceList() {
         dbMocker.mockLoadListException();
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.load(DEFAULT_NAME));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.load(DEFAULT_UUID));
 
         assertException("Failed to load price list", ex);
     }
@@ -60,7 +61,7 @@ class PriceRepositoryTest {
         dbMocker.mockDefaultPriceList();
         dbMocker.mockLoadPricesException();
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.load(DEFAULT_NAME));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.load(DEFAULT_UUID));
 
         assertException("Failed to load price list", ex);
     }
@@ -70,7 +71,7 @@ class PriceRepositoryTest {
     void save_updatesPriceList_andReplacesPrices() {
         PriceList pl = createDefaultPriceList();
 
-        repository.save(DEFAULT_NAME, pl);
+        repository.save(pl);
 
         verifyDefaultPriceList();
     }
@@ -81,9 +82,9 @@ class PriceRepositoryTest {
 
         dbMocker.mockSaveListException();
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(DEFAULT_NAME, pl));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(pl));
 
-        assertException("Failed to save price list " + DEFAULT_NAME, ex);
+        assertException("Failed to save price list with id " + DEFAULT_UUID, ex);
     }
 
     @Test
@@ -92,9 +93,9 @@ class PriceRepositoryTest {
 
         dbMocker.mockDeletePricesException();
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(DEFAULT_NAME, pl));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(pl));
 
-        assertException("Failed to save price list " + DEFAULT_NAME, ex);
+        assertException("Failed to save price list with id " + DEFAULT_UUID, ex);
     }
 
     @Test
@@ -103,9 +104,9 @@ class PriceRepositoryTest {
 
         dbMocker.mockSavePriceException();
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(DEFAULT_NAME, pl));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> repository.save(pl));
 
-        assertException("Failed to save price list " + DEFAULT_NAME, ex);
+        assertException("Failed to save price list with id " + DEFAULT_UUID, ex);
     }
 
     //delete
@@ -114,12 +115,12 @@ class PriceRepositoryTest {
         ArgumentCaptor<String> sql = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Object> arg = ArgumentCaptor.forClass(Object.class);
 
-        repository.delete(DEFAULT_NAME);
+        repository.delete(DEFAULT_UUID);
 
         verify(jdbc).update(sql.capture(), arg.capture());
 
         assertEquals(DELETE_PRICE_LIST, sql.getValue());
-        assertEquals(DEFAULT_NAME, arg.getValue());
+        assertEquals(DEFAULT_UUID, arg.getValue());
     }
 
     //list
@@ -127,9 +128,9 @@ class PriceRepositoryTest {
     void list_returnsAllPriceListNames() {
         dbMocker.mockList();
 
-        List<String> result = repository.list();
+        List<PriceListEntry> result = repository.list();
 
-        assertPriceListNames(result);
+        assertPriceListEntries(result);
     }
 
     @Test
@@ -142,10 +143,10 @@ class PriceRepositoryTest {
     }
 
     private void verifyDefaultPriceList() {
-        verify(jdbc).update(SAVE_PRICE_LIST, DEFAULT_NAME, V_1);
-        verify(jdbc).update(DELETE_PRICES_FOR_LIST, DEFAULT_NAME);
+        verify(jdbc).update(SAVE_PRICE_LIST, DEFAULT_UUID, DEFAULT_NAME, V_1);
+        verify(jdbc).update(DELETE_PRICES_FOR_LIST, DEFAULT_UUID);
 
-        verify(jdbc).update(SAVE_PRICE, DEFAULT_NAME, "A", 50.0);
-        verify(jdbc).update(SAVE_PRICE, DEFAULT_NAME, "B", 40.0);
+        verify(jdbc).update(SAVE_PRICE, DEFAULT_UUID, "A", 50.0);
+        verify(jdbc).update(SAVE_PRICE, DEFAULT_UUID, "B", 40.0);
     }
 }
