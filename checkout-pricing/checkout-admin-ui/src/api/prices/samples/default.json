@@ -1,5 +1,5 @@
 {
-  "name": "Default",
+  "name": "default",
   "version": "v1",
   "unitPrices": [
     {"sku": "A", "price": 50},
