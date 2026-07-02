@@ -770,6 +770,8 @@ Two versions are created as prototypes:
   - Discard changes modal
   - Dropdown unsaved badge
   - Changes diff view
+- Adjust to using UUID for rulesets and price lists
+  - selected and rulesetNames to entries instead of just name
 
 ### Current structure
 ```

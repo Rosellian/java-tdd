@@ -47,7 +47,7 @@ export function Save({ ruleset, status, setStatus, unsavedChanges, onSave }) {
 async function save(setStatus, ruleset, onSave) {
     setStatus("saving");
 
-    const ok = await saveRuleset(ruleset.name, ruleset);
+    const ok = await saveRuleset(ruleset);
     if (ok) {
         onSave(ruleset);
     }

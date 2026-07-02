@@ -1,25 +1,34 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
-export function RulesetDropdown({ value, onChange, names, isDraft }) {
+export function RulesetDropdown({ value, onChange, entries, isDraft }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
     let label = "RulesetSelection";
 
     return (
-        <select title={label} name={label} value={value}
-                onChange={(e) => onChange(e.target.value)}
+        <select title={label} name={label} value={value?.id ?? ""}
+                onChange={(e) => handleChange(e.target.value, entries, onChange)}
                 style={{
                     ...styles.select,
                     ...(isDark ? styles.selectDark : styles.selectLight)
         }}>
-            {names.map(name => (
-                <option key={name} value={name}>
-                    {isDraft && name === value ? `${name} (unsaved)` : name}
-                </option>
-            ))}
+            {entries.map(entry => {
+                let id = entry.id;
+                let name = entry.name;
+                return (
+                    <option key={id} value={id}>
+                        {isDraft && id === value.id ? `${name} (unsaved)` : name}
+                    </option>
+                )
+            })}
         </select>
     )
+}
+
+function handleChange(id, entries, onChange) {
+    let entry = entries.find(e => e.id === id);
+    onChange(entry);
 }
 
 const styles = {

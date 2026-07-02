@@ -36,7 +36,7 @@ export function Load({ status, setStatus, disabledExp, selected, onLoad }) {
             </button>
 
             {showConfirm && (
-                <ConfirmModal message={`Load ruleset "${selected}"?`} onConfirm={confirmLoad}
+                <ConfirmModal message={`Load ruleset "${selected.name}"?`} onConfirm={confirmLoad}
                               onCancel={() => setShowConfirm(false)} />
             )}
         </div>

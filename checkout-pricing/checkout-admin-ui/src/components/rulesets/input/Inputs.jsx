@@ -3,20 +3,20 @@ import {TextInput} from "../ruleseteditor/ruleform/templates/FormFields";
 import {RulesetSelector} from "./selector/RulesetSelector";
 import {DiscardChangesModal} from "./DiscardChangesModal";
 
-export function Inputs({ ruleset, rulesetNames, unsavedChanges, isDraft, selected,
+export function Inputs({ ruleset, rulesetEntries, unsavedChanges, isDraft, selected,
                        setSelected, onDiscardConfirm, triggerUpdateRulesetName }) {
     const [showDiscardModal, setShowDiscardModal] = useState(false);
     const [pendingSelection, setPendingSelection] = useState(null);
 
-    function onSelect(value) {
+    function onSelect(pending) {
         if (unsavedChanges) {
-            setPendingSelection(value);
+            setPendingSelection(pending);
             setShowDiscardModal(true);
 
             return;
         }
 
-        setSelected(value);
+        setSelected(pending);
     }
 
     function onConfirm() {
@@ -29,7 +29,7 @@ export function Inputs({ ruleset, rulesetNames, unsavedChanges, isDraft, selecte
 
     return (
         <div style={styles.inputs}>
-            <RulesetSelector value={selected} onChange={onSelect} names={rulesetNames} isDraft={isDraft} />
+            <RulesetSelector value={selected} onChange={onSelect} entries={rulesetEntries} isDraft={isDraft} />
 
             {showDiscardModal && (
                 <DiscardChangesModal onConfirm={onConfirm} onCancel={() => setShowDiscardModal(false)} />

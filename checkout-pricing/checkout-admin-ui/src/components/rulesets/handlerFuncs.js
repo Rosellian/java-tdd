@@ -1,12 +1,17 @@
-import {getRulesetNames} from "../../api/rulesets/rulesets";
+import {getRulesetEntries} from "../../api/rulesets/rulesets";
 import {getRulesetWithFallback} from "../../api/rulesets/rulesetsFallback";
 
-export const DEFAULT_RULESETS = ["default", "campaignA", "campaignB", "noCrossNoSkuDiscount"];
+export const DEFAULT_RULESETS = [
+    {id: crypto.randomUUID(), name: "default", version: "v1"},
+    {id: crypto.randomUUID(), name: "campaignA", version: "v1"},
+    {id: crypto.randomUUID(), name: "campaignB", version: "v1"},
+    {id: crypto.randomUUID(), name: "noCrossNoSkuDiscount", version: "v1"}];
 
 export function createNewRulesetDraft() {
     return {
+        id: crypto.randomUUID(),
         name: "NewRuleset",
-        version: 1,
+        version: "v1",
         rules: [
             {
                 type: "SpecialPrice",
@@ -21,10 +26,18 @@ export function createNewRulesetDraft() {
     };
 }
 
-export function initRulesets(setRulesetNames, setFallbackUsed, setStatus, initRuleset) {
-    getRulesetNames().then(
+export function createEntry(ruleset) {
+    return {
+        id: ruleset.id,
+        name: ruleset.name,
+        version: ruleset.version
+    };
+}
+
+export function initRulesets(setRulesetEntries, setFallbackUsed, setStatus, initRuleset) {
+    getRulesetEntries().then(
         list => {
-            let first = loadRulesetNames(list, setRulesetNames, setFallbackUsed);
+            let first = loadRulesetEntries(list, setRulesetEntries, setFallbackUsed);
 
             setStatus("loading");
 
@@ -35,13 +48,13 @@ export function initRulesets(setRulesetNames, setFallbackUsed, setStatus, initRu
         });
 }
 
-export function loadRulesetNames(list, setRulesetNames, setFallbackUsed) {
-    let names = list ?? DEFAULT_RULESETS;
+export function loadRulesetEntries(list, setRulesetEntries, setFallbackUsed) {
+    let entries = list ?? DEFAULT_RULESETS;
 
-    setRulesetNames(names);
+    setRulesetEntries(entries);
     setFallbackUsed(!list);
 
-    return names[0];
+    return entries[0];
 }
 
 function loadRuleset(ruleset, fallback, setStatus, initRuleset) {
@@ -57,21 +70,25 @@ function loadRuleset(ruleset, fallback, setStatus, initRuleset) {
     initRuleset(ruleset, fallback);
 }
 
-export function updateRulesetName(ruleset, newName, setRulesetNames) {
+export function updateRulesetName(ruleset, newName, setRulesetEntries) {
     if (!ruleset) return;
 
     let updated = {...ruleset, name: newName};
 
-    setRulesetNames(prev => prev.map(n => (n === ruleset.name ? newName : n)));
+    setRulesetEntries(prev => prev.map(
+        entry => (entry.id === ruleset.id ?
+            {...entry, name: newName}
+            : entry)
+    ));
 
     return updated;
 }
 
 export function updateRuleset(ruleset, setRuleset, setSelected, onRulesetChange) {
     setRuleset(ruleset);
-    let name = ruleset.name;
-    setSelected(name);
-    onRulesetChange(name);
+    let entry = createEntry(ruleset);
+    setSelected(entry);
+    onRulesetChange(entry);
 }
 
 export function setLoadedRuleset(setOriginalRuleset, ruleset, setFallbackUsed, fallback) {

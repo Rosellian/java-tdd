@@ -3,7 +3,7 @@ import {useTheme} from "../../ui/theme/ThemeProvider";
 import {RulesetEditor} from "./ruleseteditor/RulesetEditor";
 import {ButtonPanel} from "./operations/ButtonPanel";
 import {handlerStyles} from "./handlerStyles";
-import {initRulesets, setChanges, setLoadedRuleset, updateChanges, updateRuleset, updateRulesetName}
+import {createEntry, initRulesets, setChanges, setLoadedRuleset, updateChanges, updateRuleset, updateRulesetName}
     from "./handlerFuncs";
 import {StatusBar} from "./status/StatusBar";
 import {Inputs} from "./input/Inputs";
@@ -12,10 +12,10 @@ export function RulesetHandler({ onRulesetChange }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
-    const [rulesetNames, setRulesetNames] = useState([]);
+    const [rulesetEntries, setRulesetEntries] = useState([]);
     const [ruleset, setRuleset] = useState(null);
 
-    const [selected, setSelected] = useState("default");
+    const [selected, setSelected] = useState(null);
     const [originalRuleset, setOriginalRuleset] = useState(null);
     const [isDraft, setIsDraft] = useState(false);
     const [unsavedChanges, setUnsavedChanges] = useState(false);
@@ -24,7 +24,7 @@ export function RulesetHandler({ onRulesetChange }) {
     const [status, setStatus] = useState("idle"); // idle, saving, loading, deleting, error
 
     useEffect(() => {
-        initRulesets(setRulesetNames, setFallbackUsed, setStatus, initRuleset)
+        initRulesets(setRulesetEntries, setFallbackUsed, setStatus, initRuleset)
     }, []);
 
     function initRuleset(ruleset, fallback) {
@@ -34,13 +34,13 @@ export function RulesetHandler({ onRulesetChange }) {
     }
 
     function onDiscardConfirm() {
-        if(isDraft) setRulesetNames(prev => prev.filter(n => n !== selected));
+        if(isDraft) setRulesetEntries(prev => prev.filter(entry => entry.id !== selected.id));
         setRuleset(null);
         setChanges(setIsDraft, setUnsavedChanges);
     }
 
     function triggerUpdateRulesetName(newName) {
-        let updatedRuleset = updateRulesetName(ruleset, newName, setRulesetNames);
+        let updatedRuleset = updateRulesetName(ruleset, newName, setRulesetEntries);
         updateChanges(originalRuleset, updatedRuleset, setUnsavedChanges);
         updateRuleset(updatedRuleset, setRuleset, setSelected, onRulesetChange);
     }
@@ -55,8 +55,8 @@ export function RulesetHandler({ onRulesetChange }) {
         setChanges(setIsDraft, setUnsavedChanges);
     }
 
-    function onDelete(toSelected, updatedNames) {
-        setRulesetNames(updatedNames);
+    function onDelete(toSelected, updatedEntries) {
+        setRulesetEntries(updatedEntries);
         setRuleset(null);
         setSelected(toSelected);
         setChanges(setIsDraft, setUnsavedChanges);
@@ -64,7 +64,7 @@ export function RulesetHandler({ onRulesetChange }) {
 
     function onNew(draft) {
         updateRuleset(draft, setRuleset, setSelected, onRulesetChange);
-        setRulesetNames(prev => [...prev, draft.name]);
+        setRulesetEntries(prev => [...prev, createEntry(draft)]);
         setChanges(setIsDraft, setUnsavedChanges, true);
     }
 
@@ -79,12 +79,12 @@ export function RulesetHandler({ onRulesetChange }) {
             ...(isDark ? handlerStyles.wrapperDark : handlerStyles.wrapperLight)
         }}>
             <div style={handlerStyles.handler}>
-                <Inputs ruleset={ruleset} rulesetNames={rulesetNames} unsavedChanges={unsavedChanges} isDraft={isDraft}
-                        selected={selected} setSelected={setSelected} onDiscardConfirm={onDiscardConfirm}
-                        triggerUpdateRulesetName={triggerUpdateRulesetName} />
+                <Inputs ruleset={ruleset} rulesetEntries={rulesetEntries} unsavedChanges={unsavedChanges}
+                        isDraft={isDraft} selected={selected} setSelected={setSelected}
+                        onDiscardConfirm={onDiscardConfirm} triggerUpdateRulesetName={triggerUpdateRulesetName} />
 
                 <ButtonPanel status={status} setStatus={setStatus} selected={selected} isDraft={isDraft}
-                             unsavedChanges={unsavedChanges} ruleset={ruleset} rulesetNames={rulesetNames}
+                             unsavedChanges={unsavedChanges} ruleset={ruleset} rulesetEntries={rulesetEntries}
                              onLoad={onLoad} onSave={onSave} onDelete={onDelete} onNew={onNew} />
             </div>
 

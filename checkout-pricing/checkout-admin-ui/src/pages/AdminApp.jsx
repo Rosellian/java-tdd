@@ -17,8 +17,8 @@ export default function AdminApp() {
     let isDark = theme === "dark";
 
     const [cart, setCart] = useState({});
-    const [ruleset, setRuleset] = useState("default");
-    const [priceList, setPriceList] = useState("default");
+    const [ruleset, setRuleset] = useState(null);
+    const [priceList, setPriceList] = useState(null);
 
     const [customer, setCustomer] = useState(examplePrivateCustomer);
     const [originalCustomer] = useState(examplePrivateCustomer);

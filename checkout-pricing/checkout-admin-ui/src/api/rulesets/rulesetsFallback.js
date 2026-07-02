@@ -1,10 +1,10 @@
 import {getRuleset} from "./rulesets";
 
-export async function getRulesetWithFallback(name) {
-    const ruleset = await getRuleset(name);
+export async function getRulesetWithFallback(entry) {
+    const ruleset = await getRuleset(entry.id);
 
     if(!ruleset) {
-        return {ruleset: await importRuleset(name), fallback: true};
+        return {ruleset: await importRuleset(entry.name), fallback: true};
     }
 
     return {ruleset: ruleset, fallback: false};

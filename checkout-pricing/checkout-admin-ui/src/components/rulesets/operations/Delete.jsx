@@ -5,7 +5,7 @@ import {buttonStyles} from "./buttonStyles";
 import {deleteRuleset} from "../../../api/rulesets/rulesets";
 import {ConfirmModal} from "../../../ui/ConfirmModal";
 
-export function Delete({ ruleset, rulesetNames, status, setStatus, isDraft, disabledExp, onDelete }) {
+export function Delete({ ruleset, rulesetEntries, status, setStatus, isDraft, disabledExp, onDelete }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -26,11 +26,11 @@ export function Delete({ ruleset, rulesetNames, status, setStatus, isDraft, disa
         setShowConfirm(false);
 
         if (isDraft) {
-            deleteDraft(rulesetNames, ruleset, onDelete, setStatus);
+            deleteDraft(rulesetEntries, ruleset, onDelete, setStatus);
             return;
         }
 
-        await deleteList(setStatus, ruleset, rulesetNames, onDelete);
+        await deleteList(setStatus, ruleset, rulesetEntries, onDelete);
     }
 
     return (
@@ -53,28 +53,28 @@ export function Delete({ ruleset, rulesetNames, status, setStatus, isDraft, disa
     )
 }
 
-function deleteDraft(rulesetNames, ruleset, onDelete, setStatus) {
-    let namesWithCurrentRemoved = removeList(rulesetNames, ruleset);
-    onDelete(null, namesWithCurrentRemoved);
+function deleteDraft(rulesetEntries, ruleset, onDelete, setStatus) {
+    let updatedEntries = removeEntry(rulesetEntries, ruleset);
+    onDelete(null, updatedEntries);
     setStatus("idle");
 }
 
-async function deleteList(setStatus, ruleset, rulesetNames, onDelete) {
+async function deleteList(setStatus, ruleset, rulesetEntries, onDelete) {
     setStatus("deleting");
 
     const ok = await deleteRuleset(ruleset.name);
     if (ok) {
-        const updatedNames = removeList(rulesetNames, ruleset);
-        const next = updatedNames[0] ?? null;
+        const updatedEntries = removeEntry(rulesetEntries, ruleset);
+        const next = updatedEntries[0] ?? null;
 
-        onDelete(next, updatedNames);
+        onDelete(next, updatedEntries);
     }
 
     setStatus(ok ? "idle" : "error");
 }
 
-function removeList(rulesetNames, ruleset) {
-    return rulesetNames.filter(n => n !== ruleset.name);
+function removeEntry(rulesetEntries, ruleset) {
+    return rulesetEntries.filter(entry => entry.id !== ruleset.id);
 }
 
 const styles = {
