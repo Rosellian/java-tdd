@@ -2,8 +2,8 @@ import {useEffect, useState} from "react";
 import {useTheme} from "../../ui/theme/ThemeProvider";
 import {PriceListEditor} from "./pricelisteditor/PriceListEditor";
 import {ButtonPanel} from "./operations/ButtonPanel";
-import {initPriceLists, setChanges, setLoadedPriceList, updateChanges, updatePriceList, updatePriceListName}
-    from "./handlerFuncs";
+import {createEntry, initPriceLists, setChanges, setLoadedPriceList, updateChanges, updatePriceList, updatePriceListName
+} from "./handlerFuncs";
 import {handlerStyles} from "./handlerStyles";
 import {StatusBar} from "./status/StatusBar";
 import {Inputs} from "./input/Inputs";
@@ -12,10 +12,10 @@ export function PriceListHandler({ onPriceListChange }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
-    const [priceListNames, setPriceListNames] = useState([]);
+    const [priceListEntries, setPriceListEntries] = useState([]);
     const [priceList, setPriceList] = useState(null);
 
-    const [selected, setSelected] = useState("default");
+    const [selected, setSelected] = useState(null);
     const [originalPriceList, setOriginalPriceList] = useState(null);
     const [isDraft, setIsDraft] = useState(false);
     const [unsavedChanges, setUnsavedChanges] = useState(false);
@@ -24,7 +24,7 @@ export function PriceListHandler({ onPriceListChange }) {
     const [status, setStatus] = useState("idle"); // idle, saving, loading, deleting, error
 
     useEffect(() => {
-        initPriceLists(setPriceListNames, setFallbackUsed, setStatus, initPriceList);
+        initPriceLists(setPriceListEntries, setFallbackUsed, setStatus, initPriceList);
     }, []);
 
     function initPriceList(priceList, fallback) {
@@ -34,13 +34,13 @@ export function PriceListHandler({ onPriceListChange }) {
     }
 
     function onDiscardConfirm() {
-        if(isDraft) setPriceListNames(prev => prev.filter(n => n !== selected));
+        if(isDraft) setPriceListEntries(prev => prev.filter(entry => entry.id !== selected.id));
         setPriceList(null);
         setChanges(setIsDraft, setUnsavedChanges);
     }
 
     function triggerUpdatePriceListName(newName) {
-        const updatedPriceList = updatePriceListName(priceList, newName, setPriceListNames);
+        const updatedPriceList = updatePriceListName(priceList, newName, setPriceListEntries);
         updateChanges(originalPriceList, updatedPriceList, setUnsavedChanges);
         updatePriceList(updatedPriceList, setPriceList, setSelected, onPriceListChange);
     }
@@ -55,8 +55,8 @@ export function PriceListHandler({ onPriceListChange }) {
         setChanges(setIsDraft, setUnsavedChanges);
     }
 
-    function onDelete(toSelected, updatedNames) {
-        setPriceListNames(updatedNames);
+    function onDelete(toSelected, updatedEntries) {
+        setPriceListEntries(updatedEntries);
         setPriceList(null);
         setSelected(toSelected);
         setChanges(setIsDraft, setUnsavedChanges);
@@ -64,7 +64,7 @@ export function PriceListHandler({ onPriceListChange }) {
 
     function onNew(draft) {
         updatePriceList(draft, setPriceList, setSelected, onPriceListChange);
-        setPriceListNames(prev => [...prev, draft.name]);
+        setPriceListEntries(prev => [...prev, createEntry(draft)]);
         setChanges(setIsDraft, setUnsavedChanges, true);
     }
 
@@ -79,12 +79,12 @@ export function PriceListHandler({ onPriceListChange }) {
             ...(isDark ? handlerStyles.wrapperDark : handlerStyles.wrapperLight)
         }}>
             <div style={handlerStyles.handler}>
-                <Inputs priceList={priceList} priceListNames={priceListNames} unsavedChanges={unsavedChanges}
+                <Inputs priceList={priceList} priceListEntries={priceListEntries} unsavedChanges={unsavedChanges}
                         isDraft={isDraft} selected={selected} setSelected={setSelected}
                         onDiscardConfirm={onDiscardConfirm} triggerUpdatePriceListName={triggerUpdatePriceListName} />
 
                 <ButtonPanel status={status} setStatus={setStatus} selected={selected} isDraft={isDraft}
-                             unsavedChanges={unsavedChanges} priceList={priceList} priceListNames={priceListNames}
+                             unsavedChanges={unsavedChanges} priceList={priceList} priceListEntries={priceListEntries}
                              onLoad={onLoad} onSave={onSave} onDelete={onDelete} onNew={onNew} />
             </div>
 

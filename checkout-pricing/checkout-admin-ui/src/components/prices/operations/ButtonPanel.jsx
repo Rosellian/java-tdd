@@ -3,7 +3,7 @@ import {Delete} from "./Delete";
 import {Save} from "./Save";
 import {Load} from "./Load";
 
-export function ButtonPanel({ status, setStatus, selected, isDraft, unsavedChanges, priceList, priceListNames,
+export function ButtonPanel({ status, setStatus, selected, isDraft, unsavedChanges, priceList, priceListEntries,
                                 onLoad, onSave, onDelete, onNew }) {
     let disabledExp = isDraft || unsavedChanges;
 
@@ -14,7 +14,7 @@ export function ButtonPanel({ status, setStatus, selected, isDraft, unsavedChang
             <Save priceList={priceList} status={status} setStatus={setStatus} unsavedChanges={unsavedChanges}
                   onSave={onSave} />
 
-            <Delete priceList={priceList} priceListNames={priceListNames} status={status} setStatus={setStatus}
+            <Delete priceList={priceList} priceListEntries={priceListEntries} status={status} setStatus={setStatus}
                     selected={selected} isDraft={isDraft} disabledExp={disabledExp} onDelete={onDelete} />
 
             <New unsavedChanges={unsavedChanges} onNew={onNew} />

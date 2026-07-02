@@ -47,7 +47,7 @@ export function Save({ priceList, status, setStatus, unsavedChanges, onSave }) {
 async function save(setStatus, priceList, onSave) {
     setStatus("saving");
 
-    const ok = await savePriceList(priceList.name, priceList);
+    const ok = await savePriceList(priceList);
     if (ok) {
         onSave();
     }

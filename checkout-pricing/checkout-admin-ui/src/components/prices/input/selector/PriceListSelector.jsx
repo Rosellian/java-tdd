@@ -1,7 +1,7 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import {PriceListDropdown} from "./PriceListDropdown";
 
-export function PriceListSelector({ value, onChange, names, isDraft }) {
+export function PriceListSelector({ value, onChange, entries, isDraft }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -17,7 +17,7 @@ export function PriceListSelector({ value, onChange, names, isDraft }) {
                 Price List
             </h3>
 
-            <PriceListDropdown value={value} onChange={onChange} names={names} isDraft={isDraft} />
+            <PriceListDropdown value={value} onChange={onChange} entries={entries} isDraft={isDraft} />
         </div>
     )
 }

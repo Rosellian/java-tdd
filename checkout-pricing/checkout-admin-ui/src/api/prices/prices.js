@@ -1,24 +1,24 @@
 const BASE_PATH = "/api/prices";
 
-export async function getPriceListNames() {
+export async function getPriceListEntries() {
     try {
         const res = await fetch(BASE_PATH);
 
         if (!res.ok) {
-            console.error("Failed to load price list names:", res.status);
+            console.error("Failed to load price list entries:", res.status);
             return null;
         }
 
         return await res.json();
     } catch (err) {
-        console.error("Error loading price list names:", err);
+        console.error("Error loading price list entries:", err);
         return null;
     }
 }
 
-export async function getPriceList(name) {
+export async function getPriceList(id) {
     try {
-        const res = await fetch(`${BASE_PATH}/${name}`);
+        const res = await fetch(`${BASE_PATH}/${id}`);
         if (!res.ok) {
             return null;
         }
@@ -30,9 +30,9 @@ export async function getPriceList(name) {
     }
 }
 
-export async function savePriceList(name, priceList) {
+export async function savePriceList(priceList) {
     try {
-        const res = await fetch(`${BASE_PATH}/${name}`, {
+        const res = await fetch(`${BASE_PATH}/${priceList.id}`, {
             method: "POST",
             headers: { "Content-Type": "application/json; charset=utf-8" },
             body: JSON.stringify(priceList)
@@ -45,9 +45,9 @@ export async function savePriceList(name, priceList) {
     }
 }
 
-export async function deletePriceList(name) {
+export async function deletePriceList(id) {
     try {
-        const res = await fetch(`${BASE_PATH}/${name}`, { method: "DELETE" });
+        const res = await fetch(`${BASE_PATH}/${id}`, { method: "DELETE" });
 
         return res.ok;
     } catch (err) {

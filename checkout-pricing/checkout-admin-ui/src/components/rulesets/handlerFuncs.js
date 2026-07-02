@@ -79,7 +79,8 @@ export function updateRulesetName(ruleset, newName, setRulesetEntries) {
         entry => (entry.id === ruleset.id ?
             {...entry, name: newName}
             : entry)
-    ));
+        )
+    );
 
     return updated;
 }

@@ -1,10 +1,10 @@
 import {getPriceList} from "./prices";
 
-export async function getPriceListWithFallback(name) {
-    const priceList = await getPriceList(name);
+export async function getPriceListWithFallback(entry) {
+    const priceList = await getPriceList(entry.id);
 
     if(!priceList) {
-        return {priceList: await importPriceList(name), fallback: true};
+        return {priceList: await importPriceList(entry.name), fallback: true};
     }
 
     return {priceList: priceList, fallback: false};

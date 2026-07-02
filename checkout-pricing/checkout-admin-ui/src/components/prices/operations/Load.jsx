@@ -36,7 +36,7 @@ export function Load({ status, setStatus, disabledExp, selected, onLoad }) {
             </button>
 
             {showConfirm && (
-                <ConfirmModal message={`Load price list "${selected}"?`} onConfirm={confirmLoad}
+                <ConfirmModal message={`Load price list "${selected.name}"?`} onConfirm={confirmLoad}
                               onCancel={() => setShowConfirm(false)} />
             )}
         </div>

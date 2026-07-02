@@ -3,20 +3,20 @@ import {DiscardChangesModal} from "./DiscardModal";
 import {PriceListSelector} from "./selector/PriceListSelector";
 import {useState} from "react";
 
-export function Inputs({ priceList, priceListNames, unsavedChanges, isDraft, selected,
+export function Inputs({ priceList, priceListEntries, unsavedChanges, isDraft, selected,
                            setSelected, onDiscardConfirm, triggerUpdatePriceListName }) {
     const [showDiscardModal, setShowDiscardModal] = useState(false);
     const [pendingSelection, setPendingSelection] = useState(null);
 
-    function onSelect(value) {
+    function onSelect(pending) {
         if (unsavedChanges) {
-            setPendingSelection(value);
+            setPendingSelection(pending);
             setShowDiscardModal(true);
 
             return;
         }
 
-        setSelected(value);
+        setSelected(pending);
     }
 
     function onConfirm() {
@@ -29,7 +29,7 @@ export function Inputs({ priceList, priceListNames, unsavedChanges, isDraft, sel
 
     return (
         <div style={styles.inputs}>
-            <PriceListSelector value={selected} onChange={onSelect} names={priceListNames} isDraft={isDraft} />
+            <PriceListSelector value={selected} onChange={onSelect} entries={priceListEntries} isDraft={isDraft} />
 
             {showDiscardModal && (
                 <DiscardChangesModal onConfirm={onConfirm} onCancel={() => setShowDiscardModal(false)} />

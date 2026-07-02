@@ -5,7 +5,7 @@ import {deletePriceList} from "../../../api/prices/prices";
 import {useState} from "react";
 import {buttonStyles} from "./buttonStyles";
 
-export function Delete({ priceList, priceListNames, status, setStatus, isDraft, disabledExp, onDelete }) {
+export function Delete({ priceList, priceListEntries, status, setStatus, isDraft, disabledExp, onDelete }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -26,11 +26,11 @@ export function Delete({ priceList, priceListNames, status, setStatus, isDraft, 
         setShowConfirm(false);
 
         if (isDraft) {
-            deleteDraft(priceListNames, priceList, onDelete, setStatus);
+            deleteDraft(priceListEntries, priceList, onDelete, setStatus);
             return;
         }
 
-        await deleteList(setStatus, priceList, priceListNames, onDelete);
+        await deleteList(setStatus, priceList, priceListEntries, onDelete);
     }
 
     return (
@@ -53,28 +53,28 @@ export function Delete({ priceList, priceListNames, status, setStatus, isDraft, 
     )
 }
 
-function deleteDraft(priceListNames, priceList, onDelete, setStatus) {
-    let namesWithCurrentRemoved = removeList(priceListNames, priceList);
-    onDelete(null, namesWithCurrentRemoved);
+function deleteDraft(priceListEntries, priceList, onDelete, setStatus) {
+    let updatedEntries = removeEntry(priceListEntries, priceList);
+    onDelete(null, updatedEntries);
     setStatus("idle");
 }
 
-async function deleteList(setStatus, priceList, priceListNames, onDelete) {
+async function deleteList(setStatus, priceList, priceListEntries, onDelete) {
     setStatus("deleting");
 
     const ok = await deletePriceList(priceList.name);
     if (ok) {
-        const updatedNames = removeList(priceListNames, priceList);
-        const next = updatedNames[0] ?? null;
+        const updatedEntries = removeEntry(priceListEntries, priceList);
+        const next = updatedEntries[0] ?? null;
 
-        onDelete(next, updatedNames);
+        onDelete(next, updatedEntries);
     }
 
     setStatus(ok ? "idle" : "error");
 }
 
-function removeList(priceListNames, priceList) {
-    return priceListNames.filter(n => n !== priceList.name);
+function removeEntry(priceListEntries, priceList) {
+    return priceListEntries.filter(entry => entry.id !== priceList.id);
 }
 
 const styles = {

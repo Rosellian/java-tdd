@@ -1,10 +1,12 @@
-import {getPriceListNames} from "../../api/prices/prices";
+import {getPriceListEntries} from "../../api/prices/prices";
 import {getPriceListWithFallback} from "../../api/prices/pricesFallback";
 
-export const DEFAULT_PRICE_LISTS = ["default"];
+export const DEFAULT_PRICE_LISTS = [
+    {id: crypto.randomUUID(), name: "default", version: "v1"}];
 
 export function createNewPriceListDraft() {
     return {
+        id: crypto.randomUUID(),
         name: "NewPriceList",
         version: "v1",
         unitPrices: [
@@ -13,10 +15,18 @@ export function createNewPriceListDraft() {
     };
 }
 
-export function initPriceLists(setPriceListNames, setFallbackUsed, setStatus, initPriceList) {
-    getPriceListNames().then(
+export function createEntry(priceList) {
+    return {
+        id: priceList.id,
+        name: priceList.name,
+        version: priceList.version
+    };
+}
+
+export function initPriceLists(setPriceListEntries, setFallbackUsed, setStatus, initPriceList) {
+    getPriceListEntries().then(
         list => {
-            const first = loadPriceListNames(list, setPriceListNames, setFallbackUsed);
+            const first = loadPriceListNames(list, setPriceListEntries, setFallbackUsed);
 
             setStatus("loading");
 
@@ -24,17 +34,16 @@ export function initPriceLists(setPriceListNames, setFallbackUsed, setStatus, in
                 ({priceList, fallback}) =>
                     loadPriceList(priceList, fallback, setStatus, initPriceList)
             );
-        }
-    );
+        });
 }
 
-function loadPriceListNames(list, setPriceListNames, setFallbackUsed) {
-    const names = list ?? DEFAULT_PRICE_LISTS;
+function loadPriceListNames(list, setPriceListEntries, setFallbackUsed) {
+    const entries = list ?? DEFAULT_PRICE_LISTS;
 
-    setPriceListNames(names);
+    setPriceListEntries(entries);
     setFallbackUsed(!list);
 
-    return names[0];
+    return entries[0];
 }
 
 function loadPriceList(priceList, fallback, setStatus, initPriceList) {
@@ -50,13 +59,17 @@ function loadPriceList(priceList, fallback, setStatus, initPriceList) {
     initPriceList(priceList, fallback);
 }
 
-export function updatePriceListName(priceList, newName, setPriceListNames) {
+export function updatePriceListName(priceList, newName, setPriceListEntries) {
     if (!priceList) return;
 
     const updated = {...priceList, name: newName};
 
-    setPriceListNames(prev =>
-        prev.map(n => (n === priceList.name ? newName : n))
+    setPriceListEntries(prev =>
+        prev.map(
+            entry => (entry.id === priceList.id ?
+                {...entry, name: newName}
+                : entry)
+        )
     );
 
     return updated;
@@ -64,9 +77,9 @@ export function updatePriceListName(priceList, newName, setPriceListNames) {
 
 export function updatePriceList(priceList, setPriceList, setSelected, onPriceListChange) {
     setPriceList(priceList);
-    const name = priceList.name;
-    setSelected(name);
-    onPriceListChange(name);
+    let entry = createEntry(priceList);
+    setSelected(entry);
+    onPriceListChange(entry);
 }
 
 export function setLoadedPriceList(setOriginalPriceList, priceList, setFallbackUsed, fallback) {
