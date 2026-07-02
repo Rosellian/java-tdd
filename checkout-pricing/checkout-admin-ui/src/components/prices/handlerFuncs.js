@@ -1,27 +1,6 @@
 import {getPriceListEntries} from "../../api/prices/prices";
 import {getPriceListWithFallback} from "../../api/prices/pricesFallback";
-
-export const DEFAULT_PRICE_LISTS = [
-    {id: crypto.randomUUID(), name: "default", version: "v1"}];
-
-export function createNewPriceListDraft() {
-    return {
-        id: crypto.randomUUID(),
-        name: "NewPriceList",
-        version: "v1",
-        unitPrices: [
-            { sku: "", price: 0 }
-        ]
-    };
-}
-
-export function createEntry(priceList) {
-    return {
-        id: priceList.id,
-        name: priceList.name,
-        version: priceList.version
-    };
-}
+import {createEntry, DEFAULT_PRICE_LISTS, isEqualPriceList} from "./priceFuncs";
 
 export function initPriceLists(setPriceListEntries, setFallbackUsed, setStatus, initPriceList) {
     getPriceListEntries().then(
@@ -95,22 +74,4 @@ export function setChanges(setIsDraft, setUnsavedChanges, isUnsaved = false) {
 export function updateChanges(originalPriceList, updatedPriceList, setUnsavedChanges) {
     let noChanges = originalPriceList && isEqualPriceList(updatedPriceList, originalPriceList);
     setUnsavedChanges(!noChanges);
-}
-
-function isEqualPriceList(a, b) {
-    if (!a || !b) return false;
-
-    if (a.name !== b.name) return false;
-
-    if (a.unitPrices.length !== b.unitPrices.length) return false;
-
-    for (let i = 0; i < a.unitPrices.length; i++) {
-        const x = a.unitPrices[i];
-        const y = b.unitPrices[i];
-
-        if (x.sku !== y.sku) return false;
-        if (x.price !== y.price) return false;
-    }
-
-    return true;
 }

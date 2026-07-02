@@ -1,6 +1,6 @@
 import {buttonStyles} from "./buttonStyles";
 import {useTheme} from "../../../ui/theme/ThemeProvider";
-import {createNewPriceListDraft} from "../handlerFuncs";
+import {createNewPriceListDraft} from "../priceFuncs";
 
 export function New({ unsavedChanges, onNew }) {
     const { theme } = useTheme();

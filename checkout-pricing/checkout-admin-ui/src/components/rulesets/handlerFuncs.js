@@ -1,38 +1,6 @@
 import {getRulesetEntries} from "../../api/rulesets/rulesets";
 import {getRulesetWithFallback} from "../../api/rulesets/rulesetsFallback";
-
-export const DEFAULT_RULESETS = [
-    {id: crypto.randomUUID(), name: "default", version: "v1"},
-    {id: crypto.randomUUID(), name: "campaignA", version: "v1"},
-    {id: crypto.randomUUID(), name: "campaignB", version: "v1"},
-    {id: crypto.randomUUID(), name: "noCrossNoSkuDiscount", version: "v1"}];
-
-export function createNewRulesetDraft() {
-    return {
-        id: crypto.randomUUID(),
-        name: "NewRuleset",
-        version: "v1",
-        rules: [
-            {
-                type: "SpecialPrice",
-                name: "New Rule",
-                sku: "",
-                quantity: 1,
-                price: 0,
-                priority: 1,
-                stackable: false
-            }
-        ]
-    };
-}
-
-export function createEntry(ruleset) {
-    return {
-        id: ruleset.id,
-        name: ruleset.name,
-        version: ruleset.version
-    };
-}
+import {createEntry, DEFAULT_RULESETS, isEqualRuleset} from "./rulesetFuncs";
 
 export function initRulesets(setRulesetEntries, setFallbackUsed, setStatus, initRuleset) {
     getRulesetEntries().then(
@@ -105,16 +73,4 @@ export function setChanges(setIsDraft, setUnsavedChanges, isUnsaved = false) {
 export function updateChanges(originalRuleset, updatedRuleset, setUnsavedChanges) {
     let noChanges = originalRuleset && isEqualRuleset(updatedRuleset, originalRuleset);
     setUnsavedChanges(!noChanges);
-}
-
-function isEqualRuleset(a, b) {
-    if (!a || !b) return false;
-
-    if (a.name !== b.name) return false;
-
-    if (a.rules.length !== b.rules.length) return false;
-
-    //TODO implement rule comparison
-
-    return true;
 }

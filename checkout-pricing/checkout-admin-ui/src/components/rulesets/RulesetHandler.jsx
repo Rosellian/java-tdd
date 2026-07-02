@@ -3,10 +3,11 @@ import {useTheme} from "../../ui/theme/ThemeProvider";
 import {RulesetEditor} from "./ruleseteditor/RulesetEditor";
 import {ButtonPanel} from "./operations/ButtonPanel";
 import {handlerStyles} from "./handlerStyles";
-import {createEntry, initRulesets, setChanges, setLoadedRuleset, updateChanges, updateRuleset, updateRulesetName}
+import {initRulesets, setChanges, setLoadedRuleset, updateChanges, updateRuleset, updateRulesetName}
     from "./handlerFuncs";
 import {StatusBar} from "./status/StatusBar";
 import {Inputs} from "./input/Inputs";
+import {createEntry} from "./rulesetFuncs";
 
 export function RulesetHandler({ onRulesetChange }) {
     const { theme } = useTheme();

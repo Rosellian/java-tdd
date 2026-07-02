@@ -2,11 +2,12 @@ import {useEffect, useState} from "react";
 import {useTheme} from "../../ui/theme/ThemeProvider";
 import {PriceListEditor} from "./pricelisteditor/PriceListEditor";
 import {ButtonPanel} from "./operations/ButtonPanel";
-import {createEntry, initPriceLists, setChanges, setLoadedPriceList, updateChanges, updatePriceList, updatePriceListName
+import {initPriceLists, setChanges, setLoadedPriceList, updateChanges, updatePriceList, updatePriceListName
 } from "./handlerFuncs";
 import {handlerStyles} from "./handlerStyles";
 import {StatusBar} from "./status/StatusBar";
 import {Inputs} from "./input/Inputs";
+import {createEntry} from "./priceFuncs";
 
 export function PriceListHandler({ onPriceListChange }) {
     const { theme } = useTheme();
