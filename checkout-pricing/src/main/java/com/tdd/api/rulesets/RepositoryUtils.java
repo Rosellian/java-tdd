@@ -11,7 +11,7 @@ public class RepositoryUtils {
 
     public static final String LOAD_RULESET = "SELECT json FROM rulesets WHERE id = ?";
     public static final String LOAD_RULESET_ENTRY_BY_NAME = """
-            SELECT id, name
+            SELECT id, name, version
             FROM rulesets
             WHERE LOWER(name) = LOWER(?)
             """;

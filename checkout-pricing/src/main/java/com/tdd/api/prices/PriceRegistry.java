@@ -57,7 +57,7 @@ public class PriceRegistry implements DataRegistry<PriceList, PriceListEntry> {
     @Override
     public Set<PriceListEntry> list() {
         Set<PriceListEntry> entries = getCachedEntries();
-        logger.debug("Price lists {}", entries);
+        logger.info("Price lists {}", entries);
 
         return entries;
     }

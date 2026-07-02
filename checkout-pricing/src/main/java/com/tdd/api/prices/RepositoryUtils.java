@@ -10,7 +10,9 @@ import java.util.UUID;
 
 public class RepositoryUtils {
     public static final String LIST_PRICE_LISTS = """
-                SELECT id, name FROM price_lists ORDER BY name
+                SELECT id, name, version
+                FROM price_lists
+                ORDER BY name
             """;
 
     public static final String LOAD_PRICE_LIST = """
@@ -19,9 +21,9 @@ public class RepositoryUtils {
                 WHERE id = ?
             """;
     public static final String LOAD_PRICE_LIST_ENTRY_BY_NAME = """
-            SELECT id, name
-            FROM price_lists
-            WHERE LOWER(name) = LOWER(?)
+                SELECT id, name, version
+                FROM price_lists
+                WHERE LOWER(name) = LOWER(?)
             """;
     public static final String LOAD_PRICES = """
                 SELECT sku, price
