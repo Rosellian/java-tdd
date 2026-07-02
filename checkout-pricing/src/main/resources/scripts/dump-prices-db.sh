@@ -18,4 +18,4 @@ psql -h $HOST -U $USER -d $DB -c "SELECT * FROM price_lists ORDER BY name;"
 
 echo ""
 echo "prices:"
-psql -h $HOST -U $USER -d $DB -c "SELECT * FROM prices ORDER BY list_name, sku;"
+psql -h $HOST -U $USER -d $DB -c "SELECT * FROM prices ORDER BY list_id, sku;"

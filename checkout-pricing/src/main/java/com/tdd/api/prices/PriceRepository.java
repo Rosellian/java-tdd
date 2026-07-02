@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -43,6 +44,9 @@ public class PriceRepository implements DataRepository<PriceList, PriceListEntry
             logger.debug("Loaded price list entry {}", entry);
 
             return entry;
+        } catch (EmptyResultDataAccessException e) {
+            logger.debug("price list {} not found", name);
+            return null;
         } catch (Exception e) {
             throw new RuntimeException("Failed to load price list " + name, e);
         }
