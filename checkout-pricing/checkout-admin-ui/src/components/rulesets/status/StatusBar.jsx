@@ -1,9 +1,13 @@
 import {useTheme} from "../../../ui/theme/ThemeProvider";
-import {ChangesView} from "./ChangesView";
+import {ChangesView} from "./changes/ChangesView";
+import {diffRulesets} from "./changes/diffs";
+import {RuleDiffView} from "./changes/diffview/RuleDiffView";
 
 export function StatusBar({ status, fallbackUsed, isDraft, unsavedChanges, ruleset, originalRuleset }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
+
+    let diffs = diffRulesets(originalRuleset, ruleset);
 
     return (
         <div>
@@ -40,8 +44,12 @@ export function StatusBar({ status, fallbackUsed, isDraft, unsavedChanges, rules
             )}
 
             {unsavedChanges && originalRuleset && (
-                <ChangesView ruleset={ruleset} originalRuleset={originalRuleset} />
+                <ChangesView diffs={diffs} />
             )}
+            {unsavedChanges && originalRuleset && (
+                <RuleDiffView diffs={diffs} />
+            )}
+
         </div>
     )
 }

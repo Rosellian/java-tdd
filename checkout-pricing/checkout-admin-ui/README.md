@@ -773,6 +773,7 @@ Two versions are created as prototypes:
     - Including rule changes
 - Adjust to using UUID for rulesets and price lists
   - selected and rulesetNames to entries instead of just name
+- Adding diff view component for rulesets
 
 ### Current structure
 ```

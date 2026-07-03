@@ -1,6 +1,7 @@
-import {useTheme} from "../../../ui/theme/ThemeProvider";
+import {useTheme} from "../../../../ui/theme/ThemeProvider";
+import {diffRulesets} from "./diffs";
 
-export function ChangesView({ ruleset, originalRuleset }) {
+export function ChangesView({ diffs }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -12,28 +13,13 @@ export function ChangesView({ ruleset, originalRuleset }) {
             <div style={styles.header}>
                 Changes:
             </div>
-            {diffRulesets(originalRuleset, ruleset).map((d, i) => (
+            {diffs.map((diff, i) => (
                 <div key={i} style={styles.diff}>
-                    • {d}
+                    • {diff}
                 </div>
             ))}
         </div>
     )
-}
-
-function diffRulesets(a, b) {
-    if (!a || !b) return [];
-
-    let diffs = [];
-
-    if (a.name !== b.name) diffs.push("Name changed");
-
-    let max = Math.max(a.rules.length, b.rules.length);
-    for (let i = 0; i < max; i++) {
-        //TODO implement rule comparison
-    }
-
-    return diffs;
 }
 
 const styles = {
