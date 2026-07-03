@@ -1,6 +1,6 @@
 import {getRulesetEntries} from "../../api/rulesets/rulesets";
 import {getRulesetWithFallback} from "../../api/rulesets/rulesetsFallback";
-import {createEntry, DEFAULT_RULESETS, isEqualRuleset} from "./rulesetFuncs";
+import {createEntry, DEFAULT_RULESETS, isEqualRuleset} from "./functions/rulesetFuncs";
 
 export function initRulesets(setRulesetEntries, setFallbackUsed, setStatus, initRuleset) {
     getRulesetEntries().then(

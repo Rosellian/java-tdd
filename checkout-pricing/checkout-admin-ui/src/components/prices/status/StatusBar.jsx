@@ -1,9 +1,13 @@
-import {ChangesView} from "./ChangesView";
+import {ChangesView} from "./changes/ChangesView";
 import {useTheme} from "../../../ui/theme/ThemeProvider";
+import {diffPriceLists} from "./changes/diffs";
+import {PriceDiffView} from "./changes/diffview/PriceDiffView";
 
 export function StatusBar({ status, fallbackUsed, isDraft, unsavedChanges, priceList, originalPriceList }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
+
+    let diffs = diffPriceLists(originalPriceList, priceList)
 
     return (
         <div>
@@ -40,7 +44,11 @@ export function StatusBar({ status, fallbackUsed, isDraft, unsavedChanges, price
             )}
 
             {unsavedChanges && originalPriceList && (
-                <ChangesView priceList={priceList} originalPriceList={originalPriceList} />
+                <ChangesView diffs={diffs} />
+            )}
+
+            {unsavedChanges && originalPriceList && (
+                <PriceDiffView diffs={diffs} />
             )}
         </div>
     )

@@ -25,15 +25,26 @@ export function isEqualPriceList(a, b) {
 
     if (a.name !== b.name) return false;
 
-    if (a.unitPrices.length !== b.unitPrices.length) return false;
+    const mapA = indexPrices(a.unitPrices);
+    const mapB = indexPrices(b.unitPrices);
 
-    for (let i = 0; i < a.unitPrices.length; i++) {
-        const x = a.unitPrices[i];
-        const y = b.unitPrices[i];
+    if (mapA.size !== mapB.size) return false;
 
-        if (x.sku !== y.sku) return false;
-        if (x.price !== y.price) return false;
+    for (const [id, oldPrice] of mapA.entries()) {
+        const newPrice = mapB.get(id);
+        if (!newPrice) return false;
+
+        if (oldPrice.sku !== newPrice.sku) return false;
+        if (oldPrice.price !== newPrice.price) return false;
     }
 
     return true;
+}
+
+export function indexPrices(prices) {
+    const map = new Map();
+    for (const p of prices) {
+        map.set(p.id, p);
+    }
+    return map;
 }

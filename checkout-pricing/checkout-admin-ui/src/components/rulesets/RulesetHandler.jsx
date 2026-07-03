@@ -7,7 +7,7 @@ import {initRulesets, setChanges, setLoadedRuleset, updateChanges, updateRuleset
     from "./handlerFuncs";
 import {StatusBar} from "./status/StatusBar";
 import {Inputs} from "./input/Inputs";
-import {createEntry} from "./rulesetFuncs";
+import {createEntry} from "./functions/rulesetFuncs";
 
 export function RulesetHandler({ onRulesetChange }) {
     const { theme } = useTheme();

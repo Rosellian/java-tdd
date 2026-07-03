@@ -1,6 +1,6 @@
 import {buttonStyles} from "./buttonStyles";
 import {useTheme} from "../../../ui/theme/ThemeProvider";
-import {createNewRulesetDraft} from "../rulesetFuncs";
+import {createNewRulesetDraft} from "../functions/rulesetFuncs";
 
 export function New({ unsavedChanges, onNew }) {
     const { theme } = useTheme();
