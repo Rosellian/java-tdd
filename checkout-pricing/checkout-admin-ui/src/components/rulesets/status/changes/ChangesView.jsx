@@ -1,5 +1,4 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
-import {diffRulesets} from "./diffs";
 
 export function ChangesView({ diffs }) {
     const { theme } = useTheme();

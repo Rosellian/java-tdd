@@ -6,6 +6,8 @@ export function PriceListDropdown({ value, onChange, entries, isDraft }) {
 
     let label = "PriceListSelection";
 
+    let sortedEntries = getSortedEntries(entries);
+
     return (
         <select title={label} name={label} value={value?.id ?? ""}
                 onChange={(e) => handleChange(e.target.value, entries, onChange)}
@@ -13,7 +15,7 @@ export function PriceListDropdown({ value, onChange, entries, isDraft }) {
                     ...styles.select,
                     ...(isDark ? styles.selectDark : styles.selectLight)
         }}>
-            {entries.map(entry => {
+            {sortedEntries.map(entry => {
                 let id = entry.id;
                 let name = entry.name;
                 return (
@@ -24,6 +26,10 @@ export function PriceListDropdown({ value, onChange, entries, isDraft }) {
             })}
         </select>
     )
+}
+
+function getSortedEntries(entries) {
+    return [...entries].sort((a, b) => a.name.localeCompare(b.name));
 }
 
 function handleChange(id, entries, onChange) {
