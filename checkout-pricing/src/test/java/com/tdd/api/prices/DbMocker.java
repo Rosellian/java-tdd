@@ -57,7 +57,7 @@ public class DbMocker {
     }
 
     public void mockSavePriceException() {
-        when(jdbc.update(SAVE_PRICE, DEFAULT_UUID, "A", 50.0))
+        when(jdbc.update(SAVE_PRICE, PRICE_A.id(), DEFAULT_UUID, "A", 50.0))
                 .thenThrow(new DataAccessException("DB error") {});
     }
 

@@ -19,4 +19,14 @@ public class CrossSkuBuyXGetYFree extends CrossSkuRule {
     public void setFreeQty(int freeQty) {
         this.freeQty = freeQty;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("CrossSkuBuyXGetYFree{");
+        appendBaseFields(sb);
+        sb.append(", freeSku=").append(freeSku);
+        sb.append(", freeQty=").append(freeQty);
+        sb.append('}');
+        return sb.toString();
+    }
 }

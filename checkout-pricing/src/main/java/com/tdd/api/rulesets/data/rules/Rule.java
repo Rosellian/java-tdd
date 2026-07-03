@@ -9,6 +9,8 @@ import com.tdd.api.rulesets.data.rules.sku.BuyXGetYFree;
 import com.tdd.api.rulesets.data.rules.sku.SkuDiscount;
 import com.tdd.api.rulesets.data.rules.sku.SpecialPrice;
 
+import java.util.UUID;
+
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = SpecialPrice.class, name = "SpecialPrice"),
@@ -19,8 +21,16 @@ import com.tdd.api.rulesets.data.rules.sku.SpecialPrice;
         @JsonSubTypes.Type(value = SkuDiscount.class, name = "SkuDiscount"),
 })
 public abstract class Rule {
+    private UUID id;
     private String name;
     private int priority;
+
+    public UUID getId() {
+        return id;
+    }
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -37,6 +47,7 @@ public abstract class Rule {
     }
 
     protected void appendBaseFields(StringBuilder sb) {
+        sb.append("id='").append(id).append('\'');
         sb.append("name='").append(name).append('\'');
         sb.append(", priority=").append(priority);
     }

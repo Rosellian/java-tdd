@@ -21,7 +21,6 @@ public class TestUtils {
     public static final String CAMPAIGN_A_NAME = "campaignA";
     public static final UUID CAMPAIGN_A_UUID = UUID.randomUUID();
 
-    public static final String MISSING = "missing";
     public static final UUID MISSING_UUID = UUID.randomUUID();
 
     public static final String NEW_RULESET_NAME = "newRuleset";

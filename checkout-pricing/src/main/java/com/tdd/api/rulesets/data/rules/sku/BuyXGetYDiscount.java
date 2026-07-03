@@ -27,4 +27,15 @@ public class BuyXGetYDiscount extends StackableSkuRule {
     public void setDiscount(double discount) {
         this.discount = discount;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("BuyXGetYDiscount{");
+        appendBaseFields(sb);
+        sb.append(", buy=").append(buy);
+        sb.append(", get=").append(get);
+        sb.append(", discount=").append(discount);
+        sb.append('}');
+        return sb.toString();
+    }
 }

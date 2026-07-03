@@ -1,6 +1,5 @@
 package com.tdd.api.prices;
 
-import com.tdd.api.prices.data.Price;
 import com.tdd.api.prices.data.PriceList;
 import com.tdd.api.prices.data.PriceListEntry;
 import org.junit.jupiter.api.BeforeEach;
@@ -100,7 +99,7 @@ class PriceRepositoryTest {
 
     @Test
     void save_throwsRuntimeException_whenJdbcFailsOnInsertPrice() {
-        PriceList pl = createDefaultPriceList(List.of(new Price("A", 50)));
+        PriceList pl = createDefaultPriceList(List.of(PRICE_A));
 
         dbMocker.mockSavePriceException();
 
@@ -146,7 +145,7 @@ class PriceRepositoryTest {
         verify(jdbc).update(SAVE_PRICE_LIST, DEFAULT_UUID, DEFAULT_NAME, V_1);
         verify(jdbc).update(DELETE_PRICES_FOR_LIST, DEFAULT_UUID);
 
-        verify(jdbc).update(SAVE_PRICE, DEFAULT_UUID, "A", 50.0);
-        verify(jdbc).update(SAVE_PRICE, DEFAULT_UUID, "B", 40.0);
+        verify(jdbc).update(SAVE_PRICE, PRICE_A.id(), DEFAULT_UUID, "A", 50.0);
+        verify(jdbc).update(SAVE_PRICE, PRICE_B.id(), DEFAULT_UUID, "B", 40.0);
     }
 }

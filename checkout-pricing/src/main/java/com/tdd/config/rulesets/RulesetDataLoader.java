@@ -3,6 +3,7 @@ package com.tdd.config.rulesets;
 import com.tdd.api.rulesets.RulesetRegistry;
 import com.tdd.api.rulesets.RulesetRepository;
 import com.tdd.api.rulesets.data.Ruleset;
+import com.tdd.api.rulesets.data.rules.Rule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -49,7 +51,8 @@ public class RulesetDataLoader {
             }
 
             var ruleset = mapper.readValue(is, Ruleset.class);
-            var rulesetWithID = new Ruleset(UUID.randomUUID(), ruleset.name(), ruleset.version(), ruleset.rules());
+
+            var rulesetWithID = createWithId(ruleset);
 
             repository.save(rulesetWithID);
 
@@ -57,5 +60,16 @@ public class RulesetDataLoader {
         } catch (Exception e) {
             logger.error("Failed to import sample ruleset '{}': {}", name, e.getMessage(), e);
         }
+    }
+
+    private Ruleset createWithId(Ruleset ruleset) {
+        List<Rule> rules = ruleset.rules();
+        for (Rule rule : rules) {
+            if(rule.getId() == null) {
+                rule.setId(UUID.randomUUID());
+            }
+        }
+
+        return new Ruleset(UUID.randomUUID(), ruleset.name(), ruleset.version(), rules);
     }
 }

@@ -35,7 +35,7 @@ public class PriceDataLoader {
         logger.info("Creating default price list: {}", name);
 
         var prices = Arrays.stream(SKUs.values())
-                .map(sku -> new Price(sku.name(), sku.unitPrice))
+                .map(sku -> new Price(UUID.randomUUID(), sku.name(), sku.unitPrice))
                 .toList();
         var priceList = new PriceList(UUID.randomUUID(), name, "v1", prices);
 

@@ -30,4 +30,12 @@ public class CrossSkuRule extends Rule implements Stackable {
     public void setBuyQty(int buyQty) {
         this.buyQty = buyQty;
     }
+
+    @Override
+    protected void appendBaseFields(StringBuilder sb) {
+        super.appendBaseFields(sb);
+        sb.append(", stackable=").append(stackable);
+        sb.append(", buySku=").append(buySku);
+        sb.append(", buyQty=").append(buyQty);
+    }
 }

@@ -67,20 +67,20 @@ public class PriceRepository implements DataRepository<PriceList, PriceListEntry
 
     @Override
     public void save(PriceList priceList) {
-        UUID id = priceList.id();
+        UUID listId = priceList.id();
         try {
             logger.debug("Saving price list {}", priceList);
-            jdbc.update(SAVE_PRICE_LIST, id, priceList.name(), priceList.version());
+            jdbc.update(SAVE_PRICE_LIST, listId, priceList.name(), priceList.version());
 
             logger.debug("Deleting prices for {}", priceList);
-            jdbc.update(DELETE_PRICES_FOR_LIST, id);
+            jdbc.update(DELETE_PRICES_FOR_LIST, listId);
 
             logger.debug("Saving prices for {}", priceList);
             priceList.unitPrices().forEach(price ->
-                    jdbc.update(SAVE_PRICE, id, price.sku(), price.price())
+                    jdbc.update(SAVE_PRICE, price.id(), listId, price.sku(), price.price())
             );
         } catch (Exception e) {
-            throw new RuntimeException("Failed to save price list with id " + id, e);
+            throw new RuntimeException("Failed to save price list with id " + listId, e);
         }
     }
 

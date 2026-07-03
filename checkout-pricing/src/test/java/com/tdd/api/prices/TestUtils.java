@@ -23,13 +23,16 @@ public class TestUtils {
     public static final String NEW_LIST_NAME = "NewList";
     public static final UUID NEW_LIST_UUID = UUID.randomUUID();
 
-    public static final String MISSING = "Missing";
     public static final UUID MISSING_UUID = UUID.randomUUID();
 
-    public static final PriceList DEFAULT_LIST_1 = createDefaultPriceList(List.of(new Price("A", 50)));
+    public static final Price PRICE_A = new Price(UUID.randomUUID(),"A", 50);
+    public static final Price PRICE_B = new Price(UUID.randomUUID(),"B", 40);
+
+    public static final PriceList DEFAULT_LIST_1 = createDefaultPriceList(List.of(PRICE_A));
 
     public static final PriceListEntry DEFAULT_ENTRY = new PriceListEntry(DEFAULT_UUID, DEFAULT_NAME, V_1);
-    public static final PriceListEntry PRICE_LIST_A_ENTRY = new PriceListEntry(PRICE_LIST_A_UUID, PRICE_LIST_A_NAME, V_2);
+    public static final PriceListEntry PRICE_LIST_A_ENTRY = new
+            PriceListEntry(PRICE_LIST_A_UUID, PRICE_LIST_A_NAME, V_2);
     public static final Set<PriceListEntry> EXPECTED_ENTRIES = Set.of(DEFAULT_ENTRY, PRICE_LIST_A_ENTRY);
 
     private TestUtils() {}
@@ -39,10 +42,7 @@ public class TestUtils {
     }
 
     public static List<Price> createDefaultPrices() {
-        return List.of(
-                new Price("A", 50),
-                new Price("B", 40)
-        );
+        return List.of(PRICE_A, PRICE_B);
     }
 
     public static PriceList createDefaultPriceList(List<Price> prices) {
@@ -52,7 +52,9 @@ public class TestUtils {
         return new PriceList(DEFAULT_UUID, DEFAULT_NAME, V_1, createDefaultPrices());
     }
     public static PriceList createNewList() {
-        return createPriceList(NEW_LIST_UUID, NEW_LIST_NAME, "v3", List.of(new Price("X", 99)));
+        return createPriceList(NEW_LIST_UUID, NEW_LIST_NAME, "v3",
+                List.of(new Price(UUID.randomUUID(),"X", 99))
+        );
     }
     public static PriceList createPriceList(UUID uuid, String name, String version, List<Price> prices) {
         return new PriceList(uuid, name, version, prices);

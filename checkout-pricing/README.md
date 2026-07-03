@@ -1341,6 +1341,7 @@ Adding delete protection for default rulesets and price lists.
 - Adding unit price and applied rules to DP tracing data.
 - Fix for non-stacking rule path data.
 - Using UUID as primary key for rulesets and price lists.
+- Adding UUID to price and rule data objects.
 ---
 
 ## Testing

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import static com.tdd.api.prices.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -88,7 +89,7 @@ class PriceRegistryTest {
         when(repository.list()).thenReturn(List.of(DEFAULT_ENTRY, PRICE_LIST_A_ENTRY));
 
         PriceList listA = createPriceList(PRICE_LIST_A_UUID, PRICE_LIST_A_NAME, V_2,
-                List.of(new Price("B", 40)));
+                List.of(new Price(UUID.randomUUID(),"B", 40)));
 
         when(repository.load(DEFAULT_UUID)).thenReturn(DEFAULT_LIST_1);
         when(repository.load(PRICE_LIST_A_UUID)).thenReturn(listA);

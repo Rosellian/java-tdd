@@ -7,7 +7,7 @@ CREATE TABLE price_lists (
 );
 
 CREATE TABLE prices (
-    id          SERIAL PRIMARY KEY,
+    id          UUID PRIMARY KEY,
     list_id     UUID NOT NULL REFERENCES price_lists(id) ON DELETE CASCADE,
     sku         VARCHAR(255) NOT NULL,
     price       NUMERIC(10,2) NOT NULL

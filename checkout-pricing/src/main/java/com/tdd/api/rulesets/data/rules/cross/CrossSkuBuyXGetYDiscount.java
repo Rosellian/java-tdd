@@ -27,4 +27,15 @@ public class CrossSkuBuyXGetYDiscount extends CrossSkuRule {
     public void setDiscount(double discount) {
         this.discount = discount;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("CrossSkuBuyXGetYDiscount{");
+        appendBaseFields(sb);
+        sb.append(", discountSku=").append(discountSku);
+        sb.append(", discountQty=").append(discountQty);
+        sb.append(", discount=").append(discount);
+        sb.append('}');
+        return sb.toString();
+    }
 }
