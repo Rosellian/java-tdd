@@ -19,10 +19,16 @@ export function initRulesets(setRulesetEntries, setFallbackUsed, setStatus, init
 export function loadRulesetEntries(list, setRulesetEntries, setFallbackUsed) {
     let entries = list ?? DEFAULT_RULESETS;
 
-    setRulesetEntries(entries);
+    let sortedEntries = getSortedEntries(entries);
+
+    setRulesetEntries(sortedEntries);
     setFallbackUsed(!list);
 
-    return entries[0];
+    return sortedEntries[0];
+}
+
+function getSortedEntries(entries) {
+    return [...entries].sort((a, b) => a.name.localeCompare(b.name));
 }
 
 function loadRuleset(ruleset, fallback, setStatus, initRuleset) {

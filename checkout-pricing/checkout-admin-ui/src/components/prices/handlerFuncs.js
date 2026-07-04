@@ -19,10 +19,16 @@ export function initPriceLists(setPriceListEntries, setFallbackUsed, setStatus, 
 function loadPriceListNames(list, setPriceListEntries, setFallbackUsed) {
     const entries = list ?? DEFAULT_PRICE_LISTS;
 
-    setPriceListEntries(entries);
+    let sortedEntries = getSortedEntries(entries);
+
+    setPriceListEntries(sortedEntries);
     setFallbackUsed(!list);
 
-    return entries[0];
+    return sortedEntries[0];
+}
+
+function getSortedEntries(entries) {
+    return [...entries].sort((a, b) => a.name.localeCompare(b.name));
 }
 
 function loadPriceList(priceList, fallback, setStatus, initPriceList) {
