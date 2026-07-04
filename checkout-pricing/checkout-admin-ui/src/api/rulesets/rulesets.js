@@ -1,8 +1,10 @@
+import {createKeyHeader} from "../security";
+
 const BASE_PATH = "/api/rulesets";
 
 export async function getRulesetEntries() {
     try {
-        const res = await fetch(BASE_PATH);
+        const res = await fetch(BASE_PATH, { headers: createKeyHeader() });
 
         if (!res.ok) {
             console.error("Failed to load ruleset entries:", res.status);
@@ -20,7 +22,7 @@ export async function getRulesetEntries() {
 
 export async function getRuleset(id) {
     try {
-        const res = await fetch(`${BASE_PATH}/${id}`);
+        const res = await fetch(`${BASE_PATH}/${id}`, { headers: createKeyHeader() });
         if (!res.ok) return null;
 
         return await res.json();
@@ -35,7 +37,7 @@ export async function saveRuleset(ruleset) {
     try {
         const res = await fetch(`${BASE_PATH}/${ruleset.id}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json; charset=utf-8" },
+            headers: { "Content-Type": "application/json; charset=utf-8", ...createKeyHeader() },
             body: JSON.stringify(ruleset)
         });
 
@@ -49,7 +51,10 @@ export async function saveRuleset(ruleset) {
 
 export async function deleteRuleset(id) {
     try {
-        const res = await fetch(`${BASE_PATH}/${id}`, { method: "DELETE" });
+        const res = await fetch(`${BASE_PATH}/${id}`, {
+            method: "DELETE",
+            headers: createKeyHeader()
+        });
 
         return res.ok;
     } catch (err) {

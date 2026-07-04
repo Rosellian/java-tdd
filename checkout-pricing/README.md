@@ -1344,6 +1344,10 @@ Adding delete protection for default rulesets and price lists.
 - Adding UUID to price and rule data objects.
 ---
 
+### Security
+#### API-key
+Adding API-key header requirement for APIs.
+
 ## Testing
 ### Test cases
 #### Base tests

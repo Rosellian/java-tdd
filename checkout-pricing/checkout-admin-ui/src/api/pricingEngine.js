@@ -1,3 +1,5 @@
+import {createKeyHeader} from "./security";
+
 export async function runPricingTrace(cart, ruleset, priceList, customer) {
     const res = await callPricingEndpoint(cart, ruleset, priceList, customer, "evaluate");
 
@@ -14,7 +16,7 @@ async function callPricingEndpoint(cart, ruleset, priceList, customer, endpoint)
 
     return await fetch("/api/pricing/" + endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json; charset=utf-8" },
+        headers: { "Content-Type": "application/json; charset=utf-8", ...createKeyHeader() },
         body: JSON.stringify(body),
     });
 }

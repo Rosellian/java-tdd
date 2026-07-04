@@ -1,8 +1,10 @@
+import {createKeyHeader} from "../security";
+
 const BASE_PATH = "/api/prices";
 
 export async function getPriceListEntries() {
     try {
-        const res = await fetch(BASE_PATH);
+        const res = await fetch(BASE_PATH, { headers: createKeyHeader() });
 
         if (!res.ok) {
             console.error("Failed to load price list entries:", res.status);
@@ -18,7 +20,7 @@ export async function getPriceListEntries() {
 
 export async function getPriceList(id) {
     try {
-        const res = await fetch(`${BASE_PATH}/${id}`);
+        const res = await fetch(`${BASE_PATH}/${id}`, { headers: createKeyHeader() });
         if (!res.ok) {
             return null;
         }
@@ -34,7 +36,7 @@ export async function savePriceList(priceList) {
     try {
         const res = await fetch(`${BASE_PATH}/${priceList.id}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json; charset=utf-8" },
+            headers: { "Content-Type": "application/json; charset=utf-8", ...createKeyHeader() },
             body: JSON.stringify(priceList)
         });
 
@@ -47,7 +49,10 @@ export async function savePriceList(priceList) {
 
 export async function deletePriceList(id) {
     try {
-        const res = await fetch(`${BASE_PATH}/${id}`, { method: "DELETE" });
+        const res = await fetch(`${BASE_PATH}/${id}`, {
+            method: "DELETE",
+            headers: createKeyHeader()
+        });
 
         return res.ok;
     } catch (err) {
