@@ -93,7 +93,7 @@ export function RulesetHandler({ onRulesetChange }) {
                        ruleset={ruleset} originalRuleset={originalRuleset} />
 
             <div style={handlerStyles.editorWrapper}>
-                <RulesetEditor ruleset={ruleset} onChange={onEdit} />
+                <RulesetEditor ruleset={ruleset} onChange={onEdit} unsavedChanges={unsavedChanges} />
             </div>
         </div>
     )

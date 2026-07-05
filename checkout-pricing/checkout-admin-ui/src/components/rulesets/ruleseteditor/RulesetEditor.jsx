@@ -2,10 +2,10 @@ import {useEffect, useState} from "react";
 import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {RuleList} from "./rulelist/RuleList";
 import {RuleForm} from "./ruleform/RuleForm";
-import {addRule, deleteRule, getSafeIndex, updateRule} from "./editorOps";
+import {addRule, cloneRule, deleteRule, getSafeIndex, updateRule} from "./editorOps";
 import {CollapsibleSection} from "../../../ui/CollapsibleSection";
 
-export function RulesetEditor({ ruleset, onChange }) {
+export function RulesetEditor({ ruleset, onChange, unsavedChanges }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -25,14 +25,15 @@ export function RulesetEditor({ ruleset, onChange }) {
     if (!rule) return null;
 
     return (
-        <CollapsibleSection title="Ruleset Editor" changed={false} >
+        <CollapsibleSection title="Ruleset Editor" changed={unsavedChanges} >
             <div style={{
                 ...styles.editor,
                 ...(isDark ? styles.editorDark : styles.editorLight)
             }}>
                 <RuleList rules={draft.rules} selectedRule={safeIndex} onSelect={setSelectedRule}
                           onAdd={() => addRule(draft, setDraft, onChange, setSelectedRule)}
-                          onDelete={() => deleteRule(safeIndex, draft, setDraft, onChange, setSelectedRule)}/>
+                          onDelete={() => deleteRule(safeIndex, draft, setDraft, onChange, setSelectedRule)}
+                          onClone={(r) => cloneRule(r, draft, setDraft, onChange)} />
 
                 <RuleForm rule={rule} onChange={(r) => updateRule(safeIndex, r, draft, setDraft, onChange)}/>
             </div>

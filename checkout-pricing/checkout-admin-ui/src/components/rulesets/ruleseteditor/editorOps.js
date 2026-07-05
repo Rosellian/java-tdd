@@ -9,8 +9,8 @@ export function updateRule(index, updatedRule, draft, setDraft, onChange) {
 }
 
 export function addRule(draft, setDraft, onChange, setSelectedRule) {
-    const newRule = {type: "SpecialPrice", name: "New Rule", sku: "", quantity: 1, price: 0,
-        priority: 1, stackable: false};
+    const newRule = {type: "SpecialPrice", id: crypto.randomUUID(), name: "New Rule", sku: "", quantity: 1,
+        price: 0, priority: 1, stackable: false};
 
     const newDraft = { ...draft, rules: [...draft.rules, newRule] };
 
@@ -31,4 +31,24 @@ export function deleteRule(index, draft, setDraft, onChange, setSelectedRule) {
 
 export function getSafeIndex(selectedRule, draft) {
     return Math.min(selectedRule, draft.rules.length - 1);
+}
+
+export function cloneRule(rule, draft, setDraft, onChange) {
+    const cloned = {
+        ...rule,
+        id: crypto.randomUUID(),
+        name: rule.name + " (copy)"
+    };
+
+    const index = draft.rules.findIndex(r => r.id === rule.id);
+    const newRules = [
+        ...draft.rules.slice(0, index + 1),
+        cloned,
+        ...draft.rules.slice(index + 1)
+    ];
+
+    const updated = { ...draft, rules: newRules };
+
+    setDraft(updated);
+    onChange(updated);
 }

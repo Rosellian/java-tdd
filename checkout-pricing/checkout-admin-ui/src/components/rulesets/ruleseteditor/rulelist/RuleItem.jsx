@@ -1,6 +1,6 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
 
-export function RuleItem({ i, rule, isSelected, onSelect }) {
+export function RuleItem({ i, rule, isSelected, onSelect, onClone }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -10,6 +10,13 @@ export function RuleItem({ i, rule, isSelected, onSelect }) {
             ...getSelectedItemStyle(i, isSelected, isDark)
         }}>
             {rule.name}
+            <button
+                style={styles.cloneButton}
+                onClick={() => onClone(rule)}
+            >
+                Clone
+            </button>
+
         </div>
     )
 }
@@ -46,5 +53,13 @@ const styles = {
     itemSelectedLight: {
         background: "#D9C4FF",
         color: "#3A1F6B"
+    },
+    cloneButton: {
+        padding: "4px 8px",
+        marginLeft: "8px",
+        borderRadius: "4px",
+        background: "var(--btn-secondary)",
+        color: "var(--text-primary)",
+        cursor: "pointer"
     }
 }
