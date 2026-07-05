@@ -33,7 +33,7 @@ export function getSafeIndex(selectedRule, draft) {
     return Math.min(selectedRule, draft.rules.length - 1);
 }
 
-export function cloneRule(rule, draft, setDraft, onChange) {
+export function cloneRule(rule, draft, ruleRefs, updateAfterClone) {
     const cloned = {
         ...rule,
         id: crypto.randomUUID(),
@@ -41,6 +41,7 @@ export function cloneRule(rule, draft, setDraft, onChange) {
     };
 
     const index = draft.rules.findIndex(r => r.id === rule.id);
+
     const newRules = [
         ...draft.rules.slice(0, index + 1),
         cloned,
@@ -49,6 +50,22 @@ export function cloneRule(rule, draft, setDraft, onChange) {
 
     const updated = { ...draft, rules: newRules };
 
-    setDraft(updated);
-    onChange(updated);
+    updateAfterClone(index +1 , updated);
+
+    focusOnClone(ruleRefs, cloned);
+}
+
+function focusOnClone(ruleRefs, clone) {
+    setTimeout(() => {
+        const el = ruleRefs.current[clone.id];
+        if (!el) return;
+
+        el.scrollIntoView({behavior: "smooth", block: "center"});
+
+        el.classList.add("rule-highlight");
+        setTimeout(() => el.classList.remove("rule-highlight"), 1200);
+
+        const firstInput = el.querySelector("input, textarea, select");
+        if (firstInput) firstInput.focus();
+    }, 50);
 }

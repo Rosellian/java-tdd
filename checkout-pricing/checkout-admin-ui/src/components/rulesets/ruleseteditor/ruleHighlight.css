@@ -1,0 +1,17 @@
+.rule-highlight {
+    animation: ruleFlash 1.2s ease-out;
+}
+
+@keyframes ruleFlash {
+    0%   { background-color: rgba(255, 255, 0, 0.4); }
+    100% { background-color: transparent; }
+}
+
+[data-theme="dark"] .rule-highlight {
+    animation: ruleFlashDark 1.2s ease-out;
+}
+
+@keyframes ruleFlashDark {
+    0%   { background-color: rgba(0, 150, 255, 0.4); }
+    100% { background-color: transparent; }
+}

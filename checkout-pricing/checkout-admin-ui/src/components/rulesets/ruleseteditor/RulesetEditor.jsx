@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {RuleList} from "./rulelist/RuleList";
 import {RuleForm} from "./ruleform/RuleForm";
@@ -11,11 +11,18 @@ export function RulesetEditor({ ruleset, onChange, unsavedChanges }) {
 
     const [selectedRule, setSelectedRule] = useState(0);
     const [draft, setDraft] = useState(ruleset);
+    const ruleRefs = useRef({});
 
     useEffect(() => {
         setDraft(ruleset);
         setSelectedRule(0);
     }, [ruleset]);
+
+    function updateAfterClone(cloneIndex, updatedRuleset) {
+        setDraft(updatedRuleset);
+        onChange(updatedRuleset);
+        setSelectedRule(cloneIndex);
+    }
 
     if (!draft || !Array.isArray(draft.rules)) return null;
 
@@ -30,10 +37,10 @@ export function RulesetEditor({ ruleset, onChange, unsavedChanges }) {
                 ...styles.editor,
                 ...(isDark ? styles.editorDark : styles.editorLight)
             }}>
-                <RuleList rules={draft.rules} selectedRule={safeIndex} onSelect={setSelectedRule}
+                <RuleList rules={draft.rules} selectedRule={safeIndex} ruleRefs={ruleRefs} onSelect={setSelectedRule}
                           onAdd={() => addRule(draft, setDraft, onChange, setSelectedRule)}
                           onDelete={() => deleteRule(safeIndex, draft, setDraft, onChange, setSelectedRule)}
-                          onClone={(r) => cloneRule(r, draft, setDraft, onChange)} />
+                          onClone={(r) => cloneRule(r, draft, ruleRefs, updateAfterClone)} />
 
                 <RuleForm rule={rule} onChange={(r) => updateRule(safeIndex, r, draft, setDraft, onChange)}/>
             </div>

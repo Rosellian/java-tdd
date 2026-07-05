@@ -1,25 +1,31 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
+import React from "react";
 
-export function RuleItem({ i, rule, isSelected, onSelect, onClone }) {
+export const RuleItem = React.forwardRef(({ i, rule, isSelected, onSelect, onClone },
+                                          ref) => {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
     return (
-        <div key={i} onClick={() => onSelect(i)} style={{
+        <div ref={ref} key={i} onClick={() => onSelect(i)} style={{
             ...styles.item,
             ...getSelectedItemStyle(i, isSelected, isDark)
         }}>
             {rule.name}
+
             <button
                 style={styles.cloneButton}
-                onClick={() => onClone(rule)}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    onClone(rule);
+                }}
             >
                 Clone
             </button>
 
         </div>
     )
-}
+})
 
 function getSelectedItemStyle(i, isSelected, isDark) {
     let shouldApplySelectedStyle = i === isSelected;
@@ -33,7 +39,10 @@ function getSelectedItemStyle(i, isSelected, isDark) {
 
 const styles = {
     item: {
-        padding: "6px 10px",
+        display: "grid",
+        gridTemplateColumns: "1fr auto",
+        alignItems: "center",
+        padding: 5,
         borderRadius: 4,
         cursor: "pointer",
         transition: "background 0.2s ease, color 0.2s ease"
@@ -55,9 +64,7 @@ const styles = {
         color: "#3A1F6B"
     },
     cloneButton: {
-        padding: "4px 8px",
-        marginLeft: "8px",
-        borderRadius: "4px",
+        borderRadius: 10,
         background: "var(--btn-secondary)",
         color: "var(--text-primary)",
         cursor: "pointer"

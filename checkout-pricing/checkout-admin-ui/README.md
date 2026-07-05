@@ -776,6 +776,12 @@ Two versions are created as prototypes:
   - selected and rulesetNames to entries instead of just name
 - Adding diff view component for rulesets
 - Clone a rule function
+  - Better layout with button
+  - Extra feature details
+    - Scroll to clone
+    - Open(select) in edit mode
+    - Highlight with animation
+    - Autofocus on first field (name)
 
 ### Current structure
 ```

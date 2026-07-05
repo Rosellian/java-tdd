@@ -1,25 +1,27 @@
 import {RuleItem} from "./RuleItem";
 import {ButtonPanel} from "./ButtonPanel";
 
-export function RuleList({ rules, selectedRule, onSelect, onAdd, onDelete, onClone }) {
+export function RuleList({ rules, selectedRule, ruleRefs, onSelect, onAdd, onDelete, onClone }) {
     return (
         <div style={styles.wrapper}>
             <h3 style={styles.title}>
                 Rules
             </h3>
 
-            <RuleItemList rules={rules} selectedRule={selectedRule} onSelect={onSelect} onClone={onClone} />
+            <RuleItemList rules={rules} selectedRule={selectedRule} ruleRefs={ruleRefs}
+                          onSelect={onSelect} onClone={onClone} />
 
             <ButtonPanel onAdd={onAdd} onDelete={() => onDelete(selectedRule)} />
         </div>
     )
 }
 
-function RuleItemList({ rules, selectedRule, onSelect, onClone }) {
+function RuleItemList({ rules, selectedRule, ruleRefs, onSelect, onClone }) {
     return (
         <div style={styles.listContainer}>
-            {rules.map((rule, i) => ( //TODO add id to rules to supply a unique key
-                <RuleItem key={i} i={i} rule={rule} isSelected={selectedRule} onSelect={onSelect} onClone={onClone} />
+            {rules.map((rule, i) => (
+                <RuleItem ref={el => ruleRefs.current[rule.id] = el} key={i} i={i} rule={rule} isSelected={selectedRule}
+                          onSelect={onSelect} onClone={onClone} />
             ))}
         </div>
     )
