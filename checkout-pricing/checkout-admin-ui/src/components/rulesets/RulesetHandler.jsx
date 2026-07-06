@@ -8,6 +8,7 @@ import {initRulesets, setChanges, setLoadedRuleset, updateChanges, updateRuleset
 import {StatusBar} from "./status/StatusBar";
 import {Inputs} from "./input/Inputs";
 import {createEntry} from "./functions/rulesetFuncs";
+import {RulePreview} from "./preview/RulePreview";
 
 export function RulesetHandler({ onRulesetChange }) {
     const { theme } = useTheme();
@@ -79,14 +80,20 @@ export function RulesetHandler({ onRulesetChange }) {
             ...handlerStyles.wrapper,
             ...(isDark ? handlerStyles.wrapperDark : handlerStyles.wrapperLight)
         }}>
-            <div style={handlerStyles.handler}>
-                <Inputs ruleset={ruleset} rulesetEntries={rulesetEntries} unsavedChanges={unsavedChanges}
-                        isDraft={isDraft} selected={selected} setSelected={setSelected}
-                        onDiscardConfirm={onDiscardConfirm} triggerUpdateRulesetName={triggerUpdateRulesetName} />
+            <div style={handlerStyles.topRow}>
+                <div style={handlerStyles.leftTop}>
+                    <Inputs ruleset={ruleset} rulesetEntries={rulesetEntries} unsavedChanges={unsavedChanges}
+                            isDraft={isDraft} selected={selected} setSelected={setSelected}
+                            onDiscardConfirm={onDiscardConfirm} triggerUpdateRulesetName={triggerUpdateRulesetName} />
 
-                <ButtonPanel status={status} setStatus={setStatus} selected={selected} isDraft={isDraft}
-                             unsavedChanges={unsavedChanges} ruleset={ruleset} rulesetEntries={rulesetEntries}
-                             onLoad={onLoad} onSave={onSave} onDelete={onDelete} onNew={onNew} />
+                    <ButtonPanel status={status} setStatus={setStatus} selected={selected} isDraft={isDraft}
+                                 unsavedChanges={unsavedChanges} ruleset={ruleset} rulesetEntries={rulesetEntries}
+                                 onLoad={onLoad} onSave={onSave} onDelete={onDelete} onNew={onNew} />
+                </div>
+
+                <div style={handlerStyles.rightTop}>
+                    <RulePreview ruleset={ruleset} />
+                </div>
             </div>
 
             <StatusBar status={status} fallbackUsed={fallbackUsed} isDraft={isDraft} unsavedChanges={unsavedChanges}
@@ -95,6 +102,7 @@ export function RulesetHandler({ onRulesetChange }) {
             <div style={handlerStyles.editorWrapper}>
                 <RulesetEditor ruleset={ruleset} onChange={onEdit} unsavedChanges={unsavedChanges} />
             </div>
+
         </div>
     )
 }

@@ -51,7 +51,7 @@ export function RulesetEditor({ ruleset, onChange, unsavedChanges }) {
 const styles = {
     editor: {
         display: "grid",
-        gridTemplateColumns: "250px 1fr 1fr",
+        gridTemplateColumns: "250px 1fr",
         gap: 16,
         padding: 16,
         borderRadius: 8,

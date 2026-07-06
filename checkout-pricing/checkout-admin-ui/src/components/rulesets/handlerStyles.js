@@ -2,7 +2,8 @@ export const handlerStyles = {
     wrapper: {
         display: "flex",
         flexDirection: "column",
-        width: "fit-content",
+        width: "100%",
+        maxWidth: "825px",
         gap: 16,
         padding: 16,
         borderRadius: 6,
@@ -15,13 +16,22 @@ export const handlerStyles = {
     wrapperLight: {
         background: "#f5f5f5"
     },
-    handler: {
+    topRow: {
+        display: "grid",
+        gridTemplateColumns: "1fr 450px",
+        gap: 16,
+        width: "100%",
+        maxWidth: 800,
+        alignSelf: "stretch",
+        justifySelf: "flex-start"
+    },
+    leftTop: {
         display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        width: "fit-content",
-        alignSelf: "flex-start",
-        gap: 16
+        gap: 12
+    },
+    rightTop: {
+        display: "flex",
+        minWidth: 260
     },
     editorWrapper: {
         width: "100%",
