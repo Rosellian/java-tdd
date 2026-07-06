@@ -782,6 +782,8 @@ Two versions are created as prototypes:
     - Open(select) in edit mode
     - Highlight with animation
     - Autofocus on first field (name)
+- New RulesetHandler and Editor layout TODO
+- Better layout for add SKU form in cart editor
 
 ### Current structure
 ```

@@ -37,9 +37,11 @@ const styles = {
     addRow: {
         marginTop: 10,
         display: "flex",
+        flexDirection: "column",
         gap: 5
     },
     addButton: {
+        width: 50,
         border: "none",
         padding: "5px 10px",
         borderRadius: 4,
