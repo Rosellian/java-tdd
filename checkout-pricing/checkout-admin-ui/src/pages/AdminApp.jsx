@@ -36,7 +36,7 @@ export default function AdminApp() {
 
             <div style={styles.controls}>
                 <div style={styles.row}>
-                    <RulesetHandler onRulesetChange={setRuleset} />
+                    <RulesetHandler onRulesetChange={setRuleset} priceList={priceList} />
 
                     <PriceListHandler onPriceListChange={setPriceList} />
                 </div>

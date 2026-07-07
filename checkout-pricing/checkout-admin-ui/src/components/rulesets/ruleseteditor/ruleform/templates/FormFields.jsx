@@ -1,4 +1,6 @@
 import {useTheme} from "../../../../../ui/theme/ThemeProvider";
+import {Field, FieldGroup} from "./Fields";
+import {templateStyles} from "./templateStyles";
 
 export function TextInput({ label, field, value, update, width }) {
     return (
@@ -7,10 +9,10 @@ export function TextInput({ label, field, value, update, width }) {
     )
 }
 
-export function NumberInput({ label, field, value, update, width }) {
+export function NumberInput({ label, field, value, update, width, disabled = false }) {
     return (
         <Field type="number" label={label} value={value} width={width ?? 50}
-               onChange={(e) => update(field, Number(e.target.value))} />
+               onChange={(e) => update(field, Number(e.target.value))} disabled={disabled} />
     )
 }
 
@@ -24,8 +26,8 @@ export function StackableField({ rule, update}) {
         <FieldGroup label="Stackable">
             <select title={title} name={title}
                 style={{
-                    ...styles.input,
-                    ...(isDark ? styles.inputDark : styles.inputLight),
+                    ...templateStyles.input,
+                    ...(isDark ? templateStyles.inputDark : templateStyles.inputLight),
                     width: 55
                 }}
                 value={rule.stackable ? "true" : "false"}
@@ -36,66 +38,4 @@ export function StackableField({ rule, update}) {
             </select>
         </FieldGroup>
     )
-}
-
-function Field({ type, label, value, onChange, width = 150 }) {
-    const { theme } = useTheme();
-    let isDark = theme === "dark";
-    let title = `${label}Input`;
-
-    return (
-        <FieldGroup label={label}>
-            <input name={title} title={title}
-                style={{
-                    ...styles.input,
-                    ...(isDark ? styles.inputDark : styles.inputLight),
-                    width: width
-                }}
-                type={!type ? "text" : type}
-                min={type === "number" ? 0 : undefined}
-                value={value}
-                onChange={onChange}
-            />
-        </FieldGroup>
-    )
-}
-
-function FieldGroup({ label, children }) {
-    return (
-        <div style={styles.field}>
-            <span style={styles.label}>{label}</span>
-            <label>
-                {children}
-            </label>
-        </div>
-    )
-}
-
-const styles = {
-    field: {
-        display: "flex",
-        flexDirection: "column"
-    },
-    label: {
-        marginBottom: 4,
-        fontSize: "0.85rem",
-        whiteSpace: "nowrap",
-        opacity: 0.8
-    },
-    input: {
-        padding: "6px 8px",
-        borderRadius: 4,
-        border: "1px solid",
-        transition: "background 0.3s ease, color 0.3s ease, border-color 0.3s ease"
-    },
-    inputDark: {
-        background: "#1E1E1E",
-        borderColor: "#444",
-        color: "#E0E0E0"
-    },
-    inputLight: {
-        background: "#FFFFFF",
-        borderColor: "#CCC",
-        color: "#000000"
-    }
 }

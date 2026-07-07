@@ -784,6 +784,7 @@ Two versions are created as prototypes:
     - Autofocus on first field (name)
 - Better layout for add SKU form in cart editor
 - Adding Ruleset preview to RulesetHandler
+- Locking and auto updating buy price for Buy X Get Y at Discount rule
 
 ### Current structure
 ```

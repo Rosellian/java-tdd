@@ -64,7 +64,7 @@ export function updatePriceList(priceList, setPriceList, setSelected, onPriceLis
     setPriceList(priceList);
     let entry = createEntry(priceList);
     setSelected(entry);
-    onPriceListChange(entry);
+    onPriceListChange(priceList);
 }
 
 export function setLoadedPriceList(setOriginalPriceList, priceList, setFallbackUsed, fallback) {

@@ -10,7 +10,7 @@ import {Inputs} from "./input/Inputs";
 import {createEntry} from "./functions/rulesetFuncs";
 import {RulePreview} from "./preview/RulePreview";
 
-export function RulesetHandler({ onRulesetChange }) {
+export function RulesetHandler({ onRulesetChange, priceList }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -100,7 +100,8 @@ export function RulesetHandler({ onRulesetChange }) {
                        ruleset={ruleset} originalRuleset={originalRuleset} />
 
             <div style={handlerStyles.editorWrapper}>
-                <RulesetEditor ruleset={ruleset} onChange={onEdit} unsavedChanges={unsavedChanges} />
+                <RulesetEditor ruleset={ruleset} onChange={onEdit} unsavedChanges={unsavedChanges}
+                               priceList={priceList} />
             </div>
 
         </div>
