@@ -1,15 +1,17 @@
 import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 import {InputField} from "./InputField";
 
-export function PriceRow({ item, onChange, onDelete }) {
+export function PriceRow({ item, originalItem, onChange, onDelete }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
+
+    let isChanged = originalItem &&  item.price !== originalItem.price;
 
     return (
         <div style={styles.row}>
             <InputField placeholder="SKU" value={item.sku} onChange={(e) => onChange("sku", e.target.value)}/>
 
-            <InputField placeholder="Price" type="number" value={item.price} width={50}
+            <InputField placeholder="Price" type="number" value={item.price} width={50} isChanged={isChanged}
                         onChange={(e) => onChange("price", parseFloat(e.target.value))}/>
 
             <button onClick={onDelete}

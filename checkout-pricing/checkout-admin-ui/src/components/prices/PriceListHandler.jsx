@@ -93,7 +93,8 @@ export function PriceListHandler({ onPriceListChange }) {
                        priceList={priceList} originalPriceList={originalPriceList} />
 
             <div style={handlerStyles.editorWrapper}>
-                <PriceListEditor priceList={priceList} onChange={onEdit} />
+                <PriceListEditor priceList={priceList} originalPriceList={originalPriceList}
+                                 unsavedChanges={unsavedChanges} onChange={onEdit} />
             </div>
         </div>
     )

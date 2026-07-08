@@ -785,6 +785,8 @@ Two versions are created as prototypes:
 - Better layout for add SKU form in cart editor
 - Adding Ruleset preview to RulesetHandler
 - Locking and auto updating buy price for Buy X Get Y at Discount rule
+- Adding highlighting for edited fields
+  - Price list editor
 
 ### Current structure
 ```

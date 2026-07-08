@@ -3,14 +3,14 @@ import {PriceRowList} from "./pricerowlist/PriceRowList";
 import {addItem} from "./editorOps";
 import {CollapsibleSection} from "../../../ui/CollapsibleSection";
 
-export function PriceListEditor({ priceList, onChange }) {
+export function PriceListEditor({ priceList, originalPriceList, unsavedChanges, onChange }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
     if (!priceList || !Array.isArray(priceList.unitPrices)) return null;
 
     return (
-        <CollapsibleSection title="Price List Editor" changed={false}>
+        <CollapsibleSection title="Price List Editor" changed={unsavedChanges}>
             <div style={{
                 ...styles.box,
                 ...(isDark ? styles.boxDark : styles.boxLight)
@@ -22,7 +22,7 @@ export function PriceListEditor({ priceList, onChange }) {
                     Unit Prices
                 </h3>
 
-                <PriceRowList priceList={priceList} onChange={onChange} />
+                <PriceRowList priceList={priceList} originalPriceList={originalPriceList} onChange={onChange} />
 
                 <button onClick={() => addItem(priceList, onChange)}
                         style={{
