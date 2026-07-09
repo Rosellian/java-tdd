@@ -63,7 +63,7 @@ export function updateRuleset(ruleset, setRuleset, setSelected, onRulesetChange)
     setRuleset(ruleset);
     let entry = createEntry(ruleset);
     setSelected(entry);
-    onRulesetChange(entry);
+    onRulesetChange(ruleset);
 }
 
 export function setLoadedRuleset(setOriginalRuleset, ruleset, setFallbackUsed, fallback) {

@@ -5,7 +5,7 @@ import {RuleForm} from "./ruleform/RuleForm";
 import {addRule, cloneRule, deleteRule, getSafeIndex, updateRule} from "./editorOps";
 import {CollapsibleSection} from "../../../ui/CollapsibleSection";
 
-export function RulesetEditor({ ruleset, onChange, unsavedChanges, priceList }) {
+export function RulesetEditor({ ruleset, originalRuleset, unsavedChanges, priceList, onChange }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -31,6 +31,8 @@ export function RulesetEditor({ ruleset, onChange, unsavedChanges, priceList }) 
 
     if (!rule) return null;
 
+    let originalRule = originalRuleset?.rules?.[safeIndex];
+
     return (
         <CollapsibleSection title="Ruleset Editor" changed={unsavedChanges} >
             <div style={{
@@ -42,7 +44,7 @@ export function RulesetEditor({ ruleset, onChange, unsavedChanges, priceList }) 
                           onDelete={() => deleteRule(safeIndex, draft, setDraft, onChange, setSelectedRule)}
                           onClone={(r) => cloneRule(r, draft, ruleRefs, updateAfterClone)} />
 
-                <RuleForm rule={rule} priceList={priceList}
+                <RuleForm rule={rule} originalRule={originalRule} priceList={priceList}
                           onChange={(r) => updateRule(safeIndex, r, draft, setDraft, onChange)}/>
             </div>
         </CollapsibleSection>

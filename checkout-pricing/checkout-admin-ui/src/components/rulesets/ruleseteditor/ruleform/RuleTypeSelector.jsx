@@ -1,8 +1,12 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
+import {getBorder} from "./changeHighlighting";
 
-export function RuleTypeSelector({ value, onChange }) {
+export function RuleTypeSelector({ value, originalValue, onChange }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
+
+    let changed = value !== originalValue;
+    let border = getBorder(isDark, changed);
 
     let title = "RuleTypeSelection";
 
@@ -20,7 +24,9 @@ export function RuleTypeSelector({ value, onChange }) {
                         onChange={(e) => onChange(e.target.value)}
                         style={{
                             ...styles.select,
-                            ...(isDark ? styles.selectDark : styles.selectLight)
+                            ...(isDark ? styles.selectDark : styles.selectLight),
+                            ...border
+
                         }}>
                     <option value="SpecialPrice">Special Price</option>
                     <option value="BuyXGetYFree">Buy X Get Y Free</option>
@@ -53,7 +59,6 @@ const styles = {
     select: {
         padding: "6px 8px",
         borderRadius: 4,
-        border: "1px solid #444",
         fontSize: "0.95rem",
         transition: "background 0.3s ease, color 0.3s ease"
     },

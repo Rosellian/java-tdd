@@ -787,6 +787,7 @@ Two versions are created as prototypes:
 - Locking and auto updating buy price for Buy X Get Y at Discount rule
 - Adding highlighting for edited fields
   - Price list editor
+  - Ruleset editor
 
 ### Current structure
 ```

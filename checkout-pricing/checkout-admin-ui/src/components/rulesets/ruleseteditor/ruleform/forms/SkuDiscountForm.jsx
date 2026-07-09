@@ -1,7 +1,7 @@
 import {FormTemplate} from "../templates/FormTemplate";
 import {NumberInput, TextInput} from "../templates/FormFields";
 
-export function SkuDiscountForm({ rule, onChange }) {
+export function SkuDiscountForm({ rule, originalRule, onChange }) {
 
     function update(field, value) {
         onChange({ ...rule, [field]: value });
@@ -9,12 +9,16 @@ export function SkuDiscountForm({ rule, onChange }) {
 
     return (
         <FormTemplate title="Sku Discount">
-            <TextInput label="Name" field="name" value={rule.name} update={update} />
-            <TextInput label="SKU" field="sku" value={rule.sku} update={update} />
+            <TextInput label="Name" field="name" value={rule.name} changed={rule.name !== originalRule.name}
+                       update={update} />
+            <TextInput label="SKU" field="sku" value={rule.sku} changed={rule.sku !== originalRule.sku}
+                       update={update} />
 
-            <NumberInput label="Discount" field="discount" value={rule.discount} update={update} />
+            <NumberInput label="Discount" field="discount" value={rule.discount}
+                         changed={rule.discount !== originalRule.discount} update={update} />
 
-            <NumberInput label="Priority" field="priority" value={rule.priority} update={update} />
+            <NumberInput label="Priority" field="priority" value={rule.priority}
+                         changed={rule.priority !== originalRule.priority} update={update} />
         </FormTemplate>
     )
 }

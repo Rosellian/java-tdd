@@ -1,10 +1,14 @@
 import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 import {templateStyles} from "./templateStyles";
+import {getBorder} from "../changeHighlighting";
 
-export function Field({ type, label, value, onChange, width = 150, disabled = false }) {
+export function Field({ type, label, value, changed = false, width = 150, disabled = false,
+                          onChange }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
     let title = `${label}Input`;
+
+    let border = getBorder(isDark, changed)
 
     return (
         <FieldGroup label={label}>
@@ -12,7 +16,8 @@ export function Field({ type, label, value, onChange, width = 150, disabled = fa
                    style={{
                        ...templateStyles.input,
                        ...(isDark ? templateStyles.inputDark : templateStyles.inputLight),
-                       width: width
+                       width: width,
+                       ...border
                    }}
                    disabled={disabled}
                    type={!type ? "text" : type}

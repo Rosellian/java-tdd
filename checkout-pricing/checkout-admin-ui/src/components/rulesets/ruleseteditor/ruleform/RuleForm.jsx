@@ -6,7 +6,7 @@ import {BuyXGetYDiscountForm} from "./forms/BuyXGetYDiscountForm";
 import {CrossSkuBuyXGetYFreeForm} from "./forms/CrossSkuBuyXGetYFreeForm";
 import {CrossSkuBuyXGetYDiscountForm} from "./forms/CrossSkuBuyXGetYDiscountForm";
 
-export function RuleForm({ rule, priceList, onChange }) {
+export function RuleForm({ rule, originalRule, priceList, onChange }) {
     if (!rule) return null;
 
     function update(field, value) {
@@ -15,10 +15,11 @@ export function RuleForm({ rule, priceList, onChange }) {
 
     return (
         <div>
-            <RuleTypeSelector value={rule.type} onChange={(newType) => update("type", newType)} />
+            <RuleTypeSelector value={rule.type} originalValue={originalRule?.type}
+                              onChange={(newType) => update("type", newType)} />
 
             {rule.type === "SpecialPrice" && (
-                <SpecialPriceForm rule={rule} onChange={onChange} />
+                <SpecialPriceForm rule={rule} originalRule={originalRule} onChange={onChange} />
             )}
 
             {rule.type === "BuyXGetYFree" && (
@@ -45,7 +46,6 @@ export function RuleForm({ rule, priceList, onChange }) {
 }
 
 function getUnitPrice(priceList, sku) {
-    console.log(priceList, sku);
     if (!priceList || !priceList.unitPrices) return 0;
 
     let skuEntry = priceList.unitPrices.find(price => price.sku === sku);

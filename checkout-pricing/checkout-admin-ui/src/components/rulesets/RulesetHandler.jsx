@@ -100,8 +100,8 @@ export function RulesetHandler({ onRulesetChange, priceList }) {
                        ruleset={ruleset} originalRuleset={originalRuleset} />
 
             <div style={handlerStyles.editorWrapper}>
-                <RulesetEditor ruleset={ruleset} onChange={onEdit} unsavedChanges={unsavedChanges}
-                               priceList={priceList} />
+                <RulesetEditor ruleset={ruleset} originalRuleset={originalRuleset} unsavedChanges={unsavedChanges}
+                               priceList={priceList} onChange={onEdit} />
             </div>
 
         </div>
