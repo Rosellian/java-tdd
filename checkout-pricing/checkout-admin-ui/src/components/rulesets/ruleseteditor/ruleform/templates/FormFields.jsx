@@ -1,7 +1,7 @@
 import {useTheme} from "../../../../../ui/theme/ThemeProvider";
 import {Field, FieldGroup} from "./Fields";
 import {templateStyles} from "./templateStyles";
-import {getBorder} from "../changeHighlighting";
+import {getBorder, isChanged} from "../changeHighlighting";
 
 export function TextInput({ label, field, value, changed = false, width, update }) {
     return (
@@ -24,7 +24,7 @@ export function StackableField({ rule, originalRule, update}) {
 
     let title = "StackableSelection";
 
-    let changed = originalRule && (rule.stackable !== originalRule.stackable);
+    let changed = isChanged(rule, originalRule, "stackable");
     let border = getBorder(isDark, changed);
 
     return (

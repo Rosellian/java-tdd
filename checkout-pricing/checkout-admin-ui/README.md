@@ -788,6 +788,8 @@ Two versions are created as prototypes:
 - Adding highlighting for edited fields
   - Price list editor
   - Ruleset editor
+  - Fixing undefined property read bugs when switching rules and rule types.
+  - Fixing auto select first rule in list bug
 
 ### Current structure
 ```

@@ -15,7 +15,6 @@ export function RulesetEditor({ ruleset, originalRuleset, unsavedChanges, priceL
 
     useEffect(() => {
         setDraft(ruleset);
-        setSelectedRule(0);
     }, [ruleset]);
 
     function updateAfterClone(cloneIndex, updatedRuleset) {
