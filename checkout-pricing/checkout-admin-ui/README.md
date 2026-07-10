@@ -799,6 +799,12 @@ Two versions are created as prototypes:
 ### Extra ruleset functionality
 - Export / import of rulesets
 
+### Extra price list functionality
+- Export / import of price lists
+
+### Refactoring
+
+
 ### Current structure
 ```
 

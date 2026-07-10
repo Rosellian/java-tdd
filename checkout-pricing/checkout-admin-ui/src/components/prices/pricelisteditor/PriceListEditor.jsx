@@ -2,6 +2,7 @@ import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {PriceRowList} from "./pricerowlist/PriceRowList";
 import {addItem} from "./editorOps";
 import {CollapsibleSection} from "../../../ui/CollapsibleSection";
+import {PriceListJsonLoader} from "./loader/PriceListJsonLoader";
 
 export function PriceListEditor({ priceList, originalPriceList, unsavedChanges, onChange }) {
     const { theme } = useTheme();
@@ -10,7 +11,11 @@ export function PriceListEditor({ priceList, originalPriceList, unsavedChanges, 
     if (!priceList || !Array.isArray(priceList.unitPrices)) return null;
 
     return (
-        <CollapsibleSection title="Price List Editor" changed={unsavedChanges}>
+        <CollapsibleSection title="Price List Editor" changed={unsavedChanges}
+                            rightContent={<PriceListJsonLoader priceList={priceList}
+                                                               onImport={(json) => onChange(json)}
+                            />}
+        >
             <div style={{
                 ...styles.box,
                 ...(isDark ? styles.boxDark : styles.boxLight)
