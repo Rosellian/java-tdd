@@ -14,9 +14,8 @@ export const RuleItem = React.forwardRef(({ i, rule, changed, isSelected, onSele
             <span style={{
                 ...styles.badge,
                 visibility: changed ? "visible" : "hidden",
-            }}>
-                ●
-            </span>
+                animation: changed ? "ruleChangedPulse 0.45s ease-out" : "none"
+            }} />
 
             {rule.name}
 
@@ -72,11 +71,12 @@ const styles = {
     },
     badge: {
         border: "2px solid #FFB300",
-        color: "#FFB300",
-        borderRadius: 4,
-        fontSize: 12,
-        marginRight: 6,
-        opacity: 0.9
+        width: 8,
+        height: 8,
+        borderRadius: "50%",
+        background: "#FFB300",
+        boxShadow: "0 0 6px #FFB300",
+        marginLeft: 3
     },
     cloneButton: {
         borderRadius: 10,

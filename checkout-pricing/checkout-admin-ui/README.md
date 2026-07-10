@@ -792,6 +792,8 @@ Two versions are created as prototypes:
   - Fixing auto select first rule in list bug
   - Fixing bug with originalRule vs selected draft rule change
   - Adding changed badge to rules in RuleList
+    - New style
+    - Animation
 
 ### Current structure
 ```
