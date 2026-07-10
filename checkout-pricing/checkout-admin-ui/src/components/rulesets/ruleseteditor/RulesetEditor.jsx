@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {RuleList} from "./rulelist/RuleList";
 import {RuleForm} from "./ruleform/RuleForm";
@@ -23,6 +23,8 @@ export function RulesetEditor({ ruleset, originalRuleset, unsavedChanges, priceL
         setSelectedRule(cloneIndex);
     }
 
+    const originalRules = useMemo(() => mapRuleset(originalRuleset), [originalRuleset]);
+
     if (!draft || !Array.isArray(draft.rules)) return null;
 
     const safeIndex = getSafeIndex(selectedRule, draft);
@@ -30,7 +32,7 @@ export function RulesetEditor({ ruleset, originalRuleset, unsavedChanges, priceL
 
     if (!rule) return null;
 
-    let originalRule = originalRuleset?.rules?.[safeIndex];
+    let originalRule = originalRules[rule.id];
 
     return (
         <CollapsibleSection title="Ruleset Editor" changed={unsavedChanges} >
@@ -38,7 +40,8 @@ export function RulesetEditor({ ruleset, originalRuleset, unsavedChanges, priceL
                 ...styles.editor,
                 ...(isDark ? styles.editorDark : styles.editorLight)
             }}>
-                <RuleList rules={draft.rules} selectedRule={safeIndex} ruleRefs={ruleRefs} onSelect={setSelectedRule}
+                <RuleList rules={draft.rules} originalRules={originalRules} selectedRule={safeIndex} ruleRefs={ruleRefs}
+                          onSelect={setSelectedRule}
                           onAdd={() => addRule(draft, setDraft, onChange, setSelectedRule)}
                           onDelete={() => deleteRule(safeIndex, draft, setDraft, onChange, setSelectedRule)}
                           onClone={(r) => cloneRule(r, draft, ruleRefs, updateAfterClone)} />
@@ -48,6 +51,17 @@ export function RulesetEditor({ ruleset, originalRuleset, unsavedChanges, priceL
             </div>
         </CollapsibleSection>
     )
+}
+
+function mapRuleset(ruleset) {
+    if (!ruleset) return {};
+
+    const map = {};
+    for (const rule of ruleset.rules) {
+        map[rule.id] = rule;
+    }
+
+    return map;
 }
 
 const styles = {

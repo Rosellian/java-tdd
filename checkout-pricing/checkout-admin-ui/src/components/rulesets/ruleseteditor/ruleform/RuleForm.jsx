@@ -23,23 +23,24 @@ export function RuleForm({ rule, originalRule, priceList, onChange }) {
             )}
 
             {rule.type === "BuyXGetYFree" && (
-                <BuyXGetYFreeForm rule={rule} onChange={onChange} />
+                <BuyXGetYFreeForm rule={rule} originalRule={originalRule} onChange={onChange} />
             )}
 
             {rule.type === "BuyXGetYDiscount" && (
-                <BuyXGetYDiscountForm rule={rule} unitPrice={getUnitPrice(priceList, rule.sku)} onChange={onChange} />
+                <BuyXGetYDiscountForm rule={rule} originalRule={originalRule}
+                                      unitPrice={getUnitPrice(priceList, rule.sku)} onChange={onChange} />
             )}
 
             {rule.type === "SkuDiscount" && (
-                <SkuDiscountForm rule={rule} onChange={onChange} />
+                <SkuDiscountForm rule={rule} originalRule={originalRule} onChange={onChange} />
             )}
 
             {rule.type === "CrossSkuBuyXGetYFree" && (
-                <CrossSkuBuyXGetYFreeForm rule={rule} onChange={onChange} />
+                <CrossSkuBuyXGetYFreeForm rule={rule} originalRule={originalRule} onChange={onChange} />
             )}
 
             {rule.type === "CrossSkuBuyXGetYDiscount" && (
-                <CrossSkuBuyXGetYDiscountForm rule={rule} onChange={onChange} />
+                <CrossSkuBuyXGetYDiscountForm rule={rule} originalRule={originalRule} onChange={onChange} />
             )}
         </div>
     )

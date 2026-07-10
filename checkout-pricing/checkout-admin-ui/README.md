@@ -790,6 +790,8 @@ Two versions are created as prototypes:
   - Ruleset editor
   - Fixing undefined property read bugs when switching rules and rule types.
   - Fixing auto select first rule in list bug
+  - Fixing bug with originalRule vs selected draft rule change
+  - Adding changed badge to rules in RuleList
 
 ### Current structure
 ```

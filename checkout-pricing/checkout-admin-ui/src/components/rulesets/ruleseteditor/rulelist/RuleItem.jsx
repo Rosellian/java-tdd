@@ -1,8 +1,8 @@
 import {useTheme} from "../../../../ui/theme/ThemeProvider";
 import React from "react";
 
-export const RuleItem = React.forwardRef(({ i, rule, isSelected, onSelect, onClone },
-                                          ref) => {
+export const RuleItem = React.forwardRef(({ i, rule, changed, isSelected, onSelect,
+                                              onClone }, ref) => {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -11,6 +11,13 @@ export const RuleItem = React.forwardRef(({ i, rule, isSelected, onSelect, onClo
             ...styles.item,
             ...getSelectedItemStyle(i, isSelected, isDark)
         }}>
+            <span style={{
+                ...styles.badge,
+                visibility: changed ? "visible" : "hidden",
+            }}>
+                ●
+            </span>
+
             {rule.name}
 
             <button
@@ -40,7 +47,7 @@ function getSelectedItemStyle(i, isSelected, isDark) {
 const styles = {
     item: {
         display: "grid",
-        gridTemplateColumns: "1fr auto",
+        gridTemplateColumns: "20px 1fr 55px",
         alignItems: "center",
         padding: 5,
         borderRadius: 4,
@@ -62,6 +69,14 @@ const styles = {
     itemSelectedLight: {
         background: "#D9C4FF",
         color: "#3A1F6B"
+    },
+    badge: {
+        border: "2px solid #FFB300",
+        color: "#FFB300",
+        borderRadius: 4,
+        fontSize: 12,
+        marginRight: 6,
+        opacity: 0.9
     },
     cloneButton: {
         borderRadius: 10,
