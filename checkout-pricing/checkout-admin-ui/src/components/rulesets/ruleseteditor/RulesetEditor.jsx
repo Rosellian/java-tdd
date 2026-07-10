@@ -4,6 +4,7 @@ import {RuleList} from "./rulelist/RuleList";
 import {RuleForm} from "./ruleform/RuleForm";
 import {addRule, cloneRule, deleteRule, getSafeIndex, updateRule} from "./editorOps";
 import {CollapsibleSection} from "../../../ui/CollapsibleSection";
+import {RulesetJsonLoader} from "./loader/RulesetJsonLoader";
 
 export function RulesetEditor({ ruleset, originalRuleset, unsavedChanges, priceList, onChange }) {
     const { theme } = useTheme();
@@ -35,13 +36,15 @@ export function RulesetEditor({ ruleset, originalRuleset, unsavedChanges, priceL
     let originalRule = originalRules[rule.id];
 
     return (
-        <CollapsibleSection title="Ruleset Editor" changed={unsavedChanges} >
+        <CollapsibleSection title="Ruleset Editor" changed={unsavedChanges}
+                            rightContent={<RulesetJsonLoader ruleset={draft} onImport={(json) => onChange(json)} />}
+        >
             <div style={{
                 ...styles.editor,
                 ...(isDark ? styles.editorDark : styles.editorLight)
             }}>
-                <RuleList rules={draft.rules} originalRules={originalRules} selectedRule={safeIndex} ruleRefs={ruleRefs}
-                          onSelect={setSelectedRule}
+                <RuleList rules={draft.rules} originalRules={originalRules} selectedRule={safeIndex}
+                          ruleRefs={ruleRefs} onSelect={setSelectedRule}
                           onAdd={() => addRule(draft, setDraft, onChange, setSelectedRule)}
                           onDelete={() => deleteRule(safeIndex, draft, setDraft, onChange, setSelectedRule)}
                           onClone={(r) => cloneRule(r, draft, ruleRefs, updateAfterClone)} />

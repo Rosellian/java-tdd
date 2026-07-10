@@ -794,6 +794,10 @@ Two versions are created as prototypes:
   - Adding changed badge to rules in RuleList
     - New style
     - Animation
+---
+
+### Extra ruleset functionality
+- Export / import of rulesets
 
 ### Current structure
 ```

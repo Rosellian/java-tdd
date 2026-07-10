@@ -2,7 +2,7 @@ import { useState } from "react";
 import {useTheme} from "./theme/ThemeProvider";
 import {AnimatedBody} from "./AnimatedBody";
 
-export function CollapsibleSection({ title, changed, children, defaultOpen = false }) {
+export function CollapsibleSection({ title, rightContent, changed, children, defaultOpen = false }) {
     const { theme } = useTheme();
     let isDark = theme === "dark";
 
@@ -19,6 +19,10 @@ export function CollapsibleSection({ title, changed, children, defaultOpen = fal
                     borderLeft: changedBorderColor
             }}>
                 <span>{title}</span>
+
+                <div style={styles.rightContent} onClick={(e) => e.stopPropagation()}>
+                    {rightContent}
+                </div>
 
                 <span style={styles.toggle}>{open ? "▼" : "▶"}</span>
             </div>
@@ -38,12 +42,14 @@ const styles = {
         borderRadius: 4,
     },
     header: {
-        maxWidth: 200,
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr auto",
+        alignItems: "center",
+        gap: 10,
+        maxWidth: 500,
         padding: "8px 10px",
         cursor: "pointer",
         fontWeight: 600,
-        display: "flex",
-        justifyContent: "space-between",
         transition: "background 0.25s ease"
     },
     headerDark: {
@@ -59,6 +65,12 @@ const styles = {
         borderTop: "1px solid #ccc",
         borderRight: "1px solid #ccc",
         borderBottom: "1px solid #ccc"
+    },
+    rightContent: {
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        pointerEvents: "auto"
     },
     toggle: {
         opacity: 0.8

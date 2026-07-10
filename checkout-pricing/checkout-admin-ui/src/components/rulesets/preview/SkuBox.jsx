@@ -32,7 +32,6 @@ function createSkuMap(rules) {
 
 const styles = {
     skuBox: {
-        marginTop: 8,
         padding: 8,
         borderRadius: 6,
         background: "rgba(187,134,252,0.15)"

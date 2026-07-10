@@ -19,7 +19,9 @@ export function InfoRows({ rules }) {
 
 const styles = {
     rows: {
-        background: "rgba(187,134,252,0.15)"
+        background: "rgba(187,134,252,0.15)",
+        padding: 4,
+        borderRadius: 6
     },
     row: {
         display: "grid",
