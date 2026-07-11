@@ -1,0 +1,39 @@
+body[data-theme="light"] {
+    --json-key: #5A2DA8;
+    --json-string: #0277BD;
+    --json-number: #2E7D32;
+    --json-boolean: #AD1457;
+    --json-null: #616161;
+}
+
+body[data-theme="dark"] {
+    --json-key: #BB86FC;
+    --json-string: #4FC3F7;
+    --json-number: #81C784;
+    --json-boolean: #F48FB1;
+    --json-null: #E0E0E0;
+}
+
+.json-key {
+    color: var(--json-key);
+    font-weight: 600;
+}
+
+.json-string {
+    color: var(--json-string);
+}
+
+.json-number {
+    color: var(--json-number);
+    font-weight: 600;
+}
+
+.json-boolean {
+    color: var(--json-boolean);
+    font-weight: 600;
+}
+
+.json-null {
+    color: var(--json-null);
+    font-style: italic;
+}

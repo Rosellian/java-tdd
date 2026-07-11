@@ -1,0 +1,45 @@
+#logging:
+#  level:
+#    root: DEBUG
+
+security:
+  api-key: "994490d0b0124e6e24e455807743ce2e25a9c1c120811c3ceebf8c8fb87c818d"
+
+spring:
+#TODO using default config, maybe create separate
+  datasource:
+    url: jdbc:h2:mem:rulesets;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: none
+  flyway:
+    enabled: false
+
+  datasource-prices:
+    url: jdbc:postgresql://localhost:5432/pricelists
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  sql-prices:
+    init:
+      mode: never
+
+  flyway-prices:
+    enabled: true
+    locations: classpath:db/prices
+    url: jdbc:postgresql://localhost:5432/pricelists
+    user: postgres
+    password: postgres
+    create-schemas: false

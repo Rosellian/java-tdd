@@ -1,0 +1,86 @@
+import {useTheme} from "../../../ui/theme/ThemeProvider";
+import {PriceRowList} from "./pricerowlist/PriceRowList";
+import {addItem} from "./editorOps";
+import {CollapsibleSection} from "../../../ui/CollapsibleSection";
+import {PriceListJsonLoader} from "./loader/PriceListJsonLoader";
+
+export function PriceListEditor({ priceList, originalPriceList, unsavedChanges, onChange }) {
+    const { theme } = useTheme();
+    let isDark = theme === "dark";
+
+    if (!priceList || !Array.isArray(priceList.unitPrices)) return null;
+
+    return (
+        <CollapsibleSection title="Price List Editor" changed={unsavedChanges}
+                            rightContent={<PriceListJsonLoader priceList={priceList}
+                                                               onImport={(json) => onChange(json)}
+                            />}
+        >
+            <div style={{
+                ...styles.box,
+                ...(isDark ? styles.boxDark : styles.boxLight)
+            }}>
+                <h3 style={{
+                    ...styles.title,
+                    ...(isDark ? styles.titleDark : styles.titleLight)
+                }}>
+                    Unit Prices
+                </h3>
+
+                <PriceRowList priceList={priceList} originalPriceList={originalPriceList} onChange={onChange} />
+
+                <button onClick={() => addItem(priceList, onChange)}
+                        style={{
+                            ...styles.addButton,
+                            ...(isDark ? styles.addButtonDark : styles.addButtonLight)
+                }}>
+                    + Add SKU
+                </button>
+            </div>
+        </CollapsibleSection>
+    )
+}
+
+const styles = {
+    box: {
+        background: "#1E1E1E",
+        width: "100%",
+        borderRadius: 4,
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+        transition: "background 0.3s ease"
+    },
+    boxDark: {
+        background: "#1E1E1E"
+    },
+    boxLight: {
+        background: "#f2f2f2"
+    },
+    title: {
+        marginBottom: 10,
+        transition: "color 0.3s ease"
+    },
+    titleDark: {
+        color: "#82B1FF"
+    },
+    titleLight: {
+        color: "#5A2DA8"
+    },
+    addButton: {
+        width: "100px",
+        padding: "6px 12px",
+        borderRadius: 4,
+        border: "none",
+        cursor: "pointer",
+        marginTop: 10
+    },
+    addButtonDark: {
+        background: "#4CAF50",
+        color: "#fff"
+    },
+    addButtonLight: {
+        background: "#4CAF50",
+        color: "#000"
+    }
+}

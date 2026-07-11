@@ -1,0 +1,54 @@
+{
+  "id": "CUST-20451",
+  "segment": "Standard",
+
+  "basicInfo": {
+    "name": "Johan Lindqvist",
+    "email": "johan.lindqvist@example.com",
+    "phone": "+46 73 987 65 43",
+    "address": {
+      "street": "Kungsportsavenyn 21",
+      "city": "Göteborg",
+      "zip": "411 36",
+      "country": "Sweden"
+    }
+  },
+
+  "metadata": {
+    "loyaltyLevel": "Silver",
+    "lifetimeValue": 48200,
+    "riskScore": 27,
+    "preferredLanguage": "sv-SE",
+    "marketingOptIn": false
+  },
+
+  "recentOrders": [
+    {
+      "orderId": "ORD-10012",
+      "date": "2026-06-01",
+      "total": 899,
+      "items": [
+        { "sku": "B", "quantity": 1, "price": 40 },
+        { "sku": "E", "quantity": 3, "price": 10 }
+      ]
+    },
+    {
+      "orderId": "ORD-09988",
+      "date": "2026-05-18",
+      "total": 1599,
+      "items": [
+        { "sku": "A", "quantity": 2, "price": 50 },
+        { "sku": "C", "quantity": 4, "price": 25 }
+      ]
+    }
+  ],
+
+  "preferences": {
+    "theme": "light",
+    "notifications": {
+      "email": true,
+      "sms": true,
+      "push": false
+    }
+  }
+}

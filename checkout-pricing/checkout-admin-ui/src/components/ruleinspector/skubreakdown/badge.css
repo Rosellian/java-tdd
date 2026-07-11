@@ -1,0 +1,39 @@
+.badge {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* LIGHT THEME */
+body[data-theme="light"] .badge-total {
+    background: #E3F2FD;
+    color: #0D47A1;
+}
+
+body[data-theme="light"] .badge-delta {
+    background: #FFF3E0;
+    color: #E65100;
+}
+
+body[data-theme="light"] .badge-discount {
+    background: #F3E5F5;
+    color: #6A1B9A;
+}
+
+/* DARK THEME */
+body[data-theme="dark"] .badge-total {
+    background: #0D47A1;
+    color: #BBDEFB;
+}
+
+body[data-theme="dark"] .badge-delta {
+    background: #E65100;
+    color: #FFE0B2;
+}
+
+body[data-theme="dark"] .badge-discount {
+    background: #6A1B9A;
+    color: #E1BEE7;
+}

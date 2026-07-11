@@ -1,0 +1,24 @@
+{
+  "name": "default",
+  "version": 1,
+  "rules": [
+    {
+      "type": "SpecialPrice",
+      "name": "3 A for 130",
+      "sku": "A",
+      "quantity": 3,
+      "price": 130,
+      "priority": 1,
+      "stackable": true
+    },
+    {
+      "type": "SpecialPrice",
+      "name": "2 B for 40",
+      "sku": "B",
+      "quantity": 2,
+      "price": 40,
+      "priority": 1,
+      "stackable": false
+    }
+  ]
+}

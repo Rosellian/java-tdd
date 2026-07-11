@@ -1,0 +1,52 @@
+{
+  "name": "noCrossNoSkuDiscount",
+  "version": 1,
+  "rules": [
+    {
+      "type": "SpecialPrice",
+      "name": "3 A for 120",
+      "sku": "A",
+      "quantity": 3,
+      "price": 120,
+      "priority": 1,
+      "stackable": true
+    },
+    {
+      "type": "BuyXGetYFree",
+      "name": "Buy 2 A get 1 free",
+      "sku": "A",
+      "buy": 2,
+      "get": 1,
+      "priority": 2,
+      "stackable": true
+    },
+    {
+      "type": "SpecialPrice",
+      "name": "2 B for 70",
+      "sku": "B",
+      "quantity": 2,
+      "price": 70,
+      "priority": 1,
+      "stackable": false
+    },
+    {
+      "type": "BuyXGetYFree",
+      "name": "Buy 1 B get 1 free",
+      "sku": "B",
+      "buy": 1,
+      "get": 1,
+      "priority": 2,
+      "stackable": false
+    },
+    {
+      "type": "BuyXGetYDiscount",
+      "name": "Buy 2 C get 1 at 50%",
+      "sku": "C",
+      "buy": 2,
+      "get": 1,
+      "discount": 0.5,
+      "priority": 1,
+      "stackable": true
+    }
+  ]
+}

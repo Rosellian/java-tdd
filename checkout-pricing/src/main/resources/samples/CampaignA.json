@@ -1,0 +1,70 @@
+{
+  "name": "Campaign A",
+  "version": 1,
+  "rules": [
+    {
+      "type": "SpecialPrice",
+      "name": "3 A for 120",
+      "sku": "A",
+      "quantity": 3,
+      "price": 120,
+      "priority": 1,
+      "stackable": true
+    },
+    {
+      "type": "SpecialPrice",
+      "name": "5 A for 180",
+      "sku": "A",
+      "quantity": 5,
+      "price": 180,
+      "priority": 1,
+      "stackable": true
+    },
+    {
+      "type": "BuyXGetYFree",
+      "name": "Buy 1 B get 1 free",
+      "sku": "B",
+      "buy": 1,
+      "get": 1,
+      "priority": 2,
+      "stackable": false
+    },
+    {
+      "type": "SpecialPrice",
+      "name": "4 C for 70",
+      "sku": "C",
+      "quantity": 4,
+      "price": 70,
+      "priority": 1,
+      "stackable": true
+    },
+    {
+      "type": "CrossSkuBuyXGetYFree",
+      "name": "Buy 2 A get 1 C free",
+      "buySku": "A",
+      "buyQty": 2,
+      "freeSku": "C",
+      "freeQty": 1,
+      "priority": 10,
+      "stackable": true
+    },
+    {
+      "type": "CrossSkuBuyXGetYDiscount",
+      "name": "Buy 2 B get 1 D at 50%",
+      "buySku": "B",
+      "buyQty": 2,
+      "discountSku": "D",
+      "discountQty": 1,
+      "discount": 0.5,
+      "priority": 5,
+      "stackable": false
+    },
+    {
+      "type": "SkuDiscount",
+      "name": "10% discount for C",
+      "sku": "C",
+      "discount": 0.1,
+      "priority": 1
+    }
+  ]
+}
