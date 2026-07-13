@@ -11,6 +11,8 @@ import java.util.List;
 
 import static com.tdd.hospital.engine.PatientUtils.PATIENT_1;
 import static com.tdd.hospital.engine.PatientUtils.from;
+import static com.tdd.hospital.engine.allocation.DecisionAssertions.assertAllocatedResource;
+import static com.tdd.hospital.engine.allocation.DecisionAssertions.assertNotAllocatedResource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -42,18 +44,5 @@ public class ResourceAllocatorTest {
         AllocationDecision decision = allocator.allocate(patient, List.of(icu));
 
         assertNotAllocatedResource(patient, decision);
-    }
-
-    private static void assertNotAllocatedResource(Patient expectedPatient, AllocationDecision decision) {
-        assertEquals(AllocationStatus.WAIT, decision.status());
-        assertNull(decision.resourceId());
-        assertEquals(expectedPatient.id(), decision.patientId());
-    }
-
-    private static void assertAllocatedResource(Resource expected, Patient expectedPatient,
-                                                AllocationDecision decision) {
-        assertEquals(AllocationStatus.ALLOCATED, decision.status());
-        assertEquals(expected.id(), decision.resourceId());
-        assertEquals(expectedPatient.id(), decision.patientId());
     }
 }

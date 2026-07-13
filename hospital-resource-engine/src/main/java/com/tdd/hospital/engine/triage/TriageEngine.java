@@ -1,40 +1,51 @@
 package com.tdd.hospital.engine.triage;
 
+import com.tdd.hospital.engine.triage.rules.TriageRule;
+import com.tdd.hospital.engine.triage.tracing.StepTracer;
 import com.tdd.hospital.patients.Patient;
 import com.tdd.hospital.patients.TriageLevel;
-import com.tdd.hospital.tracing.TraceStep;
-import com.tdd.hospital.tracing.TraceType;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static com.tdd.hospital.engine.triage.RuleResult.empty;
+import static com.tdd.hospital.engine.triage.RuleResult.matched;
 
 @Service
 public class TriageEngine {
 
     private final List<TriageRule> rules;
+    private final StepTracer tracer;
 
     public TriageEngine(List<TriageRule> rules) {
         this.rules = rules;
+        this.tracer = new StepTracer();
     }
 
     public TriageResult evaluate(Patient patient) {
-        List<TraceStep> trace = new ArrayList<>();
-
         for(TriageRule rule : rules) {
-            if(rule.condition().matches(patient)) {
-                trace.add(new TraceStep(rule.name(), "Matched → " + rule.result(), TraceType.RULE_MATCH));
+            RuleResult result = testRule(patient, rule);
 
-                return new TriageResult(rule.result(), trace);
-            }
-            else {
-                trace.add(new TraceStep(rule.name(), "", TraceType.RULE_FAIL));
-            }
+            if (result.matched()) return result.result();
         }
 
-        trace.add(new TraceStep("Fallback", "No rules matched → default " + TriageLevel.GREEN.name(),
-                TraceType.FALLBACK));
+        tracer.addFallbackTrace();
 
-        return new TriageResult(TriageLevel.GREEN, trace);
+        return new TriageResult(TriageLevel.GREEN, tracer.getTraces());
+    }
+
+    private RuleResult testRule(Patient patient, TriageRule rule) {
+        RuleResult result = empty();
+
+        if(rule.condition().matches(patient)) {
+            tracer.addMatchedTrace(rule);
+
+            result = matched(new TriageResult(rule.result(), tracer.getTraces()));
+        }
+        else {
+            tracer.addNotMatchedTrace(rule);
+        }
+
+        return result;
     }
 }

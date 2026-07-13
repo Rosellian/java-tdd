@@ -1,6 +1,6 @@
 package com.tdd.hospital.engine;
 
-import com.tdd.hospital.engine.triage.TriageRule;
+import com.tdd.hospital.engine.triage.rules.TriageRule;
 import com.tdd.hospital.patients.TriageLevel;
 
 public class RuleUtils {

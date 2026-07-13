@@ -1,4 +1,4 @@
-package com.tdd.hospital.engine.triage;
+package com.tdd.hospital.engine.triage.rules;
 
 import com.tdd.hospital.patients.TriageLevel;
 

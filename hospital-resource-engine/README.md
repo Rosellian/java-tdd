@@ -89,6 +89,9 @@ public enum TraceType {
 }
 ```
 
+### API
+
+
 ### Project structure
 
 ## Testing
