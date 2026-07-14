@@ -20,24 +20,41 @@ public class StepTracer {
     public StepTracer() {trace = new ArrayList<>();}
 
     public void addRequired(ResourceType needed) {
-        trace.add(new TraceStep("RequiredResource", needed.name(), RULE_MATCH));
+        trace.add(createRequired(needed));
         logger.info("Resource needed {}", trace);
     }
 
     public void addAvailable(Resource resource) {
-        trace.add(new TraceStep(resource.id(), "Resource available", RESOURCE_OK));
+        trace.add(createAvailable(resource));
         logger.info("Resource available {}", trace);
     }
 
     public void addBusy(Resource resource) {
-        trace.add(new TraceStep(resource.id(), "Resource busy", RESOURCE_BUSY));
+        trace.add(createBusy(resource));
         logger.info("Resource busy {}", trace);
     }
 
     public void addFallback() {
-        trace.add(new TraceStep("Fallback", "No resources available → " + WAIT.name(), FALLBACK));
+        trace.add(createFallback());
         logger.info("Fallback reached {}", trace);
     }
 
     public List<TraceStep> getTrace() {return trace;}
+
+    //TODO move to TraceStep or other class?
+    private static TraceStep createRequired(ResourceType needed) {
+        return new TraceStep("RequiredResource", needed.name(), RULE_MATCH);
+    }
+
+    private static TraceStep createAvailable(Resource resource) {
+        return new TraceStep(resource.id(), "Resource available", RESOURCE_OK);
+    }
+
+    private static TraceStep createBusy(Resource resource) {
+        return new TraceStep(resource.id(), "Resource busy", RESOURCE_BUSY);
+    }
+
+    private static TraceStep createFallback() {
+        return new TraceStep("Fallback", "No resources available → " + WAIT.name(), FALLBACK);
+    }
 }
