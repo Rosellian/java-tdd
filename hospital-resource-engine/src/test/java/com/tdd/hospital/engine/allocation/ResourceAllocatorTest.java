@@ -11,10 +11,7 @@ import java.util.List;
 
 import static com.tdd.hospital.engine.PatientUtils.PATIENT_1;
 import static com.tdd.hospital.engine.PatientUtils.from;
-import static com.tdd.hospital.engine.allocation.DecisionAssertions.assertAllocatedResource;
-import static com.tdd.hospital.engine.allocation.DecisionAssertions.assertNotAllocatedResource;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static com.tdd.hospital.engine.allocation.DecisionAssertions.*;
 
 public class ResourceAllocatorTest {
     private static final Patient PATIENT_1_RED = from(PATIENT_1, TriageLevel.RED);
@@ -33,7 +30,7 @@ public class ResourceAllocatorTest {
 
         AllocationDecision decision = allocator.allocate(patient, List.of(icu));
 
-        assertAllocatedResource(icu, patient, decision);
+        assertAllocated(icu, patient, decision);
     }
 
     @Test
@@ -43,6 +40,6 @@ public class ResourceAllocatorTest {
 
         AllocationDecision decision = allocator.allocate(patient, List.of(icu));
 
-        assertNotAllocatedResource(patient, decision);
+        assertNotAllocated(icu, patient, decision);
     }
 }
