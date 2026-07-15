@@ -90,9 +90,11 @@ public enum TraceType {
 ```
 
 ### API
+### Patients
+For handling patient database and creating new patients.
+
 #### Triage
 For running Triage engine on patients.
-
 
 ### Project structure
 
