@@ -30,7 +30,7 @@ public class RandomPatientFactory {
         String id = getRandomId();
         String name = getRandomName();
         int age = getRandomAge();
-        VitalSigns vitals = vitalsFactory.createVitals(request);
+        VitalSigns vitals = vitalsFactory.createVitals(request.specs());
         List<String> symptoms = randomSymptoms();
 
         return new Patient(id, name, age, vitals, symptoms, null);

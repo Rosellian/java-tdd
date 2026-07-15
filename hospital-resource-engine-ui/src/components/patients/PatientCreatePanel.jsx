@@ -8,6 +8,7 @@ export function PatientCreatePanel({ patient, onChange, onCreated }) {
     const t = tokens[theme];
 
     async function handleRandom() {
+        //TODO support empty payload
         let newPatient = await createPatient();
 
         onCreated(newPatient);

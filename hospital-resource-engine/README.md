@@ -90,6 +90,9 @@ public enum TraceType {
 ```
 
 ### API
+### Security
+Using hardcoded API-key to access APIs.
+
 ### Patients
 For handling patient database and creating new patients.
 

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.tdd.hospital.api.patients.PatientCreateRequest.empty;
+
 @RestController
 @RequestMapping("/api/patients")
 public class PatientController {
@@ -20,6 +22,7 @@ public class PatientController {
     }
 
     //TODO Return only entry data for ID?
+    @GetMapping
     public List<Patient> all() {
         logger.info("Request for all patients");
 
@@ -29,7 +32,7 @@ public class PatientController {
         return patients;
     }
 
-    @PostMapping("/{id}")
+    @GetMapping("/{id}")
     public Patient get(@PathVariable String id) {
         logger.info("Request for patient with id: {}", id);
 
@@ -45,12 +48,23 @@ public class PatientController {
     }
 
     @PostMapping("/create")
-    public Patient create(@RequestBody PatientCreateRequest request) {
+    public Patient create(@RequestBody(required = false) PatientCreateRequest request) {
         logger.info("Request to create patient: {}", request);
+        PatientCreateRequest createRequest = getRequest(request);
 
-        Patient patient = service.create(request);
+        Patient patient = service.create(createRequest);
         logger.info("New patient returned {}", patient);
 
         return patient;
+    }
+
+    //TODO find better solution or improve error handling?
+    private static PatientCreateRequest getRequest(PatientCreateRequest request) {
+        PatientCreateRequest createRequest = request;
+        if(request == null || request.specs() == null) {
+            logger.info("No create request body provided, using defaults");
+            createRequest = empty();
+        }
+        return createRequest;
     }
 }

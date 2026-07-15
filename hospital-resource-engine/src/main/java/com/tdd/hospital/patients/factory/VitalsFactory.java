@@ -1,6 +1,7 @@
 package com.tdd.hospital.patients.factory;
 
 import com.tdd.hospital.api.patients.PatientCreateRequest;
+import com.tdd.hospital.api.patients.Specs;
 import com.tdd.hospital.patients.VitalSigns;
 
 import java.util.Random;
@@ -12,8 +13,8 @@ public class VitalsFactory {
         this.random = random;
     }
 
-    public VitalSigns createVitals(PatientCreateRequest request) {
-        int oxygenSaturation = getOxygenSaturation(request);
+    public VitalSigns createVitals(Specs specs) {
+        int oxygenSaturation = getOxygenSaturation(specs);
 
         return new VitalSigns(randomHeartRate(), randomSystolicBP(), randomDiastolicBP(), oxygenSaturation,
                 randomTemperature());
@@ -31,8 +32,8 @@ public class VitalsFactory {
         return randomBetween(40, 120);
     }
 
-    private int getOxygenSaturation(PatientCreateRequest request) {
-        int oxy = request.oxygenSaturation();
+    private int getOxygenSaturation(Specs specs) {
+        int oxy = specs.oxygenSaturation();
 
         return oxy > 0 ? oxy : randomOxygenSaturation();
     }
