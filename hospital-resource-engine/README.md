@@ -90,6 +90,8 @@ public enum TraceType {
 ```
 
 ### API
+#### Triage
+For running Triage engine on patients.
 
 
 ### Project structure
