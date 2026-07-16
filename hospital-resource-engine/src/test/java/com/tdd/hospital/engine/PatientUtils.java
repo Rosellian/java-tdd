@@ -1,7 +1,7 @@
 package com.tdd.hospital.engine;
 
 import com.tdd.hospital.patients.Patient;
-import com.tdd.hospital.patients.TriageLevel;
+import com.tdd.hospital.engine.triage.rules.TriageLevel;
 import com.tdd.hospital.patients.VitalSigns;
 
 import java.util.List;

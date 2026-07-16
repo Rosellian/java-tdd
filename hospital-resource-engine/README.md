@@ -8,6 +8,7 @@ Includes:
 
 ## Architecture
 ### Main domain
+#### Patients
 Data structures for patients:
 ```java
 public record Patient(
@@ -35,6 +36,22 @@ public enum TriageLevel {
     RED, ORANGE, YELLOW, GREEN
 }
 ```
+#### Resources
+Data structure for resources:
+```java
+public record Resource(
+        String id,
+        ResourceType type,
+        int capacity,
+        int used
+) {}
+```
+Types of resources:
+```java
+public enum ResourceType {
+    ICU_BED, SURGERY_ROOM, NURSE, DOCTOR, VENTILATOR
+}
+```
 
 ### Triage evaluation
 Rules:
@@ -46,19 +63,19 @@ public record TriageRule(
         TriageLevel result
 ) {}
 ```
-Rule evaluation engine:
-```java
-public class TriageEngine {
-
-    public TriageResult evaluate(Patient patient) {}
-}
-```
-Condition with criteria to match a patients information:
+Condition with criteria to match a patient's information:
 ```java
 @FunctionalInterface
 public interface Condition {
 
     boolean matches(Patient patient);
+}
+```
+Rule evaluation engine:
+```java
+public class TriageEngine {
+
+    public TriageResult evaluate(Patient patient) {}
 }
 ```
 
@@ -90,14 +107,29 @@ public enum TraceType {
 ```
 
 ### API
-### Security
+#### Security
 Using hardcoded API-key to access APIs.
 
-### Patients
-For handling patient database and creating new patients.
+#### Patients
+For handling patient database and creating new patients.  
+Main URL: `/api/patients`  
+**Endpoints:**
+- `/create` create new patient using random generator. Takes specifications in body according to:  
+    ```java
+    public record PatientCreateRequest(
+        Specs specs
+    ) {}
+    
+    public record Specs(
+        int oxygenSaturation
+    ) {}
+    ```
 
 #### Triage
-For running Triage engine on patients.
+For running Triage engine on patients.  
+Main URL: `/api/triage`  
+**Endpoints:**
+- Run triage engine on patient data. Takes `Patient` in body.
 
 ### Project structure
 

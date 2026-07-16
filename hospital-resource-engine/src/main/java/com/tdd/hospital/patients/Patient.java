@@ -1,5 +1,7 @@
 package com.tdd.hospital.patients;
 
+import com.tdd.hospital.engine.triage.rules.TriageLevel;
+
 import java.util.List;
 
 public record Patient(

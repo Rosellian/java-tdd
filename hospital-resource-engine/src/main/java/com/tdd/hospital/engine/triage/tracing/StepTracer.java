@@ -1,7 +1,7 @@
 package com.tdd.hospital.engine.triage.tracing;
 
 import com.tdd.hospital.engine.triage.rules.TriageRule;
-import com.tdd.hospital.patients.TriageLevel;
+import com.tdd.hospital.engine.triage.rules.TriageLevel;
 import com.tdd.hospital.tracing.TraceStep;
 import com.tdd.hospital.tracing.TraceType;
 import org.slf4j.Logger;

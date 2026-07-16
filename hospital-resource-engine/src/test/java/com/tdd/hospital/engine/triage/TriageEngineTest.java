@@ -8,7 +8,7 @@ import java.util.List;
 import static com.tdd.hospital.engine.PatientUtils.PATIENT_1;
 import static com.tdd.hospital.engine.RuleUtils.CRITICAL_VITALS;
 import static com.tdd.hospital.engine.TraceAssertions.assertTraces;
-import static com.tdd.hospital.patients.TriageLevel.RED;
+import static com.tdd.hospital.engine.triage.rules.TriageLevel.RED;
 import static com.tdd.hospital.tracing.TraceType.RULE_MATCH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -3,7 +3,7 @@ package com.tdd.hospital.engine.triage;
 import com.tdd.hospital.engine.triage.rules.TriageRule;
 import com.tdd.hospital.engine.triage.tracing.StepTracer;
 import com.tdd.hospital.patients.Patient;
-import com.tdd.hospital.patients.TriageLevel;
+import com.tdd.hospital.engine.triage.rules.TriageLevel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

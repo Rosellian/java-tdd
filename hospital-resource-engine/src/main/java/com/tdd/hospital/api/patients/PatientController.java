@@ -50,7 +50,7 @@ public class PatientController {
     @PostMapping("/create")
     public Patient create(@RequestBody(required = false) PatientCreateRequest request) {
         logger.info("Request to create patient: {}", request);
-        PatientCreateRequest createRequest = getRequest(request);
+        PatientCreateRequest createRequest = normalizeRequest(request);
 
         Patient patient = service.create(createRequest);
         logger.info("New patient returned {}", patient);
@@ -59,12 +59,14 @@ public class PatientController {
     }
 
     //TODO find better solution or improve error handling?
-    private static PatientCreateRequest getRequest(PatientCreateRequest request) {
+    private static PatientCreateRequest normalizeRequest(PatientCreateRequest request) {
         PatientCreateRequest createRequest = request;
+
         if(request == null || request.specs() == null) {
             logger.info("No create request body provided, using defaults");
             createRequest = empty();
         }
+
         return createRequest;
     }
 }

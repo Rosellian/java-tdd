@@ -1,7 +1,7 @@
 package com.tdd.hospital.engine;
 
 import com.tdd.hospital.engine.triage.rules.TriageRule;
-import com.tdd.hospital.patients.TriageLevel;
+import com.tdd.hospital.engine.triage.rules.TriageLevel;
 
 public class RuleUtils {
     public static final TriageRule CRITICAL_VITALS = createRuleCriticalVitals("r1", "CriticalVitals");

@@ -2,7 +2,7 @@ package com.tdd.hospital.engine.allocation;
 
 import com.tdd.hospital.engine.allocation.tracing.StepTracer;
 import com.tdd.hospital.patients.Patient;
-import com.tdd.hospital.patients.TriageLevel;
+import com.tdd.hospital.engine.triage.rules.TriageLevel;
 import com.tdd.hospital.resources.Resource;
 import com.tdd.hospital.resources.ResourceType;
 import org.slf4j.Logger;
