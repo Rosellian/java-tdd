@@ -1,13 +1,9 @@
+import {makePost} from "../requests";
+
 const BASE_URL = "/api/triage";
 
 export async function runTriage(patient) {
-    let res = await fetch(`${BASE_URL}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(patient)
-    });
-
-    return res.json();
+    return makePost("runTriage", BASE_URL, patient);
 }
 
 export async function runTriageForId(patientId) {
