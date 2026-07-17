@@ -12,3 +12,7 @@
     margin-top: 0;
     color: var(--text);
 }
+
+.panel button {
+    margin-bottom: 10px;
+}

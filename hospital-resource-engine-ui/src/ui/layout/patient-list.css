@@ -5,9 +5,11 @@
 
 .panel li {
     margin-bottom: 8px;
+    border-radius: 6px;
+    transition: background 0.2s, border-color 0.2s;
 }
 
-.panel li button {
+.panel li div {
     width: 100%;
     text-align: left;
     background: var(--panel-bg);
@@ -15,8 +17,17 @@
     border: 1px solid var(--border);
     padding: 8px;
     border-radius: 6px;
+    cursor: pointer;
 }
 
-.panel li button:hover {
-    background: var(--input-bg);
+.panel li.selected div {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+    font-weight: bold;
+}
+
+.panel li div:hover {
+    /*background: var(--input-bg);*/
+    opacity: 0.9;
 }

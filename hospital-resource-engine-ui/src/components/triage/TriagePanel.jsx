@@ -15,13 +15,16 @@ export function TriagePanel({ patient }) {
         <div className="panel">
             <h2>Triage: {patient.name}</h2>
 
-            <button onClick={handleTriage}>Run Triage</button>
+            <button onClick={handleTriage}>
+                Run Triage
+            </button>
 
             {result && (
-                <>
+                <div className="panel">
                     <h3>Level: {result.level}</h3>
+                    
                     <TraceTimeline steps={result.trace} />
-                </>
+                </div>
             )}
         </div>
     )

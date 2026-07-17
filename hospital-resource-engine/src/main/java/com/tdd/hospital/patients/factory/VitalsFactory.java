@@ -1,6 +1,5 @@
 package com.tdd.hospital.patients.factory;
 
-import com.tdd.hospital.api.patients.PatientCreateRequest;
 import com.tdd.hospital.api.patients.Specs;
 import com.tdd.hospital.patients.VitalSigns;
 
@@ -50,6 +49,8 @@ public class VitalsFactory {
     }
 
     private double randomBetweenDouble(double min, double max) {
-        return min + (max - min) * random.nextDouble();
+        double raw = min + (max - min) * random.nextDouble();
+
+        return Math.round(raw * 100.0) / 100.0;
     }
 }

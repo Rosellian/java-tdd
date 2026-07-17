@@ -3,7 +3,9 @@ export function TraceTimeline({ steps }) {
         <div className="trace-timeline">
             {steps.map((step, i) => (
                 <div key={i} className={`trace-step type-${step.type.toLowerCase()}`}>
-                    <strong>{step.label}</strong>
+                    <span>
+                        <strong>{step.label}</strong>
+                    </span>
 
                     <span>{step.detail}</span>
                 </div>

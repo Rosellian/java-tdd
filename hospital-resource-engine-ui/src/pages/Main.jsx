@@ -23,7 +23,7 @@ export function Main() {
         <Layout>
             <PatientCreatePanel patient={selected} onChange={handleUpdate} onCreated={handleCreated} />
 
-            <PatientList patients={patients} onSelect={setSelected} />
+            <PatientList patients={patients} selected={selected} onSelect={setSelected} />
 
             {selected && (
                 <TriagePanel patient={selected} />

@@ -1,12 +1,7 @@
 import {useEffect, useState} from "react";
-import {tokens} from "../../../ui/theme/tokens";
-import {useTheme} from "../../../ui/theme/ThemeProvider";
 import {VitalsForm} from "./VitalsForm";
 
 export function PatientForm({ patient, onChange }) {
-    const { theme } = useTheme();
-    const t = tokens[theme];
-
     const [draft, setDraft] = useState(patient);
 
     useEffect(() => {
