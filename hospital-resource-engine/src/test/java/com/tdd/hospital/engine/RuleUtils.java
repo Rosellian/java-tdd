@@ -1,13 +1,17 @@
 package com.tdd.hospital.engine;
 
+import com.tdd.hospital.engine.triage.rules.TriageConfig;
 import com.tdd.hospital.engine.triage.rules.TriageRule;
-import com.tdd.hospital.engine.triage.rules.TriageLevel;
+
+import java.util.List;
 
 public class RuleUtils {
-    public static final TriageRule CRITICAL_VITALS = createRuleCriticalVitals("r1", "CriticalVitals");
+    //TODO Find a better way to reference rules
+    public static final List<TriageRule> DEFAULT_TRIAGE_RULES = new TriageConfig().defaultRules();
 
-    static TriageRule createRuleCriticalVitals(String id, String name) {
-        return new TriageRule("r1",name,
-                p -> p.vitals().oxygenSaturation() < 85, TriageLevel.RED);
-    }
+    public static final TriageRule
+            CRITICAL_OXYGEN = DEFAULT_TRIAGE_RULES.getFirst(),
+            HIGH_FEVER = DEFAULT_TRIAGE_RULES.get(1),
+            LOW_BLOOD_PRESSURE = DEFAULT_TRIAGE_RULES.get(2),
+            MILD_SYMPTOMS = DEFAULT_TRIAGE_RULES.get(3);
 }

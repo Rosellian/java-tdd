@@ -6,8 +6,8 @@ export function VitalsForm({ vitals, onUpdate }) {
             <div className="field">
                 <label>Heart Rate</label>
 
-                <input type="number" value={vitals.hearRate}
-                       onChange={e => onUpdate("hearRate", Number(e.target.value))}
+                <input type="number" value={vitals.heartRate}
+                       onChange={e => onUpdate("heartRate", Number(e.target.value))}
                 />
             </div>
 

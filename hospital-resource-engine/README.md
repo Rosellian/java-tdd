@@ -137,9 +137,11 @@ Main URL: `/api/triage`
 Unit testing separated per engine component.
 ### Triage
 #### Base tests
-Basic tests for Triage level.
+Basic tests for Triage level. Includes parameterized test for matching default rules list.
 ```java
 void redPatientGetsRedTriage() {}
+
+void defaultRulesMatchPatient(Patient patient, TriageRule rule) {}
 ```
 
 ### Resource allocation

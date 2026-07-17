@@ -1,15 +1,31 @@
 package com.tdd.hospital.engine;
 
+import com.tdd.hospital.engine.triage.rules.TriageRule;
 import com.tdd.hospital.tracing.TraceStep;
 
 import java.util.List;
 
+import static com.tdd.hospital.tracing.TraceType.RULE_MATCH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TraceAssertions {
 
     private TraceAssertions() {}
+
+    public static void assertAtLeastMatched(TriageRule rule, List<TraceStep> trace) {
+        TraceStep expectedMatchedStep = new TraceStep(rule.name(), "Matched", RULE_MATCH);
+
+        //TODO create specific equals for TraceStep?
+        boolean containsMatched = trace.stream().anyMatch(step -> matches(expectedMatchedStep, step));
+        assertTrue(containsMatched);
+    }
+
+    private static boolean matches(TraceStep expectedMatchedStep, TraceStep step) {
+        return step.label().equals(expectedMatchedStep.label())
+                && step.detail().contains(expectedMatchedStep.detail())
+                && step.type().equals(expectedMatchedStep.type());
+    }
 
     public static void assertTraces(List<TraceStep> expectedTrace, List<TraceStep> trace) {
         assertEquals(expectedTrace.size(), trace.size());
