@@ -1,0 +1,19 @@
+.field {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.field label {
+    margin-bottom: 4px;
+    color: var(--text);
+}
+
+.field input {
+    background: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--border);
+    padding: 6px;
+    border-radius: 4px;
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
+}

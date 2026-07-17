@@ -23,7 +23,7 @@ public record Patient(
 Common vital sign values:
 ```java
 public record VitalSigns(
-        int hearRate,
+        int heartRate,
         int systolicBP,
         int diastolicBP,
         int oxygenSaturation,
@@ -137,7 +137,8 @@ Main URL: `/api/triage`
 Unit testing separated per engine component.
 ### Triage
 #### Base tests
-Basic tests for Triage level. Includes parameterized test for matching default rules list.
+Basic tests for Triage level. Includes parameterized test `defaultRulesMatchPatient` for matching each rule 
+in default rules list.
 ```java
 void redPatientGetsRedTriage() {}
 

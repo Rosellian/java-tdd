@@ -1,0 +1,14 @@
+.panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    transition: background 0.3s, border-color 0.3s;
+}
+
+.panel h2,
+.panel h3 {
+    margin-top: 0;
+    color: var(--text);
+}

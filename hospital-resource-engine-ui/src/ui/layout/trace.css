@@ -1,0 +1,33 @@
+.trace-timeline {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.trace-step {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--panel-bg);
+}
+
+.type-rule_match {
+    border-left: 4px solid var(--trace-rule-match);
+}
+
+.type-rule_fail {
+    border-left: 4px solid var(--trace-rule-fail);
+}
+
+.type-resource_ok {
+    border-left: 4px solid var(--trace-resource-ok);
+}
+
+.type-resource_busy {
+    border-left: 4px solid var(--trace-resource-busy);
+}
+
+.type-fallback {
+    border-left: 4px solid var(--trace-fallback);
+}

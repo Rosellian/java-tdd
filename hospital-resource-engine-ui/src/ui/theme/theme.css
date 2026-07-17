@@ -1,0 +1,33 @@
+/* Light theme */
+:root {
+    --bg: #f7f7f7;
+    --panel-bg: #ffffff;
+    --text: #222;
+    --border: #ddd;
+    --input-bg: #fff;
+    --input-text: #222;
+    --accent: #5A2DA8;
+
+    --trace-rule-match: #4caf50;
+    --trace-rule-fail: #f44336;
+    --trace-resource-ok: #2196f3;
+    --trace-resource-busy: #ff9800;
+    --trace-fallback: #9e9e9e;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+    --bg: #121212;
+    --panel-bg: #1e1e1e;
+    --text: #eee;
+    --border: #333;
+    --input-bg: #222;
+    --input-text: #eee;
+    --accent: #BB86FC;
+
+    --trace-rule-match: #81c784;
+    --trace-rule-fail: #ef5350;
+    --trace-resource-ok: #64b5f6;
+    --trace-resource-busy: #ffb74d;
+    --trace-fallback: #bdbdbd;
+}

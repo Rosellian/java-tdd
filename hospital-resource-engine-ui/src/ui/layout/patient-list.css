@@ -1,0 +1,22 @@
+.panel ul {
+    list-style: none;
+    padding: 0;
+}
+
+.panel li {
+    margin-bottom: 8px;
+}
+
+.panel li button {
+    width: 100%;
+    text-align: left;
+    background: var(--panel-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.panel li button:hover {
+    background: var(--input-bg);
+}

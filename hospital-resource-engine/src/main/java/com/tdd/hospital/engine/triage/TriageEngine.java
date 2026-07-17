@@ -31,7 +31,7 @@ public class TriageEngine {
 
         tracer.addFallbackTrace();
 
-        return new TriageResult(TriageLevel.GREEN, tracer.getTraces());
+        return new TriageResult(TriageLevel.GREEN, tracer.getTraces(true));
     }
 
     private RuleResult testRule(Patient patient, TriageRule rule) {
@@ -40,7 +40,7 @@ public class TriageEngine {
         if(rule.condition().matches(patient)) {
             tracer.addMatchedTrace(rule);
 
-            result = matched(new TriageResult(rule.result(), tracer.getTraces()));
+            result = matched(new TriageResult(rule.result(), tracer.getTraces(true)));
         }
         else {
             tracer.addNotMatchedTrace(rule);

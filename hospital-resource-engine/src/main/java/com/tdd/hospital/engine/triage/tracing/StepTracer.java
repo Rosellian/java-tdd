@@ -13,33 +13,42 @@ import java.util.List;
 public class StepTracer {
     private static final Logger logger = LoggerFactory.getLogger(StepTracer.class);
 
-    private final List<TraceStep> traces;
+    private final List<TraceStep> trace;
 
     public StepTracer() {
-        traces = new ArrayList<>();
+        trace = new ArrayList<>();
     }
 
     public void addFallbackTrace() {
         TraceStep traceStep = createFallback();
 
-        traces.add(traceStep);
-        logger.info("Fallback reached {}", traces);
+        trace.add(traceStep);
+        logger.info("Fallback reached {}", trace);
     }
 
     public void addMatchedTrace(TriageRule rule) {
         TraceStep traceStep = createMatched(rule);
 
-        traces.add(traceStep);
-        logger.info("Matched rule {}", traces);
+        trace.add(traceStep);
+        logger.info("Matched rule {}", trace);
     }
     public void addNotMatchedTrace(TriageRule rule) {
         TraceStep traceStep = createNotMatched(rule);
 
-        traces.add(traceStep);
-        logger.info("Rule not matched {}", traces);
+        trace.add(traceStep);
+        logger.info("Rule not matched {}", trace);
     }
 
-    public List<TraceStep> getTraces() {return traces;}
+    //TODO Redesign to avoid the need to clear list in between runs?
+    public List<TraceStep> getTraces(boolean clear) {
+        List<TraceStep> traceCopy = new ArrayList<>(trace);
+
+        if(clear) {
+            trace.clear();
+        }
+
+        return traceCopy;
+    }
 
     //TODO move to TraceStep or other class?
     private TraceStep createMatched(TriageRule rule) {
