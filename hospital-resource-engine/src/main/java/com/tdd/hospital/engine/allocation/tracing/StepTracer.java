@@ -47,11 +47,11 @@ public class StepTracer {
     }
 
     private static TraceStep createAvailable(Resource resource) {
-        return new TraceStep(resource.id(), "Resource available", RESOURCE_OK);
+        return new TraceStep(resource.id().toString(), "Resource available", RESOURCE_OK);
     }
 
     private static TraceStep createBusy(Resource resource) {
-        return new TraceStep(resource.id(), "Resource busy", RESOURCE_BUSY);
+        return new TraceStep(resource.id().toString(), "Resource busy", RESOURCE_BUSY);
     }
 
     private static TraceStep createFallback() {

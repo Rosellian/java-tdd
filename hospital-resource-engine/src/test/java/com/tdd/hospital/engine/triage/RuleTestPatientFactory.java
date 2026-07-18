@@ -24,7 +24,7 @@ public class RuleTestPatientFactory {
 
     private static Patient createBasePatient() {
         return new Patient(
-                UUID.randomUUID().toString(), "Test Patient", 40,
+                UUID.randomUUID(), "Test Patient", 40,
                 new VitalSigns(100, 120, 80, 98, 37.0),
                 List.of(), null);
     }

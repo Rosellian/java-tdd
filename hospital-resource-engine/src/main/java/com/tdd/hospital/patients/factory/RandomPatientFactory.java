@@ -27,7 +27,7 @@ public class RandomPatientFactory {
     private final VitalsFactory vitalsFactory = new VitalsFactory(random);
 
     public Patient create(PatientCreateRequest request) {
-        String id = getRandomId();
+        UUID id = getRandomId();
         String name = getRandomName();
         int age = getRandomAge();
         VitalSigns vitals = vitalsFactory.createVitals(request.specs());
@@ -36,8 +36,8 @@ public class RandomPatientFactory {
         return new Patient(id, name, age, vitals, symptoms, null);
     }
 
-    private String getRandomId() {
-        return UUID.randomUUID().toString();
+    private UUID getRandomId() {
+        return UUID.randomUUID();
     }
 
     private String getRandomName() {

@@ -18,7 +18,7 @@ public class DecisionAssertions {
                                           AllocationDecision decision) {
         List<TraceStep> expectedTrace = List.of(
                 new TraceStep("RequiredResource", expectedResource.type().name(), RULE_MATCH),
-                new TraceStep(expectedResource.id(), "Resource busy", RESOURCE_BUSY),
+                new TraceStep(expectedResource.id().toString(), "Resource busy", RESOURCE_BUSY),
                 new TraceStep("Fallback", "No resources available → " + WAIT.name(), FALLBACK));
 
         AllocationDecision expected = new AllocationDecision(expectedPatient.id(), null, WAIT, expectedTrace);
@@ -30,7 +30,7 @@ public class DecisionAssertions {
                                                 AllocationDecision decision) {
         List<TraceStep> expectedTrace = List.of(
                 new TraceStep("RequiredResource",  expectedResource.type().name(), RULE_MATCH),
-                new TraceStep(expectedResource.id(), "Resource available", RESOURCE_OK));
+                new TraceStep(expectedResource.id().toString(), "Resource available", RESOURCE_OK));
 
         AllocationDecision expected = new AllocationDecision(expectedPatient.id(), expectedResource.id(),
                 ALLOCATED, expectedTrace);

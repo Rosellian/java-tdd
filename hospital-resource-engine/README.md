@@ -138,7 +138,6 @@ PostgreSQL database: `patients`
 - `patient_lists`
 - `patients` data in JSON format
 **Repository** for backend access:
-TODO
 ```java
 
 ```

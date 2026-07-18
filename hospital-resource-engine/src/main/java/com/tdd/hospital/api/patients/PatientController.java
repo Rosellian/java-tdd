@@ -2,11 +2,13 @@ package com.tdd.hospital.api.patients;
 
 import com.tdd.hospital.patients.Patient;
 import com.tdd.hospital.patients.PatientService;
+import com.tdd.hospital.patients.database.DataList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.tdd.hospital.api.patients.PatientCreateRequest.empty;
 
@@ -21,30 +23,31 @@ public class PatientController {
         this.service = service;
     }
 
-    //TODO Return only entry data for ID?
-    @GetMapping
-    public List<Patient> all() {
-        logger.info("Request for all patients");
+    @GetMapping("/{id}")
+    public List<DataList> getLists() {
+        logger.info("Request for all patient lists");
 
-        List<Patient> patients = service.all();
-        logger.info("Response returned patients: {}", patients);
+        List<DataList> lists = service.getLists();
+        logger.info("Response returned patient lists: {}", lists);
+
+        return lists;
+    }
+
+    @GetMapping("/{id}")
+    public List<Patient> getList(@PathVariable UUID listId) {
+        logger.info("Request for patient list with id: {}", listId);
+
+        List<Patient> patients = service.getList(listId);
+        logger.info("Response patient list: {}", patients);
 
         return patients;
     }
 
-    @GetMapping("/{id}")
-    public Patient get(@PathVariable String id) {
-        logger.info("Request for patient with id: {}", id);
-
-        Patient patient = service.get(id);
-        logger.info("Response returned patient: {}", patient);
-
-        return patient;
-    }
-
     @PostMapping
-    public void add(@RequestBody PatientRequest request) {
-        logger.info("Request to add patient: {}", request);
+    public void save(@RequestBody PatientListRequest request) {
+        logger.info("Request to save patient list");
+
+        service.save(request.list(), request.patients());
     }
 
     @PostMapping("/create")
@@ -53,7 +56,7 @@ public class PatientController {
         PatientCreateRequest createRequest = normalizeRequest(request);
 
         Patient patient = service.create(createRequest);
-        logger.info("New patient returned {}", patient);
+        logger.info("Response new patient {}", patient);
 
         return patient;
     }
