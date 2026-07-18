@@ -131,7 +131,20 @@ Main URL: `/api/triage`
 **Endpoints:**
 - Run triage engine on patient data. Takes `Patient` in body.
 
+### Database
+#### Patients
+PostgreSQL database: `patients`  
+**Tables:**
+- `patient_lists`
+- `patients` data in JSON format
+**Repository** for backend access:
+TODO
+```java
+
+```
+
 ### Project structure
+TODO
 
 ## Testing
 Unit testing separated per engine component.

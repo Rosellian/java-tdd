@@ -4,3 +4,22 @@
 
 security:
   api-key: "994490d0b0124e6e24e455807743ce2e25a9c1c120811c3ceebf8c8fb87c818d"
+
+spring:
+  datasource-patients:
+    url: jdbc:postgresql://localhost:5432/patients
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  sql-patients:
+    init:
+      mode: never
+
+  flyway-patients:
+    enabled: true
+    locations: classpath:db
+    url: jdbc:postgresql://localhost:5432/patients
+    user: postgres
+    password: postgres
+    create-schemas: false
