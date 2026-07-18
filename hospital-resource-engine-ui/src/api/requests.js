@@ -1,10 +1,28 @@
 import {createKeyHeader} from "./security";
 
-export async function makePost(requestName, endpoint, payload) {
-    try {
-        console.log(`[${requestName}] Sending request with body payload:`, payload);
+export async function makeGet(requestName, endpoint) {
+    let request = async () => {
+        console.log(`[${requestName}] Sending GET request`);
 
-        let res = await fetch(endpoint, getInit(payload));
+        return await fetch(endpoint, { method: "GET", headers: createKeyHeader() });
+    };
+
+    return makeRequest(requestName, request);
+}
+
+export async function makePost(requestName, endpoint, payload) {
+    let request = async () => {
+        console.log(`[${requestName}] Sending POST request with body payload:`, payload);
+
+        return await fetch(endpoint, getInit(payload));
+    };
+
+    return makeRequest(requestName, request);
+}
+
+async function makeRequest(requestName, request) {
+    try {
+        let res = await request();
 
         if (!res.ok) {
             let text = await res.text();

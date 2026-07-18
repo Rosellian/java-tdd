@@ -3,6 +3,7 @@ import {PatientCreatePanel} from "../components/patients/PatientCreatePanel";
 import {TriagePanel} from "../components/triage/TriagePanel";
 import {PatientList} from "../components/patients/PatientList";
 import {Layout} from "../ui/layout/Layout";
+import {PatientPanel} from "../components/patients/PatientPanel";
 
 export function Main() {
     const [patients, setPatients] = useState([]);
@@ -21,6 +22,7 @@ export function Main() {
 
     return (
         <Layout>
+            <PatientPanel onSelect={setSelected} />
             <PatientCreatePanel patient={selected} onChange={handleUpdate} onCreated={handleCreated} />
 
             <PatientList patients={patients} selected={selected} onSelect={setSelected} />

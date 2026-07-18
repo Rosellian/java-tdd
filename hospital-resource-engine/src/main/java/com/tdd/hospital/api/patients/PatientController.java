@@ -33,7 +33,7 @@ public class PatientController {
         return lists;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{listId}")
     public List<Patient> getList(@PathVariable UUID listId) {
         logger.info("Request for patient list with id: {}", listId);
 

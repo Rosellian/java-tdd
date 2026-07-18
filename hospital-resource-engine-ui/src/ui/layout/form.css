@@ -9,6 +9,14 @@
     color: var(--text);
 }
 
+.field select {
+    background: var(--input-bg);
+    color:  var(--input-text);
+    border: 1px solid var(--border);
+    padding: 6px;
+    border-radius: 4px;
+}
+
 .field input {
     background: var(--input-bg);
     color: var(--input-text);

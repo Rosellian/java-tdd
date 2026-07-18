@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import static com.tdd.hospital.api.patients.PatientCreateRequest.empty;
+
 @Component
 public class RandomPatientFactory {
     private static final List<String> NAMES = List.of(
@@ -26,6 +28,9 @@ public class RandomPatientFactory {
     private final Random random = new Random();
     private final VitalsFactory vitalsFactory = new VitalsFactory(random);
 
+    public Patient create() {
+        return create(empty());
+    }
     public Patient create(PatientCreateRequest request) {
         UUID id = getRandomId();
         String name = getRandomName();
