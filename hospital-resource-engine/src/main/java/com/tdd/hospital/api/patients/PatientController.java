@@ -23,7 +23,7 @@ public class PatientController {
         this.service = service;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping
     public List<DataList> getLists() {
         logger.info("Request for all patient lists");
 

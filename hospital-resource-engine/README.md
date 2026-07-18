@@ -114,6 +114,22 @@ Using hardcoded API-key to access APIs.
 For handling patient database and creating new patients.  
 Main URL: `/api/patients`  
 **Endpoints:**
+- get available patient lists. Returns list entries:
+  ```java
+  public record DataList(
+        UUID id,
+        String name,
+        String version
+  ) {}
+  ```
+- get patient list by ID as path variable. Returns list of `Patient`.
+- save patient list. Takes list and patients' data in body:
+  ```java
+  public record PatientListRequest(
+        DataList list,
+        List<Patient> patients
+  ) {}
+  ```
 - `/create` create new patient using random generator. Takes specifications in body according to:  
     ```java
     public record PatientCreateRequest(
@@ -139,7 +155,14 @@ PostgreSQL database: `patients`
 - `patients` data in JSON format
 **Repository** for backend access:
 ```java
+@Repository
+public class PatientRepository implements DataRepository<Patient> {
+  public List<DataList> getLists() {}
+  
+  public List<Patient> getList(UUID listId) {}
 
+  public void saveList(DataList list, List<Patient> patients) {}
+}
 ```
 
 ### Project structure
