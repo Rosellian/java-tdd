@@ -8,6 +8,11 @@
     --input-text: #222;
     --accent: #5A2DA8;
 
+    --triage-red: #d32f2f;
+    --triage-orange: #f57c00;
+    --triage-yellow: #fbc02d;
+    --triage-green: #388e3c;
+
     --trace-rule-match: #4caf50;
     --trace-rule-fail: #f44336;
     --trace-resource-ok: #2196f3;
@@ -24,6 +29,11 @@
     --input-bg: #222;
     --input-text: #eee;
     --accent: #BB86FC;
+
+    --triage-red: #ef5350;
+    --triage-orange: #ffb74d;
+    --triage-yellow: #fff176;
+    --triage-green: #81c784;
 
     --trace-rule-match: #81c784;
     --trace-rule-fail: #ef5350;

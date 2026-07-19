@@ -1,0 +1,21 @@
+.triage-result {
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 12px;
+}
+
+.triage-red {
+    background: var(--triage-red);
+}
+
+.triage-orange {
+    background: var(--triage-orange);
+}
+
+.triage-yellow {
+    background: var(--triage-yellow);
+}
+
+.triage-green {
+    background: var(--triage-green);
+}

@@ -4,6 +4,8 @@ import {getPatients, savePatientList} from "../../api/patients/patients";
 import {PatientListSelector} from "./PatientListSelector";
 import {loadLists} from "./ops";
 import {PatientEditor} from "./PatientEditor";
+import {Inputs} from "./lists/Inputs";
+import {Controls} from "./lists/Controls";
 
 export function PatientPanel({ onSelect }) {
     const [lists, setLists] = useState([]);
@@ -28,13 +30,7 @@ export function PatientPanel({ onSelect }) {
         console.log("Saved: ", selectedList);
     }
 
-    function handleCreate() {
-        const newList = {
-            id: crypto.randomUUID(),
-            name: "New List",
-            version: "v1"
-        };
-
+    function onCreate(newList) {
         setLists(prev => [...prev, newList]);
         setSelectedList(newList);
         setPatients([]);
@@ -50,17 +46,17 @@ export function PatientPanel({ onSelect }) {
         );
     }
 
-    function handleSelect(patient) {
+    function onSelectPatient(patient) {
         setSelectedPatient(patient);
         onSelect(patient);
     }
 
-    function onCreate(newPatient) {
+    function onCreatePatient(newPatient) {
         setPatients(prev => [...prev, newPatient]);
         setSelectedPatient(newPatient);
     }
 
-    function onUpdate(updatedPatient) {
+    function onUpdatePatient(updatedPatient) {
         setPatients(prev =>
             prev.map(patient => patient.id === updatedPatient.id ? updatedPatient : patient)
         );
@@ -74,32 +70,14 @@ export function PatientPanel({ onSelect }) {
             <h2>Patient Lists</h2>
 
             <PatientListSelector lists={lists} selectedList={selectedList} setSelectedList={setSelectedList} />
-
-            <div className="field">
-                <label>List Name</label>
-
-                <input value={selectedList.name}
-                       onChange={e => updateListField("name", e.target.value)}
-                />
-            </div>
-
-            <div className="field">
-                <label>Version</label>
-
-                <input value={selectedList.version}
-                       onChange={e => updateListField("version", e.target.value)}
-                />
-            </div>
-
-            <button onClick={handleLoad}>Load</button>
-            <button onClick={handleSave}>Save</button>
-            <button onClick={handleCreate}>Create new list</button>
+            <Inputs selected={selectedList} onUpdate={updateListField} />
+            <Controls load={handleLoad} save={handleSave} onCreate={onCreate} />
 
             {patients.length > 0 && (
-                <PatientList patients={patients} selected={selectedPatient} onSelect={handleSelect}/>
+                <PatientList patients={patients} selected={selectedPatient} onSelect={onSelectPatient} />
             )}
 
-            <PatientEditor patient={selectedPatient} onChange={onUpdate} onCreate={onCreate} />
+            <PatientEditor patient={selectedPatient} onChange={onUpdatePatient} onCreate={onCreatePatient} />
         </div>
     )
 }

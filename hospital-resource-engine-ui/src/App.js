@@ -3,6 +3,7 @@ import "./ui/theme/theme.css";
 import "./ui/layout/layout.css";
 import "./ui/layout/panel.css";
 import "./ui/layout/form.css";
+import "./ui/layout/triage.css";
 import "./ui/layout/trace.css";
 import "./ui/layout/patient-list.css";
 import {Main} from "./pages/Main";

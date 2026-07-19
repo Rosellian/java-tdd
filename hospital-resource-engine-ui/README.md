@@ -15,14 +15,31 @@ For displaying and managing patient lists and patients.
 <PatientPanel onSelect={setSelected} />
 ```
 Subcomponents:
+##### TODO "ListPanel"
+```jsx
+
+```
+PatientListSelector
+```jsx
+<PatientListSelector lists={lists} selectedList={selectedList} setSelectedList={setSelectedList} />
+```
+Inputs
+```jsx
+<Inputs selected={selectedList} onUpdate={updateListField} />
+```
+Controls
+```jsx
+<Controls load={handleLoad} save={handleSave} onCreate={onCreate} />
+```
+---
 ##### PatientList
 ```jsx
-<PatientList patients={patients} selected={selectedPatient} onSelect={handleSelect} />
+<PatientList patients={patients} selected={selectedPatient} onSelect={onSelectPatient} />
 ```
 ---
 ##### PatientEditor
 ```jsx
-<PatientEditor patient={selected} onChange={handleUpdate} onCreate={handleCreated} />
+<PatientEditor patient={selectedPatient} onChange={onUpdatePatient} onCreate={onCreatePatient} />
 ```
 PatientForm
 ```jsx

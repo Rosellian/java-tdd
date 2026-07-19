@@ -20,7 +20,7 @@ export function TriagePanel({ patient }) {
             </button>
 
             {result && (
-                <div className="panel">
+                <div className={getLevelClass(result.level)}>
                     <h3>Level: {result.level}</h3>
                     
                     <TraceTimeline steps={result.trace} />
@@ -28,4 +28,14 @@ export function TriagePanel({ patient }) {
             )}
         </div>
     )
+}
+
+function getLevelClass(level) {
+    switch (level) {
+        case "RED": return "triage-result triage-red";
+        case "ORANGE": return "triage-result triage-orange";
+        case "YELLOW": return "triage-result triage-yellow";
+        case "GREEN": return "triage-result triage-green";
+        default: return "triage-result";
+    }
 }
