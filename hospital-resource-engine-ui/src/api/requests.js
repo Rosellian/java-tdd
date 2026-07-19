@@ -10,17 +10,18 @@ export async function makeGet(requestName, endpoint) {
     return makeRequest(requestName, request);
 }
 
-export async function makePost(requestName, endpoint, payload) {
+//TODO Find better solution for response handling
+export async function makePost(requestName, endpoint, payload, responseHandler = jsonResponse) {
     let request = async () => {
         console.log(`[${requestName}] Sending POST request with body payload:`, payload);
 
         return await fetch(endpoint, getInit(payload));
     };
 
-    return makeRequest(requestName, request);
+    return makeRequest(requestName, request, responseHandler);
 }
 
-async function makeRequest(requestName, request) {
+async function makeRequest(requestName, request, responseHandler = jsonResponse) {
     try {
         let res = await request();
 
@@ -29,10 +30,7 @@ async function makeRequest(requestName, request) {
             console.error(`[${requestName}] Server returned error:`, res.status, text);
         }
 
-        const json = await res.json();
-        console.log(`[${requestName}] Response JSON:`, json);
-
-        return json;
+        return await responseHandler(requestName, res);
 
     } catch (err) {
         console.error(`[${requestName}] Unexpected error:`, err);
@@ -46,4 +44,11 @@ function getInit(bodyPayload) {
         headers: {"Content-Type": "application/json; charset=utf-8", ...createKeyHeader()},
         body: JSON.stringify(bodyPayload)
     };
+}
+
+async function jsonResponse(requestName, response) {
+    let json = await response.json();
+    console.log(`[${requestName}] Response JSON:`, json);
+
+    return json;
 }

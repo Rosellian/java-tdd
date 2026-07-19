@@ -1,11 +1,11 @@
 import {createPatient} from "../../api/patients/patients";
 import {PatientForm} from "./form/PatientForm";
 
-export function PatientCreatePanel({ patient, onChange, onCreated }) {
+export function PatientEditor({ patient, onChange, onCreate }) {
     async function handleRandom() {
         let newPatient = await createPatient();
 
-        onCreated(newPatient);
+        onCreate(newPatient);
     }
 
     return (

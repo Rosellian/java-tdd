@@ -10,6 +10,13 @@ export async function getPatients(listId) {
     return makeGet("getPatients", `${BASE_URL}/${listId}`);
 }
 
+export async function savePatientList(list, patients) {
+    let payload = {list: list, patients: patients};
+
+    //TODO return json response?
+    return makePost("savePatientList", BASE_URL, payload, () => {});
+}
+
 export async function createPatient(createSpecs) {
     return makePost("createPatient", `${BASE_URL}/create`, createSpecs);
 }
