@@ -10,7 +10,7 @@ export function Controls({ load, save, onCreate }) {
     }
 
     return (
-        <div>
+        <div className="controls">
             <button onClick={load}>Load</button>
 
             <button onClick={save}>Save</button>
