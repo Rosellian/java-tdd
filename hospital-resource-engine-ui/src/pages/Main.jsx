@@ -4,14 +4,23 @@ import {Layout} from "../ui/layout/Layout";
 import {PatientPanel} from "../components/patients/PatientPanel";
 
 export function Main() {
-    const [selected, setSelected] = useState(null);
+    const [patients, setPatients] = useState([]);
+    const [selectedPatient, setSelectedPatient] = useState(null);
+
+    function updatePatient(updatedPatient) {
+        setPatients(prev =>
+            prev.map(patient => patient.id === updatedPatient.id ? updatedPatient : patient)
+        );
+        setSelectedPatient(updatedPatient);
+    }
 
     return (
         <Layout>
-            <PatientPanel onSelect={setSelected} />
+            <PatientPanel patients={patients} selected={selectedPatient} setPatients={setPatients}
+                          onSelect={setSelectedPatient} onUpdate={updatePatient} />
 
-            {selected && (
-                <TriagePanel patient={selected} />
+            {selectedPatient && (
+                <TriagePanel patient={selectedPatient} onUpdate={updatePatient} />
             )}
         </Layout>
     )

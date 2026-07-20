@@ -7,12 +7,9 @@ import {PatientEditor} from "./PatientEditor";
 import {Inputs} from "./lists/Inputs";
 import {Controls} from "./lists/Controls";
 
-export function PatientPanel({ onSelect }) {
+export function PatientPanel({patients, selected, setPatients, onSelect, onUpdate }) {
     const [lists, setLists] = useState([]);
     const [selectedList, setSelectedList] = useState(null);
-
-    const [patients, setPatients] = useState([]);
-    const [selectedPatient, setSelectedPatient] = useState(null);
 
     useEffect(() => loadLists(setLists, setSelectedList), []);
 
@@ -22,7 +19,7 @@ export function PatientPanel({ onSelect }) {
         let data = await getPatients(selectedList.id);
 
         setPatients(data);
-        setSelectedPatient(null);
+        onSelect(null);
     }
 
     async function handleSave() {
@@ -34,7 +31,7 @@ export function PatientPanel({ onSelect }) {
         setLists(prev => [...prev, newList]);
         setSelectedList(newList);
         setPatients([]);
-        setSelectedPatient(null);
+        onSelect(null);
     }
 
     function updateListField(field, value) {
@@ -46,21 +43,9 @@ export function PatientPanel({ onSelect }) {
         );
     }
 
-    function onSelectPatient(patient) {
-        setSelectedPatient(patient);
-        onSelect(patient);
-    }
-
     function onCreatePatient(newPatient) {
         setPatients(prev => [...prev, newPatient]);
-        setSelectedPatient(newPatient);
-    }
-
-    function onUpdatePatient(updatedPatient) {
-        setPatients(prev =>
-            prev.map(patient => patient.id === updatedPatient.id ? updatedPatient : patient)
-        );
-        setSelectedPatient(updatedPatient);
+        onSelect(newPatient);
     }
 
     if (!selectedList) return;
@@ -74,10 +59,10 @@ export function PatientPanel({ onSelect }) {
             <Controls load={handleLoad} save={handleSave} onCreate={onCreate} />
 
             {patients.length > 0 && (
-                <PatientList patients={patients} selected={selectedPatient} onSelect={onSelectPatient} />
+                <PatientList patients={patients} selected={selected} onSelect={onSelect} />
             )}
 
-            <PatientEditor patient={selectedPatient} onChange={onUpdatePatient} onCreate={onCreatePatient} />
+            <PatientEditor patient={selected} onChange={onUpdate} onCreate={onCreatePatient} />
         </div>
     )
 }
