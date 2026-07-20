@@ -152,7 +152,7 @@ Main URL: `/api/triage`
 PostgreSQL database: `patients`  
 **Tables:**
 - `patient_lists`
-- `patients` data in JSON format
+- `patients` data in JSON format  
 **Repository** for backend access:
 ```java
 @Repository
@@ -162,6 +162,23 @@ public class PatientRepository implements DataRepository<Patient> {
   public List<Patient> getList(UUID listId) {}
 
   public void saveList(DataList list, List<Patient> patients) {}
+}
+```
+
+#### Triage Rules
+PostgreSQL database: `triage`  
+**Tables:**
+- `rule_lists`
+- `rules` data in JSON format  
+**Repository** for backend access:
+```java
+@Repository
+public class TriageRepository implements DataRepository<TriageRule> {
+  public List<DataList> getLists() {}
+  
+  public List<TriageRule> getList(UUID listId) {}
+
+  public void saveList(DataList list, List<TriageRule> rules) {}
 }
 ```
 

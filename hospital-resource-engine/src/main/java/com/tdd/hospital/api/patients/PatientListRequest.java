@@ -1,7 +1,7 @@
 package com.tdd.hospital.api.patients;
 
 import com.tdd.hospital.patients.Patient;
-import com.tdd.hospital.patients.database.DataList;
+import com.tdd.hospital.database.DataList;
 
 import java.util.List;
 

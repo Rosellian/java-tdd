@@ -13,11 +13,12 @@ public class RuleTestPatientFactory {
     public static Patient matching(TriageRule rule) {
         Patient base = createBasePatient();
 
-        return switch (rule.id()) {
-            case "r1" -> baseWithVitals(base, vs -> vs.withOxygenSaturation(80));
-            case "r2" -> baseWithVitals(base, vs -> vs.withTemperature(40.0));
-            case "r3" -> baseWithVitals(base, vs -> vs.withSystolicBP(85));
-            case "r4" -> baseWithSymptoms(base, List.of("headache"));
+        //TODO find a better, more general solution
+        return switch (rule.name()) {
+            case "Critical Oxygen" -> baseWithVitals(base, vs -> vs.withOxygenSaturation(80));
+            case "High Fever" -> baseWithVitals(base, vs -> vs.withTemperature(40.0));
+            case "Low Blood Pressure" -> baseWithVitals(base, vs -> vs.withSystolicBP(85));
+            case "Mild Symptoms" -> baseWithSymptoms(base, List.of("headache"));
             default -> throw new IllegalStateException("No matching generator for rule: " + rule.id());
         };
     }

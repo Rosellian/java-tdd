@@ -1,7 +1,7 @@
 package com.tdd.hospital.config.patients;
 
 import com.tdd.hospital.patients.Patient;
-import com.tdd.hospital.patients.database.DataList;
+import com.tdd.hospital.database.DataList;
 import com.tdd.hospital.patients.database.PatientRepository;
 import com.tdd.hospital.patients.factory.RandomPatientFactory;
 import org.slf4j.Logger;

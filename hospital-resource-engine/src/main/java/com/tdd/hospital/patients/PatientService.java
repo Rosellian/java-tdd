@@ -1,7 +1,7 @@
 package com.tdd.hospital.patients;
 
 import com.tdd.hospital.api.patients.PatientCreateRequest;
-import com.tdd.hospital.patients.database.DataList;
+import com.tdd.hospital.database.DataList;
 import com.tdd.hospital.patients.database.PatientRepository;
 import com.tdd.hospital.patients.factory.RandomPatientFactory;
 import org.slf4j.Logger;
@@ -22,6 +22,8 @@ public class PatientService {
         this.repository = repository;
         this.randomFactory = randomFactory;
     }
+
+    //TODO refactor to reuse more code
 
     public List<DataList> getLists() {
         logger.info("Getting patient lists");

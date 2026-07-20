@@ -1,4 +1,4 @@
-package com.tdd.hospital.patients.database;
+package com.tdd.hospital.database;
 
 import java.util.UUID;
 

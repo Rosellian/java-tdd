@@ -18,8 +18,26 @@ spring:
 
   flyway-patients:
     enabled: true
-    locations: classpath:db
+    locations: classpath:db/patients
     url: jdbc:postgresql://localhost:5432/patients
+    user: postgres
+    password: postgres
+    create-schemas: false
+
+  datasource-triage:
+    url: jdbc:postgresql://localhost:5432/triage
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  sql-triage:
+    init:
+      mode: never
+
+  flyway-triage:
+    enabled: true
+    locations: classpath:db/triage
+    url: jdbc:postgresql://localhost:5432/triage
     user: postgres
     password: postgres
     create-schemas: false

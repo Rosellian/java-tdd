@@ -1,4 +1,4 @@
-package com.tdd.hospital.config.patients;
+package com.tdd.hospital.config.triage;
 
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 @Configuration
-public class PatientsFlywayConfig {
+public class TriageFlywayConfig {
 
-    @Bean(name = "patientsFlyway")
-    public Flyway patientsFlyway(@Qualifier("patientsDataSource") DataSource ds) {
+    @Bean(name = "triageFlyway")
+    public Flyway triageFlyway(@Qualifier("triageDataSource") DataSource ds) {
         Flyway flyway = Flyway.configure()
                 .dataSource(ds)
-                .locations("classpath:db/patients")
+                .locations("classpath:db/triage")
                 .baselineOnMigrate(true)
                 .load();
 
