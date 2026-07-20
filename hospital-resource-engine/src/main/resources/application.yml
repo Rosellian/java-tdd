@@ -6,6 +6,7 @@ security:
   api-key: "994490d0b0124e6e24e455807743ce2e25a9c1c120811c3ceebf8c8fb87c818d"
 
 spring:
+# Patients
   datasource-patients:
     url: jdbc:postgresql://localhost:5432/patients
     username: postgres
@@ -24,6 +25,7 @@ spring:
     password: postgres
     create-schemas: false
 
+# Triage rules
   datasource-triage:
     url: jdbc:postgresql://localhost:5432/triage
     username: postgres
@@ -38,6 +40,25 @@ spring:
     enabled: true
     locations: classpath:db/triage
     url: jdbc:postgresql://localhost:5432/triage
+    user: postgres
+    password: postgres
+    create-schemas: false
+
+# Resources
+  datasource-resources:
+    url: jdbc:postgresql://localhost:5432/resources
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  sql-resources:
+    init:
+      mode: never
+
+  flyway-resources:
+    enabled: true
+    locations: classpath:db/resources
+    url: jdbc:postgresql://localhost:5432/resources
     user: postgres
     password: postgres
     create-schemas: false

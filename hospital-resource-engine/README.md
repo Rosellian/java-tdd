@@ -182,6 +182,23 @@ public class TriageRepository implements DataRepository<TriageRule> {
 }
 ```
 
+#### Resources
+PostgreSQL database: `resources`  
+**Tables:**
+- `resource_lists`
+- `resources` data in JSON format  
+  **Repository** for backend access:
+```java
+@Repository
+public class ResourceRepository implements DataRepository<Resource> {
+  public List<DataList> getLists() {}
+  
+  public List<Resource> getList(UUID listId) {}
+
+  public void saveList(DataList list, List<Resource> resources) {}
+}
+```
+
 ### Project structure
 TODO
 
