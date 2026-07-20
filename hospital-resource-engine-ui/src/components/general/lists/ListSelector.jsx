@@ -1,4 +1,4 @@
-export function PatientListSelector({ lists, selectedList, setSelectedList }) {
+export function ListSelector({ lists, selectedList, setSelectedList }) {
     return (
         <div className="field">
             <label>Select list</label>

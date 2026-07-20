@@ -1,13 +1,12 @@
-import {PatientList} from "./PatientList";
 import {useEffect, useState} from "react";
-import {getPatients, savePatientList} from "../../api/patients/patients";
-import {ListSelector} from "../general/lists/ListSelector";
 import {loadLists} from "./ops";
-import {PatientEditor} from "./editor/PatientEditor";
-import {Inputs} from "../general/lists/Inputs";
-import {Controls} from "../general/lists/Controls";
+import {getRules, saveRuleList} from "../../../api/triage/rules";
+import {ListSelector} from "../../general/lists/ListSelector";
+import {Inputs} from "../../general/lists/Inputs";
+import {Controls} from "../../general/lists/Controls";
+import {RuleList} from "./RuleList";
 
-export function PatientPanel({patients, selected, setPatients, onSelect, onUpdate }) {
+export function TriageRulePanel({ rules, selected, setRules, onSelect, onUpdate }) {
     const [lists, setLists] = useState([]);
     const [selectedList, setSelectedList] = useState(null);
 
@@ -16,21 +15,21 @@ export function PatientPanel({patients, selected, setPatients, onSelect, onUpdat
     async function handleLoad() {
         if(!selectedList) return;
 
-        let data = await getPatients(selectedList.id);
+        let data = await getRules(selectedList.id);
 
-        setPatients(data);
+        setRules(data);
         onSelect(null);
     }
 
     async function handleSave() {
-        await savePatientList(selectedList, patients);
+        await saveRuleList(selectedList, rules);
         console.log("Saved: ", selectedList);
     }
 
     function onCreate(newList) {
         setLists(prev => [...prev, newList]);
         setSelectedList(newList);
-        setPatients([]);
+        setRules([]);
         onSelect(null);
     }
 
@@ -43,26 +42,26 @@ export function PatientPanel({patients, selected, setPatients, onSelect, onUpdat
         );
     }
 
-    function onCreatePatient(newPatient) {
-        setPatients(prev => [...prev, newPatient]);
-        onSelect(newPatient);
+    function onCreateRule(newRule) {
+        setRules(prev => [...prev, newRule]);
+        onSelect(newRule);
     }
 
     if (!selectedList) return;
 
     return (
         <div className="panel">
-            <h2>Patient Lists</h2>
+            <h2>Triage Rule Lists</h2>
 
             <ListSelector lists={lists} selectedList={selectedList} setSelectedList={setSelectedList} />
             <Inputs selected={selectedList} onUpdate={updateListField} />
             <Controls load={handleLoad} save={handleSave} onCreate={onCreate} />
 
-            {patients.length > 0 && (
-                <PatientList patients={patients} selected={selected} onSelect={onSelect} />
+            {rules.length > 0 && (
+                <RuleList rules={rules} selected={selected} onSelect={onSelect} />
             )}
 
-            <PatientEditor patient={selected} onChange={onUpdate} onCreate={onCreatePatient} />
+            {/*<RuleEditor rule={selected} onChange={onUpdate} onCreate={onCreateRule} />*/}
         </div>
     )
 }

@@ -28,6 +28,5 @@
 }
 
 .panel li div:hover {
-    /*background: var(--input-bg);*/
     opacity: 0.9;
 }

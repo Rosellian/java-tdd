@@ -20,9 +20,9 @@ Subcomponents:
 ```jsx
 
 ```
-PatientListSelector
+ListSelector
 ```jsx
-<PatientListSelector lists={lists} selectedList={selectedList} setSelectedList={setSelectedList} />
+<ListSelector lists={lists} selectedList={selectedList} setSelectedList={setSelectedList} />
 ```
 Inputs
 ```jsx

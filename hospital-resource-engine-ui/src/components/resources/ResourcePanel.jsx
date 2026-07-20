@@ -1,13 +1,12 @@
-import {PatientList} from "./PatientList";
 import {useEffect, useState} from "react";
-import {getPatients, savePatientList} from "../../api/patients/patients";
-import {ListSelector} from "../general/lists/ListSelector";
 import {loadLists} from "./ops";
-import {PatientEditor} from "./editor/PatientEditor";
+import {getResources, saveResourceList} from "../../api/resources/resources";
+import {ListSelector} from "../general/lists/ListSelector";
 import {Inputs} from "../general/lists/Inputs";
 import {Controls} from "../general/lists/Controls";
+import {ResourceList} from "./ResourceList";
 
-export function PatientPanel({patients, selected, setPatients, onSelect, onUpdate }) {
+export function ResourcePanel({ resources, selected, setResources, onSelect, onUpdate }) {
     const [lists, setLists] = useState([]);
     const [selectedList, setSelectedList] = useState(null);
 
@@ -16,21 +15,21 @@ export function PatientPanel({patients, selected, setPatients, onSelect, onUpdat
     async function handleLoad() {
         if(!selectedList) return;
 
-        let data = await getPatients(selectedList.id);
+        let data = await getResources(selectedList.id);
 
-        setPatients(data);
+        setResources(data);
         onSelect(null);
     }
 
     async function handleSave() {
-        await savePatientList(selectedList, patients);
+        await saveResourceList(selectedList, resources);
         console.log("Saved: ", selectedList);
     }
 
     function onCreate(newList) {
         setLists(prev => [...prev, newList]);
         setSelectedList(newList);
-        setPatients([]);
+        setResources([]);
         onSelect(null);
     }
 
@@ -43,26 +42,26 @@ export function PatientPanel({patients, selected, setPatients, onSelect, onUpdat
         );
     }
 
-    function onCreatePatient(newPatient) {
-        setPatients(prev => [...prev, newPatient]);
-        onSelect(newPatient);
+    function onCreateResource(newResource) {
+        setResources(prev => [...prev, newResource]);
+        onSelect(newResource);
     }
 
     if (!selectedList) return;
 
     return (
         <div className="panel">
-            <h2>Patient Lists</h2>
+            <h2>Resource Lists</h2>
 
             <ListSelector lists={lists} selectedList={selectedList} setSelectedList={setSelectedList} />
             <Inputs selected={selectedList} onUpdate={updateListField} />
             <Controls load={handleLoad} save={handleSave} onCreate={onCreate} />
 
-            {patients.length > 0 && (
-                <PatientList patients={patients} selected={selected} onSelect={onSelect} />
+            {resources.length > 0 && (
+                <ResourceList resources={resources} selected={selected} onSelect={onSelect} />
             )}
 
-            <PatientEditor patient={selected} onChange={onUpdate} onCreate={onCreatePatient} />
+            {/*<ResourceEditor resource={selected} onChange={onUpdate} onCreate={onCreateResource} />*/}
         </div>
     )
 }
