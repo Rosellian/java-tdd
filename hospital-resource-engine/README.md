@@ -107,6 +107,14 @@ public enum TraceType {
 ```
 
 ### API
+List entry representation reused by database management APIs:
+```java
+public record DataList(
+        UUID id, 
+        String name, 
+        String version
+) {}
+```
 #### Security
 Using hardcoded API-key to access APIs.
 
@@ -114,14 +122,7 @@ Using hardcoded API-key to access APIs.
 For handling patient database and creating new patients.  
 Main URL: `/api/patients`  
 **Endpoints:**
-- get available patient lists. Returns list entries:
-  ```java
-  public record DataList(
-        UUID id,
-        String name,
-        String version
-  ) {}
-  ```
+- get available patient lists. Returns list of `DataList`.
 - get patient list by ID as path variable. Returns list of `Patient`.
 - save patient list. Takes list and patients' data in body:
   ```java
@@ -142,10 +143,33 @@ Main URL: `/api/patients`
     ```
 
 #### Triage
-For running Triage engine on patients.  
+For running Triage engine on patients and handling triage rule database.  
 Main URL: `/api/triage`  
 **Endpoints:**
 - Run triage engine on patient data. Takes `Patient` in body.
+- get available rule lists. Returns list of `DataList`.
+- get rule list by ID as path variable. Returns list of `TriageRule`.
+- save rule list. Takes list and rules' data in body:
+  ```java
+  public record TriageRuleListRequest(
+        DataList list,
+        List<TriageRule> rules
+  ) {}
+  ```
+
+#### Resources
+For handling resource database.  
+Main URL: `/api/resources`  
+**Endpoints:**
+- get available resource lists. Returns list of `DataList`.
+- get resource list by ID as path variable. Returns list of `Resource`.
+- save resource list. Takes list and resources' data in body:
+  ```java
+  public record ResourceListRequest(
+        DataList list,
+        List<Resource> resources
+  ) {}
+  ```
 
 ### Database
 #### Patients
