@@ -1,9 +1,9 @@
-export function Inputs({ selected, updateField }) {
+export function Inputs({ selected, onUpdate }) {
     return (
         <div>
-            <Field label="List Name" name="name" value={selected.name} onChange={updateField} />
+            <Field label="List Name" name="name" value={selected.name} onChange={onUpdate} />
 
-            <Field label="Version" name="version" value={selected.version} onChange={updateField} />
+            <Field label="Version" name="version" value={selected.version} onChange={onUpdate} />
         </div>
     )
 }
