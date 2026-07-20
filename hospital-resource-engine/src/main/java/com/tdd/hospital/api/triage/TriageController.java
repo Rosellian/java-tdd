@@ -40,7 +40,7 @@ public class TriageController {
         return result;
     }
 
-    @GetMapping
+    @GetMapping("/rules")
     public List<DataList> getLists() {
         logger.info("Request for all triage rule lists");
 
@@ -50,7 +50,7 @@ public class TriageController {
         return lists;
     }
 
-    @GetMapping("/{listId}")
+    @GetMapping("/rules/{listId}")
     public List<TriageRule> getList(@PathVariable UUID listId) {
         logger.info("Request for triage rule list with id: {}", listId);
 
@@ -60,7 +60,7 @@ public class TriageController {
         return rules;
     }
 
-    @PostMapping
+    @PostMapping("/rules")
     public void save(@RequestBody TriageRuleListRequest request) {
         logger.info("Request to save triage rule list");
 

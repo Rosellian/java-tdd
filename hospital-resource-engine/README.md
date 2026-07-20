@@ -147,9 +147,9 @@ For running Triage engine on patients and handling triage rule database.
 Main URL: `/api/triage`  
 **Endpoints:**
 - Run triage engine on patient data. Takes `Patient` in body.
-- get available rule lists. Returns list of `DataList`.
-- get rule list by ID as path variable. Returns list of `TriageRule`.
-- save rule list. Takes list and rules' data in body:
+- `/rules` get available rule lists. Returns list of `DataList`.
+- `/rules` get rule list by ID as path variable. Returns list of `TriageRule`.
+- `/rules` save rule list. Takes list and rules' data in body:
   ```java
   public record TriageRuleListRequest(
         DataList list,
