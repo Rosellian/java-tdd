@@ -4,8 +4,28 @@
     margin-top: 12px;
 }
 
+.triage-badge {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-left: 8px;
+    color: #fff;
+}
+
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 10px var(--triage-red); }
+    50% { box-shadow: 0 0 20px var(--triage-red); }
+    100% { box-shadow: 0 0 10px var(--triage-red); }
+}
 .triage-red {
     background: var(--triage-red);
+    box-shadow: 0 0 6px var(--triage-red), 0 0 12px var(--triage-red);
+    animation: pulse-red 1.5s infinite ease-in-out;
 }
 
 .triage-orange {

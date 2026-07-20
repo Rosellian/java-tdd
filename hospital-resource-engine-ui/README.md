@@ -12,7 +12,8 @@ Shall include ability to:
 #### Patients
 For displaying and managing patient lists and patients.
 ```jsx
-<PatientPanel onSelect={setSelected} />
+<PatientPanel patients={patients} selected={selectedPatient} setPatients={setPatients}
+              onSelect={setSelectedPatient} onUpdate={updatePatient} />
 ```
 Subcomponents:
 ##### TODO "ListPanel"
@@ -34,12 +35,12 @@ Controls
 ---
 ##### PatientList
 ```jsx
-<PatientList patients={patients} selected={selectedPatient} onSelect={onSelectPatient} />
+<PatientList patients={patients} selected={selected} onSelect={onSelect} />
 ```
 ---
 ##### PatientEditor
 ```jsx
-<PatientEditor patient={selectedPatient} onChange={onUpdatePatient} onCreate={onCreatePatient} />
+<PatientEditor patient={selected} onChange={onUpdate} onCreate={onCreatePatient} />
 ```
 PatientForm
 ```jsx

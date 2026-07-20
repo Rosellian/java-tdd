@@ -2,7 +2,7 @@ export function TraceTimeline({ steps }) {
     return (
         <div className="trace-timeline">
             {steps.map((step, i) => (
-                <div key={i} className={`trace-step type-${step.type.toLowerCase()}`}>
+                <div key={i} className={getTypeClass(step)}>
                     <span>
                         <strong>{step.label}</strong>
                     </span>
@@ -12,4 +12,8 @@ export function TraceTimeline({ steps }) {
             ))}
         </div>
     )
+}
+
+function getTypeClass(step) {
+    return `trace-step type-${step.type.toLowerCase()}`;
 }

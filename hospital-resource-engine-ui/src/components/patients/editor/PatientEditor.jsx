@@ -1,4 +1,4 @@
-import {createPatient} from "../../api/patients/patients";
+import {createPatient} from "../../../api/patients/patients";
 import {PatientForm} from "./form/PatientForm";
 
 export function PatientEditor({ patient, onChange, onCreate }) {

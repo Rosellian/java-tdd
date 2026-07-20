@@ -1,9 +1,9 @@
 import {PatientList} from "./PatientList";
 import {useEffect, useState} from "react";
 import {getPatients, savePatientList} from "../../api/patients/patients";
-import {PatientListSelector} from "./PatientListSelector";
+import {PatientListSelector} from "./lists/PatientListSelector";
 import {loadLists} from "./ops";
-import {PatientEditor} from "./PatientEditor";
+import {PatientEditor} from "./editor/PatientEditor";
 import {Inputs} from "./lists/Inputs";
 import {Controls} from "./lists/Controls";
 
