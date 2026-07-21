@@ -18,3 +18,32 @@
     grid-template-columns: 1fr 1fr;
     gap: 12px 16px;
 }
+
+/*TODO specify to only effect vital fields*/
+.field.danger {
+    box-shadow: 0 0 6px var(--triage-red), 0 0 12px var(--triage-red);
+}
+
+.field.danger input {
+    border: 2px solid var(--triage-red);
+    background: rgba(255, 0, 0, 0.08);
+}
+
+.field.danger label {
+    color: var(--triage-red);
+    font-weight: bold;
+}
+
+.collapsible.danger .collapsible-header {
+    background: rgba(255, 0, 0, 0.12);
+    border-left: 4px solid var(--triage-red);
+    padding-left: 8px;
+}
+
+.collapsible.danger .collapsible-header h3 {
+    color: var(--triage-red);
+}
+
+.collapsible.danger .arrow {
+    color: var(--triage-red);
+}

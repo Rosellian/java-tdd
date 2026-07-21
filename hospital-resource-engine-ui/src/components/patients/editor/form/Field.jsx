@@ -1,6 +1,6 @@
-export function Field({ label, name, value, step = "1", onUpdate }) {
+export function Field({ label, name, value, step = "1", className = "", onUpdate }) {
     return (
-        <div className="field">
+        <div className={"field" + className}>
             <label>{label}</label>
 
             <input type="number" step={step} value={value}
