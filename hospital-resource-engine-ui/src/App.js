@@ -6,6 +6,7 @@ import "./ui/layout/panel.css";
 import "./ui/layout/form.css";
 import "./ui/layout/controls.css";
 import "./ui/layout/list.css";
+import "./ui/collapsible/collapsible.css";
 import "./ui/layout/patients/form.css";
 import "./ui/layout/triage/triage.css";
 import "./ui/layout/triage/trace.css";
