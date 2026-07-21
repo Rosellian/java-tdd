@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {TriagePanel} from "../components/triage/TriagePanel";
-import {Layout} from "../ui/layout/Layout";
+import {Layout} from "../ui/layout/main/Layout";
 import {PatientPanel} from "../components/patients/PatientPanel";
 import {ResourcePanel} from "../components/resources/ResourcePanel";
 import {TriageRulePanel} from "../components/triage/rules/TriageRulePanel";

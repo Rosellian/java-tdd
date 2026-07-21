@@ -11,7 +11,9 @@ export function PatientEditor({ patient, onChange, onCreate }) {
     return (
         <div className="panel">
             {patient && (
-                <PatientForm patient={patient} onChange={onChange} />
+                <div>
+                    <PatientForm patient={patient} onChange={onChange} />
+                </div>
             )}
 
             <button onClick={handleRandom}>
