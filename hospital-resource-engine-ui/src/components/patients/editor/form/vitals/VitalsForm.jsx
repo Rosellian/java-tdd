@@ -1,10 +1,10 @@
-import {Field} from "./Field";
-import {Collapsible} from "../../../../ui/collapsible/Collapsible";
+import {Field} from "../Field";
+import {Collapsible} from "../../../../../ui/collapsible/Collapsible";
+import {createAddDangerClass, dangerClass} from "./vitals";
 
 export function VitalsForm({ vitals, onUpdate }) {
     let danger = dangerClass(vitals);
-    let atLeastOneDanger = anyDanger(danger);
-    let addDangerClass = { class: " danger", add: atLeastOneDanger };
+    let addDangerClass = createAddDangerClass(danger);
 
     return (
         <Collapsible title="Vitals" defaultOpen={true} closedClass={addDangerClass}>
@@ -28,23 +28,4 @@ export function VitalsForm({ vitals, onUpdate }) {
             </div>
         </Collapsible>
     )
-}
-
-//TODO centralize, and build upon rules?
-function dangerClass(vitals) {
-    return {
-        heartRate: setDanger(vitals.heartRate > 130),
-        systolicBP: setDanger(vitals.systolicBP > 180),
-        diastolicBP: setDanger(vitals.diastolicBP > 120),
-        oxygenSaturation: setDanger(vitals.oxygenSaturation < 90),
-        temperature: setDanger(vitals.temperature > 39)
-    };
-}
-
-function setDanger(condition) {
-    return condition ? " danger" : "";
-}
-
-function anyDanger(danger) {
-    return Object.values(danger).some(x => x === " danger");
 }
