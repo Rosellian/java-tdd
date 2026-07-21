@@ -3,13 +3,15 @@ export function PatientList({ patients, selected, onSelect }) {
         <div className="panel">
             <h2>Patients</h2>
 
-            <ul>
-                {patients.map(patient => (
-                    <li key={patient.id} className={selectedClass(patient, selected)}>
-                        <Patient patient={patient} onSelect={onSelect} />
-                    </li>
-                ))}
-            </ul>
+            <div className="list-scroll">
+                <ul>
+                    {patients.map(patient => (
+                        <li key={patient.id} className={selectedClass(patient, selected)}>
+                            <Patient patient={patient} onSelect={onSelect} />
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     )
 }

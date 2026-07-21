@@ -3,13 +3,15 @@ export function ResourceList({ resources, selected, onSelect }) {
         <div className="panel">
             <h2>Resources</h2>
 
-            <ul>
-                {resources.map(resource => (
-                    <li key={resource.id} className={selectedClass(resource, selected)}>
-                        <Resource resource={resource} onSelect={onSelect} />
-                    </li>
-                ))}
-            </ul>
+            <div className="list-scroll">
+                <ul>
+                    {resources.map(resource => (
+                        <li key={resource.id} className={selectedClass(resource, selected)}>
+                            <Resource resource={resource} onSelect={onSelect} />
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     )
 }

@@ -38,19 +38,27 @@ export function Main() {
 
     return (
         <Layout>
-            <PatientPanel patients={patients} selected={selectedPatient} setPatients={setPatients}
-                          onSelect={setSelectedPatient} onUpdate={updatePatient} />
-
-            {selectedPatient && (
-                <div className="panel">
-                    <TriageRulePanel rules={triageRules} selected={selectedTriageRule} setRules={setTriageRules}
-                                     onSelect={setSelectedTriageRule} onUpdate={updateTriageRule} />
-                    <TriagePanel patient={selectedPatient} onUpdate={updatePatient} />
+            <div className="main-top">
+                <div className="left">
+                    <PatientPanel patients={patients} selected={selectedPatient} setPatients={setPatients}
+                                  onSelect={setSelectedPatient} onUpdate={updatePatient} />
                 </div>
-            )}
 
-            <ResourcePanel resources={resources} selected={selectedResource} setResources={setResources}
-                           onSelect={setSelectedResource} onUpdate={updateResource} />
+                <div className="right">
+                    <div className="panel">
+                        <TriageRulePanel rules={triageRules} selected={selectedTriageRule} setRules={setTriageRules}
+                                         onSelect={setSelectedTriageRule} onUpdate={updateTriageRule} />
+                        {selectedPatient && (
+                            <TriagePanel patient={selectedPatient} onUpdate={updatePatient} />
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            <div className="main-bottom">
+                <ResourcePanel resources={resources} selected={selectedResource} setResources={setResources}
+                               onSelect={setSelectedResource} onUpdate={updateResource} />
+            </div>
         </Layout>
     )
 }

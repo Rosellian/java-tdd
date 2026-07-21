@@ -3,13 +3,15 @@ export function RuleList({ rules, selected, onSelect }) {
         <div className="panel">
             <h2>Rules</h2>
 
-            <ul>
-                {rules.map(rule => (
-                    <li key={rule.id} className={selectedClass(rule, selected)}>
-                        <Rule rule={rule} onSelect={onSelect} />
-                    </li>
-                ))}
-            </ul>
+            <div className="list-scroll">
+                <ul>
+                    {rules.map(rule => (
+                        <li key={rule.id} className={selectedClass(rule, selected)}>
+                            <Rule rule={rule} onSelect={onSelect} />
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     )
 }
