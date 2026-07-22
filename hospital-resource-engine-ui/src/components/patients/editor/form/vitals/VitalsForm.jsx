@@ -1,4 +1,4 @@
-import {Field} from "../Field";
+import {Field} from "../../../../general/form/Field";
 import {Collapsible} from "../../../../../ui/collapsible/Collapsible";
 import {createAddDangerClass, dangerClass} from "./vitals";
 

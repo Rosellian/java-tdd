@@ -170,6 +170,7 @@ Main URL: `/api/resources`
         List<Resource> resources
   ) {}
   ```
+- `/types` get supported resource types.
 
 ### Database
 #### Patients

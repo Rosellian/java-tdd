@@ -1,4 +1,4 @@
-import {Field} from "./Field";
+import {Field} from "../../../general/form/Field";
 
 export function PatientFields({ draft, updateField }) {
     return (

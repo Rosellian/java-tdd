@@ -5,6 +5,7 @@ import {ListSelector} from "../general/lists/ListSelector";
 import {Inputs} from "../general/lists/Inputs";
 import {Controls} from "../general/lists/Controls";
 import {ResourceList} from "./list/ResourceList";
+import {ResourceEditor} from "./editor/ResourceEditor";
 
 export function ResourcePanel({ resources, selected, setResources, onSelect, onUpdate }) {
     const [lists, setLists] = useState([]);

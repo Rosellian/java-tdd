@@ -47,4 +47,14 @@ public class ResourceController {
 
         service.save(request.list(), request.resources());
     }
+
+    @GetMapping("/types")
+    public List<String> getTypes() {
+        logger.info("Request for all resource types");
+
+        List<String> types = service.getTypes();
+        logger.info("Response returned resource types: {}", types);
+
+        return types;
+    }
 }

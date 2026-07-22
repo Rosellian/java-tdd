@@ -1,3 +1,5 @@
+import {getIcon} from "../types";
+
 export function Resource({ resource, onSelect }) {
     return (
         <div className="resource-row" onClick={() => onSelect(resource)}>
@@ -13,16 +15,4 @@ export function Resource({ resource, onSelect }) {
             <div className="resource-id">#{resource.id}</div>
         </div>
     )
-}
-
-function getIcon(type) {
-    switch (type.toLowerCase()) {
-        case "doctor": return "🩺";
-        case "nurse": return "👩‍⚕️";
-        case "icu_bed": return "💉";
-        case "surgery_room": return "🔪";
-        case "ventilator": return "🫁";
-        case "ambulance": return "🚑";
-        default: return "📦";
-    }
 }

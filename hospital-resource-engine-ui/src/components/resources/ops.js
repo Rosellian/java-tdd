@@ -1,4 +1,4 @@
-import {getResourceLists} from "../../api/resources/resources";
+import {getResourceLists, getResourceTypes} from "../../api/resources/resources";
 
 export function loadLists(setLists, setSelectedList) {
     try {
@@ -12,5 +12,14 @@ export function loadLists(setLists, setSelectedList) {
             });
     } catch (err) {
         console.error("Failed to load resource lists:", err);
+    }
+}
+
+export function loadTypes(setTypes) {
+    try {
+        getResourceTypes().then(
+            data => setTypes(data));
+    } catch (err) {
+        console.error("Failed to load resource types:", err);
     }
 }

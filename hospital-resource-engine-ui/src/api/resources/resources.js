@@ -16,3 +16,7 @@ export async function saveResourceList(list, resources) {
     //TODO return json response?
     return makePost("saveResourceList", BASE_URL, payload, () => {});
 }
+
+export async function getResourceTypes() {
+    return makeGet("getResourceTypes", `${BASE_URL}/types`);
+}
