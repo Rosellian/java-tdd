@@ -5,5 +5,6 @@ public enum ResourceType {
     SURGERY_ROOM,
     NURSE,
     DOCTOR,
-    VENTILATOR
+    VENTILATOR,
+    AMBULANCE
 }
