@@ -61,7 +61,7 @@ export function ResourcePanel({ resources, selected, setResources, onSelect, onU
                 <ResourceList resources={resources} selected={selected} onSelect={onSelect} />
             )}
 
-            {/*<ResourceEditor resource={selected} onChange={onUpdate} onCreate={onCreateResource} />*/}
+            <ResourceEditor resource={selected} onChange={onUpdate} onCreate={onCreateResource} />
         </div>
     )
 }

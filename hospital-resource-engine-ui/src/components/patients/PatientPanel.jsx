@@ -1,4 +1,4 @@
-import {PatientList} from "./PatientList";
+import {PatientList} from "./list/PatientList";
 import {useEffect, useState} from "react";
 import {getPatients, savePatientList} from "../../api/patients/patients";
 import {ListSelector} from "../general/lists/ListSelector";

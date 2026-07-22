@@ -37,11 +37,13 @@ export function TriagePanel({ patient, onUpdate }) {
 }
 
 function getLevelClass(level) {
+    let base = "triage-result";
+
     switch (level) {
-        case "RED": return "triage-result triage-red";
-        case "ORANGE": return "triage-result triage-orange";
-        case "YELLOW": return "triage-result triage-yellow";
-        case "GREEN": return "triage-result triage-green";
-        default: return "triage-result";
+        case "RED": return base + " triage-red";
+        case "ORANGE": return base + " triage-orange";
+        case "YELLOW": return base +  " triage-yellow";
+        case "GREEN": return base +  " triage-green";
+        default: return base;
     }
 }
