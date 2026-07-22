@@ -1,3 +1,5 @@
+import {Resource} from "./Resource";
+
 export function ResourceList({ resources, selected, onSelect }) {
     return (
         <div className="panel">
@@ -18,14 +20,4 @@ export function ResourceList({ resources, selected, onSelect }) {
 
 function selectedClass(resource, selected) {
     return resource.id === selected?.id ? "selected" : "";
-}
-
-function Resource({ resource, onSelect }) {
-    return (
-        <div onClick={() => onSelect(resource)}>
-            <span>{resource.type}</span>
-            <span>({resource.used}/{resource.capacity})</span>
-            <span>ID: {resource.id}</span>
-        </div>
-    )
 }
