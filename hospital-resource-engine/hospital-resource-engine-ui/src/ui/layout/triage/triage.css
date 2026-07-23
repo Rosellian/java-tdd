@@ -17,6 +17,7 @@
     color: #fff;
 }
 
+/*TODO Move into animations sheet?*/
 @keyframes pulse-red {
     0% { box-shadow: 0 0 10px var(--triage-red); }
     50% { box-shadow: 0 0 20px var(--triage-red); }

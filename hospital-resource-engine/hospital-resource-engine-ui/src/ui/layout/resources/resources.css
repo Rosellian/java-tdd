@@ -42,3 +42,36 @@
     font-size: 0.85rem;
     opacity: 0.7;
 }
+
+/*Resource full indication*/
+/*TODO Move into animations sheet?*/
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 6px var(--triage-red); }
+    50% { box-shadow: 0 0 14px var(--triage-red); }
+    100% { box-shadow: 0 0 6px var(--triage-red); }
+}
+
+.resource-row.full {
+    background: rgba(255, 0, 0, 0.10);
+    border-left: 4px solid var(--triage-red);
+    box-shadow: 0 0 6px var(--triage-red), 0 0 12px var(--triage-red);
+    animation: pulse-red 1.5s infinite ease-in-out;
+}
+
+.resource-row.full .resource-type,
+.resource-row.full .resource-usage,
+.resource-row.full .resource-id {
+    color: var(--triage-red);
+    font-weight: 600;
+}
+
+.resource-row.full .resource-icon {
+    filter: drop-shadow(0 0 4px var(--triage-red));
+}
+
+/*Editor form*/
+.field.full {
+    background: rgba(255, 0, 0, 0.10);
+    border-left: 2px solid var(--triage-red);
+    box-shadow: 0 0 6px var(--triage-red), 0 0 12px var(--triage-red);
+}
