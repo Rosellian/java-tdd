@@ -1,9 +1,8 @@
 package com.tdd.hospital.engine.triage.rules.database;
 
-import com.tdd.hospital.database.DTORepository;
 import com.tdd.hospital.database.DataEntry;
 import com.tdd.hospital.database.DataList;
-import com.tdd.hospital.engine.triage.rules.TriageRule;
+import com.tdd.hospital.database.DataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,7 +15,7 @@ import java.util.UUID;
 import static com.tdd.hospital.engine.triage.rules.database.RepositoryUtils.*;
 
 @Repository
-public class TriageRepository implements DTORepository<TriageRule, TriageRuleDTO> {
+public class TriageRepository implements DataRepository<TriageRuleDTO> {
     private static final Logger logger = LoggerFactory.getLogger(TriageRepository.class);
 
     private final JdbcTemplate jdbcTemplate;
@@ -59,7 +58,7 @@ public class TriageRepository implements DTORepository<TriageRule, TriageRuleDTO
     }
 
     @Override
-    public void saveList(DataList list, List<TriageRule> rules) {
+    public void saveList(DataList list, List<TriageRuleDTO> rules) {
         try {
             logger.info("Saving rule list: {}", list);
             jdbcTemplate.update(SAVE_RULE_LIST, list.id(), list.name(), list.version());
@@ -75,7 +74,7 @@ public class TriageRepository implements DTORepository<TriageRule, TriageRuleDTO
         }
     }
 
-    private void saveRules(DataList list, List<TriageRule> rules) {
+    private void saveRules(DataList list, List<TriageRuleDTO> rules) {
         logger.info("Saving rules in list {} {}", list, rules);
 
         rules.stream()

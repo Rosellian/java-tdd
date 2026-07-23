@@ -1,7 +1,6 @@
 package com.tdd.hospital.engine.triage.rules.database;
 
 import com.tdd.hospital.database.DataEntry;
-import com.tdd.hospital.engine.triage.rules.TriageRule;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class RepositoryUtils {
                 .toList();
     }
 
-    static DataEntry toEntry(TriageRule rule, UUID listId) {
+    static DataEntry toEntry(TriageRuleDTO rule, UUID listId) {
         String json = mapper.writerWithDefaultPrettyPrinter()
                 .writeValueAsString(rule);
 

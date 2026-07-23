@@ -12,7 +12,7 @@ public record TriageRuleDTO(
         TriageLevel result
 ) {
 
-    public TriageRuleDTO toDto(TriageRule rule) {
+    public static TriageRuleDTO from(TriageRule rule) {
         return new TriageRuleDTO(rule.id(), rule.name(), rule.description(), rule.result());
     }
 }

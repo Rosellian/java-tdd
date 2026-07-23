@@ -3,8 +3,8 @@ package com.tdd.hospital.api.triage;
 import com.tdd.hospital.database.DataList;
 import com.tdd.hospital.engine.triage.TriageEngine;
 import com.tdd.hospital.engine.triage.TriageResult;
-import com.tdd.hospital.engine.triage.rules.TriageRule;
 import com.tdd.hospital.engine.triage.rules.TriageService;
+import com.tdd.hospital.engine.triage.rules.database.TriageRuleDTO;
 import com.tdd.hospital.patients.Patient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +51,10 @@ public class TriageController {
     }
 
     @GetMapping("/rules/{listId}")
-    public List<TriageRule> getList(@PathVariable UUID listId) {
+    public List<TriageRuleDTO> getList(@PathVariable UUID listId) {
         logger.info("Request for triage rule list with id: {}", listId);
 
-        List<TriageRule> rules = service.getList(listId);
+        List<TriageRuleDTO> rules = service.getList(listId);
         logger.info("Response triage rule list: {}", rules);
 
         return rules;

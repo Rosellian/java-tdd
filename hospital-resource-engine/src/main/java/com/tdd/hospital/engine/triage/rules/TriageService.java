@@ -2,6 +2,7 @@ package com.tdd.hospital.engine.triage.rules;
 
 import com.tdd.hospital.database.DataList;
 import com.tdd.hospital.engine.triage.rules.database.TriageRepository;
+import com.tdd.hospital.engine.triage.rules.database.TriageRuleDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,16 +31,16 @@ public class TriageService {
         return lists;
     }
 
-    public List<TriageRule> getList(UUID id) {
+    public List<TriageRuleDTO> getList(UUID id) {
         logger.info("Getting rule list with id: {}", id);
 
-        List<TriageRule> rules = repository.getList(id);
+        List<TriageRuleDTO> rules = repository.getList(id);
         logger.info("Retrieved rules {}", rules);
 
         return rules;
     }
 
-    public void save(DataList list, List<TriageRule> rules) {
+    public void save(DataList list, List<TriageRuleDTO> rules) {
         logger.info("Saving rule list {} {}", list, rules);
 
         repository.saveList(list, rules);

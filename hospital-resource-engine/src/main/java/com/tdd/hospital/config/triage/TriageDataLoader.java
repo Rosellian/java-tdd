@@ -4,6 +4,7 @@ import com.tdd.hospital.engine.triage.rules.TriageConfig;
 import com.tdd.hospital.engine.triage.rules.TriageRule;
 import com.tdd.hospital.database.DataList;
 import com.tdd.hospital.engine.triage.rules.database.TriageRepository;
+import com.tdd.hospital.engine.triage.rules.database.TriageRuleDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -41,6 +42,8 @@ public class TriageDataLoader {
         List<TriageRule> rules = new TriageConfig().defaultRules();
         logger.info("Using default rules {}", rules);
 
-        repository.saveList(list, rules);
+        List<TriageRuleDTO> dtoRules = rules.stream().map(TriageRuleDTO::from).toList();
+        logger.info("Storing as DTOs: {}", dtoRules);
+        repository.saveList(list, dtoRules);
     }
 }
