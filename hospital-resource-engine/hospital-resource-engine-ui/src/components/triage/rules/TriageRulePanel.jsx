@@ -4,7 +4,7 @@ import {getRules, saveRuleList} from "../../../api/triage/rules";
 import {ListSelector} from "../../general/lists/ListSelector";
 import {Inputs} from "../../general/lists/Inputs";
 import {Controls} from "../../general/lists/Controls";
-import {RuleList} from "./RuleList";
+import {RuleList} from "./list/RuleList";
 
 export function TriageRulePanel({ rules, selected, setRules, onSelect, onUpdate }) {
     const [lists, setLists] = useState([]);

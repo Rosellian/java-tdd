@@ -1,3 +1,5 @@
+import {Rule} from "./Rule";
+
 export function RuleList({ rules, selected, onSelect }) {
     return (
         <div className="panel">
@@ -18,15 +20,4 @@ export function RuleList({ rules, selected, onSelect }) {
 
 function selectedClass(rule, selected) {
     return rule.id === selected?.id ? "selected" : "";
-}
-
-function Rule({ rule, onSelect }) {
-    return (
-        <div onClick={() => onSelect(rule)}>
-            <span>{rule.name}</span>
-            <span>Condition: {rule.condition}</span>
-            <span>Level: {rule.result}</span>
-            <span>ID: {rule.id}</span>
-        </div>
-    )
 }

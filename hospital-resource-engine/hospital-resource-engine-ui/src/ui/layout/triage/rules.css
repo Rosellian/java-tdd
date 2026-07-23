@@ -1,0 +1,49 @@
+.rule-row {
+    display: grid;
+    grid-template-columns: 32px 1fr auto auto;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 6px;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+/*TODO add styling for this case, applicable to other list selections*/
+.rule-row:hover {
+    /*background: var(--panel-hover);*/
+}
+
+.selected .rule-row {
+    background: var(--accent);
+    border-left: 4px solid var(--accent);
+}
+
+.rule-icon {
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.rule-main {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.rule-name {
+    font-weight: 600;
+}
+
+.rule-description {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.rule-level {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.rule-id {
+    font-size: 0.75rem;
+    opacity: 0.6;
+}
