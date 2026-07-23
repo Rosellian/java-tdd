@@ -6,5 +6,6 @@ public record TriageRule(
         UUID id,
         String name,
         Condition condition,
+        String description,
         TriageLevel result
 ) {}

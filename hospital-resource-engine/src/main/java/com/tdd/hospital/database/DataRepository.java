@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.util.List;
 import java.util.UUID;
 
-public interface DataRepository<T> {
+public interface DataRepository {
     RowMapper<DataList> listRowMapper = (rs, rowNum) -> new DataList(
             UUID.fromString(rs.getString("id")),
             rs.getString("name"),
@@ -13,8 +13,6 @@ public interface DataRepository<T> {
     );
 
     List<DataList> getLists();
-    List<T> getList(UUID listId);
-    void saveList(DataList list, List<T> data);
 
     static String getListsQuery(String tableName) {
         return String.format("SELECT id, name, version FROM %s ORDER BY name", tableName);

@@ -16,24 +16,28 @@ public class TriageConfig {
                         UUID.randomUUID(),
                         "Critical Oxygen",
                         p -> p.vitals().oxygenSaturation() < 85,
+                        "Oxygen saturation below 85%",
                         TriageLevel.RED
                 ),
                 new TriageRule(
                         UUID.randomUUID(),
                         "High Fever",
                         p -> p.vitals().temperature() > 39.5,
+                        "Body temperature above 39.5",
                         TriageLevel.ORANGE
                 ),
                 new TriageRule(
                         UUID.randomUUID(),
                         "Low Blood Pressure",
                         p -> p.vitals().systolicBP() < 90,
+                        "Systolic blood pressure below 90",
                         TriageLevel.ORANGE
                 ),
                 new TriageRule(
                         UUID.randomUUID(),
                         "Mild Symptoms",
                         p -> p.symptoms().contains("headache"),
+                        "Symptoms include headache",
                         TriageLevel.YELLOW
                 )
         );

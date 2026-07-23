@@ -60,6 +60,7 @@ public record TriageRule(
         String id,
         String name,
         Condition condition,
+        String description,
         TriageLevel result
 ) {}
 ```

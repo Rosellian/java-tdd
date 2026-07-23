@@ -1,0 +1,18 @@
+package com.tdd.hospital.engine.triage.rules.database;
+
+import com.tdd.hospital.engine.triage.rules.TriageLevel;
+import com.tdd.hospital.engine.triage.rules.TriageRule;
+
+import java.util.UUID;
+
+public record TriageRuleDTO(
+        UUID id,
+        String name,
+        String description,
+        TriageLevel result
+) {
+
+    public TriageRuleDTO toDto(TriageRule rule) {
+        return new TriageRuleDTO(rule.id(), rule.name(), rule.description(), rule.result());
+    }
+}

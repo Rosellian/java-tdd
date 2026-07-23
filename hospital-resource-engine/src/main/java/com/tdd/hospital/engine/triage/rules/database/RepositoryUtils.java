@@ -2,7 +2,6 @@ package com.tdd.hospital.engine.triage.rules.database;
 
 import com.tdd.hospital.database.DataEntry;
 import com.tdd.hospital.engine.triage.rules.TriageRule;
-import com.tdd.hospital.patients.Patient;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
@@ -24,9 +23,9 @@ public class RepositoryUtils {
 
     private RepositoryUtils() {}
 
-    static List<TriageRule> readRuleData(List<String> rulesData) {
+    static List<TriageRuleDTO> readRuleData(List<String> rulesData) {
         return rulesData.stream()
-                .map(data -> mapper.readValue(data, TriageRule.class))
+                .map(data -> mapper.readValue(data, TriageRuleDTO.class))
                 .toList();
     }
 

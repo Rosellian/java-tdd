@@ -2,7 +2,7 @@ package com.tdd.hospital.patients.database;
 
 import com.tdd.hospital.database.DataEntry;
 import com.tdd.hospital.database.DataList;
-import com.tdd.hospital.database.DataRepository;
+import com.tdd.hospital.database.DirectRepository;
 import com.tdd.hospital.patients.Patient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import java.util.UUID;
 import static com.tdd.hospital.patients.database.RepositoryUtils.*;
 
 @Repository
-public class PatientRepository implements DataRepository<Patient> {
+public class PatientRepository implements DirectRepository<Patient> {
     private static final Logger logger = LoggerFactory.getLogger(PatientRepository.class);
 
     private final JdbcTemplate jdbcTemplate;

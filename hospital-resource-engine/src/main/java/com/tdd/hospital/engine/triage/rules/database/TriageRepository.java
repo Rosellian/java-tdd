@@ -1,8 +1,8 @@
 package com.tdd.hospital.engine.triage.rules.database;
 
+import com.tdd.hospital.database.DTORepository;
 import com.tdd.hospital.database.DataEntry;
 import com.tdd.hospital.database.DataList;
-import com.tdd.hospital.database.DataRepository;
 import com.tdd.hospital.engine.triage.rules.TriageRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import java.util.UUID;
 import static com.tdd.hospital.engine.triage.rules.database.RepositoryUtils.*;
 
 @Repository
-public class TriageRepository implements DataRepository<TriageRule> {
+public class TriageRepository implements DTORepository<TriageRule, TriageRuleDTO> {
     private static final Logger logger = LoggerFactory.getLogger(TriageRepository.class);
 
     private final JdbcTemplate jdbcTemplate;
@@ -43,12 +43,12 @@ public class TriageRepository implements DataRepository<TriageRule> {
     }
 
     @Override
-    public List<TriageRule> getList(UUID listId) {
+    public List<TriageRuleDTO> getList(UUID listId) {
         try {
             logger.info("Loading rule list by id: {}", listId);
             List<String> ruleData = jdbcTemplate.queryForList(GET_RULES, String.class, listId);
 
-            List<TriageRule> rules = readRuleData(ruleData);
+            List<TriageRuleDTO> rules = readRuleData(ruleData);
             logger.info("Loaded rule list: {}", rules);
 
             return rules;
@@ -79,7 +79,7 @@ public class TriageRepository implements DataRepository<TriageRule> {
         logger.info("Saving rules in list {} {}", list, rules);
 
         rules.stream()
-                .map(patient -> toEntry(patient, list.id()))
+                .map(rule -> toEntry(rule, list.id()))
                 .forEach(this::saveRule);
     }
 
