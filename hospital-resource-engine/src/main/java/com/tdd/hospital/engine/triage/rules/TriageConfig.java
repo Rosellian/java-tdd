@@ -23,6 +23,14 @@ public class TriageConfig {
                 ),
                 new TriageRule(
                         UUID.randomUUID(),
+                        "Critical Heart Rate",
+                        p -> p.vitals().heartRate() <= 15,
+                        new ConditionDTO("vitals.heartRate", "<=", "15"),
+                        "Heart rate below or equal to 15 BPM",
+                        TriageLevel.RED
+                ),
+                new TriageRule(
+                        UUID.randomUUID(),
                         "High Fever",
                         p -> p.vitals().temperature() > 39.5,
                         new ConditionDTO("vitals.temperature", ">", "39.5"),
@@ -37,11 +45,18 @@ public class TriageConfig {
                         "Systolic blood pressure below 90",
                         TriageLevel.ORANGE
                 ),
+                new TriageRule(UUID.randomUUID(),
+                        "High Blood Pressure",
+                        p -> p.vitals().diastolicBP() > 110,
+                        new ConditionDTO("vitals.diastolicBP", ">", "110"),
+                        "Diastolic blood pressure above 110",
+                        TriageLevel.ORANGE
+                ),
                 new TriageRule(
                         UUID.randomUUID(),
                         "Mild Symptoms",
                         p -> p.symptoms().contains("headache"),
-                        new ConditionDTO("symptoms", "contains", "90"),
+                        new ConditionDTO("symptoms", "contains", "headache"),
                         "Symptoms include headache",
                         TriageLevel.YELLOW
                 )

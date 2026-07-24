@@ -1,11 +1,11 @@
-//TODO centralize, and build upon rules?
+//TODO centralize, and build upon rules and realistic values?
 export function dangerClass(vitals) {
     return {
-        heartRate: setDanger(vitals.heartRate > 130),
-        systolicBP: setDanger(vitals.systolicBP > 180),
-        diastolicBP: setDanger(vitals.diastolicBP > 120),
-        oxygenSaturation: setDanger(vitals.oxygenSaturation < 90),
-        temperature: setDanger(vitals.temperature > 39)
+        heartRate: setDanger(vitals.heartRate < 15),
+        systolicBP: setDanger(vitals.systolicBP < 90),
+        diastolicBP: setDanger(vitals.diastolicBP > 110),
+        oxygenSaturation: setDanger(vitals.oxygenSaturation < 85),
+        temperature: setDanger(vitals.temperature > 39.5)
     };
 }
 

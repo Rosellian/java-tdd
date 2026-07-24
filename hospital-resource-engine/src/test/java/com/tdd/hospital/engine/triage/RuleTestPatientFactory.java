@@ -16,8 +16,10 @@ public class RuleTestPatientFactory {
         //TODO find a better, more general solution
         return switch (rule.name()) {
             case "Critical Oxygen" -> baseWithVitals(base, vs -> vs.withOxygenSaturation(80));
+            case "Critical Heart Rate" -> baseWithVitals(base, vs -> vs.withHeartRate(15));
             case "High Fever" -> baseWithVitals(base, vs -> vs.withTemperature(40.0));
             case "Low Blood Pressure" -> baseWithVitals(base, vs -> vs.withSystolicBP(85));
+            case "High Blood Pressure" -> baseWithVitals(base, vs -> vs.withDiastolicBP(115));
             case "Mild Symptoms" -> baseWithSymptoms(base, List.of("headache"));
             default -> throw new IllegalStateException("No matching generator for rule: " + rule.id());
         };
