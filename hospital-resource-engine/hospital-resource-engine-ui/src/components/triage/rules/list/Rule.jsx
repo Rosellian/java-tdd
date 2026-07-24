@@ -1,3 +1,5 @@
+import {getLevelIcon} from "../levels";
+
 export function Rule({ rule, onSelect }) {
     return (
         <div className="rule-row" onClick={() => onSelect(rule)}>
@@ -22,14 +24,4 @@ function LevelIcon({ result }) {
             {getLevelIcon(result)}
         </div>
     )
-}
-
-function getLevelIcon(level) {
-    switch (level) {
-        case "RED": return "🔴";
-        case "ORANGE": return "🟠";
-        case "YELLOW": return "🟡";
-        case "GREEN": return "🟢";
-        default: return "⚪";
-    }
 }

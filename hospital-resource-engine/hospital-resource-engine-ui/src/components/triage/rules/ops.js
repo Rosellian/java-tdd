@@ -1,4 +1,4 @@
-import {getRuleLists} from "../../../api/triage/rules";
+import {getRuleLists, getTriageLevels} from "../../../api/triage/rules";
 
 export function loadLists(setLists, setSelectedList) {
     try {
@@ -12,5 +12,14 @@ export function loadLists(setLists, setSelectedList) {
             });
     } catch (err) {
         console.error("Failed to load triage rule lists:", err);
+    }
+}
+
+export function loadLevels(setLevels) {
+    try {
+        getTriageLevels().then(
+            data => setLevels(data));
+    } catch (err) {
+        console.error("Failed to load triage rule levels:", err);
     }
 }

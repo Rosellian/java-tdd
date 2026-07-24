@@ -5,6 +5,7 @@ import {ListSelector} from "../../general/lists/ListSelector";
 import {Inputs} from "../../general/lists/Inputs";
 import {Controls} from "../../general/lists/Controls";
 import {RuleList} from "./list/RuleList";
+import {RuleEditor} from "./editor/RuleEditor";
 
 export function TriageRulePanel({ rules, selected, setRules, onSelect, onUpdate }) {
     const [lists, setLists] = useState([]);
@@ -61,7 +62,7 @@ export function TriageRulePanel({ rules, selected, setRules, onSelect, onUpdate 
                 <RuleList rules={rules} selected={selected} onSelect={onSelect} />
             )}
 
-            {/*<RuleEditor rule={selected} onChange={onUpdate} onCreate={onCreateRule} />*/}
+            <RuleEditor rule={selected} onChange={onUpdate} onCreate={onCreateRule} />
         </div>
     )
 }
