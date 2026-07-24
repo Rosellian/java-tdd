@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {loadLevels} from "../../ops";
-import {getIcon} from "../../../../resources/types";
+import {getLevelIcon} from "../../levels";
 
 export function LevelSelector({ selected, onSelect }) {
     const [levels, setLevels] = useState([]);
@@ -14,7 +14,7 @@ export function LevelSelector({ selected, onSelect }) {
             <select value={selected.result} onChange={e => onSelect(e.target.value)}>
                 {levels.map((level, i) => (
                     <option key={i} value={level}>
-                        {level} {getIcon(level)}
+                        {level} {getLevelIcon(level)}
                     </option>
                 ))}
             </select>

@@ -1,4 +1,4 @@
-import {makePost} from "../requests";
+import {makeGet, makePost} from "../requests";
 
 const BASE_URL = "/api/triage";
 
@@ -6,10 +6,11 @@ export async function runTriage(patient) {
     return makePost("runTriage", BASE_URL, patient);
 }
 
+//TODO should be POST without payload?
 export async function runTriageForId(patientId) {
-    let res = await fetch(`${BASE_URL}/${patientId}`, {
-        method: "POST"
-    });
+    return makeGet("runTriageForId", `${BASE_URL}/${patientId}`);
+}
 
-    return res.json();
+export async function getTriageLevels() {
+    return makeGet("getTriageLevels", `${BASE_URL}/levels`);
 }

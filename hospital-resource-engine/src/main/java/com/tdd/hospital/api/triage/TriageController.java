@@ -66,4 +66,14 @@ public class TriageController {
 
         service.save(request.list(), request.rules());
     }
+
+    @GetMapping("/levels")
+    public List<String> getLevels() {
+        logger.info("Request for all triage levels");
+
+        List<String> levels = service.getLevels();
+        logger.info("Response returned triage levels: {}", levels);
+
+        return levels;
+    }
 }

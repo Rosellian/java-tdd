@@ -1,4 +1,5 @@
-import {getRuleLists, getTriageLevels} from "../../../api/triage/rules";
+import {getRuleLists} from "../../../api/triage/rules";
+import {getTriageLevels} from "../../../api/triage/triage";
 
 export function loadLists(setLists, setSelectedList) {
     try {

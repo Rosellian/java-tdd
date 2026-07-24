@@ -16,7 +16,3 @@ export async function saveRuleList(list, rules) {
     //TODO return json response?
     return makePost("saveRuleList", BASE_URL, payload, () => {});
 }
-
-export async function getTriageLevels() {
-    return makeGet("getTriageLevels", `${BASE_URL}/levels`);
-}
