@@ -4,7 +4,7 @@ import com.tdd.hospital.engine.triage.rules.TriageConfig;
 import com.tdd.hospital.engine.triage.rules.TriageRule;
 import com.tdd.hospital.database.DataList;
 import com.tdd.hospital.engine.triage.rules.database.TriageRepository;
-import com.tdd.hospital.engine.triage.rules.database.TriageRuleDTO;
+import com.tdd.hospital.engine.triage.rules.database.dto.TriageRuleDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;

@@ -2,7 +2,7 @@ package com.tdd.hospital.engine.triage.rules;
 
 import com.tdd.hospital.database.DataList;
 import com.tdd.hospital.engine.triage.rules.database.TriageRepository;
-import com.tdd.hospital.engine.triage.rules.database.TriageRuleDTO;
+import com.tdd.hospital.engine.triage.rules.database.dto.TriageRuleDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

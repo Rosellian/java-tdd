@@ -1,5 +1,6 @@
 package com.tdd.hospital.engine.triage.rules;
 
+import com.tdd.hospital.engine.triage.rules.database.dto.ConditionDTO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +17,7 @@ public class TriageConfig {
                         UUID.randomUUID(),
                         "Critical Oxygen",
                         p -> p.vitals().oxygenSaturation() < 85,
+                        new ConditionDTO("vitals.oxygenSaturation", "<", "85"),
                         "Oxygen saturation below 85%",
                         TriageLevel.RED
                 ),
@@ -23,6 +25,7 @@ public class TriageConfig {
                         UUID.randomUUID(),
                         "High Fever",
                         p -> p.vitals().temperature() > 39.5,
+                        new ConditionDTO("vitals.temperature", ">", "39.5"),
                         "Body temperature above 39.5",
                         TriageLevel.ORANGE
                 ),
@@ -30,6 +33,7 @@ public class TriageConfig {
                         UUID.randomUUID(),
                         "Low Blood Pressure",
                         p -> p.vitals().systolicBP() < 90,
+                        new ConditionDTO("vitals.systolicBP", "<", "90"),
                         "Systolic blood pressure below 90",
                         TriageLevel.ORANGE
                 ),
@@ -37,6 +41,7 @@ public class TriageConfig {
                         UUID.randomUUID(),
                         "Mild Symptoms",
                         p -> p.symptoms().contains("headache"),
+                        new ConditionDTO("symptoms", "contains", "90"),
                         "Symptoms include headache",
                         TriageLevel.YELLOW
                 )

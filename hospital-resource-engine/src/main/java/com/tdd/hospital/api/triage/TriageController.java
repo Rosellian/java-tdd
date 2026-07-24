@@ -4,7 +4,7 @@ import com.tdd.hospital.database.DataList;
 import com.tdd.hospital.engine.triage.TriageEngine;
 import com.tdd.hospital.engine.triage.TriageResult;
 import com.tdd.hospital.engine.triage.rules.TriageService;
-import com.tdd.hospital.engine.triage.rules.database.TriageRuleDTO;
+import com.tdd.hospital.engine.triage.rules.database.dto.TriageRuleDTO;
 import com.tdd.hospital.patients.Patient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

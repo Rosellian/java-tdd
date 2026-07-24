@@ -3,6 +3,7 @@ package com.tdd.hospital.engine.triage.rules.database;
 import com.tdd.hospital.database.DataEntry;
 import com.tdd.hospital.database.DataList;
 import com.tdd.hospital.database.DataRepository;
+import com.tdd.hospital.engine.triage.rules.database.dto.TriageRuleDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;

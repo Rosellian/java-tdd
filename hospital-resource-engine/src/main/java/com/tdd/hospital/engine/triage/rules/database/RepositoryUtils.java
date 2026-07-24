@@ -1,6 +1,7 @@
 package com.tdd.hospital.engine.triage.rules.database;
 
 import com.tdd.hospital.database.DataEntry;
+import com.tdd.hospital.engine.triage.rules.database.dto.TriageRuleDTO;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;

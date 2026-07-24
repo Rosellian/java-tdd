@@ -149,14 +149,15 @@ Main URL: `/api/triage`
 **Endpoints:**
 - Run triage engine on patient data. Takes `Patient` in body.
 - `/rules` get available rule lists. Returns list of `DataList`.
-- `/rules` get rule list by ID as path variable. Returns list of `TriageRule`.
+- `/rules` get rule list by ID as path variable. Returns list of `TriageRuleDTO`.
 - `/rules` save rule list. Takes list and rules' data in body:
   ```java
   public record TriageRuleListRequest(
         DataList list,
-        List<TriageRule> rules
+        List<TriageRuleDTO> rules
   ) {}
   ```
+- `/levels` get supported triage levels.
 
 #### Resources
 For handling resource database.  
@@ -199,13 +200,31 @@ PostgreSQL database: `triage`
 **Repository** for backend access:
 ```java
 @Repository
-public class TriageRepository implements DataRepository<TriageRule> {
+public class TriageRepository implements DataRepository<TriageRuleDTO> {
   public List<DataList> getLists() {}
   
-  public List<TriageRule> getList(UUID listId) {}
+  public List<TriageRuleDTO> getList(UUID listId) {}
 
-  public void saveList(DataList list, List<TriageRule> rules) {}
+  public void saveList(DataList list, List<TriageRuleDTO> rules) {}
 }
+```
+**DTOs**  
+These are used outside engine (database and API) to enable visualization and editing in UI.
+ConditionDTO compiled for use in engine.
+```java
+public record TriageRuleDTO(
+        UUID id,
+        String name,
+        String description,
+        ConditionDTO condition,
+        TriageLevel result
+) {}
+
+public record ConditionDTO(
+        String field,
+        String operator,
+        String value
+) {}
 ```
 
 #### Resources

@@ -1,4 +1,4 @@
-package com.tdd.hospital.engine.triage.rules;
+package com.tdd.hospital.engine.triage.rules.condition;
 
 import com.tdd.hospital.patients.Patient;
 
