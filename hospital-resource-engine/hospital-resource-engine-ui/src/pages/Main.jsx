@@ -4,6 +4,8 @@ import {Layout} from "../ui/layout/main/Layout";
 import {PatientPanel} from "../components/patients/PatientPanel";
 import {ResourcePanel} from "../components/resources/ResourcePanel";
 import {TriageRulePanel} from "../components/triage/rules/TriageRulePanel";
+import {PatientList} from "../components/patients/list/PatientList";
+import {IncomingPanel} from "../components/patients/incoming/IncomingPanel";
 
 export function Main() {
     const [patients, setPatients] = useState([]);
@@ -39,12 +41,18 @@ export function Main() {
     return (
         <Layout>
             <div className="main-top">
-                <div className="left">
+                <div className="top-panel">
                     <PatientPanel patients={patients} selected={selectedPatient} setPatients={setPatients}
                                   onSelect={setSelectedPatient} onUpdate={updatePatient} />
+
+
                 </div>
 
-                <div className="right">
+                <div className="top-panel">
+                    <IncomingPanel />
+                </div>
+
+                <div className="top-panel">
                     <div className="panel">
                         <TriageRulePanel rules={triageRules} selected={selectedTriageRule} setRules={setTriageRules}
                                          onSelect={setSelectedTriageRule} onUpdate={updateTriageRule} />

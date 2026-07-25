@@ -1,6 +1,6 @@
 .main-top {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 16px;
     margin-bottom: 16px;
 }
@@ -9,7 +9,7 @@
     margin-top: 16px;
 }
 
-.left, .right {
+.top-panel {
     display: flex;
     flex-direction: column;
     gap: 16px;
