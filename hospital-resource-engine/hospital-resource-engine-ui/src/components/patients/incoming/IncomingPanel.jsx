@@ -1,6 +1,5 @@
 import {PatientList} from "../list/PatientList";
 import {useState} from "react";
-import {PatientEditor} from "../editor/PatientEditor";
 import {createPatient} from "../../../api/patients/patients";
 import {PatientForm} from "../editor/form/PatientForm";
 import {Collapsible} from "../../../ui/collapsible/Collapsible";

@@ -61,6 +61,16 @@ public class PatientController {
         return patient;
     }
 
+    @GetMapping("/all")
+    public List<Patient> getPatients() {
+        logger.info("Request to get all patients");
+
+        List<Patient> patients = service.getPatients();
+        logger.info("Response returned patients: {}", patients);
+
+        return patients;
+    }
+
     //TODO find better solution or improve error handling?
     private static PatientCreateRequest normalizeRequest(PatientCreateRequest request) {
         PatientCreateRequest createRequest = request;

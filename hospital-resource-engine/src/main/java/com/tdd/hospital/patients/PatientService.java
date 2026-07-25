@@ -59,4 +59,13 @@ public class PatientService {
 
         return patient;
     }
+
+    public List<Patient> getPatients() {
+        logger.info("Getting all patients");
+
+        List<Patient> patients = repository.getAllPatients();
+        logger.info("Retrieved patients {}", patients);
+
+        return patients;
+    }
 }

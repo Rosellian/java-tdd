@@ -46,4 +46,8 @@ public interface DataRepository<T> {
                 VALUES (?, ?, ?)
             """, tableName);
     }
+
+    static String getAllDataItemsQuery(String tableName) {
+        return String.format("SELECT data FROM %s", tableName);
+    }
 }

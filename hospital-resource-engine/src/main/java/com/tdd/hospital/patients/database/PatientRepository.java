@@ -75,6 +75,21 @@ public class PatientRepository implements DataRepository<Patient> {
         }
     }
 
+    public List<Patient> getAllPatients() {
+        try {
+            logger.info("Loading all patients");
+
+            List<String> patientData = jdbcTemplate.queryForList(GET_ALL_PATIENTS, String.class);
+            List<Patient> patients = readPatientData(patientData);
+            logger.info("Loaded patients {}", patients);
+
+            return patients;
+        } catch (Exception e) {
+            logger.error("Failed to load all patients", e);
+            return null;
+        }
+    }
+
     private void savePatients(DataList list, List<Patient> patients) {
         logger.info("Saving patients in list {} {}", list, patients);
 

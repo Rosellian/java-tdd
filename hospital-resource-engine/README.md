@@ -142,6 +142,7 @@ Main URL: `/api/patients`
         int oxygenSaturation
     ) {}
     ```
+- `/all` get all patients. Returns list of `Patient`.
 
 #### Triage
 For running Triage engine on patients and handling triage rule database.  

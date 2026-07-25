@@ -1,4 +1,4 @@
-import {getPatientLists} from "../../api/patients/patients";
+import {getAllPatients, getPatientLists} from "../../api/patients/patients";
 
 export function loadLists(setLists, setSelectedList) {
     try {
@@ -12,5 +12,16 @@ export function loadLists(setLists, setSelectedList) {
             });
     } catch (err) {
         console.error("Failed to load patient lists:", err);
+    }
+}
+
+export function loadPatients(setPatients) {
+    try {
+        getAllPatients().then(
+            data => {
+                setPatients(data);
+            });
+    } catch (err) {
+        console.error("Failed to load all patients:", err);
     }
 }
