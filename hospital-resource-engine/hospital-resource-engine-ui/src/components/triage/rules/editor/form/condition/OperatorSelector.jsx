@@ -1,4 +1,13 @@
-export function OperatorSelector({ selected, onSelect }) {
+export function OperatorSelector({ selected, locked = false, onSelect }) {
+    if(locked) {
+        return (
+            <div className="field">
+                <label>Operator</label>
+                <div className="static-value">contains</div>
+            </div>
+        )
+    }
+
     const operators = [
         "<",
         ">",

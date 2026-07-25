@@ -47,3 +47,10 @@
     font-size: 0.75rem;
     opacity: 0.6;
 }
+
+/*TODO Move to specific directory and file?*/
+/*Condition form*/
+.condition-selectors {
+    display: flex;
+    gap: 16px;
+}

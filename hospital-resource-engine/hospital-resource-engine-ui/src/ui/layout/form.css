@@ -17,6 +17,16 @@
     border-radius: 4px;
 }
 
+/*TODO Currently only used for triage rule condition operator when symptoms is selected, but might be used in other
+   situations too?*/
+.static-value {
+    padding: 6px 8px;
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+
+
 .field input {
     background: var(--input-bg);
     color: var(--input-text);
