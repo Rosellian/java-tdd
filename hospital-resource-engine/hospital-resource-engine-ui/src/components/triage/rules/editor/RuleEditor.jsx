@@ -7,6 +7,11 @@ export function RuleEditor({ rule, onChange, onCreate }) {
             id: crypto.randomUUID(),
             name: "New Rule",
             description: "",
+            condition: {
+                field: "",
+                operator: "=",
+                value: "",
+            },
             result: ""
         };
 
@@ -17,9 +22,7 @@ export function RuleEditor({ rule, onChange, onCreate }) {
         <div className="panel">
             <Collapsible title="Editor">
                 {rule && (
-                    <div>
-                        <RuleForm rule={rule} onChange={onChange} />
-                    </div>
+                    <RuleForm rule={rule} onChange={onChange} />
                 )}
 
                 <button onClick={handleCreate}>

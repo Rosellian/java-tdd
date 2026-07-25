@@ -14,6 +14,7 @@ public class FieldExtractor {
             case "vitals.temperature" -> patient.vitals().temperature();
             case "vitals.systolicBP" -> patient.vitals().systolicBP();
             case "vitals.diastolicBP" -> patient.vitals().diastolicBP();
+            case "vitals.heartRate" -> patient.vitals().heartRate();
             case "symptoms" -> patient.symptoms();
             case "age" -> patient.age();
             case "name" -> patient.name();
