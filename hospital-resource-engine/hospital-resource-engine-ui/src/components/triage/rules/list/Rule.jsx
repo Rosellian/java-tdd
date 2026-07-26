@@ -1,4 +1,5 @@
 import {getLevelIcon} from "../levels";
+import {truncatedIdWithIcon} from "../../../general/ids";
 
 export function Rule({ rule, onSelect }) {
     return (
@@ -11,7 +12,10 @@ export function Rule({ rule, onSelect }) {
             </div>
 
             <div className="rule-level">{rule.result}</div>
-            <div className="rule-id">#{rule.id}</div>
+
+            <div className="rule-id" title={rule.id}>
+                {truncatedIdWithIcon(rule.id)}
+            </div>
         </div>
     )
 }

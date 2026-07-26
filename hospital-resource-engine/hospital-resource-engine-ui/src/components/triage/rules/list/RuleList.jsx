@@ -3,7 +3,7 @@ import {Rule} from "./Rule";
 export function RuleList({ rules, selected, onSelect }) {
     return (
         <div className="panel">
-            <h2>Rules</h2>
+            <h2>Rules ({rules.length})</h2>
 
             <div className="list-scroll">
                 <ul>

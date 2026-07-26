@@ -3,7 +3,7 @@ import {Patient} from "./Patient";
 export function PatientList({ patients, selected, onSelect }) {
     return (
         <div className="panel">
-            <h2>Patients</h2>
+            <h2>Patients ({patients.length})</h2>
 
             <div className="list-scroll">
                 <ul>

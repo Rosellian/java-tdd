@@ -1,23 +1,16 @@
 import {Field} from "../../../general/form/Field";
+import {TextField} from "../../../general/form/TextField";
 
 export function PatientFields({ draft, updateField }) {
     return (
         <div>
-            <div className="field">
-                <label>Name</label>
+            <TextField label="ID" name="id" value={draft.id} readOnly={true} />
 
-                <input value={draft.name} onChange={e =>
-                    updateField("name", e.target.value)}
-                />
-            </div>
+            <TextField label="Name" name="name" value={draft.name} onUpdate={updateField} />
 
             <Field label="Age" name="age" value={draft.age} onChange={updateField}/>
 
-            <div className="field">
-                <label>Triage Level</label>
-
-                <input value={draft.triageLevel ?? ""} readOnly/>
-            </div>
+            <TextField label="Triage Level" name="triageLevel" value={draft.triageLevel ?? ""} readOnly={true} />
         </div>
     )
 }

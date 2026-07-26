@@ -1,5 +1,6 @@
 import {getIcon} from "../types";
 import {getFullClass} from "../resource";
+import {truncatedIdWithIcon} from "../../general/ids";
 
 export function Resource({ resource, onSelect }) {
     return (
@@ -13,7 +14,9 @@ export function Resource({ resource, onSelect }) {
                 </span>
             </div>
 
-            <div className="resource-id">#{resource.id}</div>
+            <div className="resource-id" title={resource.id}>
+                {truncatedIdWithIcon(resource.id)}
+            </div>
         </div>
     )
 }

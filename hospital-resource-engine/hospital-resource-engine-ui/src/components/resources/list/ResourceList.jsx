@@ -3,7 +3,7 @@ import {Resource} from "./Resource";
 export function ResourceList({ resources, selected, onSelect }) {
     return (
         <div className="panel">
-            <h2>Resources</h2>
+            <h2>Resources ({resources.length})</h2>
 
             <div className="list-scroll">
                 <ul>
