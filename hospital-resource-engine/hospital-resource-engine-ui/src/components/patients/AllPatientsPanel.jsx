@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {PatientList} from "./list/PatientList";
 import {loadPatients} from "./ops";
 
-export function AllPatientsPanel({ onSelect }) {
+export function AllPatientsPanel({ selected, onSelect }) {
     const [patients, setPatients] = useState([]);
 
     useEffect(() => loadPatients(setPatients), []);
@@ -11,7 +11,7 @@ export function AllPatientsPanel({ onSelect }) {
         <div className="panel">
             <h2>All Patients</h2>
 
-            <PatientList patients={patients} onSelect={onSelect} />
+            <PatientList patients={patients} selected={selected} onSelect={onSelect} />
         </div>
     )
 }
