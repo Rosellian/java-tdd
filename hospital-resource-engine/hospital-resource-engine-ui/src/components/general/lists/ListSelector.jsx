@@ -1,10 +1,10 @@
-export function ListSelector({ lists, selectedList, setSelectedList }) {
+export function ListSelector({ lists, selected, onChange }) {
     return (
         <div className="field">
             <label>Select list</label>
 
-            <select value={selectedList.id}
-                    onChange={e => setSelectedList(e.target.value)}>
+            <select value={selected?.id}
+                    onChange={e => handleChange(e.target.value, lists, onChange)}>
                 {lists.map(list => (
                     <option key={list.id} value={list.id}>
                         {list.name}
@@ -13,4 +13,9 @@ export function ListSelector({ lists, selectedList, setSelectedList }) {
             </select>
         </div>
     )
+}
+
+function handleChange(id, lists, onChange) {
+    let list = lists.find(l => l.id === id);
+    onChange(list);
 }
