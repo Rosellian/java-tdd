@@ -1,0 +1,25 @@
+.patient-row {
+    display: grid;
+    grid-template-columns: 80px 1fr auto auto;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 4px;
+    cursor: pointer;
+}
+
+.patient-id {
+    font-family: monospace;
+    opacity: 0.8;
+}
+
+.patient-row:hover .patient-id {
+    opacity: 1;
+}
+
+.patient-name {
+    font-weight: 500;
+}
+
+.patient-level {
+    opacity: 0.7;
+}

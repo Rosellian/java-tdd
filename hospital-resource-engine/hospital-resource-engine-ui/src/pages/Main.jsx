@@ -44,11 +44,11 @@ export function Main() {
                 <div className="top-panel">
                     <PatientPanel patients={patients} selected={selectedPatient} setPatients={setPatients}
                                   onSelect={setSelectedPatient} onUpdate={updatePatient} />
-
-                    <AllPatientsPanel selected={selectedPatient} onSelect={setSelectedPatient} />
                 </div>
 
                 <div className="top-panel">
+                    <AllPatientsPanel selected={selectedPatient} onSelect={setSelectedPatient} />
+
                     <IncomingPanel />
                 </div>
 
