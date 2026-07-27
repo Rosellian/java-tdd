@@ -1,0 +1,28 @@
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-box {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    z-index: 200;
+    padding: 6px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+/* Fade-in */
+.tooltip-wrapper:hover .tooltip-box {
+    opacity: 1;
+    transform: translateY(0px);
+}

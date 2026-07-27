@@ -1,6 +1,7 @@
 import {getIcon} from "../types";
 import {getFullClass} from "../resource";
 import {truncatedIdWithIcon} from "../../general/ids";
+import {Tooltip} from "../../../ui/tooltip/Tooltip";
 
 export function Resource({ resource, onSelect }) {
     return (
@@ -14,9 +15,11 @@ export function Resource({ resource, onSelect }) {
                 </span>
             </div>
 
-            <div className="resource-id" title={resource.id}>
-                {truncatedIdWithIcon(resource.id)}
-            </div>
+            <Tooltip text={resource.id}>
+                <div className="resource-id">
+                    {truncatedIdWithIcon(resource.id)}
+                </div>
+            </Tooltip>
         </div>
     )
 }

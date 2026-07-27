@@ -1,5 +1,6 @@
 import {getLevelIcon} from "../levels";
 import {truncatedIdWithIcon} from "../../../general/ids";
+import {Tooltip} from "../../../../ui/tooltip/Tooltip";
 
 export function Rule({ rule, onSelect }) {
     return (
@@ -13,9 +14,11 @@ export function Rule({ rule, onSelect }) {
 
             <div className="rule-level">{rule.result}</div>
 
-            <div className="rule-id" title={rule.id}>
-                {truncatedIdWithIcon(rule.id)}
-            </div>
+            <Tooltip text={rule.id}>
+                <div className="rule-id">
+                    {truncatedIdWithIcon(rule.id)}
+                </div>
+            </Tooltip>
         </div>
     )
 }
