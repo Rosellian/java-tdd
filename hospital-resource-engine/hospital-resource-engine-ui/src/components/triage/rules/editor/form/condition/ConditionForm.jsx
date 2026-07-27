@@ -40,7 +40,7 @@ export function ConditionForm({ condition, onChange }) {
 
             {symptomsSelected ?
                 <TextField label="Symptoms (comma-separated)" name="value" value={condition.value}
-                           onChange={updateField} />
+                           onUpdate={updateField} />
                 :  <Field label="Value" name="value" value={condition.value} onUpdate={updateField} />
             }
         </div>

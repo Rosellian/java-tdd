@@ -8,7 +8,7 @@ export function PatientFields({ draft, updateField }) {
 
             <TextField label="Name" name="name" value={draft.name} onUpdate={updateField} />
 
-            <Field label="Age" name="age" value={draft.age} onChange={updateField}/>
+            <Field label="Age" name="age" value={draft.age} onUpdate={updateField}/>
 
             <TextField label="Triage Level" name="triageLevel" value={draft.triageLevel ?? ""} readOnly={true} />
         </div>
