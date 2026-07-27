@@ -1,19 +1,11 @@
+import {TextField} from "../form/TextField";
+
 export function Inputs({ selected, onUpdate }) {
     return (
         <div>
-            <Field label="List Name" name="name" value={selected.name} onChange={onUpdate} />
+            <TextField label="List Name" name="name" value={selected.name} onUpdate={onUpdate} />
 
-            <Field label="Version" name="version" value={selected.version} onChange={onUpdate} />
-        </div>
-    )
-}
-
-function Field({ label, name, value, onChange }) {
-    return (
-        <div className="field">
-            <label>{label}</label>
-
-            <input value={value} onChange={e => onChange(name, e.target.value)} />
+            <TextField label="Version" name="version" value={selected.version} onUpdate={onUpdate} />
         </div>
     )
 }

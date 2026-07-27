@@ -54,7 +54,7 @@ export function ResourcePanel({ resources, selected, setResources, onSelect, onU
         <div className="panel">
             <h2>Resource Lists</h2>
 
-            <ListSelector lists={lists} selectedList={selectedList} setSelectedList={setSelectedList} />
+            <ListSelector lists={lists} selected={selectedList} onChange={setSelectedList} />
             <Inputs selected={selectedList} onUpdate={updateListField} />
             <Controls load={handleLoad} save={handleSave} onCreate={onCreate} />
 

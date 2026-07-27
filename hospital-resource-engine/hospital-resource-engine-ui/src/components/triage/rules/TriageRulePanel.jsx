@@ -54,7 +54,7 @@ export function TriageRulePanel({ rules, selected, setRules, onSelect, onUpdate 
         <div className="panel">
             <h2>Triage Rule Lists</h2>
 
-            <ListSelector lists={lists} selectedList={selectedList} setSelectedList={setSelectedList} />
+            <ListSelector lists={lists} selected={selectedList} onChange={setSelectedList} />
             <Inputs selected={selectedList} onUpdate={updateListField} />
             <Controls load={handleLoad} save={handleSave} onCreate={onCreate} />
 
