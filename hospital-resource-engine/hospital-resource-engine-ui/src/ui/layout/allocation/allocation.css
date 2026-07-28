@@ -19,8 +19,49 @@
     opacity: 0.9;
 }
 
+.allocation-status.allocated {
+    color: var(--triage-green);
+    font-weight: 600;
+}
+
+.allocation-status.wait {
+    color: var(--triage-orange);
+    font-weight: 600;
+    text-shadow: 0 0 6px var(--triage-orange);
+    animation: pulse-wait 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse-wait {
+    0% { text-shadow: 0 0 6px var(--triage-orange); }
+    50% { text-shadow: 0 0 14px var(--triage-orange); }
+    100% { text-shadow: 0 0 6px var(--triage-orange); }
+}
+
+/*TODO combine with and use trace styling from triage?*/
 .trace-list {
     margin-top: 6px;
     padding-left: 16px;
     opacity: 0.9;
+}
+
+.trace-row {
+    display: flex;
+    /*grid-template-columns: 24px 1fr 1fr;*/
+    gap: 8px;
+    align-items: center;
+    padding: 4px 0;
+}
+
+.trace-icon {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.trace-label {
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+.trace-detail {
+    opacity: 0.8;
 }
