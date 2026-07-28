@@ -1,0 +1,26 @@
+.allocation-decision {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.allocation-row {
+    display: flex;
+    gap: 8px;
+}
+
+.allocation-row .label {
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+.allocation-row .value {
+    opacity: 0.9;
+}
+
+.trace-list {
+    margin-top: 6px;
+    padding-left: 16px;
+    opacity: 0.9;
+}

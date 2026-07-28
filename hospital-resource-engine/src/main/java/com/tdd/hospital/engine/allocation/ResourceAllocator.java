@@ -5,8 +5,6 @@ import com.tdd.hospital.patients.Patient;
 import com.tdd.hospital.engine.triage.rules.TriageLevel;
 import com.tdd.hospital.resources.Resource;
 import com.tdd.hospital.resources.ResourceType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +15,6 @@ import static com.tdd.hospital.resources.ResourceType.*;
 
 @Service
 public class ResourceAllocator {
-    private static final Logger logger = LoggerFactory.getLogger(ResourceAllocator.class);
 
     private final StepTracer tracer;
 
@@ -39,14 +36,14 @@ public class ResourceAllocator {
 
         tracer.addFallback();
 
-        return new AllocationDecision(patient.id(), null, WAIT, tracer.getTrace());
+        return new AllocationDecision(patient.id(), null, WAIT, tracer.getTrace(true));
     }
 
     private AllocationDecision allocateRequired(Patient patient, Resource resource) {
         if(resource.used() < resource.capacity()) {
             tracer.addAvailable(resource);
 
-            return new AllocationDecision(patient.id(), resource.id(), ALLOCATED, tracer.getTrace());
+            return new AllocationDecision(patient.id(), resource.id(), ALLOCATED, tracer.getTrace(true));
         }
         else {
             tracer.addBusy(resource);

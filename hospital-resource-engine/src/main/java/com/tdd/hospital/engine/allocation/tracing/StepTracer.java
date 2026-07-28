@@ -20,26 +20,43 @@ public class StepTracer {
     public StepTracer() {trace = new ArrayList<>();}
 
     public void addRequired(ResourceType needed) {
-        trace.add(createRequired(needed));
+        TraceStep traceStep = createRequired(needed);
+
+        trace.add(traceStep);
         logger.info("Resource needed {}", trace);
     }
 
     public void addAvailable(Resource resource) {
-        trace.add(createAvailable(resource));
+        TraceStep traceStep = createAvailable(resource);
+
+        trace.add(traceStep);
         logger.info("Resource available {}", trace);
     }
 
     public void addBusy(Resource resource) {
-        trace.add(createBusy(resource));
+        TraceStep traceStep = createBusy(resource);
+
+        trace.add(traceStep);
         logger.info("Resource busy {}", trace);
     }
 
     public void addFallback() {
-        trace.add(createFallback());
+        TraceStep traceStep = createFallback();
+
+        trace.add(traceStep);
         logger.info("Fallback reached {}", trace);
     }
 
-    public List<TraceStep> getTrace() {return trace;}
+    //TODO Redesign to avoid the need to clear list in between runs?
+    public List<TraceStep> getTrace(boolean clear) {
+        List<TraceStep> traceCopy = new ArrayList<>(trace);
+
+        if(clear) {
+            trace.clear();
+        }
+
+        return traceCopy;
+    }
 
     //TODO move to TraceStep or other class?
     private static TraceStep createRequired(ResourceType needed) {

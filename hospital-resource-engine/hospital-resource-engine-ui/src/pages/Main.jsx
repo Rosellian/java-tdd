@@ -6,6 +6,7 @@ import {ResourcePanel} from "../components/resources/ResourcePanel";
 import {TriageRulePanel} from "../components/triage/rules/TriageRulePanel";
 import {IncomingPanel} from "../components/patients/incoming/IncomingPanel";
 import {AllPatientsPanel} from "../components/patients/AllPatientsPanel";
+import {AllocationPanel} from "../components/allocation/AllocationPanel";
 
 export function Main() {
     const [patients, setPatients] = useState([]);
@@ -19,6 +20,7 @@ export function Main() {
     }
 
     const [triageRules, setTriageRules] = useState([]);
+    //TODO could be moved into panel
     const [selectedTriageRule, setSelectedTriageRule] = useState(null);
 
     function updateTriageRule(updatedRule) {
@@ -29,6 +31,7 @@ export function Main() {
     }
 
     const [resources, setResources] = useState([]);
+    //TODO could be moved into panel
     const [selectedResource, setSelectedResource] = useState(null);
 
     function updateResource(updatedResource) {
@@ -41,31 +44,26 @@ export function Main() {
     return (
         <Layout>
             <div className="main-top">
-                <div className="top-panel">
-                    <PatientPanel patients={patients} selected={selectedPatient} setPatients={setPatients}
-                                  onSelect={setSelectedPatient} onUpdate={updatePatient} />
-                </div>
+                <AllPatientsPanel selected={selectedPatient} onSelect={setSelectedPatient} />
 
-                <div className="top-panel">
-                    <AllPatientsPanel selected={selectedPatient} onSelect={setSelectedPatient} />
+                <PatientPanel patients={patients} selected={selectedPatient} setPatients={setPatients}
+                              onSelect={setSelectedPatient} onUpdate={updatePatient} />
 
-                    <IncomingPanel />
-                </div>
+                <IncomingPanel />
+            </div>
 
-                <div className="top-panel">
-                    <div className="panel">
-                        <TriageRulePanel rules={triageRules} selected={selectedTriageRule} setRules={setTriageRules}
-                                         onSelect={setSelectedTriageRule} onUpdate={updateTriageRule} />
-                        {selectedPatient && (
-                            <TriagePanel patient={selectedPatient} onUpdate={updatePatient} />
-                        )}
-                    </div>
-                </div>
+            <div className="main-middle">
+                <TriageRulePanel rules={triageRules} selected={selectedTriageRule} setRules={setTriageRules}
+                                 onSelect={setSelectedTriageRule} onUpdate={updateTriageRule} />
+
+                <ResourcePanel resources={resources} selected={selectedResource} setResources={setResources}
+                               onSelect={setSelectedResource} onUpdate={updateResource} />
             </div>
 
             <div className="main-bottom">
-                <ResourcePanel resources={resources} selected={selectedResource} setResources={setResources}
-                               onSelect={setSelectedResource} onUpdate={updateResource} />
+                <TriagePanel patient={selectedPatient} onUpdate={updatePatient} />
+
+                <AllocationPanel patient={selectedPatient} resources={resources} />
             </div>
         </Layout>
     )
