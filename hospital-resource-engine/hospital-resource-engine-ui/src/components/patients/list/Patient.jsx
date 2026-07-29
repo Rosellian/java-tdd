@@ -1,4 +1,4 @@
-import {TriageBadge} from "./TriageBadge";
+import {TriageBadge} from "../../triage/TriageBadge";
 import {truncatedIdWithIcon} from "../../general/ids";
 import {Tooltip} from "../../../ui/tooltip/Tooltip";
 
