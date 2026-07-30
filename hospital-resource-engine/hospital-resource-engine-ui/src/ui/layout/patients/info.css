@@ -1,0 +1,41 @@
+.patient-info {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+}
+
+.patient-header {
+    display: grid;
+    grid-template-columns: 32px 1fr auto auto;
+    align-items: center;
+    gap: 8px;
+}
+
+.patient-icon {
+    font-size: 1.4rem;
+    opacity: 0.9;
+}
+
+.patient-name {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.patient-age {
+    opacity: 0.7;
+}
+
+.patient-id {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.id-value {
+    font-family: monospace;
+    opacity: 0.9;
+}

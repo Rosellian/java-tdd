@@ -10,6 +10,7 @@ import "./ui/collapsible/collapsible.css";
 import "./ui/tooltip/tooltip.css";
 import "./ui/layout/patients/form.css";
 import "./ui/layout/patients/patient.css";
+import "./ui/layout/patients/info.css";
 import "./ui/layout/triage/triage.css";
 import "./ui/layout/triage/rules.css"
 import "./ui/layout/triage/trace.css";

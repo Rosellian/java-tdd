@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {runTriage} from "../../api/triage/triage";
 import {TraceTimeline} from "./TraceTimeline";
+import {PatientInfo} from "../patients/info/PatientInfo";
 
 export function TriagePanel({ patient, onUpdate }) {
     const [result, setResult] = useState(null);
@@ -15,11 +16,17 @@ export function TriagePanel({ patient, onUpdate }) {
         onUpdate(updatedPatient);
     }
 
-    let patientName = resultPatient?.name ?? "";
-
     return (
         <div className="panel">
-            <h2>Triage: {patientName}</h2>
+            <h2>Triage</h2>
+
+            {resultPatient && (
+                <div className="triage-patient-row">
+                    <h3>Patient: </h3>
+
+                    <PatientInfo patient={resultPatient} />
+                </div>
+            )}
 
             <button onClick={handleTriage}>
                 Run Triage

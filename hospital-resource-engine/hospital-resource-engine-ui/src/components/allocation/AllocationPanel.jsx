@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {runAllocation} from "../../api/allocation/allocation";
 import {AllocationDecision} from "./decision/AllocationDecision";
+import {PatientInfo} from "../patients/info/PatientInfo";
 
 export function AllocationPanel({ patient, resources }) {
     const [result, setResult] = useState(null);
@@ -12,11 +13,17 @@ export function AllocationPanel({ patient, resources }) {
         setResultPatient(patient);
     }
 
-    let patientName = resultPatient?.name ?? "";
-
     return (
         <div className="panel">
-            <h2>Resource allocation: {patientName}</h2>
+            <h2>Resource allocation</h2>
+
+            {resultPatient && (
+                <div className="allocation-patient-row">
+                    <h3>Patient:</h3>
+
+                    <PatientInfo patient={resultPatient} />
+                </div>
+            )}
 
             <button onClick={handleAllocation}>
                 Run Allocation

@@ -1,3 +1,9 @@
+.allocation-patient-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .allocation-decision {
     margin-top: 8px;
     display: flex;
