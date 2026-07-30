@@ -1,5 +1,6 @@
 import {TriageBadge} from "../../triage/TriageBadge";
 import {truncatedIdWithIcon} from "../../general/ids";
+import {Tooltip} from "../../../ui/tooltip/Tooltip";
 
 export function PatientInfo({ patient }) {
     let id = truncatedIdWithIcon(patient.id);
@@ -16,9 +17,11 @@ export function PatientInfo({ patient }) {
                 <TriageBadge level={patient.triageLevel} />
             </div>
 
-            <div className="patient-id">
-                ID: <span className="id-value">{id}</span>
-            </div>
+            <Tooltip text={patient.id}>
+                <div className="patient-id">
+                    ID: <span className="id-value">{id}</span>
+                </div>
+            </Tooltip>
         </div>
     )
 }
