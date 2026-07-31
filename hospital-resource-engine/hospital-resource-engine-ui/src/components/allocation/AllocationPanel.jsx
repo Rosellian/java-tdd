@@ -3,14 +3,18 @@ import {runAllocation} from "../../api/allocation/allocation";
 import {AllocationDecision} from "./decision/AllocationDecision";
 import {PatientInfo} from "../patients/info/PatientInfo";
 
-export function AllocationPanel({ patient, resources }) {
+export function AllocationPanel({ patient, resources, onUpdate }) {
     const [result, setResult] = useState(null);
     const [resultPatient, setResultPatient] = useState(null);
 
     async function handleAllocation() {
         let res = await runAllocation(patient, resources);
+
+        let updatedPatient = {...patient, history: addTraceHistory(patient, res) };
+
         setResult(res);
-        setResultPatient(patient);
+        setResultPatient(updatedPatient);
+        onUpdate(updatedPatient);
     }
 
     return (
@@ -34,4 +38,17 @@ export function AllocationPanel({ patient, resources }) {
             )}
         </div>
     )
+}
+
+function addTraceHistory(patient, res) {
+    return [
+        ...(patient.history ?? []),
+        {
+            type: "ALLOCATION",
+            status: res.status,
+            resourceId: res.resourceId,
+            trace: res.trace,
+            timestamp: new Date().toISOString()
+        }
+    ];
 }

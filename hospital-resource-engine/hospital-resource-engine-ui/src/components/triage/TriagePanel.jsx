@@ -9,9 +9,10 @@ export function TriagePanel({ patient, onUpdate }) {
 
     async function handleTriage() {
         let res = await runTriage(patient);
-        setResult(res);
 
-        let updatedPatient = {...patient, triageLevel: res.level};
+        let updatedPatient = {...patient, triageLevel: res.level, history: addTraceHistory(patient, res)};
+
+        setResult(res);
         setResultPatient(updatedPatient);
         onUpdate(updatedPatient);
     }
@@ -41,6 +42,18 @@ export function TriagePanel({ patient, onUpdate }) {
             )}
         </div>
     )
+}
+
+function addTraceHistory(patient, res) {
+    return [
+        ...(patient.history ?? []),
+        {
+            type: "TRIAGE",
+            level: res.level,
+            trace: res.trace,
+            timestamp: new Date().toISOString()
+        }
+    ];
 }
 
 function getLevelClass(level) {

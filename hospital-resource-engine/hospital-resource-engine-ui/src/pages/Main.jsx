@@ -7,6 +7,7 @@ import {TriageRulePanel} from "../components/triage/rules/TriageRulePanel";
 import {IncomingPanel} from "../components/patients/incoming/IncomingPanel";
 import {AllPatientsPanel} from "../components/patients/AllPatientsPanel";
 import {AllocationPanel} from "../components/allocation/AllocationPanel";
+import {PatientHistory} from "../components/tracing/PatientHistory";
 
 export function Main() {
     const [patients, setPatients] = useState([]);
@@ -63,7 +64,9 @@ export function Main() {
             <div className="main-bottom">
                 <TriagePanel patient={selectedPatient} onUpdate={updatePatient} />
 
-                <AllocationPanel patient={selectedPatient} resources={resources} />
+                <AllocationPanel patient={selectedPatient} resources={resources} onUpdate={updatePatient} />
+
+                <PatientHistory patient={selectedPatient} />
             </div>
         </Layout>
     )
