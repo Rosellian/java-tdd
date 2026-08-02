@@ -34,6 +34,13 @@ export function TriageRulePanel({ rules, selected, setRules, onSelect, onUpdate 
         onSelect(null);
     }
 
+    function onDelete(list) {
+        setLists(prev => prev.filter(l => l.id !== list.id));
+        setSelectedList(null);
+        setRules([]);
+        onSelect(null);
+    }
+
     function updateListField(field, value) {
         let updatedList = { ...selectedList, [field]: value };
         setSelectedList(updatedList);
@@ -56,7 +63,8 @@ export function TriageRulePanel({ rules, selected, setRules, onSelect, onUpdate 
 
             <ListSelector lists={lists} selected={selectedList} onChange={setSelectedList} />
             <Inputs selected={selectedList} onUpdate={updateListField} />
-            <Controls load={handleLoad} save={handleSave} onCreate={onCreate} />
+            <Controls selected={selectedList} load={handleLoad} save={handleSave} onCreate={onCreate}
+                      onDelete={onDelete} />
 
             {rules.length > 0 && (
                 <RuleList rules={rules} selected={selected} onSelect={onSelect} />

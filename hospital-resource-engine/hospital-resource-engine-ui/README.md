@@ -23,13 +23,21 @@ ListSelector - dropdown for available lists
 ```jsx
 export function ListSelector({ lists, selected, onChange }) {}
 ```
-Inputs - editable input fields such as name and version
+Inputs - editable input fields for list values.
+Values:
+- Name
+- Version
 ```jsx
 export function Inputs({ selected, onUpdate }) {}
 ```
-Controls - buttons for operations on a list
+Controls - buttons for operations on a list.
+Operations:
+- Load
+- Save
+- Create
+- Delete
 ```jsx
-export function Controls({ load, save, onCreate }) {}
+export function Controls({ selected, load, save, onCreate, onDelete }) {}
 ```
 ---
 
@@ -45,6 +53,12 @@ TextField - input field adapted for text
 export function TextField({ label, name, value, className = "", readOnly = false, onUpdate }) {}
 ```
 ---
+
+##### ConfirmModal
+Can be used as a general prompt to require confirmation before an action.
+```jsx
+export function ConfirmModal({ message, onConfirm, onCancel }) {}
+```
 
 #### Patients
 ##### PatientPanel

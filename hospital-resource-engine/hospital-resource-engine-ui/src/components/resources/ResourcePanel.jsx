@@ -34,6 +34,13 @@ export function ResourcePanel({ resources, selected, setResources, onSelect, onU
         onSelect(null);
     }
 
+    function onDelete(list) {
+        setLists(prev => prev.filter(l => l.id !== list.id));
+        setSelectedList(null);
+        setResources([]);
+        onSelect(null);
+    }
+
     function updateListField(field, value) {
         let updatedList = { ...selectedList, [field]: value };
         setSelectedList(updatedList);
@@ -56,7 +63,8 @@ export function ResourcePanel({ resources, selected, setResources, onSelect, onU
 
             <ListSelector lists={lists} selected={selectedList} onChange={setSelectedList} />
             <Inputs selected={selectedList} onUpdate={updateListField} />
-            <Controls load={handleLoad} save={handleSave} onCreate={onCreate} />
+            <Controls selected={selectedList} load={handleLoad} save={handleSave} onCreate={onCreate}
+                      onDelete={onDelete} />
 
             {resources.length > 0 && (
                 <ResourceList resources={resources} selected={selected} onSelect={onSelect} />

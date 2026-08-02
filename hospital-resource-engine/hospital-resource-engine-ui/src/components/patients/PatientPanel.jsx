@@ -34,6 +34,13 @@ export function PatientPanel({patients, selected, setPatients, onSelect, onUpdat
         onSelect(null);
     }
 
+    function onDelete(list) {
+        setLists(prev => prev.filter(l => l.id !== list.id));
+        setSelectedList(null);
+        setPatients([]);
+        onSelect(null);
+    }
+
     function updateListField(field, value) {
         let updatedList = { ...selectedList, [field]: value };
         setSelectedList(updatedList);
@@ -56,7 +63,8 @@ export function PatientPanel({patients, selected, setPatients, onSelect, onUpdat
 
             <ListSelector lists={lists} selected={selectedList} onChange={setSelectedList} />
             <Inputs selected={selectedList} onUpdate={updateListField} />
-            <Controls load={handleLoad} save={handleSave} onCreate={onCreate} />
+            <Controls selected={selectedList} load={handleLoad} save={handleSave} onCreate={onCreate}
+                      onDelete={onDelete} />
 
             {patients.length > 0 && (
                 <PatientList patients={patients} selected={selected} onSelect={onSelect} />

@@ -1,0 +1,46 @@
+.confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.confirm-modal {
+    padding: 20px;
+    border-radius: 8px;
+    width: 320px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.confirm-message {
+    font-size: 1rem;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+.confirm-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.confirm-cancel {
+    /*TODO add button specific background color?*/
+    background: var(--bg);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+.confirm-ok {
+    background: var(--accent);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+}
