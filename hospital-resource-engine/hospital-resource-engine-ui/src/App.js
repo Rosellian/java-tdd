@@ -16,6 +16,7 @@ import "./ui/layout/triage/rules.css"
 import "./ui/layout/triage/trace.css";
 import "./ui/layout/resources/resources.css";
 import "./ui/layout/allocation/allocation.css";
+import "./ui/layout/tracing/history.css";
 import {Main} from "./pages/Main";
 import {ThemeProvider} from "./ui/theme/ThemeProvider";
 

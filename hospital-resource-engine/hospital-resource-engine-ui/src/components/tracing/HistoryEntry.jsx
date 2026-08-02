@@ -6,23 +6,23 @@ export function HistoryEntry({ entry }) {
         <div className="history-entry-row">
             <div className="history-header">
                 {entry.type === "TRIAGE" && (
-                    <div>
+                    <>
                         <span className="history-icon">🩺</span>
 
                         <span className="history-title">Triage</span>
 
                         <TriageBadge level={entry.level} />
-                    </div>
+                    </>
                 )}
 
                 {entry.type === "ALLOCATION" && (
-                    <div>
+                    <>
                         <span className="history-icon">📦</span>
 
                         <span className="history-title">Allocation</span>
 
                         <span className="history-status">{entry.status}</span>
-                    </div>
+                    </>
                 )}
 
                 <span className="history-time">

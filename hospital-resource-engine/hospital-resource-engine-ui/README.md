@@ -9,58 +9,263 @@ Shall include ability to:
 
 ## Architecture
 ### Components
+Subcomponents tend to be designed for reuse when same functionality and / or layout is needed.
+Some are reused in different places in the project.
+#### General components
+These components are generically designed so they can be reused by other components 
+when the same functionality is needed. This also helps to maintain a central look and styling.
+##### Dataset list
+For access to and management of a group of data with backend database.
+
+###### TODO ListPanel
+
+ListSelector - dropdown for available lists
+```jsx
+export function ListSelector({ lists, selected, onChange }) {}
+```
+Inputs - editable input fields such as name and version
+```jsx
+export function Inputs({ selected, onUpdate }) {}
+```
+Controls - buttons for operations on a list
+```jsx
+export function Controls({ load, save, onCreate }) {}
+```
+---
+
+##### Forms
+Reusable components for input forms and value display.
+
+Field - input field adapted for numerical values
+```jsx
+export function Field({ label, name, value, step = "1", className = "", onUpdate }) {}
+```
+TextField - input field adapted for text
+```jsx
+export function TextField({ label, name, value, className = "", readOnly = false, onUpdate }) {}
+```
+---
+
 #### Patients
-For displaying and managing patient lists and patients.
+##### PatientPanel
+Main component for displaying and managing patient lists and patients.
 ```jsx
 <PatientPanel patients={patients} selected={selectedPatient} setPatients={setPatients}
               onSelect={setSelectedPatient} onUpdate={updatePatient} />
 ```
-Subcomponents:
-##### TODO "ListPanel"
-```jsx
+Subcomponents:  
+`ListSelector`, `Inputs`, `Controls`, `PatientList`, `PatientEditor`
 
-```
-ListSelector
+##### AllPatientsPanel
+For displaying all patients regardless of list belonging.
 ```jsx
-<ListSelector lists={lists} selectedList={selectedList} setSelectedList={setSelectedList} />
+<AllPatientsPanel selected={selectedPatient} onSelect={setSelectedPatient} />
 ```
-Inputs
+Subcomponents:  
+`PatientList`
+
+##### IncomingPanel
+For creating new patients using random backend service.
 ```jsx
-<Inputs selected={selectedList} onUpdate={updateListField} />
+<IncomingPanel />
 ```
-Controls
+Subcomponents:  
+`PatientList` `PatientForm`
+---
+
+##### Subcomponents
+###### PatientList
+Displays patients in a list of selectable items.
 ```jsx
-<Controls load={handleLoad} save={handleSave} onCreate={onCreate} />
+export function PatientList({ patients, selected, onSelect }) {}
+```
+```jsx
+<Patient patient={patient} onSelect={onSelect} />
 ```
 ---
-##### PatientList
+
+###### PatientEditor
+Displays and allows editing of a selected patient's data.
 ```jsx
-<PatientList patients={patients} selected={selected} onSelect={onSelect} />
+export function PatientEditor({ patient, defaultOpen = false, onChange, onCreate }) {}
 ```
----
-##### PatientEditor
+PatientForm - input form part of editor, which can be reused on its own.
 ```jsx
-<PatientEditor patient={selected} onChange={onUpdate} onCreate={onCreatePatient} />
+export function PatientForm({ patient, onChange }) {}
 ```
-PatientForm
 ```jsx
-<PatientForm patient={patient} onChange={onChange} />
- ```
-```jsx
+<PatientFields draft={draft} updateField={updateField} />
 <VitalsForm vitals={draft.vitals} onUpdate={updateVitals} />
+<SymptomsForm draft={draft} updateField={updateField}/>
 ```
+---
+
+###### PatientInfo
+For displaying a compact entry with patient information and status.
+```jsx
+export function PatientInfo({ patient }) {}
+```
+Subcomponents:  
+`TriageBadge`
 ---
 
 #### Triage
+##### TriagePanel
 For running triage engine on patients and displaying results.
 ```jsx
-<TriagePanel patient={selected} />
+<TriagePanel patient={selectedPatient} onUpdate={updatePatient} />
 ```
-Subcomponents:
+Subcomponents:  
+`PatientInfo`, `TraceTimeline`
+
+##### Subcomponents
+###### TraceTimeline
+For displaying a trace (of a triage or allocation run) as a list of steps.
 ```jsx
-<TraceTimeline steps={result.trace} />
+export function TraceTimeline({ steps }) {}
+```
+
+###### TriageBadge
+Displaying a compact badge indicating triage level.
+```jsx
+export function TriageBadge({ level }) {}
+```
+
+#### Triage rules
+##### TriageRulePanel
+Main component for displaying and managing triage rule lists and rules.
+```jsx
+<TriageRulePanel rules={triageRules} selected={selectedTriageRule} setRules={setTriageRules}
+                 onSelect={setSelectedTriageRule} onUpdate={updateTriageRule} />
+```
+Subcomponents:  
+`ListSelector`, `Inputs`, `Controls`, `RuleList`, `RuleEditor`
+
+##### Subcomponents
+###### RuleList
+Displays triage rules in a list of selectable items.
+```jsx
+export function RuleList({ rules, selected, onSelect }) {}
+```
+```jsx
+<Rule rule={rule} onSelect={onSelect} />
 ```
 ---
+
+###### RuleEditor
+Displays and allows editing of a selected triage rule's data.
+```jsx
+export function RuleEditor({ rule, onChange, onCreate }) {}
+```
+RuleForm - input form part of editor, which can be reused on its own.
+```jsx
+export function RuleForm({ rule, onChange }) {}
+```
+```jsx
+<ConditionForm condition={draft.condition} onChange={updateField} />
+<LevelSelector selected={rule} onSelect={value => updateField("result", value)} />
+```
+---
+
+###### ConditionForm
+For displaying and editing the condition matching patients to a rule.
+```jsx
+export function ConditionForm({ condition, onChange }) {}
+```
+```jsx
+<FieldSelector selected={condition.field} onSelect={value => updateField("field", value)} />
+<OperatorSelector selected={condition.operator} locked={symptomsSelected}
+                  onSelect={value => updateField("operator", value)} />
+```
+---
+
+#### Resources
+##### ResourcePanel
+Main component for displaying and managing resource lists and resources.
+```jsx
+<ResourcePanel resources={resources} selected={selectedResource} setResources={setResources}
+               onSelect={setSelectedResource} onUpdate={updateResource} />
+```
+Subcomponents:  
+`ListSelector`, `Inputs`, `Controls`, `ResourceList`, `ResourceEditor`
+
+##### Subcomponents
+###### ResourceList
+Displays resources in a list of selectable items.
+```jsx
+export function ResourceList({ resources, selected, onSelect }) {}
+```
+```jsx
+<Resource resource={resource} onSelect={onSelect} />
+```
+---
+
+###### ResourceEditor
+Displays and allows editing of a selected resource's data.
+```jsx
+export function ResourceEditor({ resource, onChange, onCreate }) {}
+```
+ResourceForm - input form part of editor, which can be reused on its own.
+```jsx
+export function ResourceForm({ resource, onChange }) {}
+```
+```jsx
+<TypeSelector selected={resource} onSelect={(value) => updateField("type", value)} />
+```
+---
+
+#### Resource allocation
+##### TriagePanel
+For running resource allocation engine on patients and displaying results.
+```jsx
+<AllocationPanel patient={selectedPatient} resources={resources} onUpdate={updatePatient} />
+```
+Subcomponents:  
+`PatientInfo`, `AllocationDecision`
+
+##### Subcomponents
+###### AllocationDecision
+Displays result and trace from resource allocation for selected patient.
+```jsx
+export function AllocationDecision({ decision, patient, resources }) {}
+```
+```jsx
+<PatientRow patient={patient} decision={decision}/>
+<ResourceRow resourceId={resourceId} resources={resources}/>
+<TraceRow trace={decision.trace} />
+```
+---
+
+#### Tracing
+##### PatientHistory
+For displaying trace history of triage and resource allocations for a selected patient.
+```jsx
+<PatientHistory patient={selectedPatient} />
+```
+Subcomponents:  
+`HistoryEntry`
+
+##### Subcomponents
+###### HistoryEntry
+For displaying a trace history entry, supporting both triage and allocation trace data.
+```jsx
+export function HistoryEntry({ entry }) {}
+```
+Subcomponents:  
+`TriageBadge`, `TraceTimeline`
+---
+
+#### UI components
+These components are used for purely layout-based functions.
+
+Collapsible - enabling collapse/expand of content
+```jsx
+export function Collapsible({ title, children, defaultOpen = false, closedClass = {class: "", add: false} }) {}
+```
+Tooltip - for displaying a tooltip on hover
+```jsx
+export function Tooltip({ text, children }) {}
+```
 
 ### Project structure
 
