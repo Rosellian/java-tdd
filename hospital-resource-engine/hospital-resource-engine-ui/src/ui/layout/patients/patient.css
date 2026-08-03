@@ -7,6 +7,15 @@
     cursor: pointer;
 }
 
+.patient-row.highlight {
+    animation: newPatientFlash 0.8s ease-out;
+}
+
+@keyframes newPatientFlash {
+    0%   { background: var(--accent); }
+    100% { background: transparent; }
+}
+
 .patient-id {
     font-family: monospace;
     opacity: 0.8;

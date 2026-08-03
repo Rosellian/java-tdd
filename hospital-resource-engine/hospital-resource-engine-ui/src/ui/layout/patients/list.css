@@ -7,3 +7,31 @@
     background: var(--accent);
     border-color: var(--accent);
 }
+
+.patient-dropzone.drop-animate {
+    animation: dropPulse 0.3s ease-out;
+}
+
+@keyframes dropPulse {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+/*TODO move to patient or other separate css file*/
+.drag-ghost {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    pointer-events: none;
+}
+
+.drag-ghost-inner {
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.85rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}

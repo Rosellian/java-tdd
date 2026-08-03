@@ -53,6 +53,9 @@ export function PatientPanel({patients, selected, setPatients, onSelect, onUpdat
     function onNewPatient(newPatient) {
         setPatients(prev => [...prev, newPatient]);
         onSelect(newPatient);
+
+        //TODO should only be used for drag and drop
+        newPatient.__highlight = true;
     }
 
 

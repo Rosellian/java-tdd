@@ -1,28 +1,44 @@
 import {Patient} from "./Patient";
+import {useRef} from "react";
 
 export function PatientList({ patients, selected, onSelect, onDrop }) {
-    function onDragOver(e) {
+    const dropRef = useRef(null);
+    const dragCounter = useRef(0);
+
+    function onDragEnter(e) {
         e.preventDefault();
-        e.currentTarget.classList.add("drop-hover");
+        dragCounter.current++;
+        dropRef.current?.classList.add("drop-hover");
     }
 
     function onDragLeave(e) {
-        e.currentTarget.classList.remove("drop-hover");
+        dragCounter.current--;
+
+        if(dragCounter.current === 0) {
+            dropRef.current?.classList.remove("drop-hover");
+        }
     }
 
     function handleDrop(e) {
         e.preventDefault();
-        e.currentTarget.classList.remove("drop-hover");
+        dragCounter.current = 0;
+        dropRef.current?.classList.remove("drop-hover");
 
         let json = e.dataTransfer.getData("application/json");
         if (!json) return;
 
         let incomingPatient = JSON.parse(json);
+
+        dropRef.current?.classList.add("drop-animate");
+        setTimeout(() => dropRef.current?.classList.remove("drop-animate"), 300);
+
         onDrop(incomingPatient);
     }
 
     return (
-        <div className="panel patient-dropzone" onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={handleDrop}>
+        <div ref={dropRef} className="panel patient-dropzone"
+             onDragOver={(e) => e.preventDefault()} onDragEnter={onDragEnter}
+             onDragLeave={onDragLeave} onDrop={handleDrop}>
             <h2>Patients ({patients.length})</h2>
 
             <div className="list-scroll">
