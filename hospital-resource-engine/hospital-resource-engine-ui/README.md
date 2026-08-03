@@ -39,6 +39,8 @@ Operations:
 ```jsx
 export function Controls({ selected, load, save, onCreate, onDelete }) {}
 ```
+Subcomponents:  
+`ConfirmModal`
 ---
 
 ##### Forms
@@ -89,9 +91,10 @@ Subcomponents:
 
 ##### Subcomponents
 ###### PatientList
-Displays patients in a list of selectable items.
+Displays patients in a list of selectable items. 
+Also supports drag and drop of patient data between lists.
 ```jsx
-export function PatientList({ patients, selected, onSelect }) {}
+export function PatientList({ patients, selected, onSelect, onDrop }) {}
 ```
 ```jsx
 <Patient patient={patient} onSelect={onSelect} />

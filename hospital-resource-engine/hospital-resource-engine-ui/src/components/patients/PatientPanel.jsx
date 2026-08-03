@@ -50,10 +50,11 @@ export function PatientPanel({patients, selected, setPatients, onSelect, onUpdat
         );
     }
 
-    function onCreatePatient(newPatient) {
+    function onNewPatient(newPatient) {
         setPatients(prev => [...prev, newPatient]);
         onSelect(newPatient);
     }
+
 
     if (!selectedList) return;
 
@@ -67,10 +68,10 @@ export function PatientPanel({patients, selected, setPatients, onSelect, onUpdat
                       onDelete={onDelete} />
 
             {patients.length > 0 && (
-                <PatientList patients={patients} selected={selected} onSelect={onSelect} />
+                <PatientList patients={patients} selected={selected} onSelect={onSelect} onDrop={onNewPatient} />
             )}
 
-            <PatientEditor patient={selected} onChange={onUpdate} onCreate={onCreatePatient} />
+            <PatientEditor patient={selected} onChange={onUpdate} onCreate={onNewPatient} />
         </div>
     )
 }

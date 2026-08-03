@@ -1,0 +1,9 @@
+.patient-dropzone {
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.patient-dropzone.drop-hover {
+    /*TODO add a lighter accent color, for use for background here?*/
+    background: var(--accent);
+    border-color: var(--accent);
+}
