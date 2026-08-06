@@ -9,8 +9,8 @@ export function AllPatientsPanel({ selected, onSelect}) {
 
     useEffect(() => loadPatients(setPatients), []);
 
+    //TODO move into outer layer to reuse in all patient related panels
     const [lists, setLists] = useState([]);
-
     useEffect(() => loadLists(setLists, () => {}), []);
 
     //TODO implement separate patient draft
