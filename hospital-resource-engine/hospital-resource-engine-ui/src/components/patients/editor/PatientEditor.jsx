@@ -1,13 +1,7 @@
-import {createPatient} from "../../../api/patients/patients";
 import {PatientForm} from "./form/PatientForm";
 import {Collapsible} from "../../../ui/collapsible/Collapsible";
 
-export function PatientEditor({ patient, defaultOpen = false, onChange, onCreate }) {
-    async function handleRandom() {
-        let newPatient = await createPatient();
-
-        onCreate(newPatient);
-    }
+export function PatientEditor({ patient, lists, defaultOpen = false, onChange, onCreate }) {
 
     function create() {
         let newPatient = {
@@ -32,15 +26,11 @@ export function PatientEditor({ patient, defaultOpen = false, onChange, onCreate
             <Collapsible title="Editor" defaultOpen={defaultOpen}>
                 {patient && (
                     <div>
-                        <PatientForm patient={patient} onChange={onChange} />
+                        <PatientForm patient={patient} lists={lists} onChange={onChange} />
                     </div>
                 )}
 
                 <div className="controls">
-                    <button onClick={handleRandom}>
-                        Create random patient
-                    </button>
-
                     <button onClick={create}>
                         Create new patient
                     </button>

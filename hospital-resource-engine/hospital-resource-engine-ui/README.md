@@ -73,12 +73,12 @@ Subcomponents:
 `ListSelector`, `Inputs`, `Controls`, `PatientList`, `PatientEditor`
 
 ##### AllPatientsPanel
-For displaying all patients regardless of list belonging.
+For displaying and managing all patients regardless of list belonging.
 ```jsx
 <AllPatientsPanel selected={selectedPatient} onSelect={setSelectedPatient} />
 ```
 Subcomponents:  
-`PatientList`
+`PatientList`, `PatientEditor`
 
 ##### IncomingPanel
 For creating new patients using random backend service.

@@ -21,6 +21,16 @@ export async function makePost(requestName, endpoint, payload, responseHandler =
     return makeRequest(requestName, request, responseHandler);
 }
 
+export async function makeDelete(requestName, endpoint) {
+    let request = async () => {
+        console.log(`[${requestName}] Sending DELETE request`);
+
+        return await fetch(endpoint, { method: "DELETE", headers: createKeyHeader() });
+    };
+
+    return makeRequest(requestName, request);
+}
+
 async function makeRequest(requestName, request, responseHandler = jsonResponse) {
     try {
         let res = await request();

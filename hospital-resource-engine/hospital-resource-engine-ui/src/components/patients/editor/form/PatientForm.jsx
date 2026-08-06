@@ -2,8 +2,9 @@ import {useEffect, useState} from "react";
 import {VitalsForm} from "./vitals/VitalsForm";
 import {SymptomsForm} from "./SymptomsForm";
 import {PatientFields} from "./PatientFields";
+import {ListSelector} from "../../../general/lists/ListSelector";
 
-export function PatientForm({ patient, onChange }) {
+export function PatientForm({ patient, lists, onChange }) {
     const [draft, setDraft] = useState(patient);
 
     useEffect(() => {
@@ -23,9 +24,20 @@ export function PatientForm({ patient, onChange }) {
         updateField("vitals", updatedVitals);
     }
 
+    let selectedList = draft.listId ? lists.find(l => l.id === draft.listId) : "";
+
     return (
         <div className="panel patient-form">
-            <h2>Patient</h2>
+            <div className="patient-header-row">
+                <h2>Patient</h2>
+
+                <span className="patient-list-id">
+                    List: {selectedList?.id}
+                </span>
+
+                <ListSelector lists={lists} selected={selectedList}
+                              onChange={(list) => updateField("listId", list.id)} />
+            </div>
 
             <div className="row-top">
                 <PatientFields draft={draft} updateField={updateField} />

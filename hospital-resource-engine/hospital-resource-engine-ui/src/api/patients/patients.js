@@ -1,4 +1,4 @@
-import {makeGet, makePost} from "../requests";
+import {makeDelete, makeGet, makePost} from "../requests";
 
 const BASE_URL = "/api/patients";
 
@@ -25,6 +25,10 @@ export async function getAllPatients() {
     return makeGet("getAllPatients", `${BASE_URL}/all`);
 }
 
-export async function addPatient(patient) {
-    return makePost("addPatient", BASE_URL, patient);
+export async function savePatient(patient) {
+    return makePost("savePatient", BASE_URL, patient);
+}
+
+export async function deletePatient(patient) {
+    return makeDelete("savePatient", BASE_URL, patient.id);
 }

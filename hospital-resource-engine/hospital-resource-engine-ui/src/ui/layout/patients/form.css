@@ -4,6 +4,19 @@
     gap: 12px;
 }
 
+.patient-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.patient-list-id {
+    font-size: 0.9rem;
+    opacity: 0.75;
+    font-family: monospace;
+}
+
 .patient-form .row {
     display: flex;
     gap: 12px;

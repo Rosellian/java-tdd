@@ -58,7 +58,6 @@ export function PatientPanel({patients, selected, setPatients, onSelect, onUpdat
         newPatient.__highlight = true;
     }
 
-
     if (!selectedList) return;
 
     return (
@@ -74,7 +73,7 @@ export function PatientPanel({patients, selected, setPatients, onSelect, onUpdat
                 <PatientList patients={patients} selected={selected} onSelect={onSelect} onDrop={onNewPatient} />
             )}
 
-            <PatientEditor patient={selected} onChange={onUpdate} onCreate={onNewPatient} />
+            <PatientEditor patient={selected} lists={lists} onChange={onUpdate} onCreate={onNewPatient} />
         </div>
     )
 }
