@@ -5,6 +5,10 @@
     gap: 8px;
 }
 
+.trace-block {
+
+}
+
 .trace-step {
     display: flex;
     gap: 10px;
@@ -12,6 +16,45 @@
     border-radius: 6px;
     border: 1px solid var(--border);
     background: var(--panel-bg);
+    opacity: 0;
+    transform: translateY(4px);
+}
+
+/*TODO move to separate animation sheet?*/
+.animate-step {
+    animation: traceFadeIn 0.25s ease-out forwards;
+}
+
+@keyframes traceFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.trace-line {
+    width: 2px;
+    height: 24px;
+    margin: 6px auto;
+    background: var(--border);
+    opacity: 0;
+    transform: scaleY(0);
+    animation: lineGrow 0.25s ease-out forwards;
+}
+
+@keyframes lineGrow {
+    from {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
 }
 
 .type-rule_match {

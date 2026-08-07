@@ -2,12 +2,20 @@ export function TraceTimeline({ steps }) {
     return (
         <div className="trace-timeline">
             {steps.map((step, i) => (
-                <div key={i} className={getTypeClass(step)}>
+                <div key={i} className="trace-block">
+                    <div className={getTypeClass(step)}
+                         style={{ animationDelay: `${i * 80}ms` }}
+                    >
                     <span>
                         <strong>{step.label}</strong>
                     </span>
 
-                    <span>{step.detail}</span>
+                        <span>{step.detail}</span>
+                    </div>
+
+                    {i < steps.length - 1 && (
+                        <div className="trace-line" style={{ animationDelay: `${i * 80}ms` }}></div>
+                    )}
                 </div>
             ))}
         </div>
@@ -15,5 +23,5 @@ export function TraceTimeline({ steps }) {
 }
 
 function getTypeClass(step) {
-    return `trace-step type-${step.type.toLowerCase()}`;
+    return `trace-step type-${step.type.toLowerCase()} animate-step`;
 }

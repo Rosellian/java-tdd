@@ -143,6 +143,7 @@ Main URL: `/api/patients`
     ) {}
     ```
 - `/all` get all patients. Returns list of `Patient`.
+- 
 
 #### Triage
 For running Triage engine on patients and handling triage rule database.  
