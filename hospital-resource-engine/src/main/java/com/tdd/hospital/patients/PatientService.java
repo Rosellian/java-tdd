@@ -68,4 +68,18 @@ public class PatientService {
 
         return patients;
     }
+
+    public void save(Patient patient, UUID listId) {
+        logger.info("Saving patient {} (listId: {})", patient, listId);
+
+        repository.save(patient, listId);
+        logger.info("Saved patient");
+    }
+
+    public void delete(UUID id) {
+        logger.info("Deleting patient with id: {}", id);
+
+        repository.delete(id);
+        logger.info("Deleted patient");
+    }
 }

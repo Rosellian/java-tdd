@@ -1,12 +1,10 @@
 package com.tdd.hospital.api.patients;
 
-import com.tdd.hospital.patients.VitalSigns;
+import com.tdd.hospital.patients.Patient;
 
-import java.util.List;
+import java.util.UUID;
 
 public record PatientRequest(
-        String name,
-        int age,
-        VitalSigns vitals,
-        List<String> symptoms
+        Patient data,
+        UUID listId
 ) {}

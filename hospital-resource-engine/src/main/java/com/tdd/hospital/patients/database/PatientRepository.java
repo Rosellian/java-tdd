@@ -90,6 +90,29 @@ public class PatientRepository implements DataRepository<Patient> {
         }
     }
 
+    public void save(Patient patient, UUID listId) {
+        try {
+            logger.info("Saving patient : {} (list ID: {})", patient, listId);
+            DataEntry entry = toEntry(patient, listId);
+            savePatient(entry);
+
+            logger.info("Saved patient {} (list ID: {})", patient, listId);
+        }  catch (Exception e) {
+            logger.error("Failed to delete patient", e);
+        }
+    }
+
+    public void delete(UUID id) {
+        try {
+            logger.info("Deleting patient with ID: {}", id);
+            jdbcTemplate.update(DELETE_PATIENT, id);
+
+            logger.info("Deleted patient with ID {}", id);
+        }  catch (Exception e) {
+            logger.error("Failed to delete patient", e);
+        }
+    }
+
     private void savePatients(DataList list, List<Patient> patients) {
         logger.info("Saving patients in list {} {}", list, patients);
 

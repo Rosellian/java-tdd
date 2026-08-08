@@ -143,7 +143,14 @@ Main URL: `/api/patients`
     ) {}
     ```
 - `/all` get all patients. Returns list of `Patient`.
-- 
+- `/patient` save patient, Takes patient data and listId in body:
+  ```java
+  public record PatientRequest(
+        Patient data,
+        UUID listId
+  ) {}
+  ```
+- `/patient` delete patient by ID as path variable.
 
 #### Triage
 For running Triage engine on patients and handling triage rule database.  

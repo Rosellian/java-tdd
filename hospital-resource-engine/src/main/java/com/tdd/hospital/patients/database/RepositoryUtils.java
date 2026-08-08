@@ -19,6 +19,7 @@ public class RepositoryUtils {
     public static final String DELETE_PATIENTS_IN_LIST = deleteDataItemsQuery(DATA_TABLE_NAME);
     public static final String SAVE_PATIENT = saveDataItemQuery(DATA_TABLE_NAME);
     public static final String GET_ALL_PATIENTS = getAllDataItemsQuery(DATA_TABLE_NAME);
+    public static final String DELETE_PATIENT = deleteDataItemQuery(DATA_TABLE_NAME);
 
     private static final ObjectMapper mapper = new ObjectMapper();
 

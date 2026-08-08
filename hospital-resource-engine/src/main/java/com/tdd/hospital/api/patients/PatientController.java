@@ -45,7 +45,7 @@ public class PatientController {
 
     @PostMapping
     public void save(@RequestBody PatientListRequest request) {
-        logger.info("Request to save patient list");
+        logger.info("Request to save patient list {}", request);
 
         service.save(request.list(), request.patients());
     }
@@ -69,6 +69,20 @@ public class PatientController {
         logger.info("Response returned patients: {}", patients);
 
         return patients;
+    }
+
+    @PostMapping("/patient")
+    public void save(@RequestBody PatientRequest request) {
+        logger.info("Request to save patient {}", request);
+
+        service.save(request.data(), request.listId());
+    }
+
+    @DeleteMapping("/patient/{id}")
+    public void save(@PathVariable UUID id) {
+        logger.info("Request to delete patient with ID {}", id);
+
+        service.delete(id);
     }
 
     //TODO find better solution or improve error handling?
