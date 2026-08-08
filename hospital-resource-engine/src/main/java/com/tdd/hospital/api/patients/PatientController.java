@@ -62,17 +62,17 @@ public class PatientController {
     }
 
     @GetMapping("/all")
-    public List<Patient> getPatients() {
+    public List<PatientDTO> getPatients() {
         logger.info("Request to get all patients");
 
-        List<Patient> patients = service.getPatients();
+        List<PatientDTO> patients = service.getPatients();
         logger.info("Response returned patients: {}", patients);
 
         return patients;
     }
 
     @PostMapping("/patient")
-    public void save(@RequestBody PatientRequest request) {
+    public void save(@RequestBody PatientDTO request) {
         logger.info("Request to save patient {}", request);
 
         service.save(request.data(), request.listId());

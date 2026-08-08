@@ -48,7 +48,7 @@ public interface DataRepository<T> {
     }
 
     static String getAllDataItemsQuery(String tableName) {
-        return String.format("SELECT data FROM %s", tableName);
+        return String.format("SELECT list_id, data FROM %s", tableName);
     }
 
     static String deleteDataItemQuery(String tableName) {

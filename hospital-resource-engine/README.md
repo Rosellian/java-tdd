@@ -117,7 +117,7 @@ public record DataList(
 ) {}
 ```
 #### Security
-Using hardcoded API-key to access APIs.
+Using hardcoded API-key to access APIs. This key is passed in header: "X-Api-Key".
 
 #### Patients
 For handling patient database and creating new patients.  
@@ -142,10 +142,10 @@ Main URL: `/api/patients`
         int oxygenSaturation
     ) {}
     ```
-- `/all` get all patients. Returns list of `Patient`.
+- `/all` get all patients. Returns list of `PatientDTO`.
 - `/patient` save patient, Takes patient data and listId in body:
   ```java
-  public record PatientRequest(
+  public record PatientDTO(
         Patient data,
         UUID listId
   ) {}

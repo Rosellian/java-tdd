@@ -25,10 +25,12 @@ export async function getAllPatients() {
     return makeGet("getAllPatients", `${BASE_URL}/all`);
 }
 
+const PATIENT_BASE_URL = BASE_URL + "/patient";
+
 export async function savePatient(patient) {
-    return makePost("savePatient", BASE_URL, patient);
+    return makePost("savePatient", PATIENT_BASE_URL, patient);
 }
 
 export async function deletePatient(patient) {
-    return makeDelete("savePatient", BASE_URL, patient.id);
+    return makeDelete("savePatient", `${PATIENT_BASE_URL}/${patient.id}`);
 }

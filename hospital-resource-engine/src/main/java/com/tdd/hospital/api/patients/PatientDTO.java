@@ -4,7 +4,7 @@ import com.tdd.hospital.patients.Patient;
 
 import java.util.UUID;
 
-public record PatientRequest(
+public record PatientDTO(
         Patient data,
         UUID listId
 ) {}

@@ -1,7 +1,9 @@
 package com.tdd.hospital.patients.database;
 
+import com.tdd.hospital.api.patients.PatientDTO;
 import com.tdd.hospital.database.DataEntry;
 import com.tdd.hospital.patients.Patient;
+import org.springframework.jdbc.core.RowMapper;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
@@ -23,12 +25,21 @@ public class RepositoryUtils {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
+    public static final RowMapper<PatientDTO> patientMapper = (rs, rowNum) -> new PatientDTO(
+            toPatient(rs.getString("data")),
+            UUID.fromString(rs.getString("list_id"))
+    );
+
     private RepositoryUtils() {}
 
     static List<Patient> readPatientData(List<String> patientData) {
         return patientData.stream()
-                .map(data -> mapper.readValue(data, Patient.class))
+                .map(RepositoryUtils::toPatient)
                 .toList();
+    }
+
+    private static Patient toPatient(String data) {
+        return mapper.readValue(data, Patient.class);
     }
 
     static DataEntry toEntry(Patient patient, UUID listId) {

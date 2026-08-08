@@ -1,6 +1,7 @@
 package com.tdd.hospital.patients;
 
 import com.tdd.hospital.api.patients.PatientCreateRequest;
+import com.tdd.hospital.api.patients.PatientDTO;
 import com.tdd.hospital.database.DataList;
 import com.tdd.hospital.patients.database.PatientRepository;
 import com.tdd.hospital.patients.factory.RandomPatientFactory;
@@ -60,10 +61,10 @@ public class PatientService {
         return patient;
     }
 
-    public List<Patient> getPatients() {
+    public List<PatientDTO> getPatients() {
         logger.info("Getting all patients");
 
-        List<Patient> patients = repository.getAllPatients();
+        List<PatientDTO> patients = repository.getAllPatients();
         logger.info("Retrieved patients {}", patients);
 
         return patients;

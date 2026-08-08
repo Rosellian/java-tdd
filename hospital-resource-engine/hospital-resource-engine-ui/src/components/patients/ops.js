@@ -19,7 +19,12 @@ export function loadPatients(setPatients) {
     try {
         getAllPatients().then(
             data => {
-                setPatients(data);
+                let patients = data.map(dto => ({
+                    ...dto.data,
+                    listId: dto.listId
+                }));
+
+                setPatients(patients);
             });
     } catch (err) {
         console.error("Failed to load all patients:", err);
@@ -28,7 +33,12 @@ export function loadPatients(setPatients) {
 
 export function handleSave(patient) {
     try {
-        savePatient(patient).then(
+        let dto = {
+            data: patient,
+            listId: patient.listId
+        };
+
+        savePatient(dto).then(
             res => {
                 console.log(res);
                 //TODO do nothing?
