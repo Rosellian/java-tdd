@@ -26,7 +26,6 @@ export function AllPatientsPanel({ selected, onSelect}) {
 
     const [showConfirm, setShowConfirm] = useState(false);
 
-
     function deletePatient() {
         setShowConfirm(true);
     }

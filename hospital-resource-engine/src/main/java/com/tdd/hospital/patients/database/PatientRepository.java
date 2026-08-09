@@ -99,7 +99,7 @@ public class PatientRepository implements DataRepository<Patient> {
 
             logger.info("Saved patient {} (list ID: {})", patient, listId);
         }  catch (Exception e) {
-            logger.error("Failed to delete patient", e);
+            logger.error("Failed to save patient", e);
         }
     }
 

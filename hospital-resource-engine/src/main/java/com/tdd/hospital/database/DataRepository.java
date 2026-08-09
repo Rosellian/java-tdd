@@ -44,6 +44,9 @@ public interface DataRepository<T> {
         return String.format("""
                 INSERT INTO %s (id, list_id, data)
                 VALUES (?, ?, ?)
+                ON CONFLICT (id)
+                DO UPDATE SET list_id = EXCLUDED.list_id,
+                              data    = EXCLUDED.data
             """, tableName);
     }
 
