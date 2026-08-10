@@ -1,4 +1,4 @@
-import {useTheme} from "../../theme/ThemeProvider";
+import {nextTheme, useTheme} from "../../theme/ThemeProvider";
 
 export function Layout({ children }) {
     const { theme, toggleTheme } = useTheme();
@@ -6,10 +6,21 @@ export function Layout({ children }) {
     return (
         <div className="layout">
             <button onClick={toggleTheme}>
-                {theme === "light" ? "Dark mode" : "Light mode"}
+                {toggleButtonText(theme)}
             </button>
 
             {children}
         </div>
     )
+}
+
+function toggleButtonText(theme) {
+    let capitalizedTheme = capitalize(theme);
+    let next = capitalize(nextTheme(theme));
+
+    return `${capitalizedTheme} Mode (next = ${next})`
+}
+
+function capitalize(s) {
+    return s.charAt(0).toUpperCase() + s.slice(1);
 }

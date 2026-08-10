@@ -287,7 +287,12 @@ export function Tooltip({ text, children }) {}
 ### Project structure
 
 ## Layout and styling
-A centralized color theme with dark and light mode is used and controlled via:
+A centralized color theme with the following modes:
+- Dark
+- Light
+- Colorful
+
+This is controlled via:
 ```js
 <ThemeProvider>
   <Main />
@@ -296,7 +301,7 @@ A centralized color theme with dark and light mode is used and controlled via:
 Where `Main` is the main application page. General color and styling is defined in css-files within `ui/theme/`
 and `ui/layout/`. Specific styling for components are defined in separate css-files.
 
-Main wraps its content in a Layout component which includes a button to switch between dark and light theme.
+Main wraps its content in a Layout component which includes a button to switch between themes.
 ```jsx
 <Layout>{children}<Layout/>
 ```

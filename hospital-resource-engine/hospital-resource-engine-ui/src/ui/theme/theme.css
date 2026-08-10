@@ -41,3 +41,32 @@
     --trace-resource-busy: #ffb74d;
     --trace-fallback: #bdbdbd;
 }
+
+/*Colorful theme*/
+[data-theme="colorful"] {
+    --bg: #fdf6ff;
+    --panel-bg: #ffffff;
+    --text: #2a1f3c;
+    --border: #e2c8ff;
+
+    --input-bg: #faf5ff;
+    --input-text: #2a1f3c;
+
+    --accent: #9b4dff;
+    --accent-2: #ff6f91;
+    --accent-3: #ffca3a;
+    --accent-4: #8ac926;
+    --accent-5: #1982c4;
+
+    --triage-red: #ff4d6d;
+    --triage-orange: #ff9f1c;
+    --triage-yellow: #ffe066;
+    --triage-green: #2ec4b6;
+    --triage-blue: #4cc9f0;
+
+    --trace-rule-match: #9b4dff;
+    --trace-rule-fail: #ff6f91;
+    --trace-resource-ok: #8ac926;
+    --trace-resource-busy: #ffca3a;
+    --trace-fallback: #1982c4;
+}

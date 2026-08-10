@@ -2,6 +2,14 @@ import {createContext, useContext, useEffect, useState} from "react";
 
 const ThemeContext = createContext(null);
 
+const themes = ["dark", "light", "colorful"];
+
+export function nextTheme(t) {
+    let nextThemeIndex = (themes.indexOf(t) + 1) % themes.length;
+
+    return themes[nextThemeIndex];
+}
+
 export function ThemeProvider({ children }) {
     const [theme, setTheme] = useState("dark");
 
@@ -10,7 +18,7 @@ export function ThemeProvider({ children }) {
     }, [theme]);
 
     function toggleTheme() {
-        setTheme(t => (t === "dark" ? "light" : "dark"));
+        setTheme(t => nextTheme(t));
     }
 
     return (
